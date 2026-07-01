@@ -13,6 +13,14 @@ import config
 from llm_client import spec_llm, code_llm, repair_llm
 from dafny_wrapper import DafnyVerifier, VerificationResult, ErrorInfo
 from templates import get_verified_template
+from research_trace import (
+    append_trace,
+    attribute_failure,
+    spec_adequacy_snapshot,
+    spec_metrics,
+    trace_event,
+    verification_snapshot,
+)
 
 
 # ==================== 后处理函数 ====================
@@ -212,9 +220,13 @@ class PipelineState(TypedDict):
     spec: str                              # 生成的规约
     code: str                              # 生成的代码
     verification: VerificationResult       # 验证结果
+    diagnosis: str                         # 当前诊断文本
+    last_attribution: dict                 # 最近一次验证失败归因
+    spec_adequacy: dict                    # 规约充分性检查结果
     round: int                             # 当前修复轮次
     max_rounds: int                        # 最大修复轮次
     history: list                          # 修复历史
+    research_trace: list                   # 研究追踪：每轮规约、验证、归因、修复动作
     passed: bool                           # 是否最终通过
 
 
@@ -337,7 +349,27 @@ method 方法名(参数) returns (返回值)
         print(f"[Spec Agent] ⚠️ 规约可能有语法问题，但已达最大重试次数")
 
     print(f"[Spec Agent] 生成结果:\n{spec_code[:300]}...")
-    return {"spec": spec_code}
+    metrics = spec_metrics(spec_code)
+    adequacy = spec_adequacy_snapshot(
+        spec=spec_code,
+        problem_desc=state["problem_desc"],
+    )
+    print(
+        f"[Spec Adequacy] level={adequacy['level']} "
+        f"score={adequacy['score']} flags={adequacy['flags'][:3]}"
+    )
+    event = trace_event(
+        "spec",
+        state["round"],
+        spec_ok=spec_ok,
+        metrics=metrics,
+        adequacy=adequacy,
+    )
+    return {
+        "spec": spec_code,
+        "spec_adequacy": adequacy,
+        "research_trace": append_trace(state, event),
+    }
 
 
 def code_agent(state: PipelineState) -> dict:
@@ -527,7 +559,13 @@ method find_pair(numbers: seq<int>) returns (result: bool)
         code_prompt += "\n不要给 helper function/predicate 添加 requires；不要发明 IsBalanced/ExtractGroup 这类难证明语义 helper，除非规约明确要求。"
 
     print(f"[Code Agent] 生成代码:\n{code[:300]}...")
-    return {"code": code}
+    event = trace_event(
+        "code",
+        state["round"],
+        static_issue_count=len(_static_code_issues(code)),
+        code_line_count=len([line for line in code.splitlines() if line.strip()]),
+    )
+    return {"code": code, "research_trace": append_trace(state, event)}
 
 
 def verify_node(state: PipelineState) -> dict:
@@ -543,7 +581,20 @@ def verify_node(state: PipelineState) -> dict:
         for e in result.errors[:3]:
             print(f"  -> [{e.error_type}] L{e.location_line}: {e.message[:100]}")
 
-    return {"verification": result, "passed": result.passed}
+    attribution = attribute_failure(result, state.get("spec", ""), state.get("code", ""))
+    print(f"[Verify] 归因={attribution['category']}  修复目标={attribution['repair_target']}")
+    event = trace_event(
+        "verify",
+        state["round"],
+        verification=verification_snapshot(result),
+        attribution=attribution,
+    )
+    return {
+        "verification": result,
+        "passed": result.passed,
+        "last_attribution": attribution,
+        "research_trace": append_trace(state, event),
+    }
 
 
 def diagnose_agent(state: PipelineState) -> dict:
@@ -637,11 +688,22 @@ def diagnose_agent(state: PipelineState) -> dict:
         "round": state['round'],
         "code": state['code'],
         "errors": [{"type": e.error_type, "loc": e.location_line, "msg": e.message} for e in result.errors],
+        "attribution": state.get("last_attribution", {}),
         "diagnosis": diagnosis
     })
 
     print(f"[Diagnose Agent] 诊断:\n{diagnosis[:200]}...")
-    return {"diagnosis": diagnosis, "history": history}
+    event = trace_event(
+        "diagnose",
+        state["round"],
+        attribution=state.get("last_attribution", {}),
+        diagnosis_preview=diagnosis[:500],
+    )
+    return {
+        "diagnosis": diagnosis,
+        "history": history,
+        "research_trace": append_trace(state, event),
+    }
 
 
 def repair_agent(state: PipelineState) -> dict:
@@ -759,7 +821,18 @@ def repair_agent(state: PipelineState) -> dict:
         new_code = _inject_nested_loop_assert(_extract_dafny_code(new_code))
 
     print(f"[Repair Agent] 修复后代码:\n{new_code[:300]}...")
-    return {"code": new_code, "round": state["round"] + 1}
+    event = trace_event(
+        "repair",
+        state["round"],
+        previous_attribution=state.get("last_attribution", {}),
+        new_code_line_count=len([line for line in new_code.splitlines() if line.strip()]),
+        static_issue_count=len(_static_code_issues(new_code)),
+    )
+    return {
+        "code": new_code,
+        "round": state["round"] + 1,
+        "research_trace": append_trace(state, event),
+    }
 
 
 # ==================== 条件路由 ====================
@@ -835,6 +908,25 @@ def run_pipeline(problem_id: str, problem_desc: str, max_rounds: int = 3):
                     "round": 0,
                     "max_rounds": max_rounds,
                     "history": [{"round": 0, "source": "verified_template"}],
+                    "research_trace": [
+                        trace_event(
+                            "template",
+                            0,
+                            source="verified_template",
+                            verification=verification_snapshot(verification),
+                            metrics=spec_metrics(template.spec),
+                            adequacy=spec_adequacy_snapshot(
+                                spec=template.spec,
+                                problem_desc=problem_desc,
+                                dafny_verified=verification.passed,
+                            ),
+                        )
+                    ],
+                    "spec_adequacy": spec_adequacy_snapshot(
+                        spec=template.spec,
+                        problem_desc=problem_desc,
+                        dafny_verified=verification.passed,
+                    ),
                     "passed": True,
                 }
             print(f"[Template] 模板验证失败，回退到 LLM pipeline")
@@ -847,9 +939,13 @@ def run_pipeline(problem_id: str, problem_desc: str, max_rounds: int = 3):
         "spec": "",
         "code": "",
         "verification": VerificationResult(),
+        "diagnosis": "",
+        "last_attribution": {},
+        "spec_adequacy": {},
         "round": 1,
         "max_rounds": max_rounds,
         "history": [],
+        "research_trace": [],
         "passed": False,
     }
 

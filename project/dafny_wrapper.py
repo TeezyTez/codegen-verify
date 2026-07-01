@@ -36,6 +36,14 @@ class DafnyVerifier:
 
     def __init__(self, dafny_path: Optional[str] = None):
         self.dafny_path = dafny_path or config.DAFNY_PATH
+        self.solver_path = getattr(config, "DAFNY_SOLVER_PATH", "")
+
+    def _cmd(self, command: str, path: str) -> list[str]:
+        cmd = [self.dafny_path, command]
+        if command == "verify" and self.solver_path:
+            cmd.extend(["--solver-path", self.solver_path])
+        cmd.append(path)
+        return cmd
 
     @staticmethod
     def _classify_error(line: str) -> str:
@@ -75,7 +83,7 @@ class DafnyVerifier:
         try:
             # 第一步：快速 resolve 检查语法/类型错误
             resolve_result = subprocess.run(
-                [self.dafny_path, "resolve", tmp_path],
+                self._cmd("resolve", tmp_path),
                 capture_output=True, text=True, timeout=15
             )
             resolve_output = resolve_result.stdout + resolve_result.stderr
@@ -89,7 +97,7 @@ class DafnyVerifier:
 
             # 第二步：正式 verify
             result = subprocess.run(
-                [self.dafny_path, "verify", tmp_path],
+                self._cmd("verify", tmp_path),
                 capture_output=True, text=True, timeout=30
             )
             return self._parse(result.stdout + result.stderr, result.returncode)

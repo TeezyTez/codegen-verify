@@ -21,6 +21,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pipeline import run_pipeline
 from humaneval_tester import run_humaneval_test
+from spec_adequacy import check_spec_adequacy
+from research_trace import trace_event
 import config
 
 
@@ -136,6 +138,22 @@ def run_benchmark(problems, start=0, limit=5):
 
             # 最终通过 = Dafny 验证通过 && HumanEval 测试通过
             final_passed = passed and humaneval_passed
+            spec = final.get("spec", "")
+            spec_adequacy = check_spec_adequacy(
+                spec=spec,
+                problem_desc=desc,
+                entry_point=entry,
+                dafny_verified=passed,
+                humaneval_passed=humaneval_passed,
+            )
+            research_trace = list(final.get("research_trace", []))
+            research_trace.append(trace_event(
+                "spec_adequacy_after_tests",
+                rounds,
+                adequacy=spec_adequacy,
+                dafny_verified=passed,
+                humaneval_passed=humaneval_passed,
+            ))
 
             result = {
                 "task_id": tid,
@@ -147,7 +165,10 @@ def run_benchmark(problems, start=0, limit=5):
                 "rounds": rounds,
                 "time": round(elapsed, 1),
                 "code": code,
-                "spec": final.get("spec", ""),
+                "spec": spec,
+                "spec_adequacy": spec_adequacy,
+                "research_trace": research_trace,
+                "final_attribution": final.get("last_attribution", {}),
             }
 
             passed_count += 1 if final_passed else 0

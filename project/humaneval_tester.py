@@ -174,6 +174,7 @@ def run_humaneval_test(
     """
     entry_point = humeaneval_problem["entry_point"]
     dafny_path = dafny_path or config.DAFNY_PATH
+    solver_path = getattr(config, "DAFNY_SOLVER_PATH", "")
     test_code = humeaneval_problem.get("test", "")
     task_id = humeaneval_problem.get("task_id", "unknown")
 
@@ -212,11 +213,17 @@ def run_humaneval_test(
 
     try:
         # 编译 Dafny → Python（允许 warnings，Dafny 4.11+ 默认把 warnings 当作错误）
-        r = subprocess.run(
-            [dafny_path, 'translate', 'py', tmp_dfy.name,
+        cmd = [dafny_path, 'translate', 'py']
+        if solver_path:
+            cmd.extend(['--solver-path', solver_path])
+        cmd.extend([
+             tmp_dfy.name,
              '--allow-warnings',
              '--output', os.path.join(outdir, 'out'),
-             '--include-runtime'],
+             '--include-runtime',
+        ])
+        r = subprocess.run(
+            cmd,
             capture_output=True, text=True, timeout=60
         )
         if r.returncode != 0:

@@ -44,6 +44,7 @@ LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))
 LLM_RETRIES = int(os.getenv("LLM_RETRIES", "2"))
 USE_TEMPLATE_FALLBACK = os.getenv("USE_TEMPLATE_FALLBACK", "1") != "0"
 DAFNY_PATH = os.getenv("DAFNY_PATH") or shutil.which("dafny") or "dafny"
+DAFNY_SOLVER_PATH = os.getenv("DAFNY_SOLVER_PATH", "")
 
 # ===== 文件路径 =====
 DATA_DIR = Path(os.getenv("DATA_DIR", PROJECT_DIR / "data"))
