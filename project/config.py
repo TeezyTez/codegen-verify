@@ -43,6 +43,8 @@ MAX_REPAIR_ROUNDS = int(os.getenv("MAX_REPAIR_ROUNDS", "3"))
 LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))
 LLM_RETRIES = int(os.getenv("LLM_RETRIES", "2"))
 USE_TEMPLATE_FALLBACK = os.getenv("USE_TEMPLATE_FALLBACK", "1") != "0"
+ENABLE_SPEC_REPAIR = os.getenv("ENABLE_SPEC_REPAIR", "1") != "0"
+MAX_SPEC_REPAIR_RETRIES = int(os.getenv("MAX_SPEC_REPAIR_RETRIES", "1"))
 DAFNY_PATH = os.getenv("DAFNY_PATH") or shutil.which("dafny") or "dafny"
 DAFNY_SOLVER_PATH = os.getenv("DAFNY_SOLVER_PATH", "")
 

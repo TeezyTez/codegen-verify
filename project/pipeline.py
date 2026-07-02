@@ -21,6 +21,7 @@ from research_trace import (
     trace_event,
     verification_snapshot,
 )
+from spec_repair import repair_spec_with_llm, should_repair_spec
 
 
 # ==================== 后处理函数 ====================
@@ -568,6 +569,56 @@ method find_pair(numbers: seq<int>) returns (result: bool)
     return {"code": code, "research_trace": append_trace(state, event)}
 
 
+def spec_repair_agent(state: PipelineState) -> dict:
+    """Agent 1.5: 根据规约充分性报告加强规约。"""
+    print(f"\n{'='*50}")
+    print("[Spec Repair Agent] 检查是否需要加强规约...")
+
+    adequacy = state.get("spec_adequacy", {})
+    if not should_repair_spec(adequacy):
+        print("[Spec Repair Agent] 跳过：当前规约充分性风险未达到修复阈值，或开关未启用")
+        event = trace_event(
+            "spec_repair",
+            state["round"],
+            action="skipped",
+            adequacy=adequacy,
+        )
+        return {"research_trace": append_trace(state, event)}
+
+    print(
+        f"[Spec Repair Agent] 触发：level={adequacy.get('level')} "
+        f"score={adequacy.get('score')} flags={(adequacy.get('flags') or [])[:3]}"
+    )
+    llm = spec_llm()
+    result = repair_spec_with_llm(
+        llm=llm,
+        problem_desc=state["problem_desc"],
+        spec=state["spec"],
+        adequacy=adequacy,
+    )
+
+    action = "repaired" if result["repaired"] else "fallback_original"
+    if result["repaired"]:
+        print(f"[Spec Repair Agent] 修复成功，新规约:\n{result['spec'][:300]}...")
+    else:
+        print(f"[Spec Repair Agent] 修复失败，沿用原规约: {result.get('error', '')[:200]}")
+
+    event = trace_event(
+        "spec_repair",
+        state["round"],
+        action=action,
+        attempts=result.get("attempts", 0),
+        error=result.get("error", ""),
+        before_adequacy=adequacy,
+        after_adequacy=result.get("adequacy", adequacy),
+    )
+    return {
+        "spec": result["spec"],
+        "spec_adequacy": result.get("adequacy", adequacy),
+        "research_trace": append_trace(state, event),
+    }
+
+
 def verify_node(state: PipelineState) -> dict:
     """Node: Dafny 验证器"""
     print(f"\n{'='*50}")
@@ -860,6 +911,7 @@ def build_pipeline():
 
     # 添加节点
     builder.add_node("spec_agent", spec_agent)
+    builder.add_node("spec_repair", spec_repair_agent)
     builder.add_node("code_agent", code_agent)
     builder.add_node("verify", verify_node)
     builder.add_node("diagnose", diagnose_agent)
@@ -867,7 +919,8 @@ def build_pipeline():
 
     # 添加边
     builder.set_entry_point("spec_agent")
-    builder.add_edge("spec_agent", "code_agent")
+    builder.add_edge("spec_agent", "spec_repair")
+    builder.add_edge("spec_repair", "code_agent")
     builder.add_edge("code_agent", "verify")
 
     # 验证后条件路由
