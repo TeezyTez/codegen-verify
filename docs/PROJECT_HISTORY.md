@@ -4,6 +4,68 @@ This file records important research and engineering updates. For each future
 code change, append a short entry with the motivation, implementation summary,
 and validation result.
 
+## 2026-07-03 - HumanEval-20 Pure LLM Run
+
+### Motivation
+
+After configuring `DEEPSEEK_API_KEY`, run a real pure LLM experiment without
+template fallback to observe the current Spec Agent, Spec Repair Agent, Code
+Agent, Dafny verifier, repair loop, HumanEval tester, and adequacy diagnostics.
+
+### Updates
+
+- Confirmed the project reads `DEEPSEEK_API_KEY`.
+- Ran a one-task smoke test with `USE_TEMPLATE_FALLBACK=0`; `HumanEval/0`
+  passed Dafny verification and HumanEval tests.
+- Ran `python run_humaneval.py --start 0 --limit 20 --rounds 3` with
+  `USE_TEMPLATE_FALLBACK=0`.
+- Ran `python mutation_adequacy.py`.
+- Ran `python analyze_results.py`.
+- Updated result artifacts:
+  - `logs/benchmark_final.json`
+  - `logs/benchmark_results.csv`
+  - `logs/benchmark_summary.json`
+  - `logs/mutation_adequacy.json`
+  - `logs/mutation_adequacy.csv`
+
+### Validation
+
+- Total tasks: 20.
+- End-to-end passed: 8/20.
+- Dafny verified: 8/20.
+- HumanEval passed: 8/20.
+- Verified but test failed: 0/20.
+- Average repair rounds: 2.3.
+- Average spec adequacy score: 91.4.
+- Mutation adequacy:
+  - high-risk specs: 1/20.
+  - suspicious mutants: 2.
+- Passed tasks:
+  - `HumanEval/0`
+  - `HumanEval/2`
+  - `HumanEval/5`
+  - `HumanEval/6`
+  - `HumanEval/7`
+  - `HumanEval/9`
+  - `HumanEval/11`
+  - `HumanEval/14`
+- Main failure categories:
+  - `proof_obligation_gap`: 6 tasks.
+  - `implementation_language_error`: 3 tasks.
+  - `implementation_semantics_mismatch`: 1 task.
+  - `spec_or_code_mismatch`: 1 task.
+  - `unclassified_verification_failure`: 1 task.
+
+### Next Steps
+
+- Prioritize proof repair: better invariant/assertion generation is the largest
+  immediate bottleneck.
+- Investigate `HumanEval/4`, the only high mutation-risk spec in this run.
+- Improve spec repair output validation because some strengthened specs were
+  syntactically valid but too hard to prove.
+- Add targeted repair strategies for Dafny `function` purity errors and
+  immutable `seq` assignment mistakes.
+
 ## 2026-07-02 - HumanEval-20 Dry Run
 
 ### Motivation
