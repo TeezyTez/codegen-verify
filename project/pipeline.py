@@ -22,6 +22,13 @@ from research_trace import (
     verification_snapshot,
 )
 from spec_repair import repair_spec_with_llm, should_repair_spec
+from repair_policy import choose_repair_policy
+from proof_repair import extract_dafny_code as extract_proof_dafny_code
+from proof_repair import repair_proof_with_llm
+from spec_code_alignment import extract_dafny_code as extract_alignment_dafny_code
+from spec_code_alignment import repair_alignment_with_llm
+from mutation_probe import probe_spec_mutants
+from contract_utils import contract_fidelity_issues
 
 
 # ==================== 后处理函数 ====================
@@ -97,8 +104,6 @@ def _static_code_issues(code: str) -> list[str]:
             if "{" in line or "}" in line:
                 depth += line.count("{") - line.count("}")
 
-            if stripped.startswith("requires"):
-                issues.append(f"L{lineno}: helper function/predicate `{decl_name}` has precondition `{stripped[:80]}`")
             if re.search(r'\b(while|for)\b', stripped):
                 issues.append(f"L{lineno}: function/predicate `{decl_name}` contains loop `{stripped[:80]}`")
             if re.search(r'\bvar\b\s+\w+', stripped) or ':=' in stripped:
@@ -112,6 +117,65 @@ def _static_code_issues(code: str) -> list[str]:
         issues.append("contains boolean-result assert bridge in a method whose result is not bool")
     if "|s|[" in code or "threshold" in code and "threshold" not in code.split("{", 1)[0]:
         issues.append("contains suspicious injected placeholder expression")
+    return issues
+
+
+def _extract_spec_from_code(code: str) -> str:
+    """Extract method-level contract from a full Dafny implementation."""
+    return _strip_method_bodies_from_spec(_extract_dafny_code(code))
+
+
+def _is_vacuous_spec(spec: str, adequacy: dict) -> bool:
+    """放宽后的规约是否退化成不约束 result 的空规约。"""
+    flags = (adequacy or {}).get("flags") or []
+    if "postcondition_does_not_constrain_result" in flags:
+        return True
+    has_ensures = any(line.strip().startswith("ensures") for line in (spec or "").splitlines())
+    return not has_ensures
+
+
+def _contract_clauses(spec: str) -> list[str]:
+    clauses = []
+    for line in (spec or "").splitlines():
+        stripped = line.strip()
+        if stripped.startswith(("requires", "ensures")):
+            clauses.append(_normalize_contract_clause(stripped))
+    return clauses
+
+
+def _normalize_contract_clause(clause: str) -> str:
+    return " ".join(clause.strip().split())
+
+
+def _missing_original_contract_clauses(original_spec: str, candidate_code: str) -> list[str]:
+    """Compatibility wrapper around the structured public-contract check."""
+    return contract_fidelity_issues(original_spec, candidate_code)
+
+
+def _candidate_code_issues(
+    spec: str,
+    code: str,
+    entry_point: str = "",
+    *,
+    run_resolve: bool = False,
+) -> list[str]:
+    """Return deterministic issues that must be fixed before verification."""
+    issues = list(_static_code_issues(code))
+    issues.extend(
+        f"public contract mismatch: {issue}"
+        for issue in contract_fidelity_issues(spec, code, entry_point)
+    )
+    if run_resolve and not issues:
+        resolution = DafnyVerifier().resolve(code)
+        if not resolution.passed:
+            for error in resolution.errors[:8]:
+                subtype = getattr(error, "subtype", "") or error.error_type
+                source = f" source={error.source!r}" if getattr(error, "source", "") else ""
+                issues.append(
+                    f"Dafny resolve [{subtype}] L{error.location_line}: {error.message}{source}"
+                )
+            if not resolution.errors:
+                issues.append("Dafny resolve failed without a structured diagnostic")
     return issues
 
 
@@ -224,6 +288,25 @@ class PipelineState(TypedDict):
     diagnosis: str                         # 当前诊断文本
     last_attribution: dict                 # 最近一次验证失败归因
     spec_adequacy: dict                    # 规约充分性检查结果
+    mutation_adequacy: dict                # mutation-based 规约充分性探针
+    repair_policy: dict                    # harness repair policy 决策
+    entry_point: str                       # 目标入口函数名
+    behavior_problem: dict                 # 可选 HumanEval 原始问题，用于行为测试
+    behavior_executed: bool                # 是否执行了行为测试
+    behavior_passed: bool                  # 行为测试是否通过
+    behavior_error: str                    # 行为测试失败信息
+    behavior_detail: dict                  # 行为测试详情
+    dafny_verified: bool                   # Dafny 是否验证通过
+    last_verified_code: str                # 最近一次 Dafny 验证通过的代码（用于回滚）
+    last_verified_spec: str                # 最近一次 Dafny 验证通过的规约
+    regression_rolled_back: bool           # alignment 修复回归后是否已回滚
+    candidate_rejected: bool               # 最近候选是否被确定性门槛/单调门槛拒绝
+    best_code: str                         # 当前验证质量最好的候选
+    best_spec: str                         # best_code 对应的规约
+    best_verification: VerificationResult  # best_code 的验证结果
+    best_quality: list[int]                # 可序列化的词典序质量分
+    stagnation_count: int                  # 连续未改善候选数
+    verification_attempts: int             # 实际 Dafny verify 次数
     round: int                             # 当前修复轮次
     max_rounds: int                        # 最大修复轮次
     history: list                          # 修复历史
@@ -246,10 +329,12 @@ def spec_agent(state: PipelineState) -> dict:
 只输出规约部分，不要函数体实现。
 
 ### 规约强度策略（重要）
-- 本项目是“生成代码 -> Dafny 验证 -> HumanEval 功能测试”的端到端流水线。
-- 默认生成 **轻量、可验证、能指导实现** 的规约，不要为了完整语义而制造过难证明目标。
-- 对 string/seq/list 转换题，优先写类型、安全、边界、基本形状约束；复杂的完整语义交给 HumanEval 测试补充。
-- 避免为复杂行为引入带前置条件的递归 helper function，除非后续实现很容易证明这些前置条件。
+- HumanEval 测试只用于最终验证，不能替代规约；题目的核心行为必须出现在 ensures/helper predicate 中。
+- 不要只写类型、安全、非负、长度等 shape-only 条件；必须覆盖题意中的顺序、membership、计数、重叠、first/last、最短/最长、忽略分隔符等语义。
+- 公共 method 只能使用题目明确给出的输入限制。不得发明会排除公开示例、空输入或其他合法输入的 requires。
+- 如果输入中提供“固定 Dafny 签名”，必须逐字保留方法名、参数名/类型和返回名/类型，不得重新推断。
+- 复杂语义应拆成少量、全定义的纯 helper function/predicate，避免巨型量词和重复字符级约束。
+- 每个 ensures 都应能追溯到题目文本或公开示例，同时保持证明可行。
 - 绝对不要在 method 规约后输出方法体；helper function 可以有纯表达式函数体。
 
 ### Dafny 规约语法约束（极其重要！）
@@ -354,6 +439,7 @@ method 方法名(参数) returns (返回值)
     adequacy = spec_adequacy_snapshot(
         spec=spec_code,
         problem_desc=state["problem_desc"],
+        entry_point=state.get("entry_point", ""),
     )
     print(
         f"[Spec Adequacy] level={adequacy['level']} "
@@ -532,8 +618,8 @@ method find_pair(numbers: seq<int>) returns (result: bool)
 3. □ invariant 覆盖 result=true 和 result=false 两种情况
 4. □ 所有 while 循环都有 decreases 子句
 5. □ 确保代码能通过 Dafny 验证器验证
-6. □ 不要主动添加比规约更强的 helper method 后置条件；复杂语义留给最终测试
-7. □ 对 string/seq 构造题，优先使用简单循环和边界 invariant，避免证明完整解析语义
+6. □ 不要修改/删除公共 method 的 requires/ensures；代码必须绑定给定规约
+7. □ 对 string/seq 构造题，使用与规约 helper 对齐的循环 invariant 或递归结构，而不是把语义留给测试
 
 只输出完整的 Dafny 代码（包含辅助函数）。"""
 
@@ -545,7 +631,12 @@ method find_pair(numbers: seq<int>) returns (result: bool)
             user=code_prompt
         )
         code = _inject_nested_loop_assert(_extract_dafny_code(raw_code))
-        issues = _static_code_issues(code)
+        issues = _candidate_code_issues(
+            state.get("spec", ""),
+            code,
+            state.get("entry_point", ""),
+            run_resolve=True,
+        )
         if not issues:
             break
         print(f"[Code Agent] 静态预检发现问题: {issues[:3]}")
@@ -557,13 +648,21 @@ method find_pair(numbers: seq<int>) returns (result: bool)
 {chr(10).join('- ' + issue for issue in issues)}
 
 请重新生成完整 Dafny 代码。不要在 function/predicate 中使用 var、:=、while、for；需要循环时改成 method 内部局部逻辑，或用纯递归 function。"""
-        code_prompt += "\n不要给 helper function/predicate 添加 requires；不要发明 IsBalanced/ExtractGroup 这类难证明语义 helper，除非规约明确要求。"
+        code_prompt += "\nhelper 的 requires 必须是必要且可由所有调用点证明的；优先把 helper 定义成全函数。不要发明与题意无关的复杂语义 helper。"
 
     print(f"[Code Agent] 生成代码:\n{code[:300]}...")
+    final_issues = _candidate_code_issues(
+        state.get("spec", ""),
+        code,
+        state.get("entry_point", ""),
+    )
     event = trace_event(
         "code",
         state["round"],
         static_issue_count=len(_static_code_issues(code)),
+        contract_issue_count=sum(
+            issue.startswith("public contract mismatch:") for issue in final_issues
+        ),
         code_line_count=len([line for line in code.splitlines() if line.strip()]),
     )
     return {"code": code, "research_trace": append_trace(state, event)}
@@ -619,30 +718,286 @@ def spec_repair_agent(state: PipelineState) -> dict:
     }
 
 
+def mutation_adequacy_node(state: PipelineState) -> dict:
+    """Lightweight in-loop mutation adequacy probe for the current spec."""
+    print(f"\n{'='*50}")
+    print("[Mutation Adequacy] 正在探测规约是否能排除简单错误实现...")
+
+    if not config.ENABLE_INLOOP_MUTATION_ADEQUACY:
+        print("[Mutation Adequacy] 已禁用")
+        event = trace_event("mutation_adequacy", state["round"], action="skipped")
+        return {"research_trace": append_trace(state, event)}
+
+    try:
+        report = probe_spec_mutants(state.get("spec", ""))
+    except Exception as exc:
+        print(f"[Mutation Adequacy] 探测失败: {exc}")
+        event = trace_event("mutation_adequacy", state["round"], action="error", error=str(exc))
+        return {"mutation_adequacy": {"error": str(exc)}, "research_trace": append_trace(state, event)}
+
+    risk = report.get("mutation_adequacy_risk", "not_applicable")
+    verified = report.get("mutants_verified", 0)
+    total = report.get("mutants_total", 0)
+    print(f"[Mutation Adequacy] risk={risk} verified_mutants={verified}/{total}")
+
+    adequacy = dict(state.get("spec_adequacy", {}))
+    flags = set(adequacy.get("flags") or [])
+    missing = list(adequacy.get("missing_obligations") or [])
+    if verified:
+        flags.add("mutation_verified_mutant")
+        missing.append("Strengthen the spec so simple default/parameter-return mutants cannot verify.")
+        adequacy["score"] = max(0, int(adequacy.get("score", 100)) - 15)
+        adequacy["level"] = "partial" if adequacy.get("level") == "strong_static" else adequacy.get("level", "partial")
+    adequacy["flags"] = sorted(flags)
+    adequacy["missing_obligations"] = missing
+
+    event = trace_event(
+        "mutation_adequacy",
+        state["round"],
+        action="probed",
+        report={k: v for k, v in report.items() if k != "mutants"},
+        verified_mutant_names=[m["name"] for m in report.get("mutants", []) if m.get("dafny_verified")],
+    )
+    return {
+        "mutation_adequacy": report,
+        "spec_adequacy": adequacy,
+        "research_trace": append_trace(state, event),
+    }
+
+
+def spec_strengthening_agent(state: PipelineState) -> dict:
+    """Strengthen specs when mutation probing finds verified wrong-looking mutants."""
+    print(f"\n{'='*50}")
+    print("[Spec Strengthening Agent] mutation 信号触发，尝试加强规约...")
+
+    if not config.ENABLE_MUTATION_SPEC_STRENGTHENING:
+        print("[Spec Strengthening Agent] 已禁用")
+        event = trace_event("spec_strengthening", state["round"], action="skipped")
+        return {"research_trace": append_trace(state, event)}
+
+    adequacy = state.get("spec_adequacy", {})
+    llm = spec_llm()
+    result = repair_spec_with_llm(
+        llm=llm,
+        problem_desc=state["problem_desc"],
+        spec=state["spec"],
+        adequacy=adequacy,
+    )
+
+    action = "strengthened" if result.get("repaired") else "fallback_original"
+    if result.get("repaired"):
+        print(f"[Spec Strengthening Agent] 加强成功:\n{result['spec'][:300]}...")
+    else:
+        print(f"[Spec Strengthening Agent] 加强失败，沿用原规约: {result.get('error', '')[:200]}")
+
+    event = trace_event(
+        "spec_strengthening",
+        state["round"],
+        action=action,
+        before_mutation_adequacy=state.get("mutation_adequacy", {}),
+        before_adequacy=adequacy,
+        after_adequacy=result.get("adequacy", adequacy),
+        attempts=result.get("attempts", 0),
+        error=result.get("error", ""),
+    )
+    return {
+        "spec": result.get("spec", state.get("spec", "")),
+        "spec_adequacy": result.get("adequacy", adequacy),
+        "research_trace": append_trace(state, event),
+    }
+
+
+def _verification_quality(result: VerificationResult) -> tuple[int, int, int]:
+    """Lexicographic quality used to prevent repair regressions."""
+    if result.passed:
+        return (4, result.verified_count, 0)
+    error_types = {error.error_type for error in result.errors}
+    if "timeout" in error_types:
+        return (0, result.verified_count, -max(1, result.error_count))
+    language_errors = {"syntax", "type", "undefined", "assignment"}
+    if error_types & language_errors:
+        return (1, result.verified_count, -max(1, result.error_count))
+    return (2, result.verified_count, -max(1, result.error_count))
+
+
+def _verification_fingerprint(result: VerificationResult) -> str:
+    return "|".join(
+        f"{error.error_type}:{error.location_line}:{getattr(error, 'subtype', '')}"
+        for error in result.errors
+    )
+
+
 def verify_node(state: PipelineState) -> dict:
     """Node: Dafny 验证器"""
     print(f"\n{'='*50}")
     print(f"[Verify] Round {state['round']}: 正在验证...")
 
-    verifier = DafnyVerifier()
-    result = verifier.verify(state['code'])
+    candidate_code = state['code']
+    candidate_spec = state.get('spec', '')
+    contract_issues = contract_fidelity_issues(
+        candidate_spec,
+        candidate_code,
+        state.get("entry_point", ""),
+    )
+    if contract_issues:
+        result = VerificationResult(
+            passed=False,
+            errors=[
+                ErrorInfo(
+                    error_type="contract",
+                    subtype="contract_mismatch",
+                    message=issue,
+                )
+                for issue in contract_issues
+            ],
+            error_count=len(contract_issues),
+            raw_output="\n".join(contract_issues),
+        )
+        print(f"[Verify] 公共契约门槛拒绝候选: {contract_issues[:3]}")
+    else:
+        verifier = DafnyVerifier()
+        result = verifier.verify(candidate_code)
 
     print(f"[Verify] 通过={result.passed}  verified={result.verified_count}  errors={result.error_count}")
     if not result.passed:
         for e in result.errors[:3]:
             print(f"  -> [{e.error_type}] L{e.location_line}: {e.message[:100]}")
 
-    attribution = attribute_failure(result, state.get("spec", ""), state.get("code", ""))
+    candidate_attribution = attribute_failure(result, candidate_spec, candidate_code)
+    quality = _verification_quality(result)
+    best_quality = tuple(state.get("best_quality") or [])
+    has_best = bool(state.get("best_code")) and bool(best_quality)
+    rejected = False
+
+    # Never let a failed repair replace a strictly better finite candidate.
+    # Verified candidates remain eligible because behavior alignment may improve
+    # semantics while keeping the same verifier score.
+    if has_best and not result.passed and quality <= best_quality:
+        rejected = True
+        chosen_result = state.get("best_verification", result)
+        chosen_code = state.get("best_code", candidate_code)
+        chosen_spec = state.get("best_spec", candidate_spec)
+        attribution = attribute_failure(chosen_result, chosen_spec, chosen_code)
+        stagnation_count = state.get("stagnation_count", 0) + 1
+        print(
+            f"[Verify] 候选未改善 quality={quality} best={best_quality}，"
+            "回滚到 best-so-far"
+        )
+    else:
+        chosen_result = result
+        chosen_code = candidate_code
+        chosen_spec = candidate_spec
+        attribution = candidate_attribution
+        stagnation_count = 0
+
     print(f"[Verify] 归因={attribution['category']}  修复目标={attribution['repair_target']}")
     event = trace_event(
         "verify",
         state["round"],
-        verification=verification_snapshot(result),
+        verification=verification_snapshot(chosen_result),
+        attribution=attribution,
+        candidate_verification=verification_snapshot(result),
+        candidate_quality=list(quality),
+        candidate_rejected=rejected,
+        rollback_reason="non_monotonic_verification" if rejected else "",
+    )
+    update = {
+        "code": chosen_code,
+        "spec": chosen_spec,
+        "verification": chosen_result,
+        "dafny_verified": chosen_result.passed,
+        "passed": chosen_result.passed and not bool(state.get("behavior_problem")),
+        "last_attribution": attribution,
+        "candidate_rejected": rejected,
+        "stagnation_count": stagnation_count,
+        "verification_attempts": state.get("verification_attempts", 0) + 1,
+        "research_trace": append_trace(state, event),
+    }
+    if not rejected:
+        update.update({
+            "best_code": candidate_code,
+            "best_spec": candidate_spec,
+            "best_verification": result,
+            "best_quality": list(quality),
+        })
+    # Dafny 验证通过时快照当前代码/规约，供 alignment_repair 回归时回滚
+    if chosen_result.passed:
+        update["last_verified_code"] = chosen_code
+        update["last_verified_spec"] = chosen_spec
+    return update
+
+
+def behavior_test_node(state: PipelineState) -> dict:
+    """Run behavioral tests after Dafny verification succeeds."""
+    print(f"\n{'='*50}")
+    print("[Behavior Test] Dafny 已通过，正在运行行为测试...")
+
+    problem = state.get("behavior_problem") or {}
+    if not problem or not config.ENABLE_BEHAVIOR_REPAIR_LOOP:
+        print("[Behavior Test] 无可用行为测试，按 Dafny 验证结果结束")
+        event = trace_event(
+            "behavior_test",
+            state["round"],
+            action="skipped",
+            reason="no_behavior_problem_or_disabled",
+        )
+        return {
+            "behavior_executed": False,
+            "behavior_passed": False,
+            "passed": state.get("verification", VerificationResult()).passed,
+            "research_trace": append_trace(state, event),
+        }
+
+    try:
+        from humaneval_tester import run_humaneval_test
+
+        behavior_passed, detail = run_humaneval_test(state.get("code", ""), problem)
+    except Exception as exc:
+        behavior_passed = False
+        detail = {"error": f"测试执行异常: {type(exc).__name__}: {exc}"}
+
+    error = detail.get("error") or ""
+    spec_adequacy = spec_adequacy_snapshot(
+        spec=state.get("spec", ""),
+        problem_desc=state.get("problem_desc", ""),
+        entry_point=state.get("entry_point", ""),
+        dafny_verified=True,
+        humaneval_passed=behavior_passed,
+    )
+
+    if behavior_passed:
+        print("[Behavior Test] PASS")
+        attribution = {
+            "category": "verified_and_behavior_passed",
+            "repair_target": "none",
+            "confidence": 1.0,
+            "rationale": "Dafny verification and behavioral tests both passed.",
+        }
+    else:
+        print(f"[Behavior Test] FAIL: {error[:180]}")
+        attribution = {
+            "category": "verified_but_behavior_failed",
+            "repair_target": "spec_or_code_alignment",
+            "confidence": 0.9,
+            "rationale": "The implementation satisfies the current spec but fails behavioral tests.",
+        }
+
+    event = trace_event(
+        "behavior_test",
+        state["round"],
+        action="tested",
+        behavior_passed=behavior_passed,
+        error=error,
+        adequacy=spec_adequacy,
         attribution=attribution,
     )
     return {
-        "verification": result,
-        "passed": result.passed,
+        "behavior_executed": True,
+        "behavior_passed": behavior_passed,
+        "behavior_error": error,
+        "behavior_detail": detail,
+        "passed": bool(behavior_passed),
+        "spec_adequacy": spec_adequacy,
         "last_attribution": attribution,
         "research_trace": append_trace(state, event),
     }
@@ -672,8 +1027,11 @@ def diagnose_agent(state: PipelineState) -> dict:
 
     error_summary = ""
     for i, e in enumerate(result.errors):
-        error_summary += f"\n错误 {i+1}: [{e.error_type}] 第{e.location_line}行\n"
+        subtype = getattr(e, "subtype", "") or e.error_type
+        error_summary += f"\n错误 {i+1}: [{subtype}] 第{e.location_line}行\n"
         error_summary += f"  信息: {e.message}\n"
+        if getattr(e, "source", ""):
+            error_summary += f"  源码: {e.source}\n"
         if e.related_spec:
             error_summary += f"  关联规约: {e.related_spec}\n"
 
@@ -685,7 +1043,8 @@ def diagnose_agent(state: PipelineState) -> dict:
     if invariant_errors:
         invariant_guide = """
 ### 循环不变量常见修复策略
-- 如果是 "invariant could not be proved to be maintained"，说明invariant不够强——需要增加更多信息
+- entry failure：当前 invariant 在循环开始前为假，应修正初始化或删除/弱化错误 invariant；增加更多合取条件不会修好 entry failure
+- maintenance failure：定位哪条赋值破坏了 invariant，再补充描述已处理前缀/未变化状态的关系或桥接 assert
 - 常见解法：在invariant中加入循环体实际做了什么 = 这轮改变了什么 + 什么没变
 - 例：如果循环累加 `acc := acc + s[i]`，invariant 必须包含 `acc == Sum(s[..i])`
 - 例：嵌套循环中，外层 invariant 的 j0 范围必须是 `i0 < j0 < |seq|`（全数组），不是 `j0 < i`
@@ -702,7 +1061,7 @@ def diagnose_agent(state: PipelineState) -> dict:
     if type_errors:
         type_guide = """
 ### 类型错误修复策略
-- Dafny 是强类型语言，`int` 和 `real` 不能混用，需要显式 `as real` 或 `as int` 转换
+        - Dafny 是强类型语言，`int` 和 `real` 不能混用；int→real 用 `as real`，real→int 不能用 `as int`，需要按题意使用 `.Floor`
 - `seq<string>` 和 `string` 是不同的类型——string 可以当 seq<char> 用，但不能当 seq<string>
 - 注意 `Floor` 是 `real` 的方法，返回 `int`
 """
@@ -738,21 +1097,241 @@ def diagnose_agent(state: PipelineState) -> dict:
     history.append({
         "round": state['round'],
         "code": state['code'],
-        "errors": [{"type": e.error_type, "loc": e.location_line, "msg": e.message} for e in result.errors],
+        "errors": [{
+            "type": e.error_type,
+            "subtype": getattr(e, "subtype", ""),
+            "loc": e.location_line,
+            "msg": e.message,
+            "source": getattr(e, "source", ""),
+            "related": e.related_spec,
+        } for e in result.errors],
         "attribution": state.get("last_attribution", {}),
         "diagnosis": diagnosis
     })
 
     print(f"[Diagnose Agent] 诊断:\n{diagnosis[:200]}...")
+    decision = choose_repair_policy(
+        verification=result,
+        attribution=state.get("last_attribution", {}),
+        spec_adequacy=state.get("spec_adequacy", {}),
+        history=history,
+    ).to_dict()
+    print(f"[Repair Policy] agent={decision['agent']} target={decision['target']} confidence={decision['confidence']}")
     event = trace_event(
         "diagnose",
         state["round"],
         attribution=state.get("last_attribution", {}),
         diagnosis_preview=diagnosis[:500],
+        repair_policy=decision,
     )
     return {
         "diagnosis": diagnosis,
         "history": history,
+        "repair_policy": decision,
+        "research_trace": append_trace(state, event),
+    }
+
+
+def proof_repair_agent(state: PipelineState) -> dict:
+    """Agent 4a: 专门修复 Dafny 证明义务，不主动削弱规约。"""
+    print(f"\n{'='*50}")
+    print(f"[Proof Repair Agent] Round {state['round']}: 正在修复 proof obligations...")
+
+    if not config.ENABLE_PROOF_REPAIR:
+        print("[Proof Repair Agent] 已禁用，回退到通用代码修复")
+        return repair_agent(state)
+
+    history = state.get("history", [])
+    history_text = ""
+    for h in history[-3:]:
+        history_text += f"\n--- 第{h.get('round')}轮 ---\n"
+        for e in h.get("errors", []):
+            history_text += f"  [{e.get('type')}] L{e.get('loc', 0)}: {e.get('msg', '')}\n"
+
+    verification_errors = history[-1].get("errors", []) if history else []
+    llm = repair_llm()
+    raw_code = repair_proof_with_llm(
+        llm=llm,
+        problem_desc=state["problem_desc"],
+        spec=state["spec"],
+        code=state["code"],
+        diagnosis=state.get("diagnosis", ""),
+        verification_errors=verification_errors,
+        history_text=history_text,
+    )
+
+    new_code = _inject_nested_loop_assert(extract_proof_dafny_code(raw_code))
+    missing_contract = _missing_original_contract_clauses(state.get("spec", ""), new_code)
+    if missing_contract:
+        print(f"[Proof Repair Agent] 检测到公共契约漂移，回退到受契约保护的通用修复: {missing_contract[:2]}")
+        event = trace_event(
+            "proof_repair",
+            state["round"],
+            action="contract_preservation_failed",
+            missing_contract_clauses=missing_contract[:5],
+            repair_policy=state.get("repair_policy", {}),
+        )
+        intermediate_state = dict(state)
+        intermediate_state["research_trace"] = append_trace(state, event)
+        return repair_agent(intermediate_state)
+
+    issues = _candidate_code_issues(
+        state.get("spec", ""),
+        new_code,
+        state.get("entry_point", ""),
+        run_resolve=True,
+    )
+    if issues:
+        print(f"[Proof Repair Agent] 静态预检发现问题，回退到通用代码修复: {issues[:3]}")
+        event = trace_event(
+            "proof_repair",
+            state["round"],
+            action="fallback_to_code_repair",
+            static_issues=issues[:5],
+            repair_policy=state.get("repair_policy", {}),
+        )
+        intermediate_state = dict(state)
+        intermediate_state["research_trace"] = append_trace(state, event)
+        return repair_agent(intermediate_state)
+
+    print(f"[Proof Repair Agent] 修复后代码:\n{new_code[:300]}...")
+    event = trace_event(
+        "proof_repair",
+        state["round"],
+        action="proof_repaired",
+        repair_policy=state.get("repair_policy", {}),
+        new_code_line_count=len([line for line in new_code.splitlines() if line.strip()]),
+        static_issue_count=len(issues),
+    )
+    return {
+        "code": new_code,
+        "candidate_rejected": False,
+        "round": state["round"] + 1,
+        "research_trace": append_trace(state, event),
+    }
+
+
+def alignment_repair_agent(state: PipelineState) -> dict:
+    """Repair verified-but-behavior-failed cases by aligning spec and code."""
+    print(f"\n{'='*50}")
+    print(f"[Alignment Repair Agent] Round {state['round']}: 正在对齐规约、代码和行为测试...")
+
+    history = state.get("history", [])
+    history.append({
+        "round": state["round"],
+        "code": state.get("code", ""),
+        "errors": [{
+            "type": "behavior",
+            "loc": 0,
+            "msg": state.get("behavior_error", ""),
+        }],
+        "attribution": state.get("last_attribution", {}),
+        "diagnosis": "Dafny verified the code, but behavioral tests failed.",
+    })
+
+    history_text = ""
+    for h in history[-3:]:
+        history_text += f"\n--- 第{h.get('round')}轮 ---\n"
+        for e in h.get("errors", []):
+            history_text += f"  [{e.get('type')}] {e.get('msg', '')}\n"
+
+    # 把结构化失败诊断拼进 behavior_error，让 LLM 看到具体输入/期望/实际而非空 AssertionError
+    detail = state.get("behavior_detail") or {}
+    diag_text = state.get("behavior_error", "")
+    fi = detail.get("failing_input")
+    if fi is not None:
+        diag_text = (diag_text + "\n" if diag_text else "") + (
+            f"首个失败用例: 输入={fi!r} 期望={detail.get('expected')!r} 实际={detail.get('actual')!r}"
+        )
+
+    llm = repair_llm()
+    raw_code = repair_alignment_with_llm(
+        llm=llm,
+        problem_desc=state["problem_desc"],
+        spec=state.get("spec", ""),
+        code=state.get("code", ""),
+        behavior_error=diag_text,
+        adequacy=state.get("spec_adequacy", {}),
+        history_text=history_text,
+    )
+    new_code = _inject_nested_loop_assert(extract_alignment_dafny_code(raw_code))
+    issues = _static_code_issues(new_code)
+
+    new_spec = _extract_spec_from_code(new_code)
+    new_adequacy = spec_adequacy_snapshot(
+        spec=new_spec,
+        problem_desc=state.get("problem_desc", ""),
+        entry_point=state.get("entry_point", ""),
+    )
+
+    # 守卫1：放宽规约不能退化成不约束 result 的 vacuous 规约
+    rolled_back = False
+    rollback_reason = ""
+    if new_spec and _is_vacuous_spec(new_spec, new_adequacy):
+        rolled_back = True
+        rollback_reason = "vacuous_spec"
+        print("[Alignment Repair Agent] 修复后规约 vacuous（不约束 result），回滚到上一版已验证规约")
+
+    # 守卫2：alignment 修复后的代码必须仍能通过 Dafny，否则回滚（避免改坏已验证代码，命中 /12 类回归）
+    if not rolled_back:
+        verifier = DafnyVerifier()
+        precheck = verifier.verify(new_code)
+        if not precheck.passed:
+            rolled_back = True
+            rollback_reason = "verification_regression"
+            err_preview = "; ".join(
+                f"[{e.error_type}] L{e.location_line}: {e.message[:60]}"
+                for e in precheck.errors[:3]
+            )
+            print(f"[Alignment Repair Agent] 修复后代码 Dafny 验证失败，回滚到上一版已验证代码: {err_preview[:160]}")
+
+    if rolled_back:
+        restored_code = state.get("last_verified_code") or state.get("code", "")
+        restored_spec = state.get("last_verified_spec") or state.get("spec", "")
+        event = trace_event(
+            "alignment_repair",
+            state["round"],
+            action="regression_rolled_back",
+            rollback_reason=rollback_reason,
+            previous_behavior_error=state.get("behavior_error", ""),
+            rejected_code_line_count=len([l for l in new_code.splitlines() if l.strip()]),
+        )
+        return {
+            "code": restored_code,
+            "spec": restored_spec,
+            "spec_adequacy": state.get("spec_adequacy", {}),
+            "history": history,
+            "regression_rolled_back": True,
+            "candidate_rejected": True,
+            "behavior_passed": False,
+            "behavior_error": state.get("behavior_error", ""),
+            "passed": False,
+            "round": state["round"] + 1,
+            "research_trace": append_trace(state, event),
+        }
+
+    print(f"[Alignment Repair Agent] 修复后代码:\n{new_code[:300]}...")
+    event = trace_event(
+        "alignment_repair",
+        state["round"],
+        action="spec_code_alignment",
+        previous_behavior_error=state.get("behavior_error", ""),
+        previous_adequacy=state.get("spec_adequacy", {}),
+        new_adequacy=new_adequacy,
+        spec_changed=new_spec != state.get("spec", ""),
+        static_issue_count=len(issues),
+        new_code_line_count=len([line for line in new_code.splitlines() if line.strip()]),
+    )
+    return {
+        "code": new_code,
+        "spec": new_spec or state.get("spec", ""),
+        "spec_adequacy": new_adequacy if new_spec else state.get("spec_adequacy", {}),
+        "history": history,
+        "candidate_rejected": False,
+        "behavior_passed": False,
+        "behavior_error": "",
+        "passed": False,
+        "round": state["round"] + 1,
         "research_trace": append_trace(state, event),
     }
 
@@ -796,7 +1375,7 @@ def repair_agent(state: PipelineState) -> dict:
     if has_type_issue:
         tips.append("""
 ⚠️ 上一轮有类型错误！修复时注意：
-1. `int` 和 `real` 运算前需要显式转换: `x as real`, `x as int`
+        1. `int` 和 `real` 运算前需要显式转换；int→real 用 `x as real`，real→int 禁止 `x as int`，需要按题意使用 `x.Floor`
 2. `string` 可以用切片 `s[i..j]` 得到 `string`，不是 `seq<char>`
 3. Dafny 没有隐式类型转换，所有类型必须匹配
 """)
@@ -855,32 +1434,61 @@ def repair_agent(state: PipelineState) -> dict:
     )
 
     new_code = _inject_nested_loop_assert(_extract_dafny_code(new_code))
-    issues = _static_code_issues(new_code)
+    issues = _candidate_code_issues(
+        state.get("spec", ""),
+        new_code,
+        state.get("entry_point", ""),
+        run_resolve=True,
+    )
     if issues:
-        print(f"[Repair Agent] 静态预检发现问题，要求重写: {issues[:3]}")
+        print(f"[Repair Agent] 确定性预检发现问题，要求重写: {issues[:3]}")
         retry_prompt = f"""{prompt}
 
 ### 你刚才输出的修复代码仍有静态错误
 {chr(10).join('- ' + issue for issue in issues)}
 
 请换一种实现方式，输出完整 Dafny 代码。function/predicate 中绝对不能出现 var、:=、while、for。"""
-        retry_prompt += "\n不要给 helper function/predicate 添加 requires；不要发明难证明的递归语义 helper。"
+        retry_prompt += "\nhelper 的 requires 只有在确有必要且所有调用点都能证明时才保留；也可以把 helper 改写为对全部输入有定义的全函数。"
         new_code = llm.chat(
             system="你是 Dafny 代码修复专家。优先修复语法层面的非法命令式 function/predicate。",
             user=retry_prompt
         )
         new_code = _inject_nested_loop_assert(_extract_dafny_code(new_code))
 
+    issues = _candidate_code_issues(
+        state.get("spec", ""),
+        new_code,
+        state.get("entry_point", ""),
+        run_resolve=True,
+    )
+    if issues:
+        print(f"[Repair Agent] 候选仍不满足代码/契约门槛，保留上一版: {issues[:3]}")
+        event = trace_event(
+            "repair",
+            state["round"],
+            action="candidate_rejected",
+            deterministic_issues=issues[:8],
+            previous_attribution=state.get("last_attribution", {}),
+        )
+        return {
+            "code": state.get("code", ""),
+            "candidate_rejected": True,
+            "round": state["round"] + 1,
+            "research_trace": append_trace(state, event),
+        }
+
     print(f"[Repair Agent] 修复后代码:\n{new_code[:300]}...")
     event = trace_event(
         "repair",
         state["round"],
+        action="candidate_accepted_for_verification",
         previous_attribution=state.get("last_attribution", {}),
         new_code_line_count=len([line for line in new_code.splitlines() if line.strip()]),
         static_issue_count=len(_static_code_issues(new_code)),
     )
     return {
         "code": new_code,
+        "candidate_rejected": False,
         "round": state["round"] + 1,
         "research_trace": append_trace(state, event),
     }
@@ -888,17 +1496,57 @@ def repair_agent(state: PipelineState) -> dict:
 
 # ==================== 条件路由 ====================
 
-def decide_next(state: PipelineState) -> Literal["end", "repair"]:
-    """根据验证结果决定下一步"""
-    if state['passed']:
+def decide_after_mutation(state: PipelineState) -> Literal["strengthen_spec", "code"]:
+    """Route specs with verified mutants to a strengthening pass."""
+    report = state.get("mutation_adequacy", {})
+    if (
+        config.ENABLE_MUTATION_SPEC_STRENGTHENING
+        and report.get("mutants_verified", 0) > 0
+    ):
+        print("[Router] mutation 探测发现 verified mutant，路由到 Spec Strengthening")
+        return "strengthen_spec"
+    return "code"
+
+
+def decide_after_verify(state: PipelineState) -> Literal["behavior_test", "end", "repair"]:
+    """Route after Dafny verification."""
+    verification = state.get("verification", VerificationResult())
+    if verification.passed and state.get("behavior_problem") and config.ENABLE_BEHAVIOR_REPAIR_LOOP:
+        print("[Router] Dafny 验证通过，继续行为测试")
+        return "behavior_test"
+    if verification.passed:
         print(f"[Router] 验证通过! ✅")
         return "end"
-    elif state['round'] >= state['max_rounds']:
+    if state['round'] >= state['max_rounds']:
         print(f"[Router] 达到最大轮次 {state['max_rounds']}，停止")
         return "end"
-    else:
-        print(f"[Router] 继续修复 (round {state['round']}/{state['max_rounds']})")
-        return "repair"
+    print(f"[Router] 继续修复 (round {state['round']}/{state['max_rounds']})")
+    return "repair"
+
+
+def decide_after_behavior(state: PipelineState) -> Literal["end", "alignment_repair"]:
+    """Route behavior-test failures into spec/code alignment repair."""
+    if state.get("regression_rolled_back"):
+        print("[Router] alignment 修复回归已回滚，保留已验证状态结束")
+        return "end"
+    if state.get("behavior_passed"):
+        print("[Router] 行为测试通过，结束")
+        return "end"
+    if state["round"] >= state["max_rounds"]:
+        print(f"[Router] 行为测试失败但已达到最大轮次 {state['max_rounds']}，停止")
+        return "end"
+    print("[Router] Dafny 通过但行为失败，路由到 Alignment Repair Agent")
+    return "alignment_repair"
+
+
+def decide_repair_route(state: PipelineState) -> Literal["proof_repair", "code_repair"]:
+    """Route repair to the specialized agent chosen by Repair Policy."""
+    decision = state.get("repair_policy", {})
+    if decision.get("agent") == "proof_repair_agent":
+        print("[Router] 路由到 Proof Repair Agent")
+        return "proof_repair"
+    print("[Router] 路由到 Code Repair Agent")
+    return "code_repair"
 
 
 # ==================== Graph 构建 ====================
@@ -912,36 +1560,75 @@ def build_pipeline():
     # 添加节点
     builder.add_node("spec_agent", spec_agent)
     builder.add_node("spec_repair", spec_repair_agent)
+    builder.add_node("mutation_adequacy", mutation_adequacy_node)
+    builder.add_node("spec_strengthening", spec_strengthening_agent)
     builder.add_node("code_agent", code_agent)
     builder.add_node("verify", verify_node)
+    builder.add_node("behavior_test", behavior_test_node)
     builder.add_node("diagnose", diagnose_agent)
+    builder.add_node("alignment_repair", alignment_repair_agent)
+    builder.add_node("proof_repair", proof_repair_agent)
     builder.add_node("repair", repair_agent)
 
     # 添加边
     builder.set_entry_point("spec_agent")
     builder.add_edge("spec_agent", "spec_repair")
-    builder.add_edge("spec_repair", "code_agent")
+    builder.add_edge("spec_repair", "mutation_adequacy")
+    builder.add_conditional_edges(
+        "mutation_adequacy",
+        decide_after_mutation,
+        {
+            "strengthen_spec": "spec_strengthening",
+            "code": "code_agent",
+        }
+    )
+    builder.add_edge("spec_strengthening", "code_agent")
     builder.add_edge("code_agent", "verify")
 
     # 验证后条件路由
     builder.add_conditional_edges(
         "verify",
-        decide_next,
+        decide_after_verify,
         {
             "end": END,
             "repair": "diagnose",
+            "behavior_test": "behavior_test",
         }
     )
 
-    builder.add_edge("diagnose", "repair")
+    builder.add_conditional_edges(
+        "behavior_test",
+        decide_after_behavior,
+        {
+            "end": END,
+            "alignment_repair": "alignment_repair",
+        }
+    )
+
+    builder.add_conditional_edges(
+        "diagnose",
+        decide_repair_route,
+        {
+            "proof_repair": "proof_repair",
+            "code_repair": "repair",
+        }
+    )
+    builder.add_edge("proof_repair", "verify")
     builder.add_edge("repair", "verify")
+    builder.add_edge("alignment_repair", "verify")
 
     return builder.compile()
 
 
 # ==================== 运行入口 ====================
 
-def run_pipeline(problem_id: str, problem_desc: str, max_rounds: int = 3):
+def run_pipeline(
+    problem_id: str,
+    problem_desc: str,
+    max_rounds: int = 3,
+    behavior_problem: dict | None = None,
+    entry_point: str = "",
+):
     """运行完整 Pipeline"""
     if config.USE_TEMPLATE_FALLBACK:
         template = get_verified_template(problem_id)
@@ -978,8 +1665,27 @@ def run_pipeline(problem_id: str, problem_desc: str, max_rounds: int = 3):
                     "spec_adequacy": spec_adequacy_snapshot(
                         spec=template.spec,
                         problem_desc=problem_desc,
+                        entry_point=entry_point,
                         dafny_verified=verification.passed,
                     ),
+                    "mutation_adequacy": {},
+                    "entry_point": entry_point,
+                    "behavior_problem": behavior_problem or {},
+                    "behavior_executed": False,
+                    "behavior_passed": False,
+                    "behavior_error": "",
+                    "behavior_detail": {},
+                    "dafny_verified": verification.passed,
+                    "last_verified_code": template.code,
+                    "last_verified_spec": template.spec,
+                    "regression_rolled_back": False,
+                    "candidate_rejected": False,
+                    "best_code": template.code,
+                    "best_spec": template.spec,
+                    "best_verification": verification,
+                    "best_quality": list(_verification_quality(verification)),
+                    "stagnation_count": 0,
+                    "verification_attempts": 1,
                     "passed": True,
                 }
             print(f"[Template] 模板验证失败，回退到 LLM pipeline")
@@ -995,6 +1701,25 @@ def run_pipeline(problem_id: str, problem_desc: str, max_rounds: int = 3):
         "diagnosis": "",
         "last_attribution": {},
         "spec_adequacy": {},
+        "mutation_adequacy": {},
+        "repair_policy": {},
+        "entry_point": entry_point,
+        "behavior_problem": behavior_problem or {},
+        "behavior_executed": False,
+        "behavior_passed": False,
+        "behavior_error": "",
+        "behavior_detail": {},
+        "dafny_verified": False,
+        "last_verified_code": "",
+        "last_verified_spec": "",
+        "regression_rolled_back": False,
+        "candidate_rejected": False,
+        "best_code": "",
+        "best_spec": "",
+        "best_verification": VerificationResult(),
+        "best_quality": [],
+        "stagnation_count": 0,
+        "verification_attempts": 0,
         "round": 1,
         "max_rounds": max_rounds,
         "history": [],

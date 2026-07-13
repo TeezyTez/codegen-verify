@@ -95,6 +95,9 @@ def verification_snapshot(result: VerificationResult) -> dict[str, Any]:
                 "col": error.location_col,
                 "message": error.message,
                 "related_spec": error.related_spec,
+                "subtype": getattr(error, "subtype", ""),
+                "source": getattr(error, "source", ""),
+                "related_source": getattr(error, "related_source", ""),
             }
             for error in result.errors
         ],
@@ -114,6 +117,15 @@ def attribute_failure(result: VerificationResult, spec: str, code: str) -> dict[
     error_types = Counter(error.error_type for error in result.errors)
     spec_info = spec_metrics(spec)
     code_lower = (code or "").lower()
+
+    if error_types["contract"]:
+        return {
+            "category": "public_contract_drift",
+            "repair_target": "code",
+            "confidence": 1.0,
+            "rationale": "Generated code changed or dropped the frozen public contract.",
+            "error_type_counts": dict(error_types),
+        }
 
     if error_types["syntax"] or error_types["type"] or error_types["undefined"]:
         return {

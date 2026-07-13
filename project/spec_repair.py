@@ -27,6 +27,8 @@ CRITICAL_FLAGS = {
     "bool_task_without_logical_condition",
     "threshold_task_without_distance_condition",
     "ordering_task_without_order_constraint",
+    "mutation_verified_mutant",
+    "verified_but_behavior_failed",
 }
 
 
@@ -125,14 +127,15 @@ def validate_spec(spec: str) -> tuple[bool, str]:
 
 def _system_prompt() -> str:
     return """你是 Dafny 规约修复专家。
-任务：在保持方法签名不变的前提下，加强 Dafny 规约，使其更能表达自然语言题意。
+任务：在保持方法签名和合法输入域不变的前提下，修正 Dafny 规约，使其准确表达自然语言题意。
 
 硬性规则：
 - 只输出 Dafny 规约，不输出方法体实现。
 - 必须保留原 method 名、参数列表、returns 列表。
+- 不得新增会排除公开示例、空输入或题目其他合法输入的公共 method requires。
 - 可以添加 requires/ensures，也可以添加纯 function/predicate helper。
 - ensures/requires 中只能使用纯表达式，禁止 var、:=、return、while、for。
-- 不要写过强到难以实现/难以验证的完整语义；优先补充可验证、能排除明显错误实现的核心语义。
+- 核心语义不能留给测试；同时避免与题意无关、重复或极难证明的巨型量词。
 - 每个 ensures 独立成行。
 """
 

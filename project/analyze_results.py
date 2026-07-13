@@ -38,6 +38,8 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
     flags = adequacy.get("flags") or []
     trace = result.get("research_trace") or []
     mutation = mutation or {}
+    trace_stages = [event.get("stage", "") for event in trace]
+    repair_path = _repair_path(trace_stages)
 
     return {
         "task_id": result.get("task_id", ""),
@@ -53,11 +55,16 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "spec_flags": ";".join(flags),
         "attribution_category": attribution.get("category", ""),
         "repair_target": attribution.get("repair_target", ""),
+        "repair_path": repair_path,
+        "proof_repair_attempted": "proof_repair" in trace_stages,
+        "alignment_repair_attempted": "alignment_repair" in trace_stages,
+        "spec_strengthening_attempted": "spec_strengthening" in trace_stages,
+        "behavior_loop_executed": "behavior_test" in trace_stages,
         "mutants_total": mutation.get("mutants_total", ""),
         "mutants_verified": mutation.get("mutants_verified", ""),
         "suspicious_mutants": mutation.get("suspicious_mutants", ""),
         "mutation_adequacy_risk": mutation.get("mutation_adequacy_risk", ""),
-        "trace_stages": ";".join(event.get("stage", "") for event in trace),
+        "trace_stages": ";".join(trace_stages),
         "humaneval_error": result.get("humaneval_error") or result.get("error") or "",
     }
 
@@ -73,6 +80,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     attribution_categories = Counter(r["attribution_category"] or "missing" for r in rows)
     repair_targets = Counter(r["repair_target"] or "missing" for r in rows)
     mutation_risks = Counter(r["mutation_adequacy_risk"] or "missing" for r in rows)
+    repair_paths = Counter(r["repair_path"] or "none" for r in rows)
     suspicious_mutants = sum(_safe_int(r["suspicious_mutants"]) for r in rows)
     flag_counter: Counter[str] = Counter()
     for row in rows:
@@ -99,6 +107,14 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "attribution_categories": dict(attribution_categories),
         "repair_targets": dict(repair_targets),
         "mutation_risks": dict(mutation_risks),
+        "repair_paths": dict(repair_paths),
+        "proof_repair_attempted": sum(1 for r in rows if r["proof_repair_attempted"]),
+        "proof_repair_success": sum(1 for r in rows if r["proof_repair_attempted"] and r["passed"]),
+        "alignment_repair_attempted": sum(1 for r in rows if r["alignment_repair_attempted"]),
+        "alignment_repair_success": sum(1 for r in rows if r["alignment_repair_attempted"] and r["passed"]),
+        "spec_strengthening_attempted": sum(1 for r in rows if r["spec_strengthening_attempted"]),
+        "spec_strengthening_success": sum(1 for r in rows if r["spec_strengthening_attempted"] and r["passed"]),
+        "behavior_loop_executed": sum(1 for r in rows if r["behavior_loop_executed"]),
         "suspicious_mutants": suspicious_mutants,
         "top_spec_flags": dict(flag_counter.most_common(12)),
     }
@@ -146,6 +162,11 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "spec_flags",
         "attribution_category",
         "repair_target",
+        "repair_path",
+        "proof_repair_attempted",
+        "alignment_repair_attempted",
+        "spec_strengthening_attempted",
+        "behavior_loop_executed",
         "mutants_total",
         "mutants_verified",
         "suspicious_mutants",
@@ -172,7 +193,15 @@ def print_summary(summary: dict[str, Any], csv_path: Path) -> None:
     _print_counter("Spec adequacy levels", summary["adequacy_levels"])
     _print_counter("Failure attribution", summary["attribution_categories"])
     _print_counter("Repair targets", summary["repair_targets"])
+    _print_counter("Repair paths", summary["repair_paths"])
     _print_counter("Mutation adequacy risks", summary["mutation_risks"])
+    print(
+        "\nRepair route success:"
+        f"\n  proof_repair: {summary['proof_repair_success']}/{summary['proof_repair_attempted']}"
+        f"\n  alignment_repair: {summary['alignment_repair_success']}/{summary['alignment_repair_attempted']}"
+        f"\n  spec_strengthening: {summary['spec_strengthening_success']}/{summary['spec_strengthening_attempted']}"
+        f"\n  behavior_loop_executed: {summary['behavior_loop_executed']}"
+    )
     print(f"\nSuspicious mutants: {summary['suspicious_mutants']}")
     _print_counter("Top spec flags", summary["top_spec_flags"])
 
@@ -186,6 +215,19 @@ def _print_counter(title: str, counter: dict[str, int]) -> None:
         return
     for key, value in sorted(counter.items(), key=lambda item: (-item[1], item[0])):
         print(f"  {key}: {value}")
+
+
+def _repair_path(trace_stages: list[str]) -> str:
+    paths = []
+    if "spec_strengthening" in trace_stages:
+        paths.append("spec_strengthening")
+    if "proof_repair" in trace_stages:
+        paths.append("proof_repair")
+    if "alignment_repair" in trace_stages:
+        paths.append("alignment_repair")
+    if "repair" in trace_stages:
+        paths.append("code_repair")
+    return "+".join(paths) if paths else "none"
 
 
 def main() -> None:

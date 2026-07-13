@@ -12,6 +12,41 @@ DEEPSEEK_BASE_URL = "https://api.deepseek.com"
 OPENAI_BASE_URL = "https://api.openai.com/v1"
 
 
+_USAGE_EVENTS: list[dict] = []
+
+
+def reset_usage_metrics() -> None:
+    _USAGE_EVENTS.clear()
+
+
+def get_usage_metrics() -> dict:
+    events = [dict(event) for event in _USAGE_EVENTS]
+    return {
+        "calls": len(events),
+        "successful_calls": sum(1 for event in events if event.get("ok")),
+        "failed_calls": sum(1 for event in events if not event.get("ok")),
+        "prompt_tokens": sum(int(event.get("prompt_tokens", 0) or 0) for event in events),
+        "completion_tokens": sum(int(event.get("completion_tokens", 0) or 0) for event in events),
+        "total_tokens": sum(int(event.get("total_tokens", 0) or 0) for event in events),
+        "latency_seconds": round(sum(float(event.get("latency_seconds", 0) or 0) for event in events), 3),
+        "events": events,
+    }
+
+
+def _record_usage(provider: str, model: str, started: float, response=None, error: Exception | None = None) -> None:
+    usage = getattr(response, "usage", None)
+    _USAGE_EVENTS.append({
+        "provider": provider,
+        "model": model,
+        "ok": error is None,
+        "error_type": type(error).__name__ if error else "",
+        "latency_seconds": round(time.perf_counter() - started, 3),
+        "prompt_tokens": int(getattr(usage, "prompt_tokens", 0) or 0),
+        "completion_tokens": int(getattr(usage, "completion_tokens", 0) or 0),
+        "total_tokens": int(getattr(usage, "total_tokens", 0) or 0),
+    })
+
+
 class LLMClient:
     """统一 LLM 调用接口"""
 
@@ -44,39 +79,53 @@ class LLMClient:
         else:
             raise ValueError(f"Unknown provider: {provider}")
 
-    def chat(self, system: str, user: str, temperature: float = 0.2) -> str:
+    def chat(self, system: str, user: str, temperature: Optional[float] = None) -> str:
         """单轮对话"""
         last_error = None
         for attempt in range(config.LLM_RETRIES + 1):
+            started = time.perf_counter()
             try:
-                resp = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=[
+                request = {
+                    "model": self.model,
+                    "messages": [
                         {"role": "system", "content": system},
                         {"role": "user", "content": user},
                     ],
-                    temperature=temperature,
+                    "temperature": config.LLM_TEMPERATURE if temperature is None else temperature,
+                }
+                if config.LLM_MAX_TOKENS > 0:
+                    request["max_tokens"] = config.LLM_MAX_TOKENS
+                resp = self.client.chat.completions.create(
+                    **request,
                 )
+                _record_usage(self.provider, self.model, started, response=resp)
                 return resp.choices[0].message.content or ""
             except Exception as exc:
+                _record_usage(self.provider, self.model, started, error=exc)
                 last_error = exc
                 if attempt >= config.LLM_RETRIES:
                     break
                 time.sleep(1.5 * (attempt + 1))
         raise last_error
 
-    def chat_with_history(self, messages: list, temperature: float = 0.2) -> str:
+    def chat_with_history(self, messages: list, temperature: Optional[float] = None) -> str:
         """多轮对话（messages 已包含 role/content）"""
         last_error = None
         for attempt in range(config.LLM_RETRIES + 1):
+            started = time.perf_counter()
             try:
-                resp = self.client.chat.completions.create(
-                    model=self.model,
-                    messages=messages,
-                    temperature=temperature,
-                )
+                request = {
+                    "model": self.model,
+                    "messages": messages,
+                    "temperature": config.LLM_TEMPERATURE if temperature is None else temperature,
+                }
+                if config.LLM_MAX_TOKENS > 0:
+                    request["max_tokens"] = config.LLM_MAX_TOKENS
+                resp = self.client.chat.completions.create(**request)
+                _record_usage(self.provider, self.model, started, response=resp)
                 return resp.choices[0].message.content or ""
             except Exception as exc:
+                _record_usage(self.provider, self.model, started, error=exc)
                 last_error = exc
                 if attempt >= config.LLM_RETRIES:
                     break

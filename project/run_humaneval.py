@@ -23,6 +23,14 @@ from pipeline import run_pipeline
 from humaneval_tester import run_humaneval_test
 from spec_adequacy import check_spec_adequacy
 from research_trace import trace_event
+from task_normalizer import (
+    TaskNormalizationError,
+    normalize_humaneval_problem,
+    render_problem_description,
+)
+from experiment_manifest import create_run_directory, build_manifest, write_manifest
+from llm_client import get_usage_metrics, reset_usage_metrics
+from contract_utils import contract_fidelity_issues
 import config
 
 
@@ -38,62 +46,25 @@ def load_humaneval():
 
 
 def extract_description(problem: dict) -> str:
-    """从 HumanEval 问题中提取自然语言描述（适合 Dafny 生成）"""
-    prompt = problem["prompt"]
-    entry = problem["entry_point"]
-
-    # 提取 docstring（在函数签名和 def 之间的注释）
-    lines = prompt.split("\n")
-    doc_lines = []
-    in_doc = False
-    for line in lines:
-        if '"""' in line:
-            in_doc = not in_doc
-            continue
-        if in_doc:
-            doc_lines.append(line.strip())
-
-    doc = " ".join(doc_lines).strip()
-
-    # 提取函数签名
-    sig_lines = [l for l in lines if l.startswith("def ")]
-    sig = sig_lines[0] if sig_lines else f"def {entry}(...)"
-
-    # 提取测试用例（从 docstring 里的 >>> 部分）
-    tests = []
-    in_test = False
-    for line in lines:
-        if line.strip().startswith(">>>"):
-            in_test = True
-        if in_test and line.strip():
-            tests.append(line.strip())
-        elif in_test and not line.strip():
-            break
-
-    # 组装成适合 Dafny 的描述
-    desc = f"""请用 Dafny 语言实现以下函数。
-
-函数说明：{doc[:200] if doc else "无说明"}
-
-原函数签名（Python）：{sig}
-
-实现要求：
-1. 方法名：{entry}
-2. 输入输出类型对应到 Dafny 类型（int → int, float → real, List → seq, bool → bool, str → string）
-3. 确保后置条件能覆盖核心功能
-4. 代码必须通过 Dafny 验证"""
-
-    if tests:
-        desc += f"\n\n测试示例：\n" + "\n".join(tests[:5])
-
-    return desc
+    """兼容旧调用方：通过结构化 Task IR 渲染完整、无截断描述。"""
+    return render_problem_description(normalize_humaneval_problem(problem))
 
 
-def run_benchmark(problems, start=0, limit=5):
+def run_benchmark(
+    problems,
+    start=0,
+    limit=5,
+    *,
+    evaluation_mode: str = "strict",
+    repair_tests: dict[str, dict] | None = None,
+    output_dir: Path | None = None,
+):
     """批量运行评测"""
     results = []
     total = min(len(problems), start + limit)
-    passed_count = 0
+    repair_tests = repair_tests or {}
+    if evaluation_mode not in {"strict", "assisted"}:
+        raise ValueError(f"Unknown evaluation mode: {evaluation_mode}")
 
     print(f"\n{'='*60}")
     print(f"开始评测: 共 {total - start} 个问题 (从 {start} 到 {total-1})")
@@ -103,7 +74,35 @@ def run_benchmark(problems, start=0, limit=5):
         prob = problems[i]
         tid = prob["task_id"]
         entry = prob["entry_point"]
-        desc = extract_description(prob)
+        try:
+            task_ir = normalize_humaneval_problem(prob)
+            desc = render_problem_description(task_ir)
+        except TaskNormalizationError as exc:
+            result = {
+                "task_id": tid,
+                "entry_point": entry,
+                "passed": False,
+                "unsupported": True,
+                "error": f"task normalization failed: {exc}",
+            }
+            results.append(result)
+            save_intermediate(results, i, output_dir=output_dir)
+            continue
+
+        if not task_ir.supported:
+            result = {
+                "task_id": tid,
+                "entry_point": entry,
+                "passed": False,
+                "unsupported": True,
+                "unsupported_reasons": list(task_ir.unsupported_reasons),
+                "task_ir": task_ir.to_dict(),
+            }
+            print(f"\n[{i+1}/{total}] {tid} ({entry})")
+            print(f"  UNSUPPORTED: {task_ir.unsupported_reasons}")
+            results.append(result)
+            save_intermediate(results, i, output_dir=output_dir)
+            continue
 
         print(f"\n[{i+1}/{total}] {tid} ({entry})")
         print(f"  描述: {desc[:100]}...")
@@ -111,22 +110,43 @@ def run_benchmark(problems, start=0, limit=5):
 
         try:
             start_time = time.time()
+            dev_behavior_problem = None
+            if evaluation_mode == "assisted":
+                dev_behavior_problem = repair_tests.get(tid)
+                if dev_behavior_problem:
+                    dev_behavior_problem = {
+                        "task_id": tid,
+                        "entry_point": entry,
+                        **dev_behavior_problem,
+                    }
             final = run_pipeline(
                 problem_id=tid,
                 problem_desc=desc,
-                max_rounds=config.MAX_REPAIR_ROUNDS
+                max_rounds=config.MAX_REPAIR_ROUNDS,
+                # Official HumanEval tests are never placed inside the search
+                # loop. Assisted mode accepts only a separately supplied dev set.
+                behavior_problem=dev_behavior_problem,
+                entry_point=entry,
             )
             elapsed = time.time() - start_time
 
-            passed = final.get("passed", False)
+            dafny_verified = bool(final.get("dafny_verified", final.get("passed", False)))
             rounds = final.get("round", 0)
             code = final.get("code", "")
 
-            # Dafny 验证通过后，额外用 HumanEval 原始测试用例验证
+            dev_behavior_executed = bool(final.get("behavior_executed", False))
+            dev_behavior_passed = bool(final.get("behavior_passed", False))
+            dev_behavior_error = final.get("behavior_error") or None
+
+            # Official tests are a final, one-shot holdout. Their diagnostics
+            # are recorded only after the pipeline has stopped and are never
+            # sent back to an agent.
             humaneval_passed = False
             humaneval_error = None
-            if passed:
-                print(f"  [HumanEval] 正在运行端到端测试...")
+            official_test_executed = False
+            if dafny_verified:
+                print(f"  [HumanEval Holdout] 正在运行最终端到端测试...")
+                official_test_executed = True
                 try:
                     humaneval_passed, h_detail = run_humaneval_test(code, prob)
                     humaneval_error = h_detail.get("error")
@@ -137,42 +157,51 @@ def run_benchmark(problems, start=0, limit=5):
                     humaneval_error = str(eh)
 
             # 最终通过 = Dafny 验证通过 && HumanEval 测试通过
-            final_passed = passed and humaneval_passed
+            final_passed = dafny_verified and humaneval_passed
             spec = final.get("spec", "")
             spec_adequacy = check_spec_adequacy(
                 spec=spec,
                 problem_desc=desc,
                 entry_point=entry,
-                dafny_verified=passed,
+                dafny_verified=dafny_verified,
                 humaneval_passed=humaneval_passed,
             )
             research_trace = list(final.get("research_trace", []))
-            research_trace.append(trace_event(
-                "spec_adequacy_after_tests",
-                rounds,
-                adequacy=spec_adequacy,
-                dafny_verified=passed,
-                humaneval_passed=humaneval_passed,
-            ))
+            if not any(event.get("stage") == "spec_adequacy_after_tests" for event in research_trace):
+                research_trace.append(trace_event(
+                    "spec_adequacy_after_tests",
+                    rounds,
+                    adequacy=spec_adequacy,
+                    dafny_verified=dafny_verified,
+                    humaneval_passed=humaneval_passed,
+                ))
 
             result = {
                 "task_id": tid,
                 "entry_point": entry,
-                "dafny_verified": passed,
+                "dafny_verified": dafny_verified,
                 "humaneval_passed": humaneval_passed,
                 "humaneval_error": humaneval_error,
+                "official_test_executed": official_test_executed,
+                "dev_behavior_executed": dev_behavior_executed,
+                "dev_behavior_passed": dev_behavior_passed,
+                "dev_behavior_error": dev_behavior_error,
+                "evaluation_mode": evaluation_mode,
                 "passed": final_passed,
                 "rounds": rounds,
                 "time": round(elapsed, 1),
                 "code": code,
                 "spec": spec,
                 "spec_adequacy": spec_adequacy,
+                "inloop_mutation_adequacy": final.get("mutation_adequacy", {}),
                 "research_trace": research_trace,
                 "final_attribution": final.get("last_attribution", {}),
+                "verification_attempts": final.get("verification_attempts", 0),
+                "contract_fidelity": not bool(contract_fidelity_issues(spec, code, entry)),
+                "task_ir": task_ir.to_dict(),
             }
 
-            passed_count += 1 if final_passed else 0
-            status = "PASS" if final_passed else ("DAFNY_OK" if passed else "FAIL")
+            status = "PASS" if final_passed else ("DAFNY_OK" if dafny_verified else "FAIL")
             print(f"  结果: {status}  rounds={rounds}  time={elapsed:.1f}s")
 
         except Exception as e:
@@ -187,24 +216,28 @@ def run_benchmark(problems, start=0, limit=5):
         results.append(result)
 
         # 每轮保存中间结果
-        save_intermediate(results, i)
+        save_intermediate(results, i, output_dir=output_dir)
 
     return results
 
 
-def save_intermediate(results, idx):
+def save_intermediate(results, idx, *, output_dir: Path | None = None):
     """保存中间结果"""
     out = {"total": len(results), "passed": sum(1 for r in results if r.get("passed")), "results": results}
-    path = config.LOG_DIR / f"benchmark_intermediate_{idx+1}.json"
+    root = output_dir or config.LOG_DIR
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / f"benchmark_intermediate_{idx+1}.json"
     with open(path, "w", encoding="utf-8") as f:
         json.dump(out, f, indent=2, ensure_ascii=False)
 
 
-def print_summary(results):
+def print_summary(results, *, output_dir: Path | None = None):
     """打印总结"""
     total = len(results)
     passed = sum(1 for r in results if r.get("passed"))
     failed = total - passed
+    unsupported = sum(1 for r in results if r.get("unsupported"))
+    supported = total - unsupported
     dafny_passed = sum(1 for r in results if r.get("dafny_verified"))
     humaneval_passed = sum(1 for r in results if r.get("humaneval_passed"))
     total_rounds = sum(r.get("rounds", 0) for r in results if "rounds" in r)
@@ -218,6 +251,7 @@ def print_summary(results):
     print(f"  HumanEval 测试通过: {humaneval_passed} ({humaneval_passed/total*100:.1f}%)" if total > 0 else "")
     print(f"  端到端通过:        {passed} ({passed/total*100:.1f}%)")
     print(f"  失败:              {failed} ({failed/total*100:.1f}%)")
+    print(f"  支持类型覆盖:       {supported}/{total} ({supported/total*100:.1f}%)" if total > 0 else "")
     print(f"  平均轮次:          {total_rounds/total:.2f}" if total > 0 else "")
     print(f"  总耗时:            {total_time:.1f}s ({total_time/60:.1f}min)")
     print()
@@ -243,6 +277,9 @@ def print_summary(results):
         "humaneval_passed": humaneval_passed,
         "passed": passed,
         "failed": failed,
+        "supported": supported,
+        "unsupported": unsupported,
+        "coverage_rate": f"{supported/total*100:.1f}%" if total > 0 else "0%",
         "pass_rate": f"{passed/total*100:.1f}%" if total > 0 else "0%",
         "dafny_pass_rate": f"{dafny_passed/total*100:.1f}%" if total > 0 else "0%",
         "humaneval_pass_rate": f"{humaneval_passed/total*100:.1f}%" if total > 0 else "0%",
@@ -250,9 +287,34 @@ def print_summary(results):
         "total_time": round(total_time, 1),
         "results": results,
     }
-    with open(config.LOG_DIR / "benchmark_final.json", "w", encoding="utf-8") as f:
+    root = output_dir or config.LOG_DIR
+    root.mkdir(parents=True, exist_ok=True)
+    final_path = root / "benchmark_final.json"
+    with open(final_path, "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
-    print(f"[Log] 最终结果已保存到 logs/benchmark_final.json")
+    print(f"[Log] 最终结果已保存到 {final_path}")
+    return summary
+
+
+def load_repair_tests(path: Path | None) -> dict[str, dict]:
+    """Load a separately curated dev-test set for assisted mode."""
+    if path is None:
+        return {}
+    text = path.read_text(encoding="utf-8")
+    if path.suffix.lower() == ".jsonl":
+        rows = [json.loads(line) for line in text.splitlines() if line.strip()]
+    else:
+        data = json.loads(text)
+        if isinstance(data, dict) and "tests" not in data:
+            return {
+                task_id: ({"test": value} if isinstance(value, str) else value)
+                for task_id, value in data.items()
+            }
+        rows = data.get("tests", []) if isinstance(data, dict) else data
+    return {
+        row["task_id"]: {key: value for key, value in row.items() if key != "task_id"}
+        for row in rows
+    }
 
 
 def main():
@@ -260,14 +322,60 @@ def main():
     parser.add_argument("--start", type=int, default=0, help="起始题目索引")
     parser.add_argument("--limit", type=int, default=5, help="评测题目数量")
     parser.add_argument("--rounds", type=int, default=None, help="最大修复轮次")
+    parser.add_argument(
+        "--mode",
+        choices=("strict", "assisted"),
+        default=config.EVALUATION_MODE,
+        help="strict: official test only after search; assisted: use separate --repair-tests",
+    )
+    parser.add_argument(
+        "--repair-tests",
+        type=Path,
+        default=None,
+        help="Assisted mode only: separate JSON/JSONL dev tests; never the official HumanEval test file",
+    )
+    parser.add_argument("--output-dir", type=Path, default=None, help="Explicit unique run directory")
     args = parser.parse_args()
 
     if args.rounds is not None:
         config.MAX_REPAIR_ROUNDS = args.rounds
 
+    if args.mode == "strict":
+        # A strict benchmark can never be short-circuited by task-id templates.
+        config.USE_TEMPLATE_FALLBACK = False
+    if args.mode == "assisted" and args.repair_tests is None:
+        parser.error("--mode assisted requires a separately curated --repair-tests file")
+
     problems = load_humaneval()
-    results = run_benchmark(problems, start=args.start, limit=args.limit)
-    print_summary(results)
+    selected = problems[args.start : min(len(problems), args.start + args.limit)]
+    output_dir = args.output_dir or create_run_directory(
+        f"humaneval_{args.mode}_{args.start}_{len(selected)}"
+    )
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest = build_manifest(
+        mode=args.mode,
+        start=args.start,
+        limit=args.limit,
+        task_ids=[problem["task_id"] for problem in selected],
+        data_path=config.DATA_DIR / "HumanEval.jsonl",
+    )
+    write_manifest(output_dir / "manifest.json", manifest)
+
+    reset_usage_metrics()
+    results = run_benchmark(
+        problems,
+        start=args.start,
+        limit=args.limit,
+        evaluation_mode=args.mode,
+        repair_tests=load_repair_tests(args.repair_tests),
+        output_dir=output_dir,
+    )
+    summary = print_summary(results, output_dir=output_dir)
+    manifest["llm_usage"] = get_usage_metrics()
+    manifest["summary"] = {key: value for key, value in summary.items() if key != "results"}
+    manifest["completed"] = True
+    write_manifest(output_dir / "manifest.json", manifest)
+    print(f"[Run] 可复现实验目录: {output_dir.resolve()}")
 
 
 if __name__ == "__main__":

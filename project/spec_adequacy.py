@@ -154,10 +154,14 @@ def _extract_clauses(spec: str) -> dict[str, list[str]]:
 
 def _problem_features(problem_desc: str) -> dict[str, bool]:
     text = _semantic_problem_text(problem_desc)
+    full_text = (problem_desc or "").lower()
     signature_text = _signature_text(problem_desc)
 
     def has_word(*words: str) -> bool:
         return any(re.search(rf"\b{re.escape(word)}\b", text) for word in words)
+
+    def has_token(*tokens: str) -> bool:
+        return any(token in text or token in full_text or token in signature_text for token in tokens)
 
     return {
         "bool_result": "-> bool" in signature_text or has_word("true", "false", "boolean"),
@@ -169,6 +173,11 @@ def _problem_features(problem_desc: str) -> dict[str, bool]:
         "length_or_size": has_word("length", "size", "empty", "non-empty", "nonempty"),
         "threshold_or_distance": has_word("threshold", "close", "distance", "difference", "absolute"),
         "sum_or_prefix": has_word("sum", "prefix", "balance", "total"),
+        "filter_task": has_word("filter", "contains", "substring", "where") or has_token("filter", "substring"),
+        "membership_task": has_word("contain", "contains", "member", "element", "in") or has_token("contains"),
+        "count_task": has_word("count", "number of", "how many", "occurrences") or has_token("count", "how_many"),
+        "sorting_task": has_word("sort", "sorted", "order") or has_token("sort"),
+        "prefix_task": has_word("prefix", "prefixes") or has_token("prefix"),
         "examples_present": ">>>" in problem_desc,
     }
 
@@ -220,9 +229,13 @@ def _check_feature_obligations(spec: str, features: dict[str, bool]) -> dict[str
     flags = []
     missing = []
     penalty = 0
+    ensures_text = "\n".join(_extract_clauses(spec)["ensures"])
 
     def absent_any(tokens: list[str]) -> bool:
         return not any(token in spec for token in tokens)
+
+    def absent_any_ensures(tokens: list[str]) -> bool:
+        return not any(token in ensures_text for token in tokens)
 
     if features["bool_result"] and absent_any(["result == true", "result == false", "result <==>", "exists", "forall", "==>"]):
         flags.append("bool_task_without_logical_condition")
@@ -264,6 +277,31 @@ def _check_feature_obligations(spec: str, features: dict[str, bool]) -> dict[str
         missing.append("Sum/prefix tasks should expose accumulation semantics or a helper function.")
         penalty += 10
 
+    if features["filter_task"] and absent_any_ensures(["forall", "exists", "Contains", "contains", " in ", "result["]):
+        flags.append("filter_task_without_membership_condition")
+        missing.append("Filter/substring tasks should constrain which input elements appear in the result.")
+        penalty += 12
+
+    if features["membership_task"] and absent_any_ensures(["forall", "exists", " in ", "Contains", "result["]):
+        flags.append("membership_task_without_element_relation")
+        missing.append("Membership-style tasks should relate result elements to input elements.")
+        penalty += 10
+
+    if features["count_task"] and absent_any_ensures(["Count", "count", "+", "forall", "exists"]):
+        flags.append("count_task_without_counting_condition")
+        missing.append("Counting tasks should expose an occurrence/count relation.")
+        penalty += 10
+
+    if features["sorting_task"] and absent_any_ensures(["forall", "<=", ">=", "Permutation", "multiset"]):
+        flags.append("sorting_task_without_order_or_permutation")
+        missing.append("Sorting tasks should specify ordering and ideally element preservation.")
+        penalty += 12
+
+    if features["prefix_task"] and absent_any_ensures(["|result|", "result[", "prefix", "forall"]):
+        flags.append("prefix_task_without_prefix_condition")
+        missing.append("Prefix tasks should constrain prefix lengths and relation to the input string/sequence.")
+        penalty += 10
+
     return {"flags": flags, "missing": missing, "penalty": penalty}
 
 
@@ -293,6 +331,8 @@ def _recommendations(flags: list[str], features: dict[str, bool]) -> list[str]:
         recs.append("For threshold tasks, express the distance predicate explicitly.")
     if "verified_but_behavior_failed" in flags:
         recs.append("Treat this as a spec adequacy warning: verified code did not satisfy behavioral tests.")
+    if "mutation_verified_mutant" in flags:
+        recs.append("Strengthen the spec until simple default/parameter-return mutants no longer verify.")
     return _dedupe(recs)
 
 

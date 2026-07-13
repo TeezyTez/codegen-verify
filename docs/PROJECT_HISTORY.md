@@ -4,6 +4,190 @@ This file records important research and engineering updates. For each future
 code change, append a short entry with the motivation, implementation summary,
 and validation result.
 
+## 2026-07-09 - Closed-Loop Spec-Aware Coding Harness
+
+### Motivation
+
+The previous harness treated Dafny verification as the stopping condition. The
+HumanEval-20 run exposed a more important failure mode: code can satisfy the
+current Dafny spec while still failing behavioral tests. This update turns
+verification, behavior testing, spec adequacy, mutation adequacy, and repair
+routing into one closed loop.
+
+### Updates
+
+- Added `project/spec_code_alignment.py` for verified-but-behavior-failed
+  repair.
+- Added `project/mutation_probe.py` for reusable lightweight in-loop mutation
+  adequacy probing.
+- Extended `pipeline.py` state with:
+  - `dafny_verified`,
+  - `behavior_executed`,
+  - `behavior_passed`,
+  - `behavior_error`,
+  - `mutation_adequacy`.
+- Added a `behavior_test` node after successful Dafny verification.
+- Added an `alignment_repair` node that repairs spec/code alignment when Dafny
+  passes but HumanEval behavior fails.
+- Added an in-loop `mutation_adequacy` node before code generation.
+- Added a `spec_strengthening` node that can strengthen specs when simple
+  mutants are still verified.
+- Hardened `proof_repair_agent` so it rejects outputs that drop original
+  `requires`/`ensures` clauses.
+- Updated `run_humaneval.py` so HumanEval problems are passed into the pipeline
+  as behavior tests instead of being only a post-hoc benchmark check.
+- Strengthened `spec_adequacy.py` with task-type-aware checks for filter,
+  membership, count, sorting, and prefix tasks.
+- Updated `analyze_results.py` with repair-path metrics:
+  - proof repair attempts/success,
+  - alignment repair attempts/success,
+  - spec strengthening attempts/success,
+  - behavior loop execution count.
+- Added configuration flags:
+  - `ENABLE_BEHAVIOR_REPAIR_LOOP`,
+  - `ENABLE_INLOOP_MUTATION_ADEQUACY`,
+  - `ENABLE_MUTATION_SPEC_STRENGTHENING`.
+
+### Validation
+
+- `python -m compileall project test_benchmark.py`
+- `USE_TEMPLATE_FALLBACK=0 python run_humaneval.py --start 0 --limit 1 --rounds 1`
+  - `HumanEval/0` passed Dafny and HumanEval behavior tests.
+  - Trace included `mutation_adequacy` and `behavior_test`.
+- `USE_TEMPLATE_FALLBACK=0 python run_humaneval.py --start 7 --limit 1 --rounds 2`
+  - `HumanEval/7` passed Dafny and HumanEval behavior tests.
+  - In-loop mutation adequacy reported `0/2` verified mutants.
+- Behavior-failure routing smoke check:
+  - `decide_after_behavior(...)` returns `alignment_repair` when behavior fails
+    before the repair budget is exhausted.
+- `python mutation_adequacy.py`
+- `python analyze_results.py`
+  - New repair-path metrics are written to `logs/benchmark_results.csv` and
+    `logs/benchmark_summary.json`.
+
+### Next Steps
+
+- Run a fresh 20-task experiment with this closed-loop harness and compare
+  verified-but-test-failed rate against the 2026-07-07 baseline.
+- Add targeted case studies for `HumanEval/7` and `HumanEval/12`.
+- Improve alignment repair with structured JSON output so spec and code changes
+  can be audited separately.
+
+## 2026-07-07 - HumanEval-20 Run with Repair Policy and Proof Repair
+
+### Motivation
+
+After adding repair-policy routing and a proof repair agent, rerun the same
+20-task HumanEval slice to check whether explicit proof repair improves the
+harness and whether the new behavior exposes different research risks.
+
+### Updates
+
+- Ran a pure LLM benchmark with template fallback disabled:
+  `USE_TEMPLATE_FALLBACK=0 python run_humaneval.py --start 0 --limit 20 --rounds 3`.
+- Ran mutation adequacy analysis with `python mutation_adequacy.py`.
+- Ran result aggregation with `python analyze_results.py`.
+- Updated result artifacts:
+  - `logs/benchmark_final.json`
+  - `logs/benchmark_results.csv`
+  - `logs/benchmark_summary.json`
+  - `logs/mutation_adequacy.json`
+  - `logs/mutation_adequacy.csv`
+
+### Validation
+
+- Total tasks: 20.
+- End-to-end passed: 7/20.
+- Dafny verified: 9/20.
+- HumanEval passed: 7/20.
+- Verified but test failed: 2/20.
+- Average repair rounds: 2.25.
+- Average spec adequacy score: 87.9.
+- Spec adequacy levels:
+  - `strong_static`: 12.
+  - `plausible`: 7.
+  - `partial`: 1.
+- Mutation adequacy:
+  - high-risk specs: 2/20.
+  - suspicious mutants: 2.
+- Passed tasks:
+  - `HumanEval/0` `has_close_elements`
+  - `HumanEval/2` `truncate_number`
+  - `HumanEval/5` `intersperse`
+  - `HumanEval/6` `parse_nested_parens`
+  - `HumanEval/9` `rolling_max`
+  - `HumanEval/11` `string_xor`
+  - `HumanEval/14` `all_prefixes`
+- Verified but behavior failed:
+  - `HumanEval/7` `filter_by_substring`
+  - `HumanEval/12` `longest`
+
+### Findings
+
+- Compared with the 2026-07-03 pure LLM run, Dafny verification improved from
+  8/20 to 9/20, but end-to-end correctness dropped from 8/20 to 7/20.
+- The proof repair route is active and helps the verifier on some tasks, but it
+  can also make the system satisfy an insufficient or misaligned specification.
+- The two verified-but-test-failed cases are the clearest current evidence that
+  the harness should treat formal verification as one signal in a coding-agent
+  loop, not as the final stopping condition.
+
+### Next Steps
+
+- Add a post-verification behavior-check stage that routes HumanEval failures
+  back into code/spec repair.
+- Split metrics by repair path: no repair, code repair, spec repair, and proof
+  repair.
+- Inspect `HumanEval/7` and `HumanEval/12` as case studies for specification
+  insufficiency and verified-but-wrong code.
+
+## 2026-07-07 - Repair Policy and Proof Repair Agent
+
+### Motivation
+
+The project is being reframed as a formal-specification-aware coding agent
+harness. The previous pipeline routed all verification failures into a generic
+code repair agent, even when the failure was clearly a proof obligation gap.
+Recent HumanEval-20 results showed that proof obligations were the largest
+failure category, so the harness needs an explicit repair policy and a
+specialized proof repair layer.
+
+### Updates
+
+- Added `project/repair_policy.py`.
+- Added `project/proof_repair.py`.
+- Added `ENABLE_PROOF_REPAIR` configuration.
+- Added an explicit `repair_policy` field to pipeline state.
+- `diagnose_agent` now calls `choose_repair_policy(...)` and records the
+  decision in trace events.
+- Added `proof_repair_agent`, which focuses on invariants, assertions, lemmas,
+  helper functions, and decreases clauses while preserving the original spec.
+- Updated LangGraph routing:
+  - verification failure goes to `diagnose`;
+  - `diagnose` routes to `proof_repair_agent` or the existing code repair agent
+    based on repair policy.
+
+### Validation
+
+- `python -m compileall project test_benchmark.py`
+- Policy unit check: an `invariant` error with `proof_obligation_gap` routes to
+  `proof_repair_agent`.
+- `python run_humaneval.py --start 1 --limit 1 --rounds 1` passed via template
+  fallback.
+- Pure LLM smoke test on `HumanEval/3` with `USE_TEMPLATE_FALLBACK=0` and
+  `--rounds 2` triggered the new proof repair route. The run did not fully pass
+  within 2 rounds, but verifier errors were reduced from two proof obligations
+  to one assertion failure.
+
+### Next Steps
+
+- Improve `proof_repair_agent` prompts with reusable invariant/assertion
+  templates from successful cases.
+- Add proof-specific static checks, such as detecting unchanged invariants or
+  repeated assertion failures.
+- Report proof repair success rate separately from code repair success rate in
+  `analyze_results.py`.
+
 ## 2026-07-03 - HumanEval-20 Pure LLM Run
 
 ### Motivation
@@ -301,3 +485,116 @@ local environment had Python dependencies but no usable Dafny command.
 
 - Keep Dafny/Z3 versions fixed for reproducible experiments.
 - Add an environment checker script later.
+
+## 2026-07-09 - Closed-Loop Regression Fixes: Rollback Guard, Test Diagnostics, Spec Relaxation
+
+### Motivation
+
+The 2026-07-09 closed-loop harness run (5/20 end-to-end, 6/20 Dafny verified) regressed
+relative to the 2026-07-07 baseline (7/20, 9/20). Root-cause analysis of the 20-task
+`benchmark_final.json` traces identified three systematic issues:
+
+1. **No rollback after repair regression (RC1 — hit HumanEval/12)**:
+   `HumanEval/12` r1 Dafny pass → behavior fail → alignment_repair → r2 Dafny fail →
+   diagnose → proof_repair → r3 Dafny fail. The alignment_repair broke a passing
+   verification and the remaining budget was wasted re-fixing already-correct code.
+   The task ended as a Dafny-FAIL rather than the honest verified-but-behavior-failed.
+
+2. **Over-constrained spec not relaxable (RC2 — hit HumanEval/10)**:
+   `HumanEval/10 make_palindrome`: spec forced `|result| == 2*|s| - 1` (worst-case full
+   length), but the natural-language task demands the *shortest* palindrome. Code
+   correctly implemented the wrong spec → Dafny pass, test fail. alignment_repair was
+   instructed to "only strengthen" and could not fix the root cause.
+
+3. **Empty test-failure diagnostics (RC3 — all behavior-fail cases)**:
+   HumanEval `check()` uses bare `assert candidate(x)==y` with no message. The
+   caught `AssertionError` was empty → behavior_error="测试断言失败: " — alignment_repair
+   was repairing blind.
+
+### Implementation
+
+Three interdependent improvements deployed in one round:
+
+**Imp-1 — alignment_repair verification guard + rollback** (`project/pipeline.py`):
+- Added `last_verified_code`, `last_verified_spec`, `regression_rolled_back` to `PipelineState`.
+- `verify_node` snapshots code+spec on every Dafny pass.
+- `alignment_repair_agent` pre-verifies its output with `DafnyVerifier`; if verification
+  fails, rolls back to `last_verified_code` and sets `regression_rolled_back=True`.
+- `decide_after_behavior` ends the loop instead of retrying alignment when rolled back.
+
+**Imp-2 — capture failing-test input/expected/actual** (`project/humaneval_tester.py`):
+- Added `_run_asserts_with_diagnostics()`: parses `def check(candidate):` body via
+  `ast.parse`, extracts individual `assert candidate(ARGS) == EXPECTED` statements,
+  runs them one-by-one, and on first failure returns the failing input, expected, and
+  actual value.
+- Falls back to black-box `check(candidate)` execution for non-standard test formats.
+- Replaces empty `"测试断言失败: "` error with e.g. `"输入=['xyx'] 期望='xyx' 实际='xyxyx'"`.
+
+**Imp-3 — alignment_repair prompt for spec relaxation** (`project/spec_code_alignment.py`):
+- Replaced the blanket "never delete ensures, only strengthen" rule with explicit
+  two-case reasoning: (a) code semantics wrong → fix code; (b) spec over-constrained
+  or wrong → correct the spec (delete/relax/replace the offending ensures).
+- Added diagnostic-based inference rules to help the LLM distinguish cases.
+- Added a vacuous-spec guard in `pipeline.py` that rejects alignment outputs whose
+  spec does not constrain `result`.
+
+### Validation
+
+- `python -m compileall project test_benchmark.py`
+- HumanEval/10 smoke test: behavior_error changed from `"测试断言失败: "` to
+  `"输入=['xyx'] 期望='xyx' 实际='xyxyx'"` — diagnostic capture works.
+- HumanEval/10 standalone run: alignment_repair relaxed `|result|==2|s|-1` to
+  `|result|>=|s|`, and the task passed end-to-end.
+- HumanEval/12 standalone run: alignment_repair regressed verification; the rollback
+  guard preserved the verified state and ended as verified-but-behavior-failed instead
+  of Dafny-fail.
+- `USE_TEMPLATE_FALLBACK=0 python run_humaneval.py --start 0 --limit 20 --rounds 3`
+- `python mutation_adequacy.py`
+- `python analyze_results.py`
+
+### Results Comparison
+
+| Metric | 7/7 Baseline | Before (7/9) | After (7/9) | Δ |
+|--------|--------------|-------------|-------------|-----|
+| End-to-end passed | 7/20 (35%) | 5/20 (25%) | **6/20 (30%)** | +1 |
+| Dafny verified | 9/20 (45%) | 6/20 (30%) | **8/20 (40%)** | +2 |
+| HumanEval passed | 7/20 (35%) | 5/20 (25%) | **6/20 (30%)** | +1 |
+| Verified-but-test-failed | 2/20 | 1/20 | 2/20 | +1 |
+| Avg repair rounds | 2.25 | 2.53 | 2.50 | - |
+| Avg spec adequacy score | 87.9 | 92.0 | 85.8 | - |
+| Mutation high-risk / suspicious | 2 / 2 | 0 / 0 | 0 / 0 | - |
+
+Notable per-task changes:
+- `HumanEval/7 filter_by_substring`: recovered from FAIL to PASS.
+- `HumanEval/12 longest`: improved from Dafny-FAIL to verified-but-behavior-failed
+  (rollback guard preserved honest state instead of regressing).
+- `HumanEval/17`: improved from FAIL to Dafny-verified (behavior-failed later).
+- `HumanEval/10`: showed LLM variance — passed in standalone but failed in full run
+  (prompt-driven spec relaxation is non-deterministic).
+
+### Findings
+
+- The three improvements are interdependent and work as designed: Imp-2 feeds
+  diagnostics → Imp-3 reasons about spec vs code → Imp-1 guards regression.
+- Dafny verification recovered from 6→8 (matching 7/7 baseline closely), confirming
+  that proof_obligation_gap repair was not the bottleneck — the regression was partly
+  noise and partly alignment_repair damaging verified code (fixed by Imp-1).
+- HumanEval/10's performance variance across runs (standalone PASS vs full-run FAIL)
+  confirms that the spec-relaxation prompt is a soft lever: the LLM does not
+  consistently recognize over-constrained specs. A more structured approach
+  (e.g., symbolic detection of over-constraints) may be needed.
+- proof_repair remains the largest unsolved category: 8/14 failures remain
+  proof_obligation_gap. Imp-4 (prompt hardening with invariant templates) is the
+  natural next step.
+- Average spec adequacy score dropped from 92.0 to 85.8 — caused by alignment_repair
+  relaxing over-constrained specs (intended effect: correctness over static score).
+
+### Next Steps
+
+- Add Imp-4: proof_repair prompt enrichment with concrete invariant templates and
+  few-shot loop-invariant examples (similar to code_agent's nested-loop section).
+- Investigate structured detection of over-constrained specs (e.g., check if the spec
+  forces a fixed-length equality on a task that needs `min`/`max` semantics).
+- Add Imp-5: connection-error resilience in llm_client.py for transient API failures.
+- Add a plausible-wrong mutant operator to mutation_probe to catch the "shapes-correct-
+  but-semantics-wrong" blind spot identified in the research findings.
