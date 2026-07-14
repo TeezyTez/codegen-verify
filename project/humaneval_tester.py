@@ -99,7 +99,12 @@ def _to_dafny_val(val, dafny_type: str):
     if dafny_type.startswith('seq<'):
         inner = dafny_type[4:-1]
         if isinstance(val, (list, tuple)):
-            return tuple(_to_dafny_single(v, inner) for v in val)
+            # Generated Dafny functions use Seq operations such as ``drop``
+            # and slicing. A Python tuple happens to support loop indexing but
+            # fails as soon as compiled recursive code accesses ``.elems``.
+            return dafny_runtime.Seq(
+                [_to_dafny_single(v, inner) for v in val]
+            )
         return val
 
     # int, real, bool, char → native
@@ -119,7 +124,9 @@ def _to_dafny_single(val, dafny_type: str):
     if dafny_type.startswith('seq<'):
         inner = dafny_type[4:-1]
         if isinstance(val, (list, tuple)):
-            return tuple(_to_dafny_single(v, inner) for v in val)
+            return dafny_runtime.Seq(
+                [_to_dafny_single(v, inner) for v in val]
+            )
         return val
     return val
 

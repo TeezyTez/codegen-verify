@@ -89,6 +89,11 @@ class DafnyVerifier:
 
     def _cmd(self, command: str, path: str) -> list[str]:
         cmd = [self.dafny_path, command]
+        # Dafny 4.11 exits with status 2 when warnings are emitted unless this
+        # flag is present. Generated multiline quantifiers often trigger only
+        # an indentation warning, which must not masquerade as a parse error.
+        if command in {"resolve", "verify"}:
+            cmd.append("--allow-warnings")
         if command == "verify" and self.solver_path:
             cmd.extend(["--solver-path", self.solver_path])
         cmd.append(path)
@@ -349,10 +354,14 @@ class DafnyVerifier:
         error_count = max(reported_error_count, len(errors))
         if returncode != 0 and error_count == 0:
             error_count = 1
+            preview = " ".join((output or "").split())[:500]
             errors.append(ErrorInfo(
                 error_type="other",
                 subtype="process_error",
-                message=f"Dafny resolve exited with status {returncode} without a diagnostic",
+                message=(
+                    f"Dafny resolve exited with status {returncode} without an Error diagnostic"
+                    + (f": {preview}" if preview else "")
+                ),
             ))
         return VerificationResult(
             passed=False,
@@ -369,10 +378,14 @@ class DafnyVerifier:
         error_count = max(reported_error_count, len(errors))
 
         if returncode != 0 and error_count == 0:
+            preview = " ".join((output or "").split())[:500]
             errors.append(ErrorInfo(
                 error_type="other",
                 subtype="process_error",
-                message=f"Dafny verify exited with status {returncode} without a diagnostic",
+                message=(
+                    f"Dafny verify exited with status {returncode} without an Error diagnostic"
+                    + (f": {preview}" if preview else "")
+                ),
             ))
             error_count = 1
 

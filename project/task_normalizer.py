@@ -15,6 +15,7 @@ from __future__ import annotations
 import ast
 import doctest
 import io
+import re
 import tokenize
 from dataclasses import asdict, dataclass, field
 from typing import Any, Mapping, Optional, Sequence
@@ -817,7 +818,7 @@ def render_dafny_signature(task_ir: TaskIR | Mapping[str, Any]) -> str:
     if not task.supported:
         return f"method {task.entry_point}(UNSUPPORTED)"
     params = ", ".join(
-        f"{parameter.name}: {parameter.dafny_type.dafny}"
+        f"{_dafny_identifier(parameter.name)}: {parameter.dafny_type.dafny}"
         for parameter in task.parameters
     )
     if task.return_type.kind == "tuple":
@@ -831,6 +832,28 @@ def render_dafny_signature(task_ir: TaskIR | Mapping[str, Any]) -> str:
         returns = f"result: {task.return_type.dafny}"
     suffix = f" returns ({returns})" if returns else ""
     return f"method {task.entry_point}({params}){suffix}"
+
+
+_DAFNY_RESERVED_IDENTIFIERS = {
+    "as", "assert", "assume", "bool", "break", "by", "calc", "case",
+    "char", "class", "datatype", "decreases", "else", "ensures", "exists",
+    "export", "extends", "false", "forall", "fresh", "function", "ghost",
+    "if", "import", "in", "include", "int", "invariant", "iterator", "label",
+    "lemma", "map", "match", "method", "modifies", "module", "multiset", "new",
+    "newtype", "null", "object", "old", "opened", "predicate", "reads", "real",
+    "refines", "requires", "return", "returns", "seq", "set", "static", "string",
+    "then", "this", "trait", "true", "type", "var", "while", "witness", "yield",
+}
+
+
+def _dafny_identifier(name: str) -> str:
+    """Map a Python identifier to a legal, deterministic Dafny identifier."""
+    candidate = re.sub(r"[^A-Za-z0-9_]", "_", name or "value")
+    if not candidate or candidate[0].isdigit():
+        candidate = "arg_" + candidate
+    if candidate in _DAFNY_RESERVED_IDENTIFIERS:
+        candidate += "_"
+    return candidate
 
 
 __all__ = [

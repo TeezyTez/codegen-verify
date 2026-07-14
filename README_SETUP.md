@@ -1,103 +1,190 @@
-# 本机环境配置
+# 本机环境与评测配置
 
-这个项目是一个「规约引导的大模型代码生成 + Dafny 验证反馈修复」实验工程。主流程在 `project/` 下：
+这个项目是“自然语言任务 → Dafny 规约 → Dafny 实现 → 形式验证 → 定向修复 →
+HumanEval 留出测试”的实验工程。主流程位于 `project/`：
 
-1. `llm_client.py` 调用 DeepSeek/OpenAI 生成 Dafny 规约、实现和修复补丁。
-2. `pipeline.py` 串联 Spec Agent、Code Agent、Dafny Verifier、Repair Agent。
-3. `dafny_wrapper.py` 调用本机 `dafny` CLI 做 `resolve` 和 `verify`。
-4. `run_humaneval.py` / `run_nl2vc.py` 批量评测数据集。
+1. `task_normalizer.py` 用 AST 找到准确入口函数，保留完整题面、签名、类型和示例；
+2. `pipeline.py` 串联 Spec、Code、Diagnose、Proof Repair 与 Alignment Repair；
+3. `dafny_wrapper.py` 调用本机 Dafny 做 `resolve` 和 `verify`；
+4. `humaneval_tester.py` 在隔离子进程中翻译并执行完整 `check(candidate)`；
+5. `run_humaneval.py` 实施严格/辅助协议并写入独立实验目录。
 
-## 当前这台 Mac 的状态
+## 1. 系统依赖
 
-已完成：
+建议使用 Python 3.11 或 3.12、Dafny 4.11.0，并固定版本以便复现实验。
 
-- Apple Command Line Tools: `/Library/Developer/CommandLineTools`
-- Git: Apple Git 2.50.1
-- 用户级 Python: `~/.local/bin/python3`，版本 3.12.13
-- uv: `~/.local/bin/uv`
-- Dafny: `~/.local/bin/dafny`，版本 4.11.0
-- 项目虚拟环境: `.venv`
-- Python 依赖: `openai`、`python-pptx`、`lxml`
-
-待网络条件更好时补装：
-
-- Homebrew（可选，用于后续更方便地安装系统工具）
-
-## 1. 安装系统工具
-
-macOS 需要先有 Python 3 和 Dafny。
+确认命令可用：
 
 ```bash
-# 如果还没有 Xcode Command Line Tools
-xcode-select --install
-
-# 推荐安装 Homebrew 后安装常用系统工具
-brew install python git
-
-# 可选：用 Homebrew 安装 .NET SDK
-brew install --cask dotnet-sdk
+python --version
+dafny --version
 ```
 
-如果 `dafny` 不在 PATH，可以运行时设置：
+如果 Dafny 或 Z3 不在默认搜索路径，在 `.env` 中设置绝对路径：
 
-```bash
-export DAFNY_PATH="/absolute/path/to/dafny"
+```dotenv
+DAFNY_PATH=/absolute/path/to/dafny
+DAFNY_SOLVER_PATH=/absolute/path/to/z3
 ```
 
-这台机器当前使用 Dafny 官方 Apple Silicon release zip，已安装到：
+Windows 路径同样可直接填写，例如：
 
-```bash
-~/.local/dafny/4.11.0/dafny/dafny
+```dotenv
+DAFNY_PATH=D:\tools\dafny\Dafny.exe
+DAFNY_SOLVER_PATH=D:\tools\dafny\z3\bin\z3.exe
 ```
 
-## 2. 创建 Python 虚拟环境
+## 2. Python 环境
+
+在仓库根目录创建虚拟环境并安装运行依赖：
 
 ```bash
-cd /Users/zhangfangying/Library/Containers/com.tencent.xinWeChat/Data/Documents/xwechat_files/wxid_ud91axvt7xjx22_d5e9/msg/file/2026-06/workspace/codegen-verify/codegen-verify/codegen-verify
-uv venv .venv --python 3.12
+python -m venv .venv
+```
+
+macOS / Linux：
+
+```bash
 source .venv/bin/activate
-uv pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-这台机器已经完成上述步骤。
+Windows PowerShell：
 
-## 3. 配置 API Key
+```powershell
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+```
+
+需要运行测试时安装开发依赖；`requirements-dev.txt` 会同时安装运行依赖：
 
 ```bash
-export DEEPSEEK_API_KEY="你的 DeepSeek API Key"
-# 如需 OpenAI 再设置：
-# export OPENAI_API_KEY="你的 OpenAI API Key"
+python -m pip install -r requirements-dev.txt
+python -m pytest tests -q
 ```
 
-不要把真实 Key 写进代码或提交到仓库。
+## 3. 模型与 pipeline 配置
+
+复制 `.env.example` 为 `.env`，至少配置一个 API Key：
+
+```dotenv
+DEEPSEEK_API_KEY=your-key
+# OPENAI_API_KEY=your-key
+```
+
+常用可复现参数：
+
+```dotenv
+SPEC_MODEL=deepseek-chat
+CODE_MODEL=deepseek-chat
+REPAIR_MODEL=deepseek-chat
+LLM_TEMPERATURE=0.2
+LLM_MAX_TOKENS=0
+LLM_RETRIES=2
+MAX_REPAIR_ROUNDS=3
+EVALUATION_MODE=strict
+USE_TEMPLATE_FALLBACK=0
+```
+
+`LLM_MAX_TOKENS=0` 表示不显式设置上限。真实 Key 只应出现在本机 `.env` 或环境
+变量中；不要写入源码、测试、结果文件或提交到仓库。
+
+模板回退现在默认关闭。它只适合本地演示或调试，不能计入纯 LLM 实验；
+`--mode strict` 会无条件关闭模板回退。
 
 ## 4. 快速检查
 
-```bash
-cd project
-python dafny_wrapper.py
-python run_humaneval.py
-```
-
-`run_humaneval.py` 默认跑前 5 题，会调用大模型 API 并消耗额度。`run_nl2vc.py` 需要额外放入 `data/NL2VC-60.jsonl`。
-
-`run_humaneval.py` 支持快速切片评测：
+以下命令不调用模型 API：
 
 ```bash
-python run_humaneval.py --start 0 --limit 5 --rounds 3
-python run_humaneval.py --start 20 --limit 10
+python -m pytest tests -q
+python project/dafny_wrapper.py
 ```
 
-当前 pipeline 默认启用 verified template fallback。它会先为少量已整理的 HumanEval 模式使用本地已验证模板，模板没有命中时再调用 LLM pipeline。关闭模板、运行纯 LLM 实验：
+若只想做 Python 语法检查：
 
 ```bash
-USE_TEMPLATE_FALLBACK=0 python run_humaneval.py --start 0 --limit 5
+python -m compileall -q project tests
 ```
 
-如果暂时没有 Dafny，可以先做 Python 侧检查：
+HumanEval 运行会调用模型 API 并消耗额度。先用单题严格烟雾测试确认端到端环境：
 
 ```bash
-source .venv/bin/activate
-python -m compileall project test_benchmark.py
-python -c "import openai, pptx, lxml; print('imports ok')"
+python project/run_humaneval.py --mode strict --start 0 --limit 1 --rounds 1
 ```
+
+再运行固定切片：
+
+```bash
+python project/run_humaneval.py --mode strict --start 0 --limit 20 --rounds 3
+python project/run_humaneval.py --mode strict --start 20 --limit 10 --rounds 3
+```
+
+`run_nl2vc.py` 需要另行放置 `data/NL2VC-60.jsonl`。
+
+## 5. 严格与辅助协议
+
+### strict（默认）
+
+严格模式不向任何生成或修复 Agent 提供官方 HumanEval 测试。仅当 pipeline 已停止
+且 Dafny 验证通过时，官方 `check(candidate)` 才作为一次性留出测试运行。留出失败
+不会再触发修复。因此严格结果可用于比较泛化能力。
+
+```bash
+python project/run_humaneval.py --mode strict --start 0 --limit 5
+```
+
+### assisted
+
+辅助模式允许把独立开发测试放入行为修复循环，但必须显式指定文件：
+
+```bash
+python project/run_humaneval.py \
+  --mode assisted \
+  --repair-tests data/humaneval_dev_tests.jsonl \
+  --start 0 --limit 5
+```
+
+支持的 JSONL 示例：
+
+```json
+{"task_id":"HumanEval/0","test":"def check(candidate):\n    assert candidate([...]) == [...]"}
+```
+
+也可使用以下 JSON 映射形式：
+
+```json
+{
+  "HumanEval/0": {
+    "test": "def check(candidate):\n    assert candidate([...]) == [...]"
+  }
+}
+```
+
+开发测试必须独立整理，不能由官方 `test` 字段复制或变形得到。无论哪种模式，
+官方测试都不会作为修复反馈。
+
+## 6. 实验目录与 manifest
+
+默认情况下，每次 CLI 运行创建：
+
+```text
+logs/runs/<timestamp>_humaneval_<mode>_<start>_<count>/
+├── manifest.json
+├── benchmark_intermediate_*.json
+└── benchmark_final.json
+```
+
+`manifest.json` 在运行前记录：
+
+- Git SHA、dirty 状态和工作区哈希；
+- 数据 SHA-256、提示源码组合哈希和任务 ID；
+- 模型、温度、token 上限、重试及 pipeline 开关；
+- Python、平台、Dafny 路径/版本和关键依赖版本。
+
+运行完成后还会写入 LLM 请求次数、token、延迟、错误事件和不含逐题大对象的结果
+摘要。可使用 `RUNS_DIR` 改写根目录，或使用 `--output-dir` 指定一个明确的本次
+目录。为了保持实验隔离，不要复用已有 run 目录。
+
+比较实验时至少固定：数据哈希、任务 ID、模型版本、温度、修复轮次、Dafny 版本
+和评测模式。模板辅助结果、辅助模式结果与严格模式结果应分别报告。

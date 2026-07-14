@@ -208,3 +208,20 @@ def test_timeout_is_structured_and_keeps_errorinfo_compatibility():
     assert legacy.error_type == "syntax"
     assert legacy.related_spec == "requires true"
     assert legacy.subtype == ""
+
+
+def test_commands_allow_non_fatal_dafny_warnings():
+    verifier = DafnyVerifier("dafny")
+    assert verifier._cmd("resolve", "sample.dfy") == [
+        "dafny", "resolve", "--allow-warnings", "sample.dfy"
+    ]
+    verify_command = verifier._cmd("verify", "sample.dfy")
+    assert verify_command[:3] == ["dafny", "verify", "--allow-warnings"]
+
+
+def test_process_error_keeps_warning_output_for_diagnosis():
+    parsed = DafnyVerifier()._parse_resolve(
+        "Compilation failed because warnings were found", returncode=2
+    )
+    assert parsed.errors[0].subtype == "process_error"
+    assert "warnings were found" in parsed.errors[0].message

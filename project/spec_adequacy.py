@@ -8,6 +8,8 @@ risks, and missing obligations that are useful for research analysis.
 import re
 from typing import Any
 
+from contract_utils import bodyless_callable_names
+
 
 def check_spec_adequacy(
     spec: str,
@@ -72,10 +74,34 @@ def check_spec_adequacy(
         missing.append("Add semantic operators such as quantifiers, equality, ordering, length, or helper predicates.")
         score -= 15
 
-    feature_result = _check_feature_obligations(spec, desc_features)
+    has_reference = _has_executable_result_reference(spec)
+    evidence["executable_result_reference"] = has_reference
+    feature_result = _check_feature_obligations(
+        spec, desc_features, has_executable_reference=has_reference
+    )
     flags.extend(feature_result["flags"])
     missing.extend(feature_result["missing"])
     score -= feature_result["penalty"]
+
+    # Semantic strength and proof friendliness are distinct. Prefix/fold
+    # tasks and sequence-producing tasks are routinely specified by large
+    # quantified formulas that are accurate but expensive to implement twice.
+    # Record (without lowering the semantic score) when an executable reference
+    # helper is missing so the pre-code spec repair can normalize that shape.
+    return_types = [item.get("type", "") for item in (signature or {}).get("returns", [])]
+    needs_reference = (
+        desc_features["sum_or_prefix"]
+        or desc_features["ordering"]
+        or any(
+            typ.strip() == "string" or typ.replace(" ", "").startswith("seq<")
+            for typ in return_types
+        )
+    )
+    if needs_reference and not has_reference:
+        flags.append("proof_friendly_reference_missing")
+        missing.append(
+            "Add a total executable reference helper and bind result to it; keep semantics in the helper body."
+        )
 
     if dafny_verified is True and humaneval_passed is False:
         flags.append("verified_but_behavior_failed")
@@ -167,7 +193,10 @@ def _problem_features(problem_desc: str) -> dict[str, bool]:
         "bool_result": "-> bool" in signature_text or has_word("true", "false", "boolean"),
         "sequence_task": "list[" in signature_text or has_word("list", "seq", "array", "sequence"),
         "string_task": "str" in signature_text or has_word("string"),
-        "ordering": has_word("sorted", "increasing", "decreasing", "maximum", "minimum", "largest", "smallest"),
+        "ordering": has_word(
+            "sorted", "increasing", "decreasing", "maximum", "minimum",
+            "largest", "smallest", "longest", "shortest",
+        ),
         "existential": any(phrase in text for phrase in ["exists", "there is", "there are", "at least one"]),
         "universal": has_word("all", "every", "each") or "for any" in text,
         "length_or_size": has_word("length", "size", "empty", "non-empty", "nonempty"),
@@ -225,11 +254,34 @@ def _semantic_signal_score(spec: str) -> int:
     return sum(1 for signal in signals if signal in spec)
 
 
-def _check_feature_obligations(spec: str, features: dict[str, bool]) -> dict[str, Any]:
+def _has_executable_result_reference(spec: str) -> bool:
+    matches = re.findall(
+        r"ensures\s+\w+\s*(?:==|<==>)\s*([A-Za-z_]\w*)\s*\(",
+        spec,
+    )
+    if not matches:
+        return False
+    bodyless = bodyless_callable_names(spec)
+    return all(name not in bodyless for name in matches)
+
+
+def _check_feature_obligations(
+    spec: str,
+    features: dict[str, bool],
+    *,
+    has_executable_reference: bool = False,
+) -> dict[str, Any]:
     flags = []
     missing = []
     penalty = 0
     ensures_text = "\n".join(_extract_clauses(spec)["ensures"])
+
+    # A total executable reference function is itself the semantic relation.
+    # Requiring the method to duplicate it as length/membership/forall clauses
+    # invites LLM "strengthening" that can silently change correct behavior.
+    # Mutation probing and the final holdout still test the helper's adequacy.
+    if has_executable_reference:
+        return {"flags": flags, "missing": missing, "penalty": penalty}
 
     def absent_any(tokens: list[str]) -> bool:
         return not any(token in spec for token in tokens)
@@ -333,6 +385,8 @@ def _recommendations(flags: list[str], features: dict[str, bool]) -> list[str]:
         recs.append("Treat this as a spec adequacy warning: verified code did not satisfy behavioral tests.")
     if "mutation_verified_mutant" in flags:
         recs.append("Strengthen the spec until simple default/parameter-return mutants no longer verify.")
+    if "proof_friendly_reference_missing" in flags:
+        recs.append("Use `ensures result == Reference(inputs)` with a total executable recursive helper.")
     return _dedupe(recs)
 
 

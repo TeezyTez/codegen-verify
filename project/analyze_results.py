@@ -16,6 +16,25 @@ from typing import Any
 import config
 
 
+REPAIR_ROUTES = {
+    "proof_repair": "proof_repair",
+    "repair": "code_repair",
+    "alignment_repair": "alignment_repair",
+    "spec_strengthening": "spec_strengthening",
+}
+
+REPAIR_METRIC_NAMES = (
+    "calls",
+    "evaluated",
+    "direct_successes",
+    "regressions",
+    "non_improvements",
+    "contract_drifts",
+    "preverify_rejections",
+    "unevaluated",
+)
+
+
 def pct(numerator: int, denominator: int) -> str:
     if denominator == 0:
         return "0.0%"
@@ -37,11 +56,12 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
     attribution = result.get("final_attribution") or {}
     flags = adequacy.get("flags") or []
     trace = result.get("research_trace") or []
-    mutation = mutation or {}
+    mutation = mutation or result.get("inloop_mutation_adequacy") or {}
     trace_stages = [event.get("stage", "") for event in trace]
     repair_path = _repair_path(trace_stages)
+    repair_metrics = repair_trace_metrics(trace)
 
-    return {
+    row = {
         "task_id": result.get("task_id", ""),
         "entry_point": result.get("entry_point", ""),
         "passed": bool(result.get("passed", False)),
@@ -56,9 +76,10 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "attribution_category": attribution.get("category", ""),
         "repair_target": attribution.get("repair_target", ""),
         "repair_path": repair_path,
-        "proof_repair_attempted": "proof_repair" in trace_stages,
-        "alignment_repair_attempted": "alignment_repair" in trace_stages,
-        "spec_strengthening_attempted": "spec_strengthening" in trace_stages,
+        "proof_repair_attempted": repair_metrics["proof_repair"]["calls"] > 0,
+        "code_repair_attempted": repair_metrics["code_repair"]["calls"] > 0,
+        "alignment_repair_attempted": repair_metrics["alignment_repair"]["calls"] > 0,
+        "spec_strengthening_attempted": repair_metrics["spec_strengthening"]["calls"] > 0,
         "behavior_loop_executed": "behavior_test" in trace_stages,
         "mutants_total": mutation.get("mutants_total", ""),
         "mutants_verified": mutation.get("mutants_verified", ""),
@@ -67,6 +88,10 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "trace_stages": ";".join(trace_stages),
         "humaneval_error": result.get("humaneval_error") or result.get("error") or "",
     }
+    for route, metrics in repair_metrics.items():
+        for metric, value in metrics.items():
+            row[f"{route}_{metric}"] = value
+    return row
 
 
 def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
@@ -91,7 +116,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     avg_rounds = _avg_number(r["rounds"] for r in rows)
     avg_spec_score = _avg_number(r["spec_score"] for r in rows)
 
-    return {
+    summary = {
         "total": total,
         "passed": passed,
         "dafny_verified": dafny_verified,
@@ -108,16 +133,192 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "repair_targets": dict(repair_targets),
         "mutation_risks": dict(mutation_risks),
         "repair_paths": dict(repair_paths),
-        "proof_repair_attempted": sum(1 for r in rows if r["proof_repair_attempted"]),
-        "proof_repair_success": sum(1 for r in rows if r["proof_repair_attempted"] and r["passed"]),
-        "alignment_repair_attempted": sum(1 for r in rows if r["alignment_repair_attempted"]),
-        "alignment_repair_success": sum(1 for r in rows if r["alignment_repair_attempted"] and r["passed"]),
-        "spec_strengthening_attempted": sum(1 for r in rows if r["spec_strengthening_attempted"]),
-        "spec_strengthening_success": sum(1 for r in rows if r["spec_strengthening_attempted"] and r["passed"]),
+        # These legacy keys now deliberately mean calls and immediate verifier
+        # successes, not "tasks that eventually passed".  A task can contain
+        # several repair calls, each with a different immediate outcome.
+        "proof_repair_attempted": _sum_metric(rows, "proof_repair", "calls"),
+        "proof_repair_success": _sum_metric(rows, "proof_repair", "direct_successes"),
+        "code_repair_attempted": _sum_metric(rows, "code_repair", "calls"),
+        "code_repair_success": _sum_metric(rows, "code_repair", "direct_successes"),
+        "alignment_repair_attempted": _sum_metric(rows, "alignment_repair", "calls"),
+        "alignment_repair_success": _sum_metric(rows, "alignment_repair", "direct_successes"),
+        "spec_strengthening_attempted": _sum_metric(rows, "spec_strengthening", "calls"),
+        "spec_strengthening_success": _sum_metric(rows, "spec_strengthening", "direct_successes"),
+        "proof_repair_tasks_attempted": sum(1 for r in rows if r["proof_repair_attempted"]),
+        "code_repair_tasks_attempted": sum(1 for r in rows if r["code_repair_attempted"]),
+        "alignment_repair_tasks_attempted": sum(1 for r in rows if r["alignment_repair_attempted"]),
+        "spec_strengthening_tasks_attempted": sum(1 for r in rows if r["spec_strengthening_attempted"]),
         "behavior_loop_executed": sum(1 for r in rows if r["behavior_loop_executed"]),
         "suspicious_mutants": suspicious_mutants,
         "top_spec_flags": dict(flag_counter.most_common(12)),
     }
+    for route in REPAIR_ROUTES.values():
+        for metric in REPAIR_METRIC_NAMES:
+            summary[f"{route}_{metric}"] = _sum_metric(rows, route, metric)
+
+    implementation_routes = ("proof_repair", "code_repair", "alignment_repair")
+    for metric in REPAIR_METRIC_NAMES:
+        summary[f"repair_{metric}_total"] = sum(
+            summary[f"{route}_{metric}"] for route in implementation_routes
+        )
+    return summary
+
+
+def repair_trace_metrics(trace: list[dict[str, Any]]) -> dict[str, dict[str, int]]:
+    """Measure every repair call against its immediate verifier outcome.
+
+    The old report treated a repair route as successful whenever the *task*
+    eventually passed.  That credits an early failed repair when a later,
+    unrelated repair succeeds.  Here each non-skipped repair event is one call.
+    Only the first following ``verify`` event can be its direct outcome, and a
+    candidate rejected before verification can never inherit the result of the
+    unchanged code that the graph may verify next.
+
+    New traces expose ``candidate_verification`` and rollback metadata.  Older
+    traces are supported by comparing the next verification with the preceding
+    verification, using error class and count as a conservative fallback.
+    """
+    metrics = {
+        route: {name: 0 for name in REPAIR_METRIC_NAMES}
+        for route in REPAIR_ROUTES.values()
+    }
+
+    for index, event in enumerate(trace):
+        route = REPAIR_ROUTES.get(str(event.get("stage", "")))
+        if route is None:
+            continue
+        action = str(event.get("action", "")).strip().lower()
+        if action == "skipped":
+            continue
+
+        route_metrics = metrics[route]
+        route_metrics["calls"] += 1
+
+        contract_drift = _event_has_contract_drift(event)
+        if contract_drift:
+            route_metrics["contract_drifts"] += 1
+
+        # Alignment performs an internal verification and records this action
+        # only after observing the regression.  Its following graph-level
+        # verify runs the restored old code, so it must not be called a success.
+        if action == "regression_rolled_back":
+            route_metrics["evaluated"] += 1
+            route_metrics["regressions"] += 1
+            continue
+
+        if _rejected_before_verification(event, action):
+            route_metrics["preverify_rejections"] += 1
+            continue
+
+        next_verify_index = _find_next_stage(trace, index, "verify")
+        if next_verify_index is None:
+            route_metrics["unevaluated"] += 1
+            continue
+
+        next_verify = trace[next_verify_index]
+        candidate = next_verify.get("candidate_verification") or next_verify.get("verification")
+        if not isinstance(candidate, dict):
+            route_metrics["unevaluated"] += 1
+            continue
+
+        route_metrics["evaluated"] += 1
+        if bool(candidate.get("passed", False)):
+            route_metrics["direct_successes"] += 1
+
+        if _snapshot_has_contract_error(candidate) and not contract_drift:
+            route_metrics["contract_drifts"] += 1
+
+        previous_verify_index = _find_previous_stage(trace, index, "verify")
+        previous = None
+        if previous_verify_index is not None:
+            previous = trace[previous_verify_index].get("verification")
+        comparison = _compare_verification_snapshots(candidate, previous)
+        rollback_reason = str(next_verify.get("rollback_reason", "")).lower()
+        explicitly_rejected = bool(next_verify.get("candidate_rejected", False))
+        if rollback_reason == "verification_regression" or comparison < 0:
+            route_metrics["regressions"] += 1
+        elif explicitly_rejected or (comparison == 0 and not candidate.get("passed", False)):
+            route_metrics["non_improvements"] += 1
+
+    return metrics
+
+
+def _sum_metric(rows: list[dict[str, Any]], route: str, metric: str) -> int:
+    return sum(_safe_int(row.get(f"{route}_{metric}", 0)) for row in rows)
+
+
+def _find_next_stage(trace: list[dict[str, Any]], index: int, stage: str) -> int | None:
+    for candidate_index in range(index + 1, len(trace)):
+        if trace[candidate_index].get("stage") == stage:
+            return candidate_index
+    return None
+
+
+def _find_previous_stage(trace: list[dict[str, Any]], index: int, stage: str) -> int | None:
+    for candidate_index in range(index - 1, -1, -1):
+        if trace[candidate_index].get("stage") == stage:
+            return candidate_index
+    return None
+
+
+def _rejected_before_verification(event: dict[str, Any], action: str) -> bool:
+    rejected_actions = {
+        "candidate_rejected",
+        "contract_preservation_failed",
+        "fallback_original",
+        "fallback_to_code_repair",
+    }
+    return action in rejected_actions or bool(event.get("candidate_rejected", False))
+
+
+def _event_has_contract_drift(event: dict[str, Any]) -> bool:
+    if str(event.get("action", "")).lower() == "contract_preservation_failed":
+        return True
+    if event.get("missing_contract_clauses"):
+        return True
+    issue_fields = (
+        event.get("deterministic_issues") or [],
+        event.get("static_issues") or [],
+    )
+    return any(
+        "contract" in str(issue).lower()
+        for issues in issue_fields
+        for issue in issues
+    )
+
+
+def _snapshot_has_contract_error(snapshot: dict[str, Any]) -> bool:
+    return any(
+        str(error.get("type", "")).lower() == "contract"
+        for error in snapshot.get("errors", [])
+        if isinstance(error, dict)
+    )
+
+
+def _compare_verification_snapshots(candidate: Any, previous: Any) -> int:
+    """Return -1/0/1 when candidate is worse/equal/better than previous."""
+    if not isinstance(candidate, dict) or not isinstance(previous, dict):
+        return 0
+    candidate_quality = _snapshot_quality(candidate)
+    previous_quality = _snapshot_quality(previous)
+    return (candidate_quality > previous_quality) - (candidate_quality < previous_quality)
+
+
+def _snapshot_quality(snapshot: dict[str, Any]) -> tuple[int, int]:
+    if bool(snapshot.get("passed", False)):
+        return (3, 0)
+    error_types = {
+        str(error.get("type", "")).lower()
+        for error in snapshot.get("errors", [])
+        if isinstance(error, dict)
+    }
+    if "timeout" in error_types:
+        rank = 0
+    elif error_types & {"syntax", "type", "undefined", "assignment", "contract"}:
+        rank = 1
+    else:
+        rank = 2
+    return (rank, -_safe_int(snapshot.get("error_count", 0)))
 
 
 def _safe_int(value: Any) -> int:
@@ -164,6 +365,7 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "repair_target",
         "repair_path",
         "proof_repair_attempted",
+        "code_repair_attempted",
         "alignment_repair_attempted",
         "spec_strengthening_attempted",
         "behavior_loop_executed",
@@ -174,6 +376,8 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "trace_stages",
         "humaneval_error",
     ]
+    for route in REPAIR_ROUTES.values():
+        fieldnames.extend(f"{route}_{metric}" for metric in REPAIR_METRIC_NAMES)
     with open(path, "w", encoding="utf-8-sig", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
@@ -195,11 +399,20 @@ def print_summary(summary: dict[str, Any], csv_path: Path) -> None:
     _print_counter("Repair targets", summary["repair_targets"])
     _print_counter("Repair paths", summary["repair_paths"])
     _print_counter("Mutation adequacy risks", summary["mutation_risks"])
+    print("\nRepair direct verifier outcomes (success/calls):")
+    for route in REPAIR_ROUTES.values():
+        print(
+            f"  {route}: {summary[f'{route}_direct_successes']}/"
+            f"{summary[f'{route}_calls']}"
+        )
     print(
-        "\nRepair route success:"
-        f"\n  proof_repair: {summary['proof_repair_success']}/{summary['proof_repair_attempted']}"
-        f"\n  alignment_repair: {summary['alignment_repair_success']}/{summary['alignment_repair_attempted']}"
-        f"\n  spec_strengthening: {summary['spec_strengthening_success']}/{summary['spec_strengthening_attempted']}"
+        "Repair audit totals (proof/code/alignment only):"
+        f"\n  evaluated: {summary['repair_evaluated_total']}"
+        f"\n  regressions: {summary['repair_regressions_total']}"
+        f"\n  non_improvements: {summary['repair_non_improvements_total']}"
+        f"\n  contract_drifts: {summary['repair_contract_drifts_total']}"
+        f"\n  rejected_before_verify: {summary['repair_preverify_rejections_total']}"
+        f"\n  unevaluated: {summary['repair_unevaluated_total']}"
         f"\n  behavior_loop_executed: {summary['behavior_loop_executed']}"
     )
     print(f"\nSuspicious mutants: {summary['suspicious_mutants']}")

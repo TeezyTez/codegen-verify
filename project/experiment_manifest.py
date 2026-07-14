@@ -104,6 +104,8 @@ def _command(command: list[str]) -> str:
             cwd=config.PROJECT_DIR,
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=15,
         )
     except Exception as exc:

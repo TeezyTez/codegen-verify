@@ -27,10 +27,16 @@ def select_proof_patterns(
             """Fold/prefix bridge:
 - Before updating an accumulator at index i, establish the slice identity
   `xs[..i+1] == xs[..i] + [xs[i]]`.
-- Use/prove a generic append lemma such as
-  `F(xs + [x]) == Combine(F(xs), x)`.
+- Use/prove a generic append lemma such as the following concrete shape:
+  `lemma FoldAppend(xs: seq<int>, x: int)`
+  `  ensures Fold(xs + [x]) == Fold(xs) + x`
+  `  decreases |xs|`
+  `{ if |xs| > 0 { FoldAppend(xs[1..], x); } }`
 - The loop invariant should be exactly `acc == F(xs[..i])`; invoke the lemma
-  before assigning acc and incrementing i."""
+  before assigning acc and incrementing i.
+- If an early return witnesses an existential prefix property, assert the
+  updated accumulator/prefix equality first, then use the current index as the
+  witness before returning."""
         )
 
     if "out_of_range" in types:
@@ -59,6 +65,22 @@ def select_proof_patterns(
 - Add a bridge assertion immediately before that assignment and preserve facts
   about unchanged state explicitly.
 - Distinguish initialization, maintenance, and loop-exit obligations."""
+        )
+
+    if types & {"invariant", "postcondition", "out_of_range"} and any(
+        token in text for token in ("seq<", "sequence", "list", "result[")
+    ):
+        patterns.append(
+            """Processed-prefix sequence construction:
+- Prefer growing `result` with concatenation over allocating a fixed sequence
+  and updating `result[index := value]`; append construction avoids index
+  bounds and gives a direct length invariant.
+- Maintain exact shape for the processed prefix: result length plus quantified
+  even/odd (or source/emitted) positions for all indices `< i`.
+- Immediately before incrementing i, assert the newly appended positions and
+  the new length. At loop exit, instantiate the invariant into each ensures.
+- Do not strengthen the public precondition to avoid empty/singleton inputs;
+  handle those branches explicitly."""
         )
 
     if any(token in text for token in ("maximum", "rolling_max", "longest", "minimum")):

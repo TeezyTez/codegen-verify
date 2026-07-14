@@ -165,6 +165,28 @@ class Seq:
     )
 
 
+def test_sequence_inputs_use_dafny_runtime_sequence(monkeypatch):
+    class Seq:
+        def __init__(self, value):
+            self.elems = tuple(value)
+
+    monkeypatch.setitem(sys.modules, "_dafny", SimpleNamespace(Seq=Seq))
+    converted = tester._to_dafny_val([1, 2, 3], "seq<int>")
+    assert isinstance(converted, Seq)
+    assert converted.elems == (1, 2, 3)
+
+
+def test_nested_sequence_inputs_are_wrapped_recursively(monkeypatch):
+    class Seq:
+        def __init__(self, value):
+            self.elems = tuple(value)
+
+    monkeypatch.setitem(sys.modules, "_dafny", SimpleNamespace(Seq=Seq))
+    converted = tester._to_dafny_val([[1], [2, 3]], "seq<seq<int>>")
+    assert isinstance(converted, Seq)
+    assert all(isinstance(item, Seq) for item in converted.elems)
+
+
 def test_generated_module_loader_restores_path_and_module_cache():
     with tempfile.TemporaryDirectory(prefix="humaneval-loader-test-") as temp_dir:
         generated_dir = Path(temp_dir)

@@ -12,6 +12,9 @@ from typing import Any
 from dafny_wrapper import DafnyVerifier
 
 
+MIN_MUTANTS_FOR_CONFIDENT_RISK = 4
+
+
 @dataclass(frozen=True)
 class Param:
     name: str
@@ -71,16 +74,31 @@ def generate_mutants(spec: str) -> list[Mutant]:
             "Assign an alternate constant/default value.",
         ))
 
-    for ret in signature.returns:
+    negative_assignments = _negative_assignments(signature.returns)
+    if negative_assignments:
+        mutants.append(_build_mutant(
+            spec,
+            "negative_constant_return",
+            negative_assignments,
+            "Assign a negative constant to every numeric return variable.",
+        ))
+
+    for return_index, ret in enumerate(signature.returns):
         for param in signature.params:
-            if _normalize_type(ret.typ) == _normalize_type(param.typ):
+            for mutation_name, expression, rationale in _semantic_expressions(ret, param):
+                assignments = _targeted_assignments(
+                    signature.returns,
+                    return_index,
+                    expression,
+                )
+                if not assignments:
+                    continue
                 mutants.append(_build_mutant(
                     spec,
-                    f"return_param_{param.name}",
-                    [f"{ret.name} := {param.name};"],
-                    f"Return input parameter `{param.name}` directly.",
+                    _semantic_mutant_name(signature, ret, mutation_name, param),
+                    assignments,
+                    rationale,
                 ))
-                break
 
     return _dedupe_mutants(mutants)
 
@@ -100,10 +118,13 @@ def probe_spec_mutants(spec: str, verifier: DafnyVerifier | None = None) -> dict
         })
 
     verified_count = sum(1 for item in results if item["dafny_verified"])
+    total = len(results)
     return {
-        "mutants_total": len(results),
+        "mutants_total": total,
         "mutants_verified": verified_count,
-        "mutation_adequacy_risk": _risk_level(verified_count, len(results)),
+        "minimum_mutants_required": MIN_MUTANTS_FOR_CONFIDENT_RISK,
+        "probe_strength": _probe_strength(total),
+        "mutation_adequacy_risk": _risk_level(verified_count, total),
         "mutants": results,
     }
 
@@ -154,11 +175,36 @@ def _alternate_assignments(returns: list[Param]) -> list[str]:
     return assignments
 
 
+def _negative_assignments(returns: list[Param]) -> list[str]:
+    assignments = []
+    for ret in returns:
+        value = _negative_value(ret.typ)
+        if value is None:
+            return []
+        assignments.append(f"{ret.name} := {value};")
+    return assignments
+
+
+def _targeted_assignments(
+    returns: list[Param],
+    target_index: int,
+    expression: str,
+) -> list[str]:
+    """Assign every out parameter so multi-return mutants remain compilable."""
+    assignments = []
+    for index, ret in enumerate(returns):
+        value = expression if index == target_index else _default_value(ret.typ)
+        if value is None:
+            return []
+        assignments.append(f"{ret.name} := {value};")
+    return assignments
+
+
 def _default_value(typ: str) -> str | None:
-    typ = typ.strip()
+    typ = _normalize_type(typ)
     if typ == "bool":
         return "false"
-    if typ == "int":
+    if typ in {"int", "nat"}:
         return "0"
     if typ == "real":
         return "0.0"
@@ -166,14 +212,18 @@ def _default_value(typ: str) -> str | None:
         return '""'
     if typ.startswith("seq<"):
         return "[]"
+    if typ.startswith("set<"):
+        return "{}"
+    if typ.startswith("Option<"):
+        return "None"
     return None
 
 
 def _alternate_value(typ: str) -> str | None:
-    typ = typ.strip()
+    typ = _normalize_type(typ)
     if typ == "bool":
         return "true"
-    if typ == "int":
+    if typ in {"int", "nat"}:
         return "1"
     if typ == "real":
         return "1.0"
@@ -181,7 +231,186 @@ def _alternate_value(typ: str) -> str | None:
         return '"x"'
     if typ.startswith("seq<"):
         return "[]"
+    if typ.startswith("set<"):
+        return "{}"
+    if typ.startswith("Option<"):
+        return "None"
     return None
+
+
+def _negative_value(typ: str) -> str | None:
+    typ = _normalize_type(typ)
+    if typ == "int":
+        return "-1"
+    if typ == "real":
+        return "-1.0"
+    return None
+
+
+def _semantic_expressions(ret: Param, param: Param) -> list[tuple[str, str, str]]:
+    """Return suspicious expressions that are well-typed for ``ret``.
+
+    These are deliberately semantic rather than syntactic mutations.  They
+    exercise common under-specification holes: identity implementations,
+    off-by-one numeric results, and sequence implementations that drop,
+    duplicate, or reverse their input.
+    """
+    result: list[tuple[str, str, str]] = []
+    ret_type = _normalize_type(ret.typ)
+    param_type = _normalize_type(param.typ)
+
+    if _compatible_type(ret_type, param_type):
+        result.append((
+            "return_param",
+            param.name,
+            f"Return input parameter `{param.name}` directly.",
+        ))
+
+        if ret_type in {"int", "real"}:
+            one = "1.0" if ret_type == "real" else "1"
+            result.extend([
+                (
+                    "param_plus_one",
+                    f"({param.name} + {one})",
+                    f"Return `{param.name}` plus one (an off-by-one mutant).",
+                ),
+                (
+                    "param_minus_one",
+                    f"({param.name} - {one})",
+                    f"Return `{param.name}` minus one (an off-by-one mutant).",
+                ),
+                (
+                    "negate_param",
+                    f"(-{param.name})",
+                    f"Return the arithmetic negation of `{param.name}`.",
+                ),
+            ])
+        elif ret_type == "nat":
+            result.extend([
+                (
+                    "param_plus_one",
+                    f"({param.name} + 1)",
+                    f"Return `{param.name}` plus one (an off-by-one mutant).",
+                ),
+                (
+                    "param_minus_one",
+                    f"(if {param.name} == 0 then 0 else {param.name} - 1)",
+                    f"Return a saturating `{param.name}` minus one mutant.",
+                ),
+            ])
+        elif ret_type == "bool":
+            result.append((
+                "negate_param",
+                f"(!{param.name})",
+                f"Return the negation of boolean input `{param.name}`.",
+            ))
+        elif _is_sequence_like(ret_type):
+            result.extend(_sequence_expressions(param))
+
+    # Cross-type semantic projections catch specs that constrain only the
+    # result's broad range but omit its relationship to an input collection.
+    if ret_type == "int" and _is_sequence_like(param_type):
+        result.extend([
+            (
+                "input_length",
+                f"|{param.name}|",
+                f"Return the length of input `{param.name}`.",
+            ),
+            (
+                "input_length_plus_one",
+                f"(|{param.name}| + 1)",
+                f"Return the length of `{param.name}` plus one.",
+            ),
+            (
+                "input_length_minus_one",
+                f"(if |{param.name}| == 0 then 0 else |{param.name}| - 1)",
+                f"Return a saturating length-minus-one value for `{param.name}`.",
+            ),
+        ])
+    elif ret_type == "bool" and _is_sequence_like(param_type):
+        result.extend([
+            (
+                "input_is_empty",
+                f"|{param.name}| == 0",
+                f"Return whether `{param.name}` is empty.",
+            ),
+            (
+                "input_is_nonempty",
+                f"|{param.name}| != 0",
+                f"Return whether `{param.name}` is non-empty.",
+            ),
+        ])
+
+    option_inner = _option_inner_type(ret_type)
+    if option_inner is not None and _compatible_type(option_inner, param_type):
+        result.append((
+            "wrap_param_some",
+            f"Some({param.name})",
+            f"Always wrap input `{param.name}` in `Some`.",
+        ))
+
+    return result
+
+
+def _sequence_expressions(param: Param) -> list[tuple[str, str, str]]:
+    name = param.name
+    return [
+        (
+            "drop_first",
+            f"(if |{name}| == 0 then [] else {name}[1..])",
+            f"Drop the first element of `{name}`.",
+        ),
+        (
+            "drop_last",
+            f"(if |{name}| == 0 then [] else {name}[..|{name}| - 1])",
+            f"Drop the last element of `{name}`.",
+        ),
+        (
+            "reverse_input",
+            (
+                f"seq(|{name}|, mutationIndex "
+                f"requires 0 <= mutationIndex < |{name}| "
+                f"=> {name}[|{name}| - 1 - mutationIndex])"
+            ),
+            f"Return `{name}` in reverse order.",
+        ),
+        (
+            "duplicate_input",
+            f"({name} + {name})",
+            f"Duplicate the contents of `{name}`.",
+        ),
+    ]
+
+
+def _semantic_mutant_name(
+    signature: Signature,
+    ret: Param,
+    mutation_name: str,
+    param: Param,
+) -> str:
+    prefix = f"{ret.name}_" if len(signature.returns) > 1 else ""
+    if mutation_name == "return_param":
+        return f"return_{prefix}param_{param.name}"
+    return f"{prefix}{mutation_name}_{param.name}"
+
+
+def _compatible_type(a: str, b: str) -> bool:
+    a = _normalize_type(a)
+    b = _normalize_type(b)
+    if a == b:
+        return True
+    # Dafny's ``string`` is a sequence of characters.
+    return {a, b} == {"string", "seq<char>"}
+
+
+def _is_sequence_like(typ: str) -> bool:
+    typ = _normalize_type(typ)
+    return typ == "string" or typ.startswith("seq<")
+
+
+def _option_inner_type(typ: str) -> str | None:
+    match = re.fullmatch(r"Option<(.*)>", _normalize_type(typ))
+    return match.group(1) if match else None
 
 
 def _build_mutant(spec: str, name: str, assignments: list[str], rationale: str) -> Mutant:
@@ -208,6 +437,16 @@ def _normalize_type(typ: str) -> str:
 def _risk_level(verified_count: int, total: int) -> str:
     if total == 0:
         return "not_applicable"
+    if total < MIN_MUTANTS_FOR_CONFIDENT_RISK:
+        return "insufficient"
     if verified_count > 0:
         return "medium"
     return "low"
+
+
+def _probe_strength(total: int) -> str:
+    if total == 0:
+        return "not_applicable"
+    if total < MIN_MUTANTS_FOR_CONFIDENT_RISK:
+        return "insufficient"
+    return "sufficient"

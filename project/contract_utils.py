@@ -157,6 +157,147 @@ def contract_fidelity_issues(
     return list(check_contract_fidelity(expected_source, candidate_source, method_name).issues)
 
 
+def restore_public_contract(
+    expected_source: str,
+    candidate_source: str,
+    method_name: str = "",
+) -> str:
+    """Replace only the candidate's public declaration with the frozen one.
+
+    LLMs frequently rewrite a postcondition into a logically equivalent helper
+    expression. The harness must keep one stable contract for attribution and
+    reproducibility, so generated implementations are normalized back to the
+    parsed frozen signature/clauses before deterministic checks. Method bodies
+    and helper declarations are left untouched.
+    """
+    expected = parse_method_contract(expected_source, method_name)
+    if expected is None:
+        return candidate_source
+
+    method_match = _find_method(candidate_source, expected.name)
+    if method_match is None:
+        return candidate_source
+
+    remainder = candidate_source[method_match.start():]
+    body_match = re.search(r"(?m)^[ \t]*\{", remainder)
+    if body_match is None:
+        return candidate_source
+
+    body_start = method_match.start() + body_match.start()
+    declaration = _render_method_contract(expected)
+    return candidate_source[:method_match.start()] + declaration + "\n" + candidate_source[body_start:]
+
+
+def build_direct_reference_program(
+    frozen_spec: str,
+    method_name: str = "",
+) -> str | None:
+    """Build the trivial implementation when the spec defines the result.
+
+    For a clause such as ``ensures result == Reference(xs)``, reimplementing
+    ``Reference`` with a loop creates avoidable proof obligations and permits
+    helper semantic drift. This constructor uses the frozen helper definitions
+    themselves and gives the public method the single assignment required by
+    the contract. Additional ensures remain in place and are still verified.
+    """
+    contract = parse_method_contract(frozen_spec, method_name)
+    if contract is None or not contract.returns:
+        return None
+
+    assignments: list[tuple[str, str]] = []
+    bodyless = bodyless_callable_names(frozen_spec)
+    for return_param in contract.returns:
+        reference_call = ""
+        helper_name = ""
+        for clause in contract.ensures:
+            match = re.fullmatch(
+                rf"\s*{re.escape(return_param.name)}\s*(?:==|<==>)\s*"
+                r"([A-Za-z_]\w*)\s*(\(.*\))\s*",
+                clause,
+                flags=re.DOTALL,
+            )
+            if match:
+                helper_name = match.group(1)
+                reference_call = helper_name + match.group(2)
+                break
+        if not reference_call:
+            return None
+        helper_pattern = re.compile(
+            rf"\b(?:function|predicate)\s+{re.escape(helper_name)}\s*\("
+        )
+        if not helper_pattern.search(frozen_spec) or helper_name in bodyless:
+            return None
+        assignments.append((return_param.name, reference_call))
+
+    lines = frozen_spec.splitlines()
+    start = next(
+        (
+            index
+            for index, line in enumerate(lines)
+            if re.search(rf"\bmethod\s+{re.escape(contract.name)}\s*\(", line)
+        ),
+        None,
+    )
+    if start is None:
+        return None
+
+    end = start + 1
+    while end < len(lines):
+        stripped = _strip_comment(lines[end]).strip()
+        if stripped and _DECLARATION_RE.match(stripped):
+            break
+        if stripped.startswith("{"):
+            return None
+        end += 1
+
+    implementation = [
+        *_render_method_contract(contract).splitlines(),
+        "{",
+        *(f"    {name} := {call};" for name, call in assignments),
+        "}",
+    ]
+    rebuilt = [*lines[:start], *implementation, *lines[end:]]
+    return "\n".join(rebuilt).strip()
+
+
+def bodyless_callable_names(source: str) -> set[str]:
+    """Return function/predicate declarations that have no executable body."""
+    lines = (source or "").splitlines()
+    declarations: list[tuple[int, str, str]] = []
+    pattern = re.compile(r"^\s*(?:ghost\s+)?(function|predicate)\s+(\w+)\b")
+    for index, line in enumerate(lines):
+        match = pattern.match(_strip_comment(line))
+        if match:
+            declarations.append((index, match.group(1), match.group(2)))
+
+    result: set[str] = set()
+    for position, (start, _kind, name) in enumerate(declarations):
+        end = len(lines)
+        for index in range(start + 1, len(lines)):
+            stripped = _strip_comment(lines[index]).strip()
+            if stripped and _DECLARATION_RE.match(stripped):
+                end = index
+                break
+        block = "\n".join(lines[start:end])
+        if "{" not in block:
+            result.add(name)
+    return result
+
+
+def _render_method_contract(contract: MethodContract) -> str:
+    params = ", ".join(f"{param.name}: {param.typ}" for param in contract.params)
+    declaration = f"method {contract.name}({params})"
+    if contract.returns:
+        returns = ", ".join(
+            f"{param.name}: {param.typ}" for param in contract.returns
+        )
+        declaration += f" returns ({returns})"
+    lines = [declaration]
+    lines.extend(f"    requires {clause}" for clause in contract.requires)
+    lines.extend(f"    ensures {clause}" for clause in contract.ensures)
+    return "\n".join(lines)
+
+
 def _find_method(source: str, method_name: str) -> re.Match[str] | None:
     if method_name:
         pattern = re.compile(rf"\bmethod\s+({re.escape(method_name)})\s*\(")
@@ -192,12 +333,20 @@ def _matching_delimiter(text: str, start: int, opening: str, closing: str) -> in
 
 
 def _parse_params(text: str) -> Iterable[DafnyParam]:
+    pending_names: list[str] = []
     for part in _split_top_level(text, ","):
         part = part.strip()
-        if not part or ":" not in part:
+        if not part:
+            continue
+        if ":" not in part:
+            # Dafny permits grouped declarations such as ``x, y: int``.
+            # Keep names until the group-ending type annotation is seen.
+            pending_names.append(part)
             continue
         names, typ = part.split(":", 1)
-        for name in names.split(","):
+        grouped_names = [*pending_names, *names.split(",")]
+        pending_names = []
+        for name in grouped_names:
             clean_name = name.strip()
             if clean_name:
                 yield DafnyParam(clean_name, typ.strip())
@@ -232,7 +381,10 @@ def _contract_tail(source: str, cursor: int) -> str:
             if kept:
                 kept.append("")
             continue
-        if stripped == "{" or stripped.startswith("{:verify"):
+        # A compact implementation may open its body and contain statements on
+        # the same line (``{ result := x; }``).  None of that text belongs to
+        # the final requires/ensures clause.
+        if stripped.startswith("{"):
             break
         if kept and _DECLARATION_RE.match(stripped):
             break
@@ -266,7 +418,7 @@ def _parse_clauses(text: str) -> tuple[list[str], list[str]]:
             current_kind = match.group(1)
             current_parts = [match.group(2).strip()]
         elif current_kind:
-            if _DECLARATION_RE.match(line) or line == "{":
+            if _DECLARATION_RE.match(line) or line.startswith("{"):
                 flush()
                 break
             current_parts.append(line)
@@ -292,10 +444,59 @@ def _canonical_clause(clause: str, rename: dict[str, str]) -> str:
     canonical = _strip_comment(clause)
     for old_name, new_name in sorted(rename.items(), key=lambda item: -len(item[0])):
         canonical = re.sub(rf"\b{re.escape(old_name)}\b", new_name, canonical)
+    canonical = _alpha_normalize_quantifiers(canonical)
     canonical = re.sub(r"\s+", "", canonical)
     while canonical.endswith(";"):
         canonical = canonical[:-1]
     return canonical
+
+
+def _alpha_normalize_quantifiers(clause: str) -> str:
+    """Canonicalize locally bound ``forall``/``exists`` variable names.
+
+    Renaming a bound variable is not contract drift. Dafny also permits an
+    inferred binder type to be written explicitly; binder annotations are
+    omitted here, while the resolver remains responsible for type soundness.
+    """
+    result = clause
+    search_from = 0
+    next_id = 0
+    pattern = re.compile(r"\b(forall|exists)\s+(.*?)::", re.DOTALL)
+    while True:
+        match = pattern.search(result, search_from)
+        if not match:
+            return result
+
+        binders = match.group(2).strip()
+        declarations, separator, range_expr = binders.partition("|")
+        names = re.findall(r"(?:^|,)\s*([A-Za-z_]\w*)", declarations)
+        if not names:
+            search_from = match.end()
+            continue
+
+        replacements: dict[str, str] = {}
+        placeholders: list[str] = []
+        for name in names:
+            placeholder = f"__bound_{next_id}"
+            next_id += 1
+            replacements[name] = placeholder
+            placeholders.append(placeholder)
+
+        suffix = result[match.end():]
+        normalized_range = range_expr
+        for old_name, new_name in replacements.items():
+            suffix = re.sub(rf"\b{re.escape(old_name)}\b", new_name, suffix)
+            if separator:
+                normalized_range = re.sub(
+                    rf"\b{re.escape(old_name)}\b", new_name, normalized_range
+                )
+
+        canonical_binders = ",".join(placeholders)
+        if separator:
+            canonical_binders += " | " + normalized_range.strip()
+        marker = f"{match.group(1)} {canonical_binders} ::"
+        result = result[:match.start()] + marker + suffix
+        search_from = match.start() + len(marker)
 
 
 def _normalize_type(typ: str) -> str:

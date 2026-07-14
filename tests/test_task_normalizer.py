@@ -187,6 +187,20 @@ def target(values: List[int]) -> Tuple[int, int]:
     )
 
 
+def test_deterministic_dafny_signature_escapes_reserved_parameter_name() -> None:
+    task = normalize_humaneval_problem(
+        _problem(
+            '''\
+def target(string: str) -> List[str]:
+    """Return prefixes."""
+'''
+        )
+    )
+    assert render_dafny_signature(task) == (
+        "method target(string_: string) returns (result: seq<string>)"
+    )
+
+
 def test_missing_or_nested_entry_point_is_rejected() -> None:
     with pytest.raises(TaskNormalizationError, match="top-level FunctionDef"):
         normalize_humaneval_problem(
