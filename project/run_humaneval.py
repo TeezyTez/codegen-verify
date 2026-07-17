@@ -127,6 +127,7 @@ def run_benchmark(
                 # loop. Assisted mode accepts only a separately supplied dev set.
                 behavior_problem=dev_behavior_problem,
                 entry_point=entry,
+                task_ir=task_ir.to_dict(),
             )
             elapsed = time.time() - start_time
 
@@ -194,6 +195,9 @@ def run_benchmark(
                 "spec": spec,
                 "spec_adequacy": spec_adequacy,
                 "inloop_mutation_adequacy": final.get("mutation_adequacy", {}),
+                "spec_critic": final.get("spec_critic", {}),
+                "critic_gate_status": final.get("critic_gate_status", "not_run"),
+                "critic_repair_rounds": final.get("critic_repair_rounds", 0),
                 "research_trace": research_trace,
                 "final_attribution": final.get("last_attribution", {}),
                 "verification_attempts": final.get("verification_attempts", 0),
@@ -201,7 +205,10 @@ def run_benchmark(
                 "task_ir": task_ir.to_dict(),
             }
 
-            status = "PASS" if final_passed else ("DAFNY_OK" if dafny_verified else "FAIL")
+            if final.get("critic_gate_status") in {"rejected", "abstained"}:
+                status = "ABSTAIN"
+            else:
+                status = "PASS" if final_passed else ("DAFNY_OK" if dafny_verified else "FAIL")
             print(f"  结果: {status}  rounds={rounds}  time={elapsed:.1f}s")
 
         except Exception as e:
@@ -240,6 +247,11 @@ def print_summary(results, *, output_dir: Path | None = None):
     supported = total - unsupported
     dafny_passed = sum(1 for r in results if r.get("dafny_verified"))
     humaneval_passed = sum(1 for r in results if r.get("humaneval_passed"))
+    critic_approved = sum(
+        1 for r in results if r.get("critic_gate_status") in {"approved", "bypassed"}
+    )
+    critic_rejected = sum(1 for r in results if r.get("critic_gate_status") == "rejected")
+    critic_abstained = sum(1 for r in results if r.get("critic_gate_status") == "abstained")
     total_rounds = sum(r.get("rounds", 0) for r in results if "rounds" in r)
     total_time = sum(r.get("time", 0) for r in results if "time" in r)
 
@@ -250,6 +262,8 @@ def print_summary(results, *, output_dir: Path | None = None):
     print(f"  Dafny 验证通过:    {dafny_passed} ({dafny_passed/total*100:.1f}%)" if total > 0 else "")
     print(f"  HumanEval 测试通过: {humaneval_passed} ({humaneval_passed/total*100:.1f}%)" if total > 0 else "")
     print(f"  端到端通过:        {passed} ({passed/total*100:.1f}%)")
+    print(f"  Critic 批准:       {critic_approved}/{total}" if total > 0 else "")
+    print(f"  Critic 拒绝/弃权:  {critic_rejected}/{critic_abstained}")
     print(f"  失败:              {failed} ({failed/total*100:.1f}%)")
     print(f"  支持类型覆盖:       {supported}/{total} ({supported/total*100:.1f}%)" if total > 0 else "")
     print(f"  平均轮次:          {total_rounds/total:.2f}" if total > 0 else "")
@@ -275,6 +289,9 @@ def print_summary(results, *, output_dir: Path | None = None):
         "total": total,
         "dafny_verified": dafny_passed,
         "humaneval_passed": humaneval_passed,
+        "critic_approved": critic_approved,
+        "critic_rejected": critic_rejected,
+        "critic_abstained": critic_abstained,
         "passed": passed,
         "failed": failed,
         "supported": supported,

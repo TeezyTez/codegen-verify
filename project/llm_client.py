@@ -79,7 +79,13 @@ class LLMClient:
         else:
             raise ValueError(f"Unknown provider: {provider}")
 
-    def chat(self, system: str, user: str, temperature: Optional[float] = None) -> str:
+    def chat(
+        self,
+        system: str,
+        user: str,
+        temperature: Optional[float] = None,
+        max_tokens: Optional[int] = None,
+    ) -> str:
         """单轮对话"""
         last_error = None
         for attempt in range(config.LLM_RETRIES + 1):
@@ -93,8 +99,9 @@ class LLMClient:
                     ],
                     "temperature": config.LLM_TEMPERATURE if temperature is None else temperature,
                 }
-                if config.LLM_MAX_TOKENS > 0:
-                    request["max_tokens"] = config.LLM_MAX_TOKENS
+                token_limit = config.LLM_MAX_TOKENS if max_tokens is None else max_tokens
+                if token_limit > 0:
+                    request["max_tokens"] = token_limit
                 resp = self.client.chat.completions.create(
                     **request,
                 )
@@ -147,3 +154,16 @@ def code_llm() -> LLMClient:
 def repair_llm() -> LLMClient:
     """Repair Agent 用强模型"""
     return LLMClient(provider="deepseek", model=config.REPAIR_MODEL)
+
+
+def critic_llm() -> LLMClient:
+    """Create a fresh semantic critic client behind an experiment interface."""
+    return LLMClient(provider=config.CRITIC_PROVIDER, model=config.CRITIC_MODEL)
+
+
+def semantic_probe_llm() -> LLMClient:
+    """Fresh NL-only probe generator, independently configurable from Critic."""
+    return LLMClient(
+        provider=config.CRITIC_PROBE_PROVIDER,
+        model=config.CRITIC_PROBE_MODEL,
+    )

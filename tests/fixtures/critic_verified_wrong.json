@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "source_run": "20260714_094215_191679_humaneval_strict_0_20",
+    "source_artifact": "benchmark_final.json",
+    "selection": "Dafny-verified candidates that failed the official HumanEval oracle"
+  },
+  "cases": [
+    {
+      "task_id": "HumanEval/3",
+      "entry_point": "below_zero",
+      "failure_mode": "The balance after the last operation is excluded from the existential prefix range.",
+      "spec": "function BalanceBelowZero(operations: seq<int>): bool\n{\n    exists i: nat :: i < |operations| && SumPrefix(operations, i) < 0\n}\n\nfunction SumPrefix(operations: seq<int>, upTo: nat): int\n    requires upTo <= |operations|\n{\n    if upTo == 0 then 0\n    else SumPrefix(operations, upTo - 1) + operations[upTo - 1]\n}\n\nmethod below_zero(operations: seq<int>) returns (result: bool)\n    ensures result == BalanceBelowZero(operations)",
+      "task_ir": {
+        "examples": [
+          {
+            "call_name": "below_zero",
+            "positional_args": [[1, 2, 3]],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": false,
+            "expected_is_literal": true
+          },
+          {
+            "call_name": "below_zero",
+            "positional_args": [[1, 2, -4, 5]],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": true,
+            "expected_is_literal": true
+          }
+        ]
+      },
+      "task_probes": [
+        {
+          "case": "negative_only_after_last_operation",
+          "requirement": "Detect a balance below zero at any point, including after the last operation.",
+          "arguments": [[1, -2]],
+          "expected_value": true,
+          "within_task_domain": true,
+          "expected_source": "task_text",
+          "coverage_tags": ["decisive_last"]
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/10",
+      "entry_point": "make_palindrome",
+      "failure_mode": "The helper returns the final character instead of the longest palindromic suffix.",
+      "spec": "function IsPalindrome(s: string): bool\n{\n    forall i :: 0 <= i < |s| / 2 ==> s[i] == s[|s| - 1 - i]\n}\n\nfunction LongestPalindromicSuffix(string_: string): string\n{\n    if |string_| == 0 then \"\"\n    else\n        var suffix := string_[|string_| - 1..];\n        if IsPalindrome(suffix) then suffix\n        else LongestPalindromicSuffix(string_[..|string_| - 1])\n}\n\nfunction Reverse(s: string): string\n{\n    if |s| == 0 then \"\"\n    else Reverse(s[1..]) + [s[0]]\n}\n\nfunction Reference(string_: string): string\n{\n    if |string_| == 0 then \"\"\n    else\n        var suffix := LongestPalindromicSuffix(string_);\n        var prefix := string_[..|string_| - |suffix|];\n        string_ + Reverse(prefix)\n}\n\nmethod make_palindrome(string_: string) returns (result: string)\n    ensures result == Reference(string_)",
+      "task_ir": {
+        "examples": [
+          {
+            "call_name": "make_palindrome",
+            "positional_args": [""],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": "",
+            "expected_is_literal": true
+          },
+          {
+            "call_name": "make_palindrome",
+            "positional_args": ["cat"],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": "catac",
+            "expected_is_literal": true
+          },
+          {
+            "call_name": "make_palindrome",
+            "positional_args": ["cata"],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": "catac",
+            "expected_is_literal": true
+          }
+        ]
+      },
+      "task_probes": [
+        {
+          "case": "two_character_input",
+          "requirement": "Return the shortest palindrome beginning with the supplied string.",
+          "arguments": ["ab"],
+          "expected_value": "aba",
+          "within_task_domain": true,
+          "expected_source": "task_text",
+          "coverage_tags": ["minimal_valid", "postfix"]
+        }
+      ]
+    },
+    {
+      "task_id": "HumanEval/15",
+      "entry_point": "string_sequence",
+      "failure_mode": "Integer values are cast to raw code points instead of decimal digit characters.",
+      "spec": "function string_sequence_helper(n: int): string\n    requires n >= 0\n{\n    if n == 0 then \"0\"\n    else \n        var prev := string_sequence_helper(n - 1);\n        prev + \" \" + int_to_string(n)\n}\n\nfunction int_to_string(x: int): string\n    requires x >= 0\n{\n    if x < 10 then \n        var digit := x as char;\n        [digit]\n    else\n        var d := x / 10;\n        var r := x % 10;\n        int_to_string(d) + [r as char]\n}\n\nmethod string_sequence(n: int) returns (result: string)\n    requires n >= 0\n    ensures result == string_sequence_helper(n)",
+      "task_ir": {
+        "examples": [
+          {
+            "call_name": "string_sequence",
+            "positional_args": [0],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": "0",
+            "expected_is_literal": true
+          },
+          {
+            "call_name": "string_sequence",
+            "positional_args": [5],
+            "keyword_args": [],
+            "arguments_are_literal": true,
+            "expected_value": "0 1 2 3 4 5",
+            "expected_is_literal": true
+          }
+        ]
+      },
+      "task_probes": [
+        {
+          "case": "first_nonzero_numeral",
+          "requirement": "Use ordinary decimal numeral characters in the space-delimited result.",
+          "arguments": [1],
+          "expected_value": "0 1",
+          "within_task_domain": true,
+          "expected_source": "task_text",
+          "coverage_tags": ["representation"]
+        }
+      ]
+    }
+  ]
+}

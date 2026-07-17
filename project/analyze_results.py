@@ -57,6 +57,19 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
     flags = adequacy.get("flags") or []
     trace = result.get("research_trace") or []
     mutation = mutation or result.get("inloop_mutation_adequacy") or {}
+    critic = result.get("spec_critic") or {}
+    reconciliation_audit = critic.get("reconciliation_audit") or {}
+    executable_checks = critic.get("executable_boundary_checks") or {}
+    executable_dafny_errors = executable_checks.get("dafny_errors") or []
+    if not isinstance(executable_dafny_errors, list):
+        executable_dafny_errors = []
+    executable_dafny_error_labels = _dafny_error_labels(executable_dafny_errors)
+    critic_decision = critic.get("decision", result.get("critic_gate_status", "not_run"))
+    attribution_category = attribution.get("category", "")
+    repair_target = attribution.get("repair_target", "")
+    if not attribution_category and critic_decision in {"reject", "abstain"}:
+        attribution_category = f"critic_{critic_decision}"
+        repair_target = repair_target or "spec_critic_gate"
     trace_stages = [event.get("stage", "") for event in trace]
     repair_path = _repair_path(trace_stages)
     repair_metrics = repair_trace_metrics(trace)
@@ -67,14 +80,15 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "passed": bool(result.get("passed", False)),
         "dafny_verified": bool(result.get("dafny_verified", False)),
         "humaneval_passed": bool(result.get("humaneval_passed", False)),
+        "official_test_executed": bool(result.get("official_test_executed", False)),
         "verified_but_test_failed": bool(result.get("dafny_verified", False)) and not bool(result.get("humaneval_passed", False)),
         "rounds": result.get("rounds", ""),
         "time": result.get("time", ""),
         "spec_score": adequacy.get("score", ""),
         "spec_level": adequacy.get("level", "missing"),
         "spec_flags": ";".join(flags),
-        "attribution_category": attribution.get("category", ""),
-        "repair_target": attribution.get("repair_target", ""),
+        "attribution_category": attribution_category,
+        "repair_target": repair_target,
         "repair_path": repair_path,
         "proof_repair_attempted": repair_metrics["proof_repair"]["calls"] > 0,
         "code_repair_attempted": repair_metrics["code_repair"]["calls"] > 0,
@@ -85,6 +99,51 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "mutants_verified": mutation.get("mutants_verified", ""),
         "suspicious_mutants": mutation.get("suspicious_mutants", ""),
         "mutation_adequacy_risk": mutation.get("mutation_adequacy_risk", ""),
+        "critic_decision": critic_decision,
+        "critic_audit_decision": critic.get("audit_decision", ""),
+        "critic_reconciliation_audit_decision": reconciliation_audit.get("decision", ""),
+        "critic_provisional_audit_rejection_overturned": bool(
+            critic.get("provisional_audit_rejection_overturned", False)
+        ),
+        "critic_audit_rejection_overturned": bool(
+            critic.get("audit_rejection_overturned", False)
+        ),
+        "critic_confidence": critic.get("confidence", ""),
+        "critic_provider": critic.get("critic_provider", ""),
+        "critic_model": critic.get("critic_model", ""),
+        "critic_review_passes": critic.get("review_passes", ""),
+        "critic_issue_count": len(critic.get("issues") or []),
+        "critic_counterexample_count": len(critic.get("counterexamples") or []),
+        "critic_audit_protocol_failure": bool(critic.get("audit_protocol_failure", False)),
+        "critic_probe_generation_status": (critic.get("probe_generation") or {}).get("status", ""),
+        "critic_executable_probe_status": executable_checks.get("status", ""),
+        "critic_executable_batches_run": _safe_int(
+            executable_checks.get("batches_run", 0)
+        ),
+        "critic_required_approval_evidence_missing": _safe_int(
+            executable_checks.get("required_approval_evidence_missing", 0)
+        ),
+        "critic_required_reject_evidence_missing": _safe_int(
+            executable_checks.get("required_reject_evidence_missing", 0)
+        ),
+        "critic_executable_spec_not_executable": (
+            executable_checks.get("status") == "not_executable"
+        ),
+        "critic_executable_dafny_error_count": _safe_int(
+            executable_checks.get(
+                "dafny_error_count", len(executable_dafny_errors)
+            )
+        ),
+        "critic_executable_dafny_error_types": ";".join(
+            executable_dafny_error_labels
+        ),
+        "critic_executable_dafny_errors": json.dumps(
+            executable_dafny_errors, ensure_ascii=False, separators=(",", ":")
+        ),
+        "critic_precondition_status": (critic.get("public_precondition_review") or {}).get("status", ""),
+        "critic_unreviewed_requires_count": len(critic.get("unreviewed_public_requires") or []),
+        "critic_signature_gate_status": (critic.get("signature_gate") or {}).get("status", ""),
+        "critic_repair_rounds": result.get("critic_repair_rounds", 0),
         "trace_stages": ";".join(trace_stages),
         "humaneval_error": result.get("humaneval_error") or result.get("error") or "",
     }
@@ -106,6 +165,36 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     repair_targets = Counter(r["repair_target"] or "missing" for r in rows)
     mutation_risks = Counter(r["mutation_adequacy_risk"] or "missing" for r in rows)
     repair_paths = Counter(r["repair_path"] or "none" for r in rows)
+    critic_decisions = Counter(r["critic_decision"] or "not_run" for r in rows)
+    critic_audit_decisions = Counter(
+        r["critic_audit_decision"] or "not_run" for r in rows
+    )
+    critic_reconciliation_audit_decisions = Counter(
+        r["critic_reconciliation_audit_decision"] or "not_run" for r in rows
+    )
+    critic_probe_statuses = Counter(
+        r["critic_executable_probe_status"] or "not_run" for r in rows
+    )
+    critic_dafny_error_types: Counter[str] = Counter()
+    for row in rows:
+        for label in str(row["critic_executable_dafny_error_types"]).split(";"):
+            if label:
+                critic_dafny_error_types[label] += 1
+    critic_approved = sum(r["critic_decision"] == "approve" for r in rows)
+    critic_approved_evaluated = sum(
+        r["critic_decision"] == "approve" and r["official_test_executed"]
+        for r in rows
+    )
+    critic_approved_correct = sum(
+        r["critic_decision"] == "approve" and r["humaneval_passed"]
+        for r in rows
+    )
+    critic_approved_wrong = sum(
+        r["critic_decision"] == "approve"
+        and r["official_test_executed"]
+        and not r["humaneval_passed"]
+        for r in rows
+    )
     suspicious_mutants = sum(_safe_int(r["suspicious_mutants"]) for r in rows)
     flag_counter: Counter[str] = Counter()
     for row in rows:
@@ -133,6 +222,63 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "repair_targets": dict(repair_targets),
         "mutation_risks": dict(mutation_risks),
         "repair_paths": dict(repair_paths),
+        "critic_decisions": dict(critic_decisions),
+        "critic_audit_decisions": dict(critic_audit_decisions),
+        "critic_reconciliation_audit_decisions": dict(
+            critic_reconciliation_audit_decisions
+        ),
+        "critic_executable_probe_statuses": dict(critic_probe_statuses),
+        "critic_provisional_rejections_overturned": sum(
+            r["critic_provisional_audit_rejection_overturned"] for r in rows
+        ),
+        "critic_final_rejections_overturned": sum(
+            r["critic_audit_rejection_overturned"] for r in rows
+        ),
+        "critic_executable_batches_run": sum(
+            _safe_int(r["critic_executable_batches_run"]) for r in rows
+        ),
+        "critic_required_approval_evidence_missing": sum(
+            _safe_int(r["critic_required_approval_evidence_missing"])
+            for r in rows
+        ),
+        "critic_required_reject_evidence_missing": sum(
+            _safe_int(r["critic_required_reject_evidence_missing"])
+            for r in rows
+        ),
+        "critic_tasks_missing_required_approval_evidence": sum(
+            _safe_int(r["critic_required_approval_evidence_missing"]) > 0
+            for r in rows
+        ),
+        "critic_tasks_missing_required_reject_evidence": sum(
+            _safe_int(r["critic_required_reject_evidence_missing"]) > 0
+            for r in rows
+        ),
+        "critic_executable_specs_not_executable": sum(
+            r["critic_executable_spec_not_executable"] for r in rows
+        ),
+        "critic_executable_dafny_errors": sum(
+            _safe_int(r["critic_executable_dafny_error_count"])
+            for r in rows
+        ),
+        "critic_executable_dafny_error_types": dict(critic_dafny_error_types),
+        "critic_audit_protocol_failures": sum(
+            r["critic_audit_protocol_failure"] for r in rows
+        ),
+        "critic_unreviewed_requires": sum(
+            _safe_int(r["critic_unreviewed_requires_count"]) for r in rows
+        ),
+        "critic_approved": critic_approved,
+        "critic_approved_evaluated": critic_approved_evaluated,
+        "critic_approved_correct": critic_approved_correct,
+        "critic_approved_wrong": critic_approved_wrong,
+        "critic_approval_coverage": pct(critic_approved, total),
+        "critic_accepted_precision": pct(
+            critic_approved_correct, critic_approved_evaluated
+        ),
+        "critic_issues": sum(_safe_int(r["critic_issue_count"]) for r in rows),
+        "critic_counterexamples": sum(
+            _safe_int(r["critic_counterexample_count"]) for r in rows
+        ),
         # These legacy keys now deliberately mean calls and immediate verifier
         # successes, not "tasks that eventually passed".  A task can contain
         # several repair calls, each with a different immediate outcome.
@@ -321,6 +467,22 @@ def _snapshot_quality(snapshot: dict[str, Any]) -> tuple[int, int]:
     return (rank, -_safe_int(snapshot.get("error_count", 0)))
 
 
+def _dafny_error_labels(errors: list[Any]) -> list[str]:
+    """Return stable aggregate labels while retaining raw diagnostics in CSV."""
+    labels = []
+    for error in errors:
+        if not isinstance(error, dict):
+            labels.append("unknown")
+            continue
+        error_type = str(error.get("error_type", "")).strip()
+        subtype = str(error.get("subtype", "")).strip()
+        if error_type and subtype and subtype != error_type:
+            labels.append(f"{error_type}/{subtype}")
+        else:
+            labels.append(error_type or subtype or "unknown")
+    return labels
+
+
 def _safe_int(value: Any) -> int:
     if isinstance(value, int):
         return value
@@ -355,6 +517,7 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "passed",
         "dafny_verified",
         "humaneval_passed",
+        "official_test_executed",
         "verified_but_test_failed",
         "rounds",
         "time",
@@ -373,6 +536,31 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "mutants_verified",
         "suspicious_mutants",
         "mutation_adequacy_risk",
+        "critic_decision",
+        "critic_audit_decision",
+        "critic_reconciliation_audit_decision",
+        "critic_provisional_audit_rejection_overturned",
+        "critic_audit_rejection_overturned",
+        "critic_confidence",
+        "critic_provider",
+        "critic_model",
+        "critic_review_passes",
+        "critic_issue_count",
+        "critic_counterexample_count",
+        "critic_audit_protocol_failure",
+        "critic_probe_generation_status",
+        "critic_executable_probe_status",
+        "critic_executable_batches_run",
+        "critic_required_approval_evidence_missing",
+        "critic_required_reject_evidence_missing",
+        "critic_executable_spec_not_executable",
+        "critic_executable_dafny_error_count",
+        "critic_executable_dafny_error_types",
+        "critic_executable_dafny_errors",
+        "critic_precondition_status",
+        "critic_unreviewed_requires_count",
+        "critic_signature_gate_status",
+        "critic_repair_rounds",
         "trace_stages",
         "humaneval_error",
     ]
@@ -399,6 +587,55 @@ def print_summary(summary: dict[str, Any], csv_path: Path) -> None:
     _print_counter("Repair targets", summary["repair_targets"])
     _print_counter("Repair paths", summary["repair_paths"])
     _print_counter("Mutation adequacy risks", summary["mutation_risks"])
+    _print_counter("Independent Critic decisions", summary["critic_decisions"])
+    _print_counter("Independent Critic audit decisions", summary["critic_audit_decisions"])
+    _print_counter(
+        "Independent Critic reconciliation decisions",
+        summary["critic_reconciliation_audit_decisions"],
+    )
+    _print_counter(
+        "Executable Critic probe outcomes",
+        summary["critic_executable_probe_statuses"],
+    )
+    print(
+        "Critic selective gate:"
+        f"\n  approval coverage: {summary['critic_approval_coverage']}"
+        f"\n  officially evaluated approvals: {summary['critic_approved_evaluated']}"
+        f"\n  correct/wrong approvals: {summary['critic_approved_correct']}/"
+        f"{summary['critic_approved_wrong']}"
+        f"\n  accepted precision: {summary['critic_accepted_precision']}"
+        f"\n  audit protocol failures: {summary['critic_audit_protocol_failures']}"
+        f"\n  unresolved public requires: {summary['critic_unreviewed_requires']}"
+    )
+    print(
+        "Critic rejection reconciliation:"
+        f"\n  provisional overturns: "
+        f"{summary['critic_provisional_rejections_overturned']}"
+        f"\n  final certified overturns: "
+        f"{summary['critic_final_rejections_overturned']}"
+    )
+    print(
+        "Critic executable evidence:"
+        f"\n  batches run: {summary['critic_executable_batches_run']}"
+        f"\n  missing required approval evidence: "
+        f"{summary['critic_required_approval_evidence_missing']}"
+        f" ({summary['critic_tasks_missing_required_approval_evidence']} tasks)"
+        f"\n  missing required reject evidence: "
+        f"{summary['critic_required_reject_evidence_missing']}"
+        f" ({summary['critic_tasks_missing_required_reject_evidence']} tasks)"
+        f"\n  non-executable Dafny specs: "
+        f"{summary['critic_executable_specs_not_executable']}"
+        f"\n  Dafny diagnostics: {summary['critic_executable_dafny_errors']}"
+    )
+    _print_counter(
+        "Critic executable Dafny diagnostic types",
+        summary["critic_executable_dafny_error_types"],
+    )
+    print(
+        "Critic evidence:"
+        f" issues={summary['critic_issues']}"
+        f" counterexamples={summary['critic_counterexamples']}"
+    )
     print("\nRepair direct verifier outcomes (success/calls):")
     for route in REPAIR_ROUTES.values():
         print(

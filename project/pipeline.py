@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 import json
 
 import config
-from llm_client import spec_llm, code_llm, repair_llm
+from llm_client import spec_llm, code_llm, repair_llm, critic_llm, semantic_probe_llm
 from dafny_wrapper import DafnyVerifier, VerificationResult, ErrorInfo
 from templates import get_verified_template
 from research_trace import (
@@ -28,6 +28,7 @@ from proof_repair import repair_proof_with_llm
 from spec_code_alignment import extract_dafny_code as extract_alignment_dafny_code
 from spec_code_alignment import repair_alignment_with_llm
 from mutation_probe import probe_spec_mutants
+from spec_critic import critic_feedback_obligations, review_spec_with_llm
 from contract_utils import (
     build_direct_reference_program,
     contract_fidelity_issues,
@@ -265,6 +266,13 @@ class PipelineState(TypedDict):
     last_attribution: dict                 # 最近一次验证失败归因
     spec_adequacy: dict                    # 规约充分性检查结果
     mutation_adequacy: dict                # mutation-based 规约充分性探针
+    mutation_strengthening_attempts: int   # mutation 触发的规约加强次数
+    spec_critic: dict                      # 独立语义 Critic 的结构化报告
+    critic_gate_status: str                # approved/rejected/abstained/bypassed
+    critic_repair_rounds: int              # Critic 反例驱动的规约修复次数
+    task_ir: dict                          # 结构化任务与确定性公开示例
+    semantic_probe_suite: dict             # 跨规约修复复用的 spec-blind probes
+    resume_verified_alignment_code: bool   # reuse preverified alignment code after recertification
     repair_policy: dict                    # harness repair policy 决策
     entry_point: str                       # 目标入口函数名
     behavior_problem: dict                 # 可选 HumanEval 原始问题，用于行为测试
@@ -843,9 +851,182 @@ def spec_strengthening_agent(state: PipelineState) -> dict:
         attempts=result.get("attempts", 0),
         error=result.get("error", ""),
     )
+    strengthened_spec = result.get("spec", state.get("spec", ""))
+    spec_changed = strengthened_spec != state.get("spec", "")
     return {
-        "spec": result.get("spec", state.get("spec", "")),
+        "spec": strengthened_spec,
         "spec_adequacy": result.get("adequacy", adequacy),
+        "resume_verified_alignment_code": (
+            bool(state.get("resume_verified_alignment_code")) and not spec_changed
+        ),
+        "mutation_strengthening_attempts": (
+            int(state.get("mutation_strengthening_attempts", 0)) + 1
+        ),
+        "research_trace": append_trace(state, event),
+    }
+
+
+def spec_critic_agent(state: PipelineState) -> dict:
+    """Independently audit whether the generated spec matches the NL task."""
+    print(f"\n{'='*50}")
+    print("[Independent Spec Critic] 正在审查自然语言与规约的语义一致性...")
+
+    if not config.ENABLE_SPEC_CRITIC:
+        report = {
+            "decision": "approve",
+            "summary": "Independent critic is disabled by configuration.",
+            "issues": [],
+            "counterexamples": [],
+            "boundary_checks": [],
+            "critic_provider": config.CRITIC_PROVIDER,
+            "critic_model": config.CRITIC_MODEL,
+            "disabled": True,
+        }
+        event = trace_event("spec_critic", state["round"], action="bypassed", report=report)
+        return {
+            "spec_critic": report,
+            "critic_gate_status": "bypassed",
+            "research_trace": append_trace(state, event),
+        }
+
+    cached_probe_suite = state.get("semantic_probe_suite") or {}
+    if not (
+        cached_probe_suite.get("status") == "generated"
+        and isinstance(cached_probe_suite.get("probes"), list)
+        and cached_probe_suite.get("probes")
+    ):
+        cached_probe_suite = {}
+
+    try:
+        report = review_spec_with_llm(
+            critic_llm(),
+            problem_desc=state.get("problem_desc", ""),
+            spec=state.get("spec", ""),
+            entry_point=state.get("entry_point", ""),
+            probe_llm=semantic_probe_llm(),
+            task_ir=state.get("task_ir", {}),
+            probe_suite=cached_probe_suite or None,
+        )
+    except Exception as exc:
+        # A transport/provider failure is evidence absence, never approval.
+        report = {
+            "schema_version": 1,
+            "decision": "abstain",
+            "confidence": 0.0,
+            "summary": "Independent critic could not complete its audit.",
+            "issues": [],
+            "counterexamples": [],
+            "boundary_checks": [],
+            "critic_provider": config.CRITIC_PROVIDER,
+            "critic_model": config.CRITIC_MODEL,
+            "error": f"{type(exc).__name__}: {exc}",
+        }
+
+    decision = report.get("decision", "abstain")
+    status = {
+        "approve": "approved",
+        "reject": "rejected",
+        "abstain": "abstained",
+    }.get(decision, "abstained")
+    print(
+        f"[Independent Spec Critic] decision={decision} "
+        f"confidence={report.get('confidence', 0):.2f} "
+        f"issues={len(report.get('issues', []))} "
+        f"counterexamples={len(report.get('counterexamples', []))}"
+    )
+
+    adequacy = dict(state.get("spec_adequacy", {}))
+    flags = set(adequacy.get("flags") or [])
+    missing = list(adequacy.get("missing_obligations") or [])
+    if decision == "reject":
+        flags.add("independent_critic_rejected")
+        missing.extend(critic_feedback_obligations(report))
+        adequacy["score"] = max(0, int(adequacy.get("score", 100)) - 30)
+        adequacy["level"] = "inadequate"
+    elif decision == "abstain":
+        flags.add("independent_critic_abstained")
+        missing.extend(critic_feedback_obligations(report))
+    adequacy["flags"] = sorted(flags)
+    adequacy["missing_obligations"] = list(dict.fromkeys(missing))
+
+    event = trace_event(
+        "spec_critic",
+        state["round"],
+        action=status,
+        report=report,
+        critic_repair_rounds=state.get("critic_repair_rounds", 0),
+    )
+    probe_generation = report.get("probe_generation") or {}
+    generated_probes = report.get("generated_probes") or []
+    reusable_probe_suite = (
+        {**probe_generation, "probes": generated_probes}
+        if (
+            probe_generation.get("status") == "generated"
+            and isinstance(generated_probes, list)
+            and generated_probes
+        )
+        else {}
+    )
+    return {
+        "spec_critic": report,
+        "semantic_probe_suite": reusable_probe_suite,
+        "critic_gate_status": status,
+        "spec_adequacy": adequacy,
+        "candidate_rejected": decision != "approve",
+        "passed": False if decision != "approve" else state.get("passed", False),
+        "research_trace": append_trace(state, event),
+    }
+
+
+def critic_spec_repair_agent(state: PipelineState) -> dict:
+    """Repair a rejected spec using only the Critic's structured findings."""
+    print(f"\n{'='*50}")
+    print("[Critic-guided Spec Repair] 正在根据独立审查反例修正规约...")
+
+    report = state.get("spec_critic", {})
+    adequacy = dict(state.get("spec_adequacy", {}))
+    missing = list(adequacy.get("missing_obligations") or [])
+    missing.extend(critic_feedback_obligations(report))
+    adequacy["missing_obligations"] = list(dict.fromkeys(missing))
+    flags = set(adequacy.get("flags") or [])
+    flags.add("independent_critic_rejected")
+    adequacy["flags"] = sorted(flags)
+
+    result = repair_spec_with_llm(
+        llm=spec_llm(),
+        problem_desc=state.get("problem_desc", ""),
+        spec=state.get("spec", ""),
+        adequacy=adequacy,
+    )
+    repairs = int(state.get("critic_repair_rounds", 0)) + 1
+    action = "repaired" if result.get("repaired") else "repair_failed"
+    print(
+        "[Critic-guided Spec Repair] "
+        + ("生成了待重新审查的规约" if result.get("repaired") else "修复失败，将重新审查原规约")
+    )
+    event = trace_event(
+        "critic_spec_repair",
+        state["round"],
+        action=action,
+        critic_decision=report.get("decision"),
+        critic_summary=report.get("summary", ""),
+        attempts=result.get("attempts", 0),
+        error=result.get("error", ""),
+        critic_repair_rounds=repairs,
+    )
+    repaired_spec = result.get("spec", state.get("spec", ""))
+    spec_changed = repaired_spec != state.get("spec", "")
+    return {
+        "spec": repaired_spec,
+        "spec_adequacy": result.get("adequacy", adequacy),
+        "spec_critic": {},
+        "critic_gate_status": "pending",
+        "critic_repair_rounds": repairs,
+        "mutation_adequacy": {},
+        "resume_verified_alignment_code": (
+            bool(state.get("resume_verified_alignment_code")) and not spec_changed
+        ),
+        "candidate_rejected": False,
         "research_trace": append_trace(state, event),
     }
 
@@ -1350,6 +1531,7 @@ def alignment_repair_agent(state: PipelineState) -> dict:
             "history": history,
             "regression_rolled_back": True,
             "candidate_rejected": True,
+            "resume_verified_alignment_code": False,
             "behavior_passed": False,
             "behavior_error": state.get("behavior_error", ""),
             "passed": False,
@@ -1358,6 +1540,7 @@ def alignment_repair_agent(state: PipelineState) -> dict:
         }
 
     print(f"[Alignment Repair Agent] 修复后代码:\n{new_code[:300]}...")
+    spec_changed = bool(new_spec) and new_spec != state.get("spec", "")
     event = trace_event(
         "alignment_repair",
         state["round"],
@@ -1365,22 +1548,33 @@ def alignment_repair_agent(state: PipelineState) -> dict:
         previous_behavior_error=state.get("behavior_error", ""),
         previous_adequacy=state.get("spec_adequacy", {}),
         new_adequacy=new_adequacy,
-        spec_changed=new_spec != state.get("spec", ""),
+        spec_changed=spec_changed,
         static_issue_count=len(issues),
         new_code_line_count=len([line for line in new_code.splitlines() if line.strip()]),
     )
-    return {
+    result = {
         "code": new_code,
         "spec": new_spec or state.get("spec", ""),
         "spec_adequacy": new_adequacy if new_spec else state.get("spec_adequacy", {}),
         "history": history,
         "candidate_rejected": False,
+        "resume_verified_alignment_code": spec_changed,
         "behavior_passed": False,
         "behavior_error": "",
         "passed": False,
         "round": state["round"] + 1,
         "research_trace": append_trace(state, event),
     }
+    if spec_changed:
+        # The previous Critic decision was made for a different specification.
+        # Invalidate it and re-run mutation/Critic checks before accepting code
+        # for the changed contract. Task-only probes remain safe to reuse.
+        result.update({
+            "spec_critic": {},
+            "critic_gate_status": "pending",
+            "mutation_adequacy": {},
+        })
+    return result
 
 
 def repair_agent(state: PipelineState) -> dict:
@@ -1551,16 +1745,39 @@ def repair_agent(state: PipelineState) -> dict:
 
 # ==================== 条件路由 ====================
 
-def decide_after_mutation(state: PipelineState) -> Literal["strengthen_spec", "code"]:
+def decide_after_mutation(state: PipelineState) -> Literal["strengthen_spec", "critic"]:
     """Route specs with verified mutants to a strengthening pass."""
     report = state.get("mutation_adequacy", {})
     if (
         config.ENABLE_MUTATION_SPEC_STRENGTHENING
         and report.get("mutants_verified", 0) > 0
+        and int(state.get("mutation_strengthening_attempts", 0))
+        < config.MAX_MUTATION_STRENGTHENING_ROUNDS
     ):
         print("[Router] mutation 探测发现 verified mutant，路由到 Spec Strengthening")
         return "strengthen_spec"
-    return "code"
+    return "critic"
+
+
+def decide_after_critic(state: PipelineState) -> Literal["code", "verify", "repair", "end"]:
+    """Apply the semantic Critic as a fail-closed acceptance gate."""
+    if not config.ENABLE_SPEC_CRITIC:
+        return "code"
+    decision = (state.get("spec_critic") or {}).get("decision", "abstain")
+    if decision == "approve":
+        if state.get("resume_verified_alignment_code"):
+            print("[Router] Critic approved changed alignment spec; re-verifying preserved code")
+            return "verify"
+        print("[Router] Independent Critic 批准规约，进入代码生成")
+        return "code"
+    if (
+        decision == "reject"
+        and int(state.get("critic_repair_rounds", 0)) < config.MAX_CRITIC_REPAIR_ROUNDS
+    ):
+        print("[Router] Independent Critic 拒绝规约，进入反例驱动修复")
+        return "repair"
+    print(f"[Router] Independent Critic decision={decision}，停止并 ABSTAIN")
+    return "end"
 
 
 def decide_after_verify(state: PipelineState) -> Literal["behavior_test", "end", "repair"]:
@@ -1594,6 +1811,14 @@ def decide_after_behavior(state: PipelineState) -> Literal["end", "alignment_rep
     return "alignment_repair"
 
 
+def decide_after_alignment(state: PipelineState) -> Literal["recheck_spec", "verify"]:
+    """Re-audit any specification changed by behavior alignment."""
+    if state.get("critic_gate_status") == "pending":
+        print("[Router] Alignment changed the spec; re-running mutation and Critic")
+        return "recheck_spec"
+    return "verify"
+
+
 def decide_repair_route(state: PipelineState) -> Literal["proof_repair", "code_repair"]:
     """Route repair to the specialized agent chosen by Repair Policy."""
     decision = state.get("repair_policy", {})
@@ -1617,6 +1842,8 @@ def build_pipeline():
     builder.add_node("spec_repair", spec_repair_agent)
     builder.add_node("mutation_adequacy", mutation_adequacy_node)
     builder.add_node("spec_strengthening", spec_strengthening_agent)
+    builder.add_node("spec_critic", spec_critic_agent)
+    builder.add_node("critic_spec_repair", critic_spec_repair_agent)
     builder.add_node("code_agent", code_agent)
     builder.add_node("verify", verify_node)
     builder.add_node("behavior_test", behavior_test_node)
@@ -1634,10 +1861,23 @@ def build_pipeline():
         decide_after_mutation,
         {
             "strengthen_spec": "spec_strengthening",
-            "code": "code_agent",
+            "critic": "spec_critic",
         }
     )
-    builder.add_edge("spec_strengthening", "code_agent")
+    # A strengthened or critic-repaired spec must pass all artifact-level
+    # checks again. The configured strengthening budget prevents cycles.
+    builder.add_edge("spec_strengthening", "mutation_adequacy")
+    builder.add_conditional_edges(
+        "spec_critic",
+        decide_after_critic,
+        {
+            "code": "code_agent",
+            "verify": "verify",
+            "repair": "critic_spec_repair",
+            "end": END,
+        },
+    )
+    builder.add_edge("critic_spec_repair", "mutation_adequacy")
     builder.add_edge("code_agent", "verify")
 
     # 验证后条件路由
@@ -1670,7 +1910,14 @@ def build_pipeline():
     )
     builder.add_edge("proof_repair", "verify")
     builder.add_edge("repair", "verify")
-    builder.add_edge("alignment_repair", "verify")
+    builder.add_conditional_edges(
+        "alignment_repair",
+        decide_after_alignment,
+        {
+            "recheck_spec": "mutation_adequacy",
+            "verify": "verify",
+        },
+    )
 
     return builder.compile()
 
@@ -1683,6 +1930,7 @@ def run_pipeline(
     max_rounds: int = 3,
     behavior_problem: dict | None = None,
     entry_point: str = "",
+    task_ir: dict | None = None,
 ):
     """运行完整 Pipeline"""
     if config.USE_TEMPLATE_FALLBACK:
@@ -1724,6 +1972,16 @@ def run_pipeline(
                         dafny_verified=verification.passed,
                     ),
                     "mutation_adequacy": {},
+                    "mutation_strengthening_attempts": 0,
+                    "spec_critic": {
+                        "decision": "not_run",
+                        "summary": "Verified template fallback bypassed the LLM pipeline.",
+                    },
+                    "critic_gate_status": "bypassed",
+                    "critic_repair_rounds": 0,
+                    "task_ir": task_ir or {},
+                    "semantic_probe_suite": {},
+                    "resume_verified_alignment_code": False,
                     "entry_point": entry_point,
                     "behavior_problem": behavior_problem or {},
                     "behavior_executed": False,
@@ -1757,6 +2015,13 @@ def run_pipeline(
         "last_attribution": {},
         "spec_adequacy": {},
         "mutation_adequacy": {},
+        "mutation_strengthening_attempts": 0,
+        "spec_critic": {},
+        "critic_gate_status": "pending",
+        "critic_repair_rounds": 0,
+        "task_ir": task_ir or {},
+        "semantic_probe_suite": {},
+        "resume_verified_alignment_code": False,
         "repair_policy": {},
         "entry_point": entry_point,
         "behavior_problem": behavior_problem or {},

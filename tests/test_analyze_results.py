@@ -1,3 +1,4 @@
+import json
 import sys
 import tempfile
 import unittest
@@ -166,6 +167,150 @@ class RepairTraceMetricTests(unittest.TestCase):
 
         self.assertIn("proof_repair_direct_successes", header)
         self.assertIn("code_repair_contract_drifts", header)
+        self.assertIn("critic_reconciliation_audit_decision", header)
+        self.assertIn("critic_executable_dafny_errors", header)
+
+    def test_critic_decision_and_evidence_are_reported(self):
+        row = result_row({
+            "task_id": "t",
+            "critic_gate_status": "rejected",
+            "critic_repair_rounds": 1,
+            "spec_critic": {
+                "decision": "reject",
+                "confidence": 0.9,
+                "critic_provider": "deepseek",
+                "critic_model": "deepseek-chat",
+                "review_passes": 2,
+                "issues": [{"severity": "high"}],
+                "counterexamples": [{"input": "[-1]"}],
+            },
+        })
+        summary = summarize([row])
+
+        self.assertEqual(row["critic_decision"], "reject")
+        self.assertEqual(row["critic_counterexample_count"], 1)
+        self.assertEqual(row["attribution_category"], "critic_reject")
+        self.assertEqual(row["repair_target"], "spec_critic_gate")
+        self.assertEqual(summary["critic_decisions"], {"reject": 1})
+
+    def test_critic_reconciliation_and_executable_diagnostics_are_aggregated(self):
+        reconciled = result_row({
+            "task_id": "reconciled",
+            "spec_critic": {
+                "decision": "approve",
+                "audit_decision": "reject",
+                "reconciliation_audit": {"decision": "approve"},
+                "provisional_audit_rejection_overturned": True,
+                "audit_rejection_overturned": True,
+                "executable_boundary_checks": {
+                    "status": "passed",
+                    "batches_run": 3,
+                    "required_approval_evidence_missing": 2,
+                    "required_reject_evidence_missing": 1,
+                },
+            },
+        })
+        invalid = result_row({
+            "task_id": "invalid",
+            "spec_critic": {
+                "decision": "reject",
+                "executable_boundary_checks": {
+                    "status": "not_executable",
+                    "dafny_error_count": 2,
+                    "dafny_errors": [
+                        {
+                            "error_type": "resolution",
+                            "subtype": "unknown_identifier",
+                            "message": "unknown name",
+                        },
+                        {
+                            "error_type": "verification",
+                            "subtype": "verification",
+                            "message": "postcondition failed",
+                        },
+                    ],
+                },
+            },
+        })
+
+        summary = summarize([reconciled, invalid])
+
+        self.assertEqual(
+            reconciled["critic_reconciliation_audit_decision"], "approve"
+        )
+        self.assertTrue(
+            reconciled["critic_provisional_audit_rejection_overturned"]
+        )
+        self.assertTrue(reconciled["critic_audit_rejection_overturned"])
+        self.assertEqual(reconciled["critic_executable_batches_run"], 3)
+        self.assertEqual(invalid["critic_executable_dafny_error_count"], 2)
+        self.assertEqual(len(json.loads(invalid["critic_executable_dafny_errors"])), 2)
+        self.assertEqual(
+            invalid["critic_executable_dafny_error_types"],
+            "resolution/unknown_identifier;verification",
+        )
+        self.assertEqual(
+            summary["critic_reconciliation_audit_decisions"],
+            {"approve": 1, "not_run": 1},
+        )
+        self.assertEqual(summary["critic_provisional_rejections_overturned"], 1)
+        self.assertEqual(summary["critic_final_rejections_overturned"], 1)
+        self.assertEqual(summary["critic_executable_batches_run"], 3)
+        self.assertEqual(summary["critic_required_approval_evidence_missing"], 2)
+        self.assertEqual(summary["critic_required_reject_evidence_missing"], 1)
+        self.assertEqual(summary["critic_tasks_missing_required_approval_evidence"], 1)
+        self.assertEqual(summary["critic_tasks_missing_required_reject_evidence"], 1)
+        self.assertEqual(summary["critic_executable_specs_not_executable"], 1)
+        self.assertEqual(summary["critic_executable_dafny_errors"], 2)
+        self.assertEqual(
+            summary["critic_executable_dafny_error_types"],
+            {"resolution/unknown_identifier": 1, "verification": 1},
+        )
+
+    def test_old_results_default_new_critic_diagnostics_without_failure(self):
+        row = result_row({"task_id": "legacy", "spec_critic": {"decision": "approve"}})
+        summary = summarize([row])
+
+        self.assertEqual(row["critic_reconciliation_audit_decision"], "")
+        self.assertFalse(row["critic_provisional_audit_rejection_overturned"])
+        self.assertFalse(row["critic_audit_rejection_overturned"])
+        self.assertEqual(row["critic_executable_batches_run"], 0)
+        self.assertEqual(row["critic_executable_dafny_errors"], "[]")
+        self.assertEqual(
+            summary["critic_reconciliation_audit_decisions"], {"not_run": 1}
+        )
+        self.assertEqual(summary["critic_executable_specs_not_executable"], 0)
+        self.assertEqual(summary["critic_executable_dafny_errors"], 0)
+
+    def test_critic_selective_risk_metrics_use_only_executed_holdouts(self):
+        rows = [
+            result_row({
+                "task_id": "correct",
+                "official_test_executed": True,
+                "humaneval_passed": True,
+                "spec_critic": {"decision": "approve"},
+            }),
+            result_row({
+                "task_id": "wrong",
+                "official_test_executed": True,
+                "humaneval_passed": False,
+                "spec_critic": {"decision": "approve"},
+            }),
+            result_row({
+                "task_id": "withheld",
+                "official_test_executed": False,
+                "spec_critic": {"decision": "abstain"},
+            }),
+        ]
+
+        summary = summarize(rows)
+
+        self.assertEqual(summary["critic_approved"], 2)
+        self.assertEqual(summary["critic_approved_evaluated"], 2)
+        self.assertEqual(summary["critic_approved_correct"], 1)
+        self.assertEqual(summary["critic_approved_wrong"], 1)
+        self.assertEqual(summary["critic_approval_coverage"], "66.7%")
+        self.assertEqual(summary["critic_accepted_precision"], "50.0%")
 
 
 if __name__ == "__main__":

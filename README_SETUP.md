@@ -78,12 +78,26 @@ DEEPSEEK_API_KEY=your-key
 SPEC_MODEL=deepseek-chat
 CODE_MODEL=deepseek-chat
 REPAIR_MODEL=deepseek-chat
+CRITIC_PROVIDER=deepseek
+CRITIC_MODEL=deepseek-chat
+CRITIC_PROBE_PROVIDER=deepseek
+CRITIC_PROBE_MODEL=deepseek-chat
+CRITIC_TEMPERATURE=0.0
+CRITIC_MAX_TOKENS=1800
+CRITIC_PROBE_MAX_TOKENS=1200
+MAX_CRITIC_PROBE_PARSE_RETRIES=2
+MIN_CRITIC_PROBES=3
+MAX_CRITIC_PROBES=6
+CRITIC_REQUIRE_PRECONDITION_EVIDENCE=1
 LLM_TEMPERATURE=0.2
 LLM_MAX_TOKENS=0
 LLM_RETRIES=2
 MAX_REPAIR_ROUNDS=3
 EVALUATION_MODE=strict
 USE_TEMPLATE_FALLBACK=0
+ENABLE_SPEC_CRITIC=1
+MAX_CRITIC_REPAIR_ROUNDS=1
+CRITIC_REVIEW_PASSES=1
 ```
 
 `LLM_MAX_TOKENS=0` 表示不显式设置上限。真实 Key 只应出现在本机 `.env` 或环境
@@ -119,6 +133,17 @@ python project/run_humaneval.py --mode strict --start 0 --limit 1 --rounds 1
 python project/run_humaneval.py --mode strict --start 0 --limit 20 --rounds 3
 python project/run_humaneval.py --mode strict --start 20 --limit 10 --rounds 3
 ```
+
+仅重放已有 run 中的冻结规约与 Independent Critic（不重新生成规约/代码）：
+
+```powershell
+python project/replay_spec_critic.py `
+  --input logs/runs/<run>/benchmark_final.json `
+  --task-ids HumanEval/2 HumanEval/4 HumanEval/16 `
+  --with-official-oracle
+```
+
+官方 oracle 只在 Critic 决策写定后执行，不会进入审查或修复上下文。
 
 `run_nl2vc.py` 需要另行放置 `data/NL2VC-60.jsonl`。
 
@@ -188,3 +213,15 @@ logs/runs/<timestamp>_humaneval_<mode>_<start>_<count>/
 
 比较实验时至少固定：数据哈希、任务 ID、模型版本、温度、修复轮次、Dafny 版本
 和评测模式。模板辅助结果、辅助模式结果与严格模式结果应分别报告。
+
+Critic 默认与 Spec Agent 使用相同模型，但拥有独立 client、prompt 和无共享历史的
+调用上下文。跨模型实验只需修改 `CRITIC_PROVIDER` 与 `CRITIC_MODEL`；manifest 会
+分别记录 Critic 与 spec-blind probe generator 的 provider、model、temperature、
+token/解析重试上限和修复预算。确认失败 probe 时不会向确认模型展示原期望值；
+公开示例、独立 probe 与 Critic 自写反例在日志中保留不同 provenance，模型生成的
+probe 不能声明为 public example。全部 public/spec-blind 证据会按
+`MAX_EXECUTED_CRITIC_PROBES` 分批执行，不会因截断后仍被视为通过。audit 协议失败
+不会触发 probe-only 批准；初始 reject 被执行推翻后还需要 fresh reconciliation
+audit，其批准边界必须复用已经执行且同 expected 的证据。非平凡 public `requires`
+默认还需要明确、参数绑定且非输出语境的定义域/数学可定义性证据，可用
+`CRITIC_REQUIRE_PRECONDITION_EVIDENCE=0` 做消融但不建议用于高保证主结果。

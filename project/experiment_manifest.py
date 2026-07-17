@@ -38,6 +38,7 @@ def build_manifest(
             "pipeline.py",
             "proof_repair.py",
             "spec_repair.py",
+            "spec_critic.py",
             "spec_code_alignment.py",
             "proof_patterns.py",
         )
@@ -58,6 +59,15 @@ def build_manifest(
             "spec": config.SPEC_MODEL,
             "code": config.CODE_MODEL,
             "repair": config.REPAIR_MODEL,
+            "critic": {
+                "provider": config.CRITIC_PROVIDER,
+                "model": config.CRITIC_MODEL,
+                "temperature": config.CRITIC_TEMPERATURE,
+                "max_tokens": config.CRITIC_MAX_TOKENS,
+                "probe_max_tokens": config.CRITIC_PROBE_MAX_TOKENS,
+                "probe_provider": config.CRITIC_PROBE_PROVIDER,
+                "probe_model": config.CRITIC_PROBE_MODEL,
+            },
             "temperature": config.LLM_TEMPERATURE,
             "max_tokens": config.LLM_MAX_TOKENS or None,
             "retries": config.LLM_RETRIES,
@@ -69,6 +79,18 @@ def build_manifest(
             "enable_behavior_repair_loop": config.ENABLE_BEHAVIOR_REPAIR_LOOP,
             "enable_inloop_mutation": config.ENABLE_INLOOP_MUTATION_ADEQUACY,
             "enable_mutation_strengthening": config.ENABLE_MUTATION_SPEC_STRENGTHENING,
+            "max_mutation_strengthening_rounds": config.MAX_MUTATION_STRENGTHENING_ROUNDS,
+            "enable_spec_critic": config.ENABLE_SPEC_CRITIC,
+            "max_critic_repair_rounds": config.MAX_CRITIC_REPAIR_ROUNDS,
+            "max_critic_parse_retries": config.MAX_CRITIC_PARSE_RETRIES,
+            "critic_review_passes": config.CRITIC_REVIEW_PASSES,
+            "max_critic_probe_parse_retries": config.MAX_CRITIC_PROBE_PARSE_RETRIES,
+            "min_critic_probes": config.MIN_CRITIC_PROBES,
+            "max_critic_probes": config.MAX_CRITIC_PROBES,
+            "max_executed_critic_probes": config.MAX_EXECUTED_CRITIC_PROBES,
+            "require_critic_precondition_evidence": (
+                config.CRITIC_REQUIRE_PRECONDITION_EVIDENCE
+            ),
         },
         "selection": {
             "start": start,
