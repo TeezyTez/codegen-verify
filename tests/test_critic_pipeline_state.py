@@ -66,6 +66,8 @@ def test_unavailable_probe_suite_is_not_reused_or_cached():
     assert captured["probe_suite"] is None
     assert result["semantic_probe_suite"] == {}
     assert result["critic_gate_status"] == "abstained"
+    assert result["critic_disposition"] == "warn"
+    assert result["critic_advisory_proceeded"] is True
 
 
 def test_alignment_spec_change_invalidates_old_critic_and_rechecks_spec():

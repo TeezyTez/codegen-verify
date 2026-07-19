@@ -100,6 +100,11 @@ def result_row(result: dict[str, Any], mutation: dict[str, Any] | None = None) -
         "suspicious_mutants": mutation.get("suspicious_mutants", ""),
         "mutation_adequacy_risk": mutation.get("mutation_adequacy_risk", ""),
         "critic_decision": critic_decision,
+        "critic_disposition": result.get("critic_disposition", "not_run"),
+        "critic_advisory_proceeded": bool(
+            result.get("critic_advisory_proceeded", False)
+        ),
+        "code_generated": bool(result.get("code_generated", result.get("code", ""))),
         "critic_audit_decision": critic.get("audit_decision", ""),
         "critic_reconciliation_audit_decision": reconciliation_audit.get("decision", ""),
         "critic_provisional_audit_rejection_overturned": bool(
@@ -159,6 +164,10 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
     dafny_verified = sum(1 for r in rows if r["dafny_verified"])
     humaneval_passed = sum(1 for r in rows if r["humaneval_passed"])
     verified_but_test_failed = sum(1 for r in rows if r["verified_but_test_failed"])
+    code_generated = sum(1 for r in rows if r["code_generated"])
+    critic_advisory_proceeded = sum(
+        1 for r in rows if r["critic_advisory_proceeded"]
+    )
 
     adequacy_levels = Counter(r["spec_level"] for r in rows)
     attribution_categories = Counter(r["attribution_category"] or "missing" for r in rows)
@@ -215,6 +224,14 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "dafny_verified_rate": pct(dafny_verified, total),
         "humaneval_pass_rate": pct(humaneval_passed, total),
         "verified_but_test_failed_rate": pct(verified_but_test_failed, total),
+        "generation_coverage": code_generated,
+        "generation_coverage_rate": pct(code_generated, total),
+        "wrong_delivery_rate": pct(verified_but_test_failed, dafny_verified),
+        "target_end_to_end_rate": config.TARGET_END_TO_END_RATE,
+        "target_met": bool(
+            total > 0 and passed / total >= config.TARGET_END_TO_END_RATE
+        ),
+        "critic_advisory_proceeded": critic_advisory_proceeded,
         "avg_rounds": avg_rounds,
         "avg_spec_score": avg_spec_score,
         "adequacy_levels": dict(adequacy_levels),
@@ -537,6 +554,9 @@ def write_csv(rows: list[dict[str, Any]], path: Path) -> None:
         "suspicious_mutants",
         "mutation_adequacy_risk",
         "critic_decision",
+        "critic_disposition",
+        "critic_advisory_proceeded",
+        "code_generated",
         "critic_audit_decision",
         "critic_reconciliation_audit_decision",
         "critic_provisional_audit_rejection_overturned",
@@ -579,6 +599,13 @@ def print_summary(summary: dict[str, Any], csv_path: Path) -> None:
     print(f"Dafny verified:              {summary['dafny_verified']} ({summary['dafny_verified_rate']})")
     print(f"HumanEval passed:            {summary['humaneval_passed']} ({summary['humaneval_pass_rate']})")
     print(f"Verified but test failed:    {summary['verified_but_test_failed']} ({summary['verified_but_test_failed_rate']})")
+    print(f"Code generation coverage:    {summary['generation_coverage']} ({summary['generation_coverage_rate']})")
+    print(f"Wrong delivery rate:         {summary['wrong_delivery_rate']}")
+    print(
+        f"End-to-end target:           {summary['target_end_to_end_rate']*100:.1f}% "
+        f"({'met' if summary['target_met'] else 'not met'})"
+    )
+    print(f"Critic advisory continuations: {summary['critic_advisory_proceeded']}")
     print(f"Average repair rounds:       {summary['avg_rounds']}")
     print(f"Average spec adequacy score: {summary['avg_spec_score']}")
 

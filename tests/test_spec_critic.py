@@ -2474,13 +2474,35 @@ class SpecCriticTests(unittest.TestCase):
     def test_pipeline_gate_repairs_rejection_then_abstains_at_budget(self):
         state = {"spec_critic": _report("reject"), "critic_repair_rounds": 0}
         with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
+            pipeline.config, "CRITIC_GATE_MODE", "strict"
+        ), patch.object(
             pipeline.config, "MAX_CRITIC_REPAIR_ROUNDS", 1
         ):
             self.assertEqual(pipeline.decide_after_critic(state), "repair")
             state["critic_repair_rounds"] = 1
             self.assertEqual(pipeline.decide_after_critic(state), "end")
+
+    def test_pipeline_advisory_mode_continues_after_repair_budget_or_abstain(self):
+        state = {"spec_critic": _report("reject"), "critic_repair_rounds": 1}
+        with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
+            pipeline.config, "CRITIC_GATE_MODE", "advisory"
+        ), patch.object(
+            pipeline.config, "MAX_CRITIC_REPAIR_ROUNDS", 1
+        ):
+            self.assertEqual(pipeline.decide_after_critic(state), "code")
             state["spec_critic"] = _report("abstain")
-            self.assertEqual(pipeline.decide_after_critic(state), "end")
+            self.assertEqual(pipeline.decide_after_critic(state), "code")
+
+    def test_pipeline_advisory_mode_reuses_alignment_code_for_verification(self):
+        state = {
+            "spec_critic": _report("abstain"),
+            "critic_repair_rounds": 0,
+            "resume_verified_alignment_code": True,
+        }
+        with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
+            pipeline.config, "CRITIC_GATE_MODE", "advisory"
+        ):
+            self.assertEqual(pipeline.decide_after_critic(state), "verify")
 
     def test_mutation_strengthening_has_a_bounded_retry(self):
         state = {
@@ -2505,6 +2527,8 @@ class SpecCriticTests(unittest.TestCase):
             return run
 
         with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
+            pipeline.config, "CRITIC_GATE_MODE", "strict"
+        ), patch.object(
             pipeline.config, "MAX_CRITIC_REPAIR_ROUNDS", 0
         ), patch.object(
             pipeline, "spec_agent", node("spec", {"spec": "candidate"})

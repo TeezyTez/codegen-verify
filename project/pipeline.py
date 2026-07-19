@@ -269,6 +269,8 @@ class PipelineState(TypedDict):
     mutation_strengthening_attempts: int   # mutation 触发的规约加强次数
     spec_critic: dict                      # 独立语义 Critic 的结构化报告
     critic_gate_status: str                # approved/rejected/abstained/bypassed
+    critic_disposition: str                # pass/repair/warn/fatal
+    critic_advisory_proceeded: bool        # 是否带着 Critic 风险继续下游闭环
     critic_repair_rounds: int              # Critic 反例驱动的规约修复次数
     task_ir: dict                          # 结构化任务与确定性公开示例
     semantic_probe_suite: dict             # 跨规约修复复用的 spec-blind probes
@@ -886,6 +888,8 @@ def spec_critic_agent(state: PipelineState) -> dict:
         return {
             "spec_critic": report,
             "critic_gate_status": "bypassed",
+            "critic_disposition": "pass",
+            "critic_advisory_proceeded": False,
             "research_trace": append_trace(state, event),
         }
 
@@ -949,10 +953,16 @@ def spec_critic_agent(state: PipelineState) -> dict:
     adequacy["flags"] = sorted(flags)
     adequacy["missing_obligations"] = list(dict.fromkeys(missing))
 
+    disposition = critic_disposition(
+        decision,
+        critic_repair_rounds=int(state.get("critic_repair_rounds", 0)),
+    )
+
     event = trace_event(
         "spec_critic",
         state["round"],
         action=status,
+        disposition=disposition,
         report=report,
         critic_repair_rounds=state.get("critic_repair_rounds", 0),
     )
@@ -971,9 +981,11 @@ def spec_critic_agent(state: PipelineState) -> dict:
         "spec_critic": report,
         "semantic_probe_suite": reusable_probe_suite,
         "critic_gate_status": status,
+        "critic_disposition": disposition,
+        "critic_advisory_proceeded": disposition == "warn",
         "spec_adequacy": adequacy,
-        "candidate_rejected": decision != "approve",
-        "passed": False if decision != "approve" else state.get("passed", False),
+        "candidate_rejected": disposition == "fatal",
+        "passed": state.get("passed", False),
         "research_trace": append_trace(state, event),
     }
 
@@ -1021,6 +1033,8 @@ def critic_spec_repair_agent(state: PipelineState) -> dict:
         "spec_adequacy": result.get("adequacy", adequacy),
         "spec_critic": {},
         "critic_gate_status": "pending",
+        "critic_disposition": "repair",
+        "critic_advisory_proceeded": False,
         "critic_repair_rounds": repairs,
         "mutation_adequacy": {},
         "resume_verified_alignment_code": (
@@ -1572,6 +1586,8 @@ def alignment_repair_agent(state: PipelineState) -> dict:
         result.update({
             "spec_critic": {},
             "critic_gate_status": "pending",
+            "critic_disposition": "repair",
+            "critic_advisory_proceeded": False,
             "mutation_adequacy": {},
         })
     return result
@@ -1759,24 +1775,48 @@ def decide_after_mutation(state: PipelineState) -> Literal["strengthen_spec", "c
     return "critic"
 
 
+def critic_disposition(decision: str, *, critic_repair_rounds: int) -> str:
+    """Translate a Critic verdict into a repair-oriented pipeline action.
+
+    Advisory mode treats semantic uncertainty as evidence to carry forward,
+    not as proof that the task is unsalvageable.  Strict mode is retained for
+    selective-safety ablations and preserves the historical fail-closed gate.
+    """
+    if not config.ENABLE_SPEC_CRITIC or decision == "approve":
+        return "pass"
+    if decision == "reject" and critic_repair_rounds < config.MAX_CRITIC_REPAIR_ROUNDS:
+        return "repair"
+    if config.CRITIC_GATE_MODE == "strict":
+        return "fatal"
+    return "warn"
+
+
 def decide_after_critic(state: PipelineState) -> Literal["code", "verify", "repair", "end"]:
-    """Apply the semantic Critic as a fail-closed acceptance gate."""
+    """Use Critic findings for repair/risk routing instead of default rejection."""
     if not config.ENABLE_SPEC_CRITIC:
         return "code"
     decision = (state.get("spec_critic") or {}).get("decision", "abstain")
-    if decision == "approve":
+    # Recompute from the current report so a freshly reviewed spec can never
+    # inherit a stale disposition from the previous candidate.
+    disposition = critic_disposition(
+        decision,
+        critic_repair_rounds=int(state.get("critic_repair_rounds", 0)),
+    )
+    if disposition in {"pass", "warn"}:
         if state.get("resume_verified_alignment_code"):
-            print("[Router] Critic approved changed alignment spec; re-verifying preserved code")
+            print("[Router] Critic 审查完成，重新验证保留的 alignment 代码")
             return "verify"
-        print("[Router] Independent Critic 批准规约，进入代码生成")
+        if disposition == "warn":
+            print(
+                f"[Router] Critic decision={decision}，作为高风险诊断继续进入代码生成与验证修复"
+            )
+        else:
+            print("[Router] Independent Critic 批准规约，进入代码生成")
         return "code"
-    if (
-        decision == "reject"
-        and int(state.get("critic_repair_rounds", 0)) < config.MAX_CRITIC_REPAIR_ROUNDS
-    ):
+    if disposition == "repair":
         print("[Router] Independent Critic 拒绝规约，进入反例驱动修复")
         return "repair"
-    print(f"[Router] Independent Critic decision={decision}，停止并 ABSTAIN")
+    print(f"[Router] Independent Critic decision={decision}，严格门禁停止")
     return "end"
 
 
@@ -1978,6 +2018,8 @@ def run_pipeline(
                         "summary": "Verified template fallback bypassed the LLM pipeline.",
                     },
                     "critic_gate_status": "bypassed",
+                    "critic_disposition": "pass",
+                    "critic_advisory_proceeded": False,
                     "critic_repair_rounds": 0,
                     "task_ir": task_ir or {},
                     "semantic_probe_suite": {},
@@ -2018,6 +2060,8 @@ def run_pipeline(
         "mutation_strengthening_attempts": 0,
         "spec_critic": {},
         "critic_gate_status": "pending",
+        "critic_disposition": "repair",
+        "critic_advisory_proceeded": False,
         "critic_repair_rounds": 0,
         "task_ir": task_ir or {},
         "semantic_probe_suite": {},

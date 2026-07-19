@@ -81,6 +81,7 @@ def build_manifest(
             "enable_mutation_strengthening": config.ENABLE_MUTATION_SPEC_STRENGTHENING,
             "max_mutation_strengthening_rounds": config.MAX_MUTATION_STRENGTHENING_ROUNDS,
             "enable_spec_critic": config.ENABLE_SPEC_CRITIC,
+            "critic_gate_mode": config.CRITIC_GATE_MODE,
             "max_critic_repair_rounds": config.MAX_CRITIC_REPAIR_ROUNDS,
             "max_critic_parse_retries": config.MAX_CRITIC_PARSE_RETRIES,
             "critic_review_passes": config.CRITIC_REVIEW_PASSES,
@@ -91,6 +92,7 @@ def build_manifest(
             "require_critic_precondition_evidence": (
                 config.CRITIC_REQUIRE_PRECONDITION_EVIDENCE
             ),
+            "target_end_to_end_rate": config.TARGET_END_TO_END_RATE,
         },
         "selection": {
             "start": start,

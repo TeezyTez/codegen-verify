@@ -3,10 +3,12 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "project"))
 
+import analyze_results
 from analyze_results import repair_trace_metrics, result_row, summarize, write_csv
 
 
@@ -169,6 +171,8 @@ class RepairTraceMetricTests(unittest.TestCase):
         self.assertIn("code_repair_contract_drifts", header)
         self.assertIn("critic_reconciliation_audit_decision", header)
         self.assertIn("critic_executable_dafny_errors", header)
+        self.assertIn("critic_advisory_proceeded", header)
+        self.assertIn("code_generated", header)
 
     def test_critic_decision_and_evidence_are_reported(self):
         row = result_row({
@@ -311,6 +315,34 @@ class RepairTraceMetricTests(unittest.TestCase):
         self.assertEqual(summary["critic_approved_wrong"], 1)
         self.assertEqual(summary["critic_approval_coverage"], "66.7%")
         self.assertEqual(summary["critic_accepted_precision"], "50.0%")
+
+    def test_end_to_end_target_and_advisory_coverage_are_primary_metrics(self):
+        rows = [
+            result_row({
+                "task_id": "correct",
+                "passed": True,
+                "dafny_verified": True,
+                "humaneval_passed": True,
+                "official_test_executed": True,
+                "code_generated": True,
+                "critic_advisory_proceeded": True,
+            }),
+            result_row({
+                "task_id": "wrong",
+                "dafny_verified": True,
+                "humaneval_passed": False,
+                "official_test_executed": True,
+                "code_generated": True,
+            }),
+        ]
+
+        with patch.object(analyze_results.config, "TARGET_END_TO_END_RATE", 0.5):
+            summary = summarize(rows)
+
+        self.assertEqual(summary["generation_coverage_rate"], "100.0%")
+        self.assertEqual(summary["wrong_delivery_rate"], "50.0%")
+        self.assertEqual(summary["critic_advisory_proceeded"], 1)
+        self.assertTrue(summary["target_met"])
 
 
 if __name__ == "__main__":

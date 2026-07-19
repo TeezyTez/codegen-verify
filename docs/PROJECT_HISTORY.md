@@ -4,6 +4,31 @@ This file records important research and engineering updates. For each future
 code change, append a short entry with the motivation, implementation summary,
 and validation result.
 
+## 2026-07-19 - Risk-Aware Critic Routing and End-to-End Objective
+
+### Motivation
+
+The hardened fail-closed Critic stopped 14/20 tasks before code generation in
+a fresh HumanEval run. This optimized selective precision while starving proof,
+code, and alignment repair, contrary to the primary goal of producing more
+correct programs.
+
+### Updates
+
+- Added default `CRITIC_GATE_MODE=advisory`; retained `strict` for fail-closed
+  ablations.
+- Rejects still receive bounded spec repair. Exhausted rejects and abstentions
+  continue as explicit high-risk evidence into generation and verification.
+- Added `critic_disposition` and `critic_advisory_proceeded` to artifacts.
+- Made total end-to-end accuracy the headline objective and added generation
+  coverage, wrong-delivery rate, and `TARGET_END_TO_END_RATE`.
+- Recorded the routing policy and target in experiment manifests.
+
+### Validation
+
+- Targeted routing, analyzer, and strict-protocol regression tests passed.
+- Full-suite validation is recorded in the implementation handoff.
+
 ## 2026-07-14 - Repository Cleanup
 
 ### Updates

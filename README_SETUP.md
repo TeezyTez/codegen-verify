@@ -225,3 +225,9 @@ probe 不能声明为 public example。全部 public/spec-blind 证据会按
 audit，其批准边界必须复用已经执行且同 expected 的证据。非平凡 public `requires`
 默认还需要明确、参数绑定且非输出语境的定义域/数学可定义性证据，可用
 `CRITIC_REQUIRE_PRECONDITION_EVIDENCE=0` 做消融但不建议用于高保证主结果。
+
+默认 `CRITIC_GATE_MODE=advisory`：reject 会先尝试规约修复，预算耗尽后继续进入代码
+生成与验证修复；abstain 或协议失败作为未知风险继续，而不是直接终止任务。设置
+`CRITIC_GATE_MODE=strict` 可恢复旧的 fail-closed 门禁以做消融。实验摘要以全部任务
+的端到端正确率为第一指标，并按 `TARGET_END_TO_END_RATE`（默认 `0.60`）报告工程
+目标是否达到；该阈值不是未经校准的单候选正确概率。

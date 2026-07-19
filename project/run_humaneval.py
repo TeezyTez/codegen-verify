@@ -197,15 +197,23 @@ def run_benchmark(
                 "inloop_mutation_adequacy": final.get("mutation_adequacy", {}),
                 "spec_critic": final.get("spec_critic", {}),
                 "critic_gate_status": final.get("critic_gate_status", "not_run"),
+                "critic_disposition": final.get("critic_disposition", "not_run"),
+                "critic_advisory_proceeded": bool(
+                    final.get("critic_advisory_proceeded", False)
+                ),
                 "critic_repair_rounds": final.get("critic_repair_rounds", 0),
                 "research_trace": research_trace,
                 "final_attribution": final.get("last_attribution", {}),
                 "verification_attempts": final.get("verification_attempts", 0),
+                "code_generated": bool(code.strip()),
                 "contract_fidelity": not bool(contract_fidelity_issues(spec, code, entry)),
                 "task_ir": task_ir.to_dict(),
             }
 
-            if final.get("critic_gate_status") in {"rejected", "abstained"}:
+            if (
+                final.get("critic_disposition") == "fatal"
+                and not dafny_verified
+            ):
                 status = "ABSTAIN"
             else:
                 status = "PASS" if final_passed else ("DAFNY_OK" if dafny_verified else "FAIL")
@@ -252,6 +260,15 @@ def print_summary(results, *, output_dir: Path | None = None):
     )
     critic_rejected = sum(1 for r in results if r.get("critic_gate_status") == "rejected")
     critic_abstained = sum(1 for r in results if r.get("critic_gate_status") == "abstained")
+    critic_advisory = sum(1 for r in results if r.get("critic_advisory_proceeded"))
+    code_generated = sum(1 for r in results if r.get("code_generated"))
+    verified_wrong = sum(
+        1
+        for r in results
+        if r.get("dafny_verified")
+        and r.get("official_test_executed")
+        and not r.get("humaneval_passed")
+    )
     total_rounds = sum(r.get("rounds", 0) for r in results if "rounds" in r)
     total_time = sum(r.get("time", 0) for r in results if "time" in r)
 
@@ -262,8 +279,15 @@ def print_summary(results, *, output_dir: Path | None = None):
     print(f"  Dafny 验证通过:    {dafny_passed} ({dafny_passed/total*100:.1f}%)" if total > 0 else "")
     print(f"  HumanEval 测试通过: {humaneval_passed} ({humaneval_passed/total*100:.1f}%)" if total > 0 else "")
     print(f"  端到端通过:        {passed} ({passed/total*100:.1f}%)")
+    print(f"  代码生成覆盖:      {code_generated}/{total} ({code_generated/total*100:.1f}%)" if total > 0 else "")
+    print(f"  验证后错误交付:    {verified_wrong}/{dafny_passed}" if dafny_passed > 0 else "  验证后错误交付:    0/0")
+    print(
+        f"  正确率目标:        {config.TARGET_END_TO_END_RATE*100:.1f}% "
+        f"({'达到' if total > 0 and passed/total >= config.TARGET_END_TO_END_RATE else '未达到'})"
+    )
     print(f"  Critic 批准:       {critic_approved}/{total}" if total > 0 else "")
     print(f"  Critic 拒绝/弃权:  {critic_rejected}/{critic_abstained}")
+    print(f"  Critic 风险放行:   {critic_advisory}")
     print(f"  失败:              {failed} ({failed/total*100:.1f}%)")
     print(f"  支持类型覆盖:       {supported}/{total} ({supported/total*100:.1f}%)" if total > 0 else "")
     print(f"  平均轮次:          {total_rounds/total:.2f}" if total > 0 else "")
@@ -292,6 +316,13 @@ def print_summary(results, *, output_dir: Path | None = None):
         "critic_approved": critic_approved,
         "critic_rejected": critic_rejected,
         "critic_abstained": critic_abstained,
+        "critic_advisory_proceeded": critic_advisory,
+        "code_generated": code_generated,
+        "generation_coverage_rate": f"{code_generated/total*100:.1f}%" if total > 0 else "0%",
+        "verified_wrong": verified_wrong,
+        "wrong_delivery_rate": f"{verified_wrong/dafny_passed*100:.1f}%" if dafny_passed > 0 else "0.0%",
+        "target_end_to_end_rate": config.TARGET_END_TO_END_RATE,
+        "target_met": bool(total > 0 and passed/total >= config.TARGET_END_TO_END_RATE),
         "passed": passed,
         "failed": failed,
         "supported": supported,

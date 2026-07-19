@@ -4,11 +4,12 @@
 题目规范化为结构化任务，依次生成 Dafny 规约和实现，运行解析/验证，按错误类型
 修复，最后才在官方 HumanEval 留出测试上做一次端到端判定。
 
-代码生成前还有一个 fail-closed 的 Independent Spec Critic：它在全新的模型上下文中
-只审查自然语言、公开示例与候选规约的语义一致性，并输出结构化问题和反例。默认
-暂时与 Spec Agent 同用 `deepseek-chat`，但通过 `CRITIC_PROVIDER` / `CRITIC_MODEL`
-独立配置，便于后续做跨模型实验。Critic 拒绝会触发有限次规约修复；拒绝、弃权或
-调用失败在预算耗尽后都会停止在规约阶段，不会静默进入代码生成。
+代码生成前还有一个 Independent Spec Critic：它在全新的模型上下文中审查自然语言、
+公开示例与候选规约的语义一致性，并输出结构化问题和反例。默认暂时与 Spec Agent
+同用 `deepseek-chat`，但可独立配置。当前默认采用 `advisory` 策略：明确拒绝先触发
+有限次规约修复，修复预算耗尽或审查弃权后将风险证据带入代码生成、Dafny 验证和
+下游修复，不再把语义不确定性直接当作任务失败。`CRITIC_GATE_MODE=strict` 保留旧
+fail-closed 行为，用于安全性消融实验。
 默认采用一次独立语义审计，再由 spec-blind probe generator、确定性 Reference 执行
 和按需冲突确认提供交叉证据；可用 `CRITIC_REVIEW_PASSES` 做多审查者消融。
 Probe generator 只接收 Python 签名、函数说明和公开示例，不接收 Dafny 规约或生成
@@ -18,11 +19,10 @@ harness 按 TaskIR、参数角色和任务语义重算：覆盖最小/单例、�
 会被局部删除。所有公开样例和未被独立重算推翻的 spec-blind probe 都是批准前必跑
 证据；超过单批上限时分批执行而不是截断。probe 失败时，确认模型看不到原期望值，
 必须独立重算；只有公开示例或独立 probe 的可执行证据才能否决正向 audit。
-任何 audit 协议失败都会 fail closed 为 `abstain`；有限 probe 只保留为诊断证据，
-不能替代全规约审查。公开方法的每条非平凡 `requires` 还必须绑定到题目明示的定义域
-或受支持的数学可定义性理由，否则同样弃权。若初始拒绝的反例被执行推翻，结果也只
-是 provisional overturn；必须再做一次 fresh whole-spec reconciliation audit，并且其
-批准边界必须与已经执行的证据逐项一致，才能最终批准。
+任何 audit 协议失败在 Critic 报告中仍记为 `abstain`，不能伪装成规格批准；默认策略
+会把它作为高风险诊断继续，在 `strict` 策略下仍会 fail closed。公开方法的每条非平凡
+`requires` 仍必须绑定到题目定义域。初始拒绝被执行证据推翻后，也仍需 fresh
+whole-spec reconciliation audit 才能将 Critic 决策标为批准。
 
 ## 评测原则
 
@@ -31,6 +31,7 @@ harness 按 TaskIR、参数角色和任务语义重算：覆盖最小/单例、�
 - `assisted` 允许使用单独整理的开发测试辅助修复，但仍不会向 Agent 泄露官方测试。
 - verified template fallback 默认关闭；严格模式会强制关闭它，即使环境变量另有设置。
 - Independent Critic 默认开启；其模型、决策和修复次数写入实验结果与 manifest。
+- Critic 默认是风险诊断器而非最终门禁；风险放行与代码生成覆盖率会单独记录。
 - 每次 CLI 运行写入独立目录，并保存代码版本、工作区状态、数据/提示哈希、模型参数、
   Dafny/Python 版本、LLM token/延迟/错误统计和最终结果。
 
@@ -105,6 +106,12 @@ JSONL 每行至少包含 `task_id` 和测试代码字段 `test`，例如：
 结果不能作为严格泛化能力指标。
 
 ## 结果口径
+
+主指标是全部任务上的端到端正确率；拒绝、弃权和未生成代码都计为未通过，不能通过
+降低覆盖率抬高结果。`TARGET_END_TO_END_RATE` 默认是 `0.60`，用于报告是否达到当前
+工程目标，并不表示单个候选具有经过校准的 60% 正确概率。论文主表建议保留端到端
+正确率、verified-correct rate、代码生成覆盖率、验证后错误交付率和平均成本，其余
+Critic/probe 指标作为诊断和消融结果。
 
 最终 `passed` 同时要求：
 
