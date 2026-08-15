@@ -74,8 +74,13 @@ def build_manifest(
         },
         "pipeline": {
             "max_repair_rounds": config.MAX_REPAIR_ROUNDS,
+            "spec_guidance_mode": config.SPEC_GUIDANCE_MODE,
             "enable_spec_repair": config.ENABLE_SPEC_REPAIR,
             "enable_proof_repair": config.ENABLE_PROOF_REPAIR,
+            "max_proof_repair_attempts": config.MAX_PROOF_REPAIR_ATTEMPTS,
+            "max_verification_spec_repair_rounds": (
+                config.MAX_VERIFICATION_SPEC_REPAIR_ROUNDS
+            ),
             "enable_behavior_repair_loop": config.ENABLE_BEHAVIOR_REPAIR_LOOP,
             "enable_inloop_mutation": config.ENABLE_INLOOP_MUTATION_ADEQUACY,
             "enable_mutation_strengthening": config.ENABLE_MUTATION_SPEC_STRENGTHENING,

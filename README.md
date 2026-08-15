@@ -10,6 +10,12 @@
 有限次规约修复，修复预算耗尽或审查弃权后将风险证据带入代码生成、Dafny 验证和
 下游修复，不再把语义不确定性直接当作任务失败。`CRITIC_GATE_MODE=strict` 保留旧
 fail-closed 行为，用于安全性消融实验。
+
+主实验默认采用 `SPEC_GUIDANCE_MODE=independent`：规约可以用可执行 Reference
+精确定义目标语义，但 public method 必须独立构造结果，确定性预检会拒绝
+`result := Reference(inputs)` 一类绕过。`signature_only` 是不生成语义
+requires/ensures 的直接代码基线；`executable_reference` 保留旧的 Reference 直调
+路径，只用于消融，不能作为“规约引导独立实现”的主结果。
 默认采用一次独立语义审计，再由 spec-blind probe generator、确定性 Reference 执行
 和按需冲突确认提供交叉证据；可用 `CRITIC_REVIEW_PASSES` 做多审查者消融。
 Probe generator 只接收 Python 签名、函数说明和公开示例，不接收 Dafny 规约或生成
@@ -32,6 +38,9 @@ whole-spec reconciliation audit 才能将 Critic 决策标为批准。
 - verified template fallback 默认关闭；严格模式会强制关闭它，即使环境变量另有设置。
 - Independent Critic 默认开启；其模型、决策和修复次数写入实验结果与 manifest。
 - Critic 默认是风险诊断器而非最终门禁；风险放行与代码生成覆盖率会单独记录。
+- 验证归因指向弱规约/规约错配时，允许一次规约修复并重新审查；Proof Repair 默认
+  最多尝试一次，避免在同一证明结构上反复消耗预算。
+- mutation 探针仍记录诊断指标，但自动加强规约默认关闭，避免次要代理指标主导流程。
 - 每次 CLI 运行写入独立目录，并保存代码版本、工作区状态、数据/提示哈希、模型参数、
   Dafny/Python 版本、LLM token/延迟/错误统计和最终结果。
 
@@ -67,6 +76,16 @@ dafny --version
 ```bash
 python project/run_humaneval.py --mode strict --start 0 --limit 5 --rounds 3
 ```
+
+建议用同一任务切片运行三种研究条件：
+
+```bash
+python project/run_humaneval.py --mode strict --spec-guidance-mode signature_only --start 0 --limit 20
+python project/run_humaneval.py --mode strict --spec-guidance-mode independent --start 0 --limit 20
+python project/run_humaneval.py --mode strict --spec-guidance-mode executable_reference --start 0 --limit 20
+```
+
+`manifest.json` 会记录模式、Critic 策略和两类修复预算。
 
 结果默认写入 `logs/runs/<timestamp>_humaneval_strict_.../`：
 
@@ -123,6 +142,10 @@ Critic/probe 指标作为诊断和消融结果。
 （70%），官方留出测试暨端到端 `11/20`（55%）；首轮端到端 `10/20`。
 运行目录为 `logs/runs/20260714_094215_191679_humaneval_strict_0_20/`，其中
 manifest 明确记录 `strict`、模板关闭、模型/token 和 dirty working-tree hash。
+
+2026-07-19 advisory Critic 运行得到端到端 `13/20`，但其中 `17/20` 候选使用了
+`direct_reference_helper` 生成策略。该结果应归入 `executable_reference` 消融，不能
+用作当前 `independent` 主实验的效果声明；新默认流程需要重新运行后再比较。
 
 Independent Critic 的 2026-07-16 三轮同一 20 题迭代结果如下；“正确批准”表示获批
 候选同时通过官方留出测试：

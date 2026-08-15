@@ -93,11 +93,15 @@ LLM_TEMPERATURE=0.2
 LLM_MAX_TOKENS=0
 LLM_RETRIES=2
 MAX_REPAIR_ROUNDS=3
+SPEC_GUIDANCE_MODE=independent
+MAX_PROOF_REPAIR_ATTEMPTS=1
+MAX_VERIFICATION_SPEC_REPAIR_ROUNDS=1
 EVALUATION_MODE=strict
 USE_TEMPLATE_FALLBACK=0
 ENABLE_SPEC_CRITIC=1
 MAX_CRITIC_REPAIR_ROUNDS=1
 CRITIC_REVIEW_PASSES=1
+ENABLE_MUTATION_SPEC_STRENGTHENING=0
 ```
 
 `LLM_MAX_TOKENS=0` 表示不显式设置上限。真实 Key 只应出现在本机 `.env` 或环境
@@ -133,6 +137,10 @@ python project/run_humaneval.py --mode strict --start 0 --limit 1 --rounds 1
 python project/run_humaneval.py --mode strict --start 0 --limit 20 --rounds 3
 python project/run_humaneval.py --mode strict --start 20 --limit 10 --rounds 3
 ```
+
+论文实验应显式设置 `--spec-guidance-mode`：`signature_only` 为直接代码基线，
+`independent` 为规约引导的独立实现主条件，`executable_reference` 为允许 public
+method 直调语义 Reference 的消融条件。不要把第三种条件的结果当作独立代码生成能力。
 
 仅重放已有 run 中的冻结规约与 Independent Critic（不重新生成规约/代码）：
 

@@ -64,6 +64,26 @@ def choose_repair_policy(
             rationale="Verification timed out; roll back proof growth and choose a simpler algorithm/proof structure.",
         )
 
+    if category in {
+        "spec_or_code_mismatch",
+        "spec_precondition_too_strong_or_unproven",
+    } or adequacy_flags & {
+        "verified_but_behavior_failed",
+        "no_postcondition",
+        "postcondition_does_not_constrain_result",
+        "postcondition_ignores_inputs",
+        "verification_failure_with_weak_spec",
+    }:
+        return RepairDecision(
+            target="spec",
+            agent="verification_spec_repair_agent",
+            confidence=0.75,
+            rationale=(
+                "Verifier attribution or adequacy evidence points to the specification; "
+                "repair and re-audit the contract before spending another code-only round."
+            ),
+        )
+
     # This check must precede invariant routing; otherwise repeated invariant
     # failures are routed to the same proof prompt forever.
     if _same_error_repeated(history):
@@ -90,19 +110,6 @@ def choose_repair_policy(
                 confidence=0.85,
                 rationale="The failure is dominated by proof obligations; add invariants, assertions, lemmas, or decreases clauses.",
             )
-
-    if category == "spec_or_code_mismatch" or adequacy_flags & {
-        "verified_but_behavior_failed",
-        "no_postcondition",
-        "postcondition_does_not_constrain_result",
-        "postcondition_ignores_inputs",
-    }:
-        return RepairDecision(
-            target="code_or_spec",
-            agent="code_repair_agent",
-            confidence=0.6,
-            rationale="Spec adequacy or postcondition mismatch is suspicious; current harness keeps in-loop repair on code while recording the spec risk.",
-        )
 
     return RepairDecision(
         target="code",

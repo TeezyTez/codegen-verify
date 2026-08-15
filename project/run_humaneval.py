@@ -188,6 +188,7 @@ def run_benchmark(
                 "dev_behavior_passed": dev_behavior_passed,
                 "dev_behavior_error": dev_behavior_error,
                 "evaluation_mode": evaluation_mode,
+                "spec_guidance_mode": config.SPEC_GUIDANCE_MODE,
                 "passed": final_passed,
                 "rounds": rounds,
                 "time": round(elapsed, 1),
@@ -202,6 +203,10 @@ def run_benchmark(
                     final.get("critic_advisory_proceeded", False)
                 ),
                 "critic_repair_rounds": final.get("critic_repair_rounds", 0),
+                "verification_spec_repair_rounds": final.get(
+                    "verification_spec_repair_rounds", 0
+                ),
+                "proof_repair_attempts": final.get("proof_repair_attempts", 0),
                 "research_trace": research_trace,
                 "final_attribution": final.get("last_attribution", {}),
                 "verification_attempts": final.get("verification_attempts", 0),
@@ -371,6 +376,21 @@ def main():
     parser.add_argument("--limit", type=int, default=5, help="评测题目数量")
     parser.add_argument("--rounds", type=int, default=None, help="最大修复轮次")
     parser.add_argument(
+        "--spec-guidance-mode",
+        choices=("signature_only", "independent", "executable_reference"),
+        default=config.SPEC_GUIDANCE_MODE,
+        help=(
+            "signature_only: 直接代码基线；independent: 规约引导且禁止直调答案 helper；"
+            "executable_reference: 允许直调 helper 的消融条件"
+        ),
+    )
+    parser.add_argument(
+        "--critic-gate-mode",
+        choices=("advisory", "strict"),
+        default=config.CRITIC_GATE_MODE,
+        help="advisory: 风险放行到验证修复；strict: Critic 无法批准时停止",
+    )
+    parser.add_argument(
         "--mode",
         choices=("strict", "assisted"),
         default=config.EVALUATION_MODE,
@@ -387,6 +407,8 @@ def main():
 
     if args.rounds is not None:
         config.MAX_REPAIR_ROUNDS = args.rounds
+    config.SPEC_GUIDANCE_MODE = args.spec_guidance_mode
+    config.CRITIC_GATE_MODE = args.critic_gate_mode
 
     if args.mode == "strict":
         # A strict benchmark can never be short-circuited by task-id templates.

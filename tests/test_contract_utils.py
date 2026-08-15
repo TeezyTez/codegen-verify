@@ -9,6 +9,7 @@ from contract_utils import (
     bodyless_callable_names,
     build_direct_reference_program,
     check_contract_fidelity,
+    independent_implementation_issues,
     parse_method_contract,
     restore_public_contract,
 )
@@ -172,6 +173,78 @@ method sum_product(xs: seq<int>) returns (result0: int, result1: int)
         self.assertIsNotNone(code)
         self.assertIn("result0 := Sum(xs);", code)
         self.assertIn("result1 := Product(xs);", code)
+
+    def test_independent_mode_rejects_direct_semantic_reference_call(self):
+        spec = """function Reference(x: int): int { x + 1 }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+"""
+        code = spec + "{ result := Reference(x); }"
+        issues = independent_implementation_issues(spec, code, "f")
+        self.assertEqual(len(issues), 1)
+        self.assertIn("Reference", issues[0])
+
+    def test_independent_mode_allows_separate_implementation(self):
+        spec = """function Reference(x: int): int { x + 1 }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+"""
+        code = spec + "{ result := x + 1; }"
+        self.assertEqual(independent_implementation_issues(spec, code, "f"), [])
+
+    def test_independent_mode_rejects_indirect_reference_alias(self):
+        spec = """function Reference(x: int): int { x + 1 }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+"""
+        code = """function Reference(x: int): int { x + 1 }
+function Implementation(x: int): int { Reference(x) }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+{ result := Implementation(x); }
+"""
+        issues = independent_implementation_issues(spec, code, "f")
+        self.assertEqual(len(issues), 1)
+        self.assertIn("via Implementation", issues[0])
+
+    def test_independent_mode_allows_reference_in_proof_clauses(self):
+        spec = """function Reference(xs: seq<int>): int {
+    if |xs| == 0 then 0 else xs[0] + Reference(xs[1..])
+}
+
+method total(xs: seq<int>) returns (result: int)
+    ensures result == Reference(xs)
+"""
+        code = spec + """{
+    result := 0;
+    var i := 0;
+    while i < |xs|
+        invariant result == Reference(xs[..i])
+        decreases |xs| - i
+    {
+        result := result + xs[i];
+        i := i + 1;
+        assert result == Reference(xs[..i]);
+    }
+}
+"""
+        self.assertEqual(independent_implementation_issues(spec, code, "total"), [])
+
+    def test_independent_mode_allows_ghost_reference_value(self):
+        spec = """function Reference(x: int): int { x + 1 }
+method f(x: int) returns (result: int) ensures result == Reference(x)
+"""
+        code = spec + """{
+    ghost var expected := Reference(x);
+    result := x + 1;
+    assert result == expected;
+}
+"""
+        self.assertEqual(independent_implementation_issues(spec, code, "f"), [])
 
 
 if __name__ == "__main__":

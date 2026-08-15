@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "project"))
 
 import pipeline
 from dafny_wrapper import ErrorInfo, VerificationResult
+from task_normalizer import normalize_humaneval_problem
 
 
 SPEC = """method f(x: int) returns (result: int)
@@ -36,6 +37,80 @@ def _state(code: str, **updates):
 
 
 class PipelineGuardTests(unittest.TestCase):
+    def test_signature_only_spec_agent_is_a_no_llm_baseline(self):
+        task_ir = normalize_humaneval_problem({
+            "task_id": "HumanEval/test",
+            "entry_point": "f",
+            "prompt": 'def f(x: int) -> int:\n    """Return x."""\n',
+        }).to_dict()
+        state = _state("", problem_id="HumanEval/test", problem_desc="Return x.", task_ir=task_ir)
+        with patch.object(pipeline.config, "SPEC_GUIDANCE_MODE", "signature_only"), patch.object(
+            pipeline, "spec_llm"
+        ) as llm:
+            update = pipeline.spec_agent(state)
+
+        llm.assert_not_called()
+        self.assertEqual(update["spec"], "method f(x: int) returns (result: int)")
+        self.assertEqual(update["spec_adequacy"]["level"], "signature_only_baseline")
+
+    def test_independent_mode_rejects_direct_reference_implementation(self):
+        spec = """function Reference(x: int): int { x }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+"""
+        code = spec + "{ result := Reference(x); }"
+        with patch.object(pipeline.config, "SPEC_GUIDANCE_MODE", "independent"):
+            issues = pipeline._candidate_code_issues(spec, code, "f")
+        self.assertTrue(any("independent implementation required" in issue for issue in issues))
+
+    def test_verify_node_rechecks_independent_implementation_policy(self):
+        spec = """function Reference(x: int): int { x }
+
+method f(x: int) returns (result: int)
+    ensures result == Reference(x)
+"""
+        code = spec + "{ result := Reference(x); }"
+        with patch.object(pipeline.config, "SPEC_GUIDANCE_MODE", "independent"), patch.object(
+            pipeline, "DafnyVerifier"
+        ) as verifier:
+            update = pipeline.verify_node(_state(code, spec=spec))
+
+        verifier.assert_not_called()
+        self.assertFalse(update["dafny_verified"])
+        self.assertIn("independent implementation required", update["verification"].errors[0].message)
+
+    def test_proof_repair_budget_routes_to_code_repair(self):
+        state = _state("", repair_policy={"agent": "proof_repair_agent"}, proof_repair_attempts=1)
+        with patch.object(pipeline.config, "MAX_PROOF_REPAIR_ATTEMPTS", 1):
+            self.assertEqual(pipeline.decide_repair_route(state), "code_repair")
+
+    def test_verification_spec_repair_invalidates_old_candidate(self):
+        repaired_spec = """method f(x: int) returns (result: int)
+    ensures result == x + 1
+"""
+        state = _state(
+            GOOD_CODE,
+            problem_desc="Return x plus one.",
+            spec_adequacy={"flags": ["postcondition_ignores_inputs"]},
+            last_attribution={"category": "spec_or_code_mismatch", "rationale": "weak contract"},
+            repair_policy={"agent": "verification_spec_repair_agent"},
+            verification_spec_repair_rounds=0,
+        )
+        with patch.object(pipeline, "repair_spec_with_llm", return_value={
+            "repaired": True,
+            "spec": repaired_spec,
+            "adequacy": {"level": "strong_static", "flags": []},
+            "attempts": 1,
+        }), patch.object(pipeline, "spec_llm"):
+            update = pipeline.verification_spec_repair_agent(state)
+
+        self.assertTrue(update["verification_spec_repair_succeeded"])
+        self.assertEqual(update["spec"], repaired_spec)
+        self.assertEqual(update["code"], "")
+        self.assertEqual(update["best_code"], "")
+        self.assertEqual(update["critic_gate_status"], "pending")
+
     def test_helper_before_public_method_is_not_placeholder_injection(self):
         code = """function abs_diff(a: real, b: real): real {
     if a >= b then a - b else b - a

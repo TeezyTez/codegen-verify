@@ -32,8 +32,10 @@ from spec_critic import critic_feedback_obligations, review_spec_with_llm
 from contract_utils import (
     build_direct_reference_program,
     contract_fidelity_issues,
+    independent_implementation_issues,
     restore_public_contract,
 )
+from task_normalizer import render_dafny_signature
 
 
 # ==================== 后处理函数 ====================
@@ -142,6 +144,8 @@ def _candidate_code_issues(
         f"public contract mismatch: {issue}"
         for issue in contract_fidelity_issues(spec, code, entry_point)
     )
+    if config.SPEC_GUIDANCE_MODE == "independent":
+        issues.extend(independent_implementation_issues(spec, code, entry_point))
     if run_resolve and not issues:
         resolution = DafnyVerifier().resolve(code)
         if not resolution.passed:
@@ -272,6 +276,9 @@ class PipelineState(TypedDict):
     critic_disposition: str                # pass/repair/warn/fatal
     critic_advisory_proceeded: bool        # 是否带着 Critic 风险继续下游闭环
     critic_repair_rounds: int              # Critic 反例驱动的规约修复次数
+    verification_spec_repair_rounds: int   # 验证失败后回到规约修复的次数
+    verification_spec_repair_succeeded: bool # 最近一次验证触发的规约修复是否成功
+    proof_repair_attempts: int              # Proof Repair 实际尝试次数
     task_ir: dict                          # 结构化任务与确定性公开示例
     semantic_probe_suite: dict             # 跨规约修复复用的 spec-blind probes
     resume_verified_alignment_code: bool   # reuse preverified alignment code after recertification
@@ -308,6 +315,29 @@ def spec_agent(state: PipelineState) -> dict:
     print(f"\n{'='*50}")
     print(f"[Spec Agent] 正在为 [{state['problem_id']}] 生成规约...")
 
+    if config.SPEC_GUIDANCE_MODE == "signature_only" and state.get("task_ir"):
+        signature = render_dafny_signature(state["task_ir"])
+        adequacy = {
+            "level": "signature_only_baseline",
+            "score": 0,
+            "flags": ["signature_only_baseline"],
+            "missing_obligations": [],
+        }
+        event = trace_event(
+            "spec",
+            state["round"],
+            action="signature_only_baseline",
+            spec_ok=True,
+            metrics=spec_metrics(signature),
+            adequacy=adequacy,
+        )
+        print("[Spec Agent] signature-only 基线：不生成语义 requires/ensures")
+        return {
+            "spec": signature,
+            "spec_adequacy": adequacy,
+            "research_trace": append_trace(state, event),
+        }
+
     llm = spec_llm()
 
     system_prompt = """你是一个 Dafny 规约专家。
@@ -321,7 +351,7 @@ def spec_agent(state: PipelineState) -> dict:
 - 如果输入中提供“固定 Dafny 签名”，必须逐字保留方法名、参数名/类型和返回名/类型，不得重新推断。
 - 复杂语义应拆成少量、全定义的纯 helper function/predicate，避免巨型量词和重复字符级约束。
 - 对纯输入→输出任务，优先定义一个可执行、全定义、按输入规模递减的 reference function，并用主后置条件 `ensures result == Reference(inputs)` 绑定完整语义。构造序列、fold、搜索类任务都优先采用此形式；额外 shape 条件只能作为补充。
-- reference function 必须覆盖空输入和所有公开合法输入，不能用 requires 缩小公共输入域。这样实现可直接调用 reference function，避免重复发明难证明的循环。
+- reference function 必须覆盖空输入和所有公开合法输入，不能用 requires 缩小公共输入域。它用于精确定义目标语义；下游是否允许 public method 调用它由实验条件单独控制。
 - 每个 ensures 都应能追溯到题目文本或公开示例，同时保持证明可行。
 - 绝对不要在 method 规约后输出方法体；helper function 可以有纯表达式函数体。
 
@@ -471,9 +501,11 @@ def code_agent(state: PipelineState) -> dict:
     print(f"\n{'='*50}")
     print(f"[Code Agent] 正在根据规约生成代码...")
 
-    direct_code = build_direct_reference_program(
-        state.get("spec", ""), state.get("entry_point", "")
-    )
+    direct_code = None
+    if config.SPEC_GUIDANCE_MODE == "executable_reference":
+        direct_code = build_direct_reference_program(
+            state.get("spec", ""), state.get("entry_point", "")
+        )
     if direct_code:
         direct_issues = _candidate_code_issues(
             state.get("spec", ""),
@@ -501,20 +533,38 @@ def code_agent(state: PipelineState) -> dict:
 
     llm = code_llm()
 
+    if config.SPEC_GUIDANCE_MODE == "signature_only":
+        implementation_policy = """
+### 实验条件：signature-only baseline
+- 只能保留给定 method 签名，不要添加 requires/ensures。
+- 根据自然语言题意独立实现完整算法。
+- Dafny 验证在此条件下只检查语言、类型、安全与代码内证明义务，不代表功能规约证明。
+"""
+        reference_rule = "保持 signature-only 条件，不要自行添加语义 Reference 或 requires/ensures"
+    elif config.SPEC_GUIDANCE_MODE == "executable_reference":
+        implementation_policy = """
+### 实验条件：executable-reference ablation
+- 可以直接调用规约中精确计算最终返回值的可执行 Reference/helper。
+- 该条件衡量“可执行规约复用”的上界，不代表独立实现能力。
+"""
+        reference_rule = "允许直接调用精确给出最终 result 的可执行 Reference/helper"
+    else:
+        implementation_policy = """
+### 实验条件：independent specification-guided implementation
+- 规约中的 Reference/helper 是证明目标，不是可调用的最终答案。
+- public method body 禁止直接调用与返回值等价的最终 Reference/helper。
+- 必须使用独立的循环、递归 method 或不同的实现 helper 构造结果，并证明满足冻结规约。
+- 可以调用不直接计算最终结果的通用辅助函数。
+"""
+        reference_rule = "不得直接或间接调用精确给出最终 result 的 Reference/helper"
+
     # Few-shot 示例：Dafny 循环不变量最佳实践
     FEW_SHOT = """
 ## Dafny 语法基础
 
-### ⭐ 最高优先级：复用规约中的可执行 reference helper
-如果规约已经包含 `ensures result == Reference(inputs)`（或 bool 结果与纯 predicate/function 等价），最可靠的实现通常是：
-```dafny
-method solve(xs: seq<int>) returns (result: seq<int>)
-    ensures result == Reference(xs)
-{
-    result := Reference(xs);
-}
-```
-不要再用循环重新实现同一算法。只有规约没有可直接计算结果的 helper 时，才进入下面的循环模式。
+### ⭐ 遵守实验条件
+规约中的 reference helper 用来定义期望语义。是否允许实现直接调用它，以当前提示中
+明确给出的实验条件为准。
 
 ### Dafny 类型转换速查
 - int → real: `x as real`  ✅
@@ -651,6 +701,8 @@ method find_pair(numbers: seq<int>) returns (result: bool)
 
     prompt = f"""{FEW_SHOT}
 
+{implementation_policy}
+
 ---
 
 问题描述：
@@ -669,7 +721,7 @@ method find_pair(numbers: seq<int>) returns (result: bool)
 5. □ 确保代码能通过 Dafny 验证器验证
 6. □ 不要修改/删除公共 method 的 requires/ensures；代码必须绑定给定规约
 7. □ 对 string/seq 构造题，使用与规约 helper 对齐的循环 invariant 或递归结构，而不是把语义留给测试
-8. □ 若规约有可执行 Reference/helper 精确给出 result，直接赋值调用它，不要重写成循环
+8. □ {reference_rule}
 
 只输出完整的 Dafny 代码（包含辅助函数）。"""
 
@@ -726,6 +778,13 @@ def spec_repair_agent(state: PipelineState) -> dict:
     print(f"\n{'='*50}")
     print("[Spec Repair Agent] 检查是否需要加强规约...")
 
+    if config.SPEC_GUIDANCE_MODE == "signature_only":
+        print("[Spec Repair Agent] signature-only 基线：跳过语义规约修复")
+        event = trace_event(
+            "spec_repair", state["round"], action="skipped_signature_only"
+        )
+        return {"research_trace": append_trace(state, event)}
+
     adequacy = state.get("spec_adequacy", {})
     if not should_repair_spec(adequacy):
         print("[Spec Repair Agent] 跳过：当前规约充分性风险未达到修复阈值，或开关未启用")
@@ -775,6 +834,13 @@ def mutation_adequacy_node(state: PipelineState) -> dict:
     """Lightweight in-loop mutation adequacy probe for the current spec."""
     print(f"\n{'='*50}")
     print("[Mutation Adequacy] 正在探测规约是否能排除简单错误实现...")
+
+    if config.SPEC_GUIDANCE_MODE == "signature_only":
+        print("[Mutation Adequacy] signature-only 基线：不评估语义规约充分性")
+        event = trace_event(
+            "mutation_adequacy", state["round"], action="skipped_signature_only"
+        )
+        return {"mutation_adequacy": {}, "research_trace": append_trace(state, event)}
 
     if not config.ENABLE_INLOOP_MUTATION_ADEQUACY:
         print("[Mutation Adequacy] 已禁用")
@@ -873,16 +939,22 @@ def spec_critic_agent(state: PipelineState) -> dict:
     print(f"\n{'='*50}")
     print("[Independent Spec Critic] 正在审查自然语言与规约的语义一致性...")
 
-    if not config.ENABLE_SPEC_CRITIC:
+    if config.SPEC_GUIDANCE_MODE == "signature_only" or not config.ENABLE_SPEC_CRITIC:
+        signature_only = config.SPEC_GUIDANCE_MODE == "signature_only"
         report = {
             "decision": "approve",
-            "summary": "Independent critic is disabled by configuration.",
+            "summary": (
+                "Semantic critic is not applicable to the signature-only baseline."
+                if signature_only
+                else "Independent critic is disabled by configuration."
+            ),
             "issues": [],
             "counterexamples": [],
             "boundary_checks": [],
             "critic_provider": config.CRITIC_PROVIDER,
             "critic_model": config.CRITIC_MODEL,
-            "disabled": True,
+            "disabled": not signature_only,
+            "signature_only_baseline": signature_only,
         }
         event = trace_event("spec_critic", state["round"], action="bypassed", report=report)
         return {
@@ -1077,6 +1149,14 @@ def verify_node(state: PipelineState) -> dict:
         candidate_code,
         state.get("entry_point", ""),
     )
+    if config.SPEC_GUIDANCE_MODE == "independent":
+        contract_issues.extend(
+            independent_implementation_issues(
+                candidate_spec,
+                candidate_code,
+                state.get("entry_point", ""),
+            )
+        )
     if contract_issues:
         result = VerificationResult(
             passed=False,
@@ -1371,6 +1451,78 @@ def diagnose_agent(state: PipelineState) -> dict:
     }
 
 
+def verification_spec_repair_agent(state: PipelineState) -> dict:
+    """Repair a suspect contract after verifier evidence points back to the spec."""
+    print(f"\n{'='*50}")
+    print("[Verification-guided Spec Repair] 正在根据验证归因修正规约...")
+
+    adequacy = dict(state.get("spec_adequacy", {}))
+    flags = set(adequacy.get("flags") or [])
+    flags.add("verification_triggered_spec_repair")
+    missing = list(adequacy.get("missing_obligations") or [])
+    attribution = state.get("last_attribution", {})
+    missing.append(
+        "Reconcile the contract with verifier evidence: "
+        + str(attribution.get("rationale") or state.get("diagnosis", ""))[:500]
+    )
+    adequacy["flags"] = sorted(flags)
+    adequacy["missing_obligations"] = list(dict.fromkeys(missing))
+
+    result = repair_spec_with_llm(
+        llm=spec_llm(),
+        problem_desc=state.get("problem_desc", ""),
+        spec=state.get("spec", ""),
+        adequacy=adequacy,
+    )
+    repairs = int(state.get("verification_spec_repair_rounds", 0)) + 1
+    repaired_spec = result.get("spec", state.get("spec", ""))
+    repaired = bool(result.get("repaired")) and repaired_spec != state.get("spec", "")
+    action = "repaired" if repaired else "repair_failed"
+    print(
+        "[Verification-guided Spec Repair] "
+        + ("规约已更新，将重新执行充分性审查和代码生成" if repaired else "未得到有效新规约，回退代码修复")
+    )
+    event = trace_event(
+        "verification_spec_repair",
+        state["round"],
+        action=action,
+        attribution=attribution,
+        repair_policy=state.get("repair_policy", {}),
+        attempts=result.get("attempts", 0),
+        error=result.get("error", ""),
+        verification_spec_repair_rounds=repairs,
+    )
+    update = {
+        "verification_spec_repair_rounds": repairs,
+        "verification_spec_repair_succeeded": repaired,
+        "research_trace": append_trace(state, event),
+    }
+    if repaired:
+        # A changed contract invalidates every verdict and best-so-far score
+        # computed for the previous contract. Task-only semantic probes remain reusable.
+        update.update({
+            "spec": repaired_spec,
+            "spec_adequacy": result.get("adequacy", adequacy),
+            "code": "",
+            "verification": VerificationResult(),
+            "dafny_verified": False,
+            "passed": False,
+            "spec_critic": {},
+            "critic_gate_status": "pending",
+            "critic_disposition": "repair",
+            "critic_advisory_proceeded": False,
+            "mutation_adequacy": {},
+            "resume_verified_alignment_code": False,
+            "candidate_rejected": False,
+            "best_code": "",
+            "best_spec": "",
+            "best_verification": VerificationResult(),
+            "best_quality": [],
+            "stagnation_count": 0,
+        })
+    return update
+
+
 def proof_repair_agent(state: PipelineState) -> dict:
     """Agent 4a: 专门修复 Dafny 证明义务，不主动削弱规约。"""
     print(f"\n{'='*50}")
@@ -1379,6 +1531,8 @@ def proof_repair_agent(state: PipelineState) -> dict:
     if not config.ENABLE_PROOF_REPAIR:
         print("[Proof Repair Agent] 已禁用，回退到通用代码修复")
         return repair_agent(state)
+
+    proof_attempts = int(state.get("proof_repair_attempts", 0)) + 1
 
     history = state.get("history", [])
     history_text = ""
@@ -1397,6 +1551,7 @@ def proof_repair_agent(state: PipelineState) -> dict:
         diagnosis=state.get("diagnosis", ""),
         verification_errors=verification_errors,
         history_text=history_text,
+        allow_direct_reference=config.SPEC_GUIDANCE_MODE == "executable_reference",
     )
 
     new_code = _inject_nested_loop_assert(extract_proof_dafny_code(raw_code))
@@ -1415,7 +1570,9 @@ def proof_repair_agent(state: PipelineState) -> dict:
         )
         intermediate_state = dict(state)
         intermediate_state["research_trace"] = append_trace(state, event)
-        return repair_agent(intermediate_state)
+        update = repair_agent(intermediate_state)
+        update["proof_repair_attempts"] = proof_attempts
+        return update
 
     issues = _candidate_code_issues(
         state.get("spec", ""),
@@ -1434,7 +1591,9 @@ def proof_repair_agent(state: PipelineState) -> dict:
         )
         intermediate_state = dict(state)
         intermediate_state["research_trace"] = append_trace(state, event)
-        return repair_agent(intermediate_state)
+        update = repair_agent(intermediate_state)
+        update["proof_repair_attempts"] = proof_attempts
+        return update
 
     print(f"[Proof Repair Agent] 修复后代码:\n{new_code[:300]}...")
     event = trace_event(
@@ -1448,6 +1607,7 @@ def proof_repair_agent(state: PipelineState) -> dict:
     return {
         "code": new_code,
         "candidate_rejected": False,
+        "proof_repair_attempts": proof_attempts,
         "round": state["round"] + 1,
         "research_trace": append_trace(state, event),
     }
@@ -1659,6 +1819,22 @@ def repair_agent(state: PipelineState) -> dict:
 - 如果是类型错误 → 检查是否可以用不同的数据类型方案
 - **绝对不要输出与上一轮基本相同的代码！**"""
 
+    if config.SPEC_GUIDANCE_MODE == "executable_reference":
+        implementation_policy = (
+            "本轮是 executable-reference 消融条件；如果冻结规约用可执行 helper "
+            "精确描述返回值，可以直接调用该 helper。"
+        )
+    elif config.SPEC_GUIDANCE_MODE == "signature_only":
+        implementation_policy = (
+            "本轮是 signature-only 基线；保持公共 method 签名，不新增语义 requires/ensures，"
+            "根据题意修复独立实现。"
+        )
+    else:
+        implementation_policy = (
+            "本轮是 independent 规约引导条件；Reference/helper 仅定义证明目标，"
+            "public method 不得直接调用精确计算最终返回值的语义 helper，必须修复独立实现。"
+        )
+
     llm = repair_llm()
     prompt = f"""问题描述：
 {state['problem_desc']}
@@ -1676,7 +1852,7 @@ def repair_agent(state: PipelineState) -> dict:
 {history_text}{tip_text}
 
 请基于以上信息，给出修复后的完整 Dafny 代码。
-如果规约已经用可执行 helper 精确描述返回值，优先用 `result := Helper(inputs);` 取代反复失败的循环证明。
+实验实现策略：{implementation_policy}
 只输出最终的 Dafny 代码。"""
 
     new_code = llm.chat(
@@ -1688,6 +1864,7 @@ def repair_agent(state: PipelineState) -> dict:
 - 确保修复后仍然满足原始规约
 - 如果上一轮是相同错误，这轮必须尝试不同的修复策略
 - 语法/类型错误优先使用简单直接的修复，不要过度设计
+- {implementation_policy}
 - 只输出完整的 Dafny 代码""",
         user=prompt
     )
@@ -1859,13 +2036,37 @@ def decide_after_alignment(state: PipelineState) -> Literal["recheck_spec", "ver
     return "verify"
 
 
-def decide_repair_route(state: PipelineState) -> Literal["proof_repair", "code_repair"]:
+def decide_repair_route(
+    state: PipelineState,
+) -> Literal["spec_repair", "proof_repair", "code_repair"]:
     """Route repair to the specialized agent chosen by Repair Policy."""
     decision = state.get("repair_policy", {})
+    if (
+        decision.get("agent") == "verification_spec_repair_agent"
+        and config.SPEC_GUIDANCE_MODE != "signature_only"
+        and int(state.get("verification_spec_repair_rounds", 0))
+        < config.MAX_VERIFICATION_SPEC_REPAIR_ROUNDS
+    ):
+        print("[Router] 验证归因指向规约，路由到 Verification-guided Spec Repair")
+        return "spec_repair"
     if decision.get("agent") == "proof_repair_agent":
-        print("[Router] 路由到 Proof Repair Agent")
-        return "proof_repair"
+        if (
+            config.ENABLE_PROOF_REPAIR
+            and int(state.get("proof_repair_attempts", 0))
+            < config.MAX_PROOF_REPAIR_ATTEMPTS
+        ):
+            print("[Router] 路由到 Proof Repair Agent")
+            return "proof_repair"
+        print("[Router] Proof Repair 预算已用尽，改用 Code Repair")
     print("[Router] 路由到 Code Repair Agent")
+    return "code_repair"
+
+
+def decide_after_verification_spec_repair(
+    state: PipelineState,
+) -> Literal["recheck_spec", "code_repair"]:
+    if state.get("verification_spec_repair_succeeded"):
+        return "recheck_spec"
     return "code_repair"
 
 
@@ -1888,6 +2089,7 @@ def build_pipeline():
     builder.add_node("verify", verify_node)
     builder.add_node("behavior_test", behavior_test_node)
     builder.add_node("diagnose", diagnose_agent)
+    builder.add_node("verification_spec_repair", verification_spec_repair_agent)
     builder.add_node("alignment_repair", alignment_repair_agent)
     builder.add_node("proof_repair", proof_repair_agent)
     builder.add_node("repair", repair_agent)
@@ -1944,9 +2146,18 @@ def build_pipeline():
         "diagnose",
         decide_repair_route,
         {
+            "spec_repair": "verification_spec_repair",
             "proof_repair": "proof_repair",
             "code_repair": "repair",
         }
+    )
+    builder.add_conditional_edges(
+        "verification_spec_repair",
+        decide_after_verification_spec_repair,
+        {
+            "recheck_spec": "mutation_adequacy",
+            "code_repair": "repair",
+        },
     )
     builder.add_edge("proof_repair", "verify")
     builder.add_edge("repair", "verify")
@@ -2021,6 +2232,9 @@ def run_pipeline(
                     "critic_disposition": "pass",
                     "critic_advisory_proceeded": False,
                     "critic_repair_rounds": 0,
+                    "verification_spec_repair_rounds": 0,
+                    "verification_spec_repair_succeeded": False,
+                    "proof_repair_attempts": 0,
                     "task_ir": task_ir or {},
                     "semantic_probe_suite": {},
                     "resume_verified_alignment_code": False,
@@ -2063,6 +2277,9 @@ def run_pipeline(
         "critic_disposition": "repair",
         "critic_advisory_proceeded": False,
         "critic_repair_rounds": 0,
+        "verification_spec_repair_rounds": 0,
+        "verification_spec_repair_succeeded": False,
+        "proof_repair_attempts": 0,
         "task_ir": task_ir or {},
         "semantic_probe_suite": {},
         "resume_verified_alignment_code": False,

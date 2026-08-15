@@ -19,14 +19,24 @@ def repair_proof_with_llm(
     diagnosis: str,
     verification_errors: list[dict[str, Any]],
     history_text: str = "",
+    allow_direct_reference: bool = False,
 ) -> str:
     proof_patterns = select_proof_patterns(problem_desc, spec, verification_errors)
+    if allow_direct_reference:
+        reference_policy = (
+            "本实验条件允许直接调用冻结规约中精确计算最终返回值的可执行 reference helper。"
+        )
+    else:
+        reference_policy = (
+            "冻结规约中的 Reference/helper 是证明目标；public method 不得直接调用精确计算"
+            "最终返回值的语义 helper，必须保留独立实现并修复其证明。"
+        )
     return llm.chat(
-        system="""你是 Dafny proof repair 专家。
+        system=f"""你是 Dafny proof repair 专家。
 你的任务不是重写算法，而是让现有实现更容易被 Dafny 证明。
 
 优先动作：
-- 如果冻结规约已包含 `ensures result == Reference(inputs)` 或等价的可执行 helper，直接令 method 调用该 helper；这比修补重复实现的循环更可靠。
+- {reference_policy}
 - 加强 while invariant，描述已处理前缀、累计变量、result=true/false 两种状态。
 - 在循环后或关键分支后添加 assert bridge。
 - 添加纯 helper function、predicate、lemma 来表达证明义务。
@@ -65,7 +75,7 @@ def repair_proof_with_llm(
 与当前义务匹配的通用 proof patterns：
 {proof_patterns}
 
-请进行 proof repair：若规约有可执行 reference helper，优先改为直接调用；否则保留算法主体并补充/修复 invariant、assert、lemma、decreases，使 Dafny 能证明代码满足规约。
+请进行 proof repair：遵守上述实验实现策略，补充/修复 invariant、assert、lemma、decreases，使 Dafny 能证明代码满足规约。
 只输出完整 Dafny 代码。
 """,
     )

@@ -149,8 +149,8 @@ def _system_prompt() -> str:
 - 必须保留原 method 名、参数列表、returns 列表。
 - 不得新增会排除公开示例、空输入或题目其他合法输入的公共 method requires。
 - 可以添加 requires/ensures，也可以添加纯 function/predicate helper。
-- `ensures result == Reference(...)` 直接调用的 reference helper 必须有 `{ ... }` 可执行函数体；仅用于 ghost 规约的抽象 helper 可以无 body，但不能被运行时 reference function 调用。
-- 对纯输入→输出任务，优先添加全定义、可执行的递归 reference function，并用 `ensures result == Reference(inputs)` 表达完整语义，便于实现直接复用和验证。
+- `ensures result == Reference(...)` 使用的 reference helper 必须有 `{ ... }` 可执行函数体；仅用于 ghost 规约的抽象 helper 可以无 body，但不能被运行时 reference function 调用。
+- 对纯输入→输出任务，优先添加全定义、可执行的递归 reference function，并用 `ensures result == Reference(inputs)` 表达完整语义。该 helper 用于精确定义目标；下游是否允许实现调用它由实验条件单独控制。
 - 当 flags 包含 `proof_friendly_reference_missing` 时，把核心语义移入 reference function 的可执行函数体，并用 `ensures result == Reference(inputs)` 作为主后置条件；删除与其重复、需要大量额外引理的量词后置条件，但不得丢失题意。
 - ensures/requires 中只能使用纯表达式，禁止 var、:=、return、while、for。
 - 字符转换：int→char 写 `(x as char)`，单字符 string 写 `[(x as char)]`；Dafny 没有 `char(x)` 构造器，也不能把 int 直接 `as string`。

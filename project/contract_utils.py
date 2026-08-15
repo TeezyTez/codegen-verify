@@ -260,6 +260,114 @@ def build_direct_reference_program(
     return "\n".join(rebuilt).strip()
 
 
+def independent_implementation_issues(
+    frozen_spec: str,
+    candidate_source: str,
+    method_name: str = "",
+) -> list[str]:
+    """Reject a public implementation that simply executes its result oracle.
+
+    Executable reference functions remain useful as precise specifications and
+    for post-hoc semantic probes.  In the independent-implementation research
+    condition, however, the public method must construct its result rather than
+    delegate directly to the helper named by ``ensures result == Helper(...)``.
+    """
+    contract = parse_method_contract(frozen_spec, method_name)
+    if contract is None or not contract.returns:
+        return []
+
+    reference_helpers: set[str] = set()
+    for return_param in contract.returns:
+        for clause in contract.ensures:
+            match = re.fullmatch(
+                rf"\s*{re.escape(return_param.name)}\s*(?:==|<==>)\s*"
+                r"([A-Za-z_]\w*)\s*\(.*\)\s*",
+                clause,
+                flags=re.DOTALL,
+            )
+            if match:
+                reference_helpers.add(match.group(1))
+                break
+    if not reference_helpers:
+        return []
+
+    candidate_name = method_name or contract.name
+    bodies = _callable_bodies(candidate_source or "")
+    if candidate_name not in bodies:
+        return []
+
+    reachable = {candidate_name}
+    frontier = [candidate_name]
+    while frontier:
+        caller = frontier.pop()
+        kind, body = bodies[caller]
+        if kind == "method":
+            body = _method_executable_text(body)
+        for callee in re.findall(r"\b([A-Za-z_]\w*)\s*\(", body):
+            if callee in reference_helpers:
+                return [
+                    (
+                        "independent implementation required: public method call graph "
+                        f"reaches semantic reference helper {callee} via {caller}"
+                    )
+                ]
+            if callee in bodies and callee not in reachable:
+                reachable.add(callee)
+                frontier.append(callee)
+    return []
+
+
+def _callable_bodies(source: str) -> dict[str, tuple[str, str]]:
+    """Extract executable Dafny callable bodies for a small call-graph check."""
+    declarations = re.compile(
+        r"\b(method|function(?:\s+method)?|predicate)\s+"
+        r"([A-Za-z_]\w*)\s*(?:<[^>{}]*>)?\s*\("
+    )
+    bodies: dict[str, tuple[str, str]] = {}
+    for match in declarations.finditer(source or ""):
+        body_open = (source or "").find("{", match.end())
+        if body_open < 0:
+            continue
+        # A bodyless declaration ends before the next callable declaration.
+        next_declaration = declarations.search(source or "", match.end())
+        if next_declaration is not None and next_declaration.start() < body_open:
+            continue
+        body_close = _matching_delimiter(source or "", body_open, "{", "}")
+        if body_close >= 0:
+            kind = "method" if match.group(1) == "method" else "function"
+            bodies[match.group(2)] = (kind, (source or "")[body_open + 1 : body_close])
+    return bodies
+
+
+def _method_executable_text(body: str) -> str:
+    """Remove ghost proof clauses before checking executable call reachability.
+
+    A specification-guided implementation is expected to mention Reference in
+    invariants, assertions, decreases clauses, and ghost variables.  Those
+    mentions help prove an independent algorithm and must not be confused with
+    executing the Reference to compute the public result.
+    """
+    kept: list[str] = []
+    continuation_indent: int | None = None
+    proof_prefixes = ("invariant", "decreases", "assert", "assume", "ghost")
+    for raw_line in (body or "").splitlines():
+        line = _strip_comment(raw_line)
+        stripped = line.strip()
+        if not stripped:
+            continue
+        indent = len(line) - len(line.lstrip())
+        if continuation_indent is not None:
+            if indent > continuation_indent:
+                continue
+            continuation_indent = None
+        first_word = stripped.split(None, 1)[0].rstrip(":")
+        if first_word in proof_prefixes or stripped.startswith("calc"):
+            continuation_indent = indent
+            continue
+        kept.append(line)
+    return "\n".join(kept)
+
+
 def bodyless_callable_names(source: str) -> set[str]:
     """Return function/predicate declarations that have no executable body."""
     lines = (source or "").splitlines()
