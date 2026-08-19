@@ -8,7 +8,6 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "project"))
 
-import pipeline
 import config
 from task_normalizer import normalize_humaneval_problem
 from spec_critic import (
@@ -2470,63 +2469,6 @@ class SpecCriticTests(unittest.TestCase):
         self.assertEqual(report["decision"], "abstain")
         self.assertEqual(report["reconciliation_audit"]["decision"], "reject")
         self.assertNotIn("audit_rejection_overturned", report)
-
-    def test_pipeline_gate_repairs_rejection_then_abstains_at_budget(self):
-        state = {"spec_critic": _report("reject"), "critic_repair_rounds": 0}
-        with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
-            pipeline.config, "MAX_CRITIC_REPAIR_ROUNDS", 1
-        ):
-            self.assertEqual(pipeline.decide_after_critic(state), "repair")
-            state["critic_repair_rounds"] = 1
-            self.assertEqual(pipeline.decide_after_critic(state), "end")
-            state["spec_critic"] = _report("abstain")
-            self.assertEqual(pipeline.decide_after_critic(state), "end")
-
-    def test_mutation_strengthening_has_a_bounded_retry(self):
-        state = {
-            "mutation_adequacy": {"mutants_verified": 1},
-            "mutation_strengthening_attempts": 0,
-        }
-        with patch.object(pipeline.config, "ENABLE_MUTATION_SPEC_STRENGTHENING", True), patch.object(
-            pipeline.config, "MAX_MUTATION_STRENGTHENING_ROUNDS", 1
-        ):
-            self.assertEqual(pipeline.decide_after_mutation(state), "strengthen_spec")
-            state["mutation_strengthening_attempts"] = 1
-            self.assertEqual(pipeline.decide_after_mutation(state), "critic")
-
-    def test_compiled_graph_rejection_stops_before_code_generation(self):
-        rejected = _report("reject")
-        calls = []
-
-        def node(name, update):
-            def run(_state):
-                calls.append(name)
-                return update
-            return run
-
-        with patch.object(pipeline.config, "ENABLE_SPEC_CRITIC", True), patch.object(
-            pipeline.config, "MAX_CRITIC_REPAIR_ROUNDS", 0
-        ), patch.object(
-            pipeline, "spec_agent", node("spec", {"spec": "candidate"})
-        ), patch.object(
-            pipeline, "spec_repair_agent", node("spec_repair", {})
-        ), patch.object(
-            pipeline,
-            "mutation_adequacy_node",
-            node("mutation", {"mutation_adequacy": {"mutants_verified": 0}}),
-        ), patch.object(
-            pipeline,
-            "spec_critic_agent",
-            node("critic", {"spec_critic": rejected, "critic_gate_status": "rejected"}),
-        ), patch.object(
-            pipeline, "code_agent", node("code", {"code": "must not run"})
-        ):
-            final = pipeline.build_pipeline().invoke(self._graph_state())
-
-        self.assertEqual(calls, ["spec", "spec_repair", "mutation", "critic"])
-        self.assertEqual(final["critic_gate_status"], "rejected")
-        self.assertEqual(final["code"], "")
-
 
 if __name__ == "__main__":
     unittest.main()

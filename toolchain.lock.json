@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "platform": {
+    "os": "Windows 11",
+    "architecture": "AMD64"
+  },
+  "python": {
+    "version": "3.12.13",
+    "implementation": "CPython",
+    "executable_sha256": "560B9EF7D856608AB8DA02DED2DC8A1951AD1F424C382C0EC6A698874165A18E",
+    "pip_version": "25.0.1"
+  },
+  "dependencies": {
+    "file": "requirements.lock",
+    "sha256": "76943CBAA02A1857C33CBBA09897A949EB638F4FF6843B5963E456DEF75C089F"
+  },
+  "dafny": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "asset": "dafny-4.11.0-x64-windows-2022.zip",
+    "asset_url": "https://github.com/dafny-lang/dafny/releases/download/v4.11.0/dafny-4.11.0-x64-windows-2022.zip",
+    "asset_sha256": "3653F05A111CA21E234709EA7B25CE96083FD6C6F10484256BA54110DBC0654D",
+    "executable": ".tools/dafny/4.11.0/Dafny.exe",
+    "solver": "bundled"
+  }
+}

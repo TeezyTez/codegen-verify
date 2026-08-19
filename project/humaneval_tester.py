@@ -496,6 +496,24 @@ def _execute_test_code(
 
 
 _WORKER_FLAG = "--humaneval-worker"
+_WORKER_ENV_KEYS = frozenset({
+    "COMSPEC", "HOME", "HOMEDRIVE", "HOMEPATH", "LANG", "PATH",
+    "PATHEXT", "SYSTEMDRIVE", "SYSTEMROOT", "TEMP", "TMP", "TMPDIR",
+    "USERPROFILE", "WINDIR",
+})
+
+
+def _worker_environment(source: dict[str, str] | None = None) -> dict[str, str]:
+    """Return the minimal environment inherited by generated candidates."""
+    values = os.environ if source is None else source
+    result = {
+        key: value
+        for key, value in values.items()
+        if key.upper() in _WORKER_ENV_KEYS
+    }
+    result["PYTHONDONTWRITEBYTECODE"] = "1"
+    result["PYTHONNOUSERSITE"] = "1"
+    return result
 _DEFAULT_TEST_TIMEOUT_SECONDS = 10.0
 
 
@@ -662,8 +680,11 @@ def _run_test_in_subprocess(
             encoding="utf-8",
         )
 
-        env = os.environ.copy()
-        env["PYTHONDONTWRITEBYTECODE"] = "1"
+        # Generated candidates are untrusted.  A subprocess is useful for
+        # timeout and module isolation, but it must not inherit model keys or
+        # arbitrary parent secrets.  Keep only variables required to start a
+        # Python process on the current platform.
+        env = _worker_environment()
         command = [
             sys.executable,
             str(Path(__file__).resolve()),

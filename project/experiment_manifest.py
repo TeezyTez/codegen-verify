@@ -35,20 +35,24 @@ def build_manifest(
     prompt_files = [
         config.PROJECT_DIR / "project" / name
         for name in (
-            "pipeline.py",
-            "proof_repair.py",
-            "spec_repair.py",
+            "agent.py",
+            "artifacts.py",
+            "candidate_synthesizer.py",
+            "failure_diagnoser.py",
+            "requirement_analyzer.py",
+            "spec_planner.py",
+            "traceability.py",
+            "verification_engine.py",
+            "spec_authority.py",
             "spec_critic.py",
-            "spec_code_alignment.py",
-            "proof_patterns.py",
         )
     ]
     return {
-        "schema_version": 1,
+        "schema_version": 3,
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
         "evaluation_mode": mode,
         "official_test_feedback_allowed": False,
-        "template_fallback": bool(config.USE_TEMPLATE_FALLBACK),
+        "reference_implementation_allowed": bool(config.ALLOW_REFERENCE_IMPLEMENTATION),
         "git": {
             "sha": git_sha.strip(),
             "dirty": bool(git_status.strip()),
@@ -56,9 +60,18 @@ def build_manifest(
             "working_tree_hash": _working_tree_hash(git_status),
         },
         "models": {
-            "spec": config.SPEC_MODEL,
-            "code": config.CODE_MODEL,
-            "repair": config.REPAIR_MODEL,
+            "spec": {"provider": config.SPEC_PROVIDER, "model": config.SPEC_MODEL},
+            "code": {"provider": config.CODE_PROVIDER, "model": config.CODE_MODEL},
+            "repair": {"provider": config.REPAIR_PROVIDER, "model": config.REPAIR_MODEL},
+            "requirement": {
+                "provider": config.REQUIREMENT_PROVIDER,
+                "model": config.REQUIREMENT_MODEL,
+            },
+            "planner": {"provider": config.PLANNER_PROVIDER, "model": config.PLANNER_MODEL},
+            "diagnosis": {
+                "provider": config.DIAGNOSIS_PROVIDER,
+                "model": config.DIAGNOSIS_MODEL,
+            },
             "critic": {
                 "provider": config.CRITIC_PROVIDER,
                 "model": config.CRITIC_MODEL,
@@ -72,16 +85,15 @@ def build_manifest(
             "max_tokens": config.LLM_MAX_TOKENS or None,
             "retries": config.LLM_RETRIES,
         },
-        "pipeline": {
+        "agent": {
             "max_repair_rounds": config.MAX_REPAIR_ROUNDS,
-            "enable_spec_repair": config.ENABLE_SPEC_REPAIR,
-            "enable_proof_repair": config.ENABLE_PROOF_REPAIR,
-            "enable_behavior_repair_loop": config.ENABLE_BEHAVIOR_REPAIR_LOOP,
-            "enable_inloop_mutation": config.ENABLE_INLOOP_MUTATION_ADEQUACY,
-            "enable_mutation_strengthening": config.ENABLE_MUTATION_SPEC_STRENGTHENING,
-            "max_mutation_strengthening_rounds": config.MAX_MUTATION_STRENGTHENING_ROUNDS,
+            "max_spec_revisions": config.MAX_SPEC_REVISIONS,
+            "max_spec_repair_rounds": config.MAX_SPEC_REPAIR_ROUNDS,
+            "enable_structured_requirements": config.ENABLE_STRUCTURED_REQUIREMENTS,
+            "enable_spec_planning": config.ENABLE_SPEC_PLANNING,
+            "enable_failure_diagnosis": config.ENABLE_FAILURE_DIAGNOSIS,
+            "enable_mutation_guard": config.ENABLE_MUTATION_GUARD,
             "enable_spec_critic": config.ENABLE_SPEC_CRITIC,
-            "max_critic_repair_rounds": config.MAX_CRITIC_REPAIR_ROUNDS,
             "max_critic_parse_retries": config.MAX_CRITIC_PARSE_RETRIES,
             "critic_review_passes": config.CRITIC_REVIEW_PASSES,
             "max_critic_probe_parse_retries": config.MAX_CRITIC_PROBE_PARSE_RETRIES,
@@ -109,7 +121,7 @@ def build_manifest(
             "dafny_version": _command([config.DAFNY_PATH, "--version"]).strip(),
             "dependencies": {
                 package: _package_version(package)
-                for package in ("openai", "langgraph")
+                for package in ("openai",)
             },
         },
     }

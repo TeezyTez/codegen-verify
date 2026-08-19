@@ -1,8 +1,47 @@
 # Project History
 
+## 2026-08-18 — Specification IR vertical slice
+
+- Upgraded the frozen Dafny string into a shared structured IR with stable Requirement and Spec IDs.
+- Added spec-guided planning, failure attribution, targeted repair context, drift evidence, and a
+  serialized traceability graph.
+- Added per-task replay artifacts and ablation switches for requirements, planning, and diagnosis.
+- Preserved fail-closed spec approval, reference-collapse prevention, and official holdout isolation.
+
 This file records important research and engineering updates. For each future
 code change, append a short entry with the motivation, implementation summary,
 and validation result.
+
+## 2026-08-18 - Spec-Guided Agent Architecture Reset
+
+### Motivation
+
+The previous LangGraph pipeline accumulated overlapping repair agents, template
+shortcuts, benchmark-specific side paths, and mutable global state.  More
+importantly, its preferred `result := Reference(inputs)` strategy collapsed the
+implementation into an executable specification, so a Dafny pass did not isolate
+the effect of specification-guided coding.
+
+### Updates
+
+- Replaced the large graph with four deep modules and one orchestration interface:
+  `SpecAuthority`, `CandidateSynthesizer`, `VerificationEngine`, and
+  `SpecGuidedAgent.run`.
+- Added immutable, versioned `SpecArtifact` and unified `VerificationEvidence`.
+- Disabled direct Reference/helper implementations by default and made the
+  strategy an explicit experiment switch.
+- Separated development evidence from the one-shot official holdout protocol.
+- Made spec/code/repair providers independently configurable.
+- Sanitized the generated-candidate subprocess environment so model keys and
+  unrelated parent secrets are not inherited.
+- Removed LangGraph, verified templates, specialized proof/alignment routes,
+  duplicate mutation tooling, the incomplete NL2VC path, and internal-state tests.
+- Replaced the historical result analyzer with a compact analyzer for the new
+  artifact/evidence schema.
+
+### Validation
+
+- Pending dependency installation and Dafny availability on the current machine.
 
 ## 2026-07-14 - Repository Cleanup
 

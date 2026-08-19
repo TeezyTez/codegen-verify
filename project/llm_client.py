@@ -19,8 +19,10 @@ def reset_usage_metrics() -> None:
     _USAGE_EVENTS.clear()
 
 
-def get_usage_metrics() -> dict:
-    events = [dict(event) for event in _USAGE_EVENTS]
+def get_usage_metrics(start_call: int = 0) -> dict:
+    """Return aggregate usage, optionally for events after a call index."""
+    events = [dict(event) for event in _USAGE_EVENTS[max(0, start_call):]]
+    roles = sorted({event.get("role", "unknown") for event in events})
     return {
         "calls": len(events),
         "successful_calls": sum(1 for event in events if event.get("ok")),
@@ -29,15 +31,30 @@ def get_usage_metrics() -> dict:
         "completion_tokens": sum(int(event.get("completion_tokens", 0) or 0) for event in events),
         "total_tokens": sum(int(event.get("total_tokens", 0) or 0) for event in events),
         "latency_seconds": round(sum(float(event.get("latency_seconds", 0) or 0) for event in events), 3),
+        "by_role": {
+            role: {
+                "calls": sum(1 for event in events if event.get("role", "unknown") == role),
+                "total_tokens": sum(
+                    int(event.get("total_tokens", 0) or 0)
+                    for event in events if event.get("role", "unknown") == role
+                ),
+                "latency_seconds": round(sum(
+                    float(event.get("latency_seconds", 0) or 0)
+                    for event in events if event.get("role", "unknown") == role
+                ), 3),
+            }
+            for role in roles
+        },
         "events": events,
     }
 
 
-def _record_usage(provider: str, model: str, started: float, response=None, error: Exception | None = None) -> None:
+def _record_usage(provider: str, model: str, role: str, started: float, response=None, error: Exception | None = None) -> None:
     usage = getattr(response, "usage", None)
     _USAGE_EVENTS.append({
         "provider": provider,
         "model": model,
+        "role": role,
         "ok": error is None,
         "error_type": type(error).__name__ if error else "",
         "latency_seconds": round(time.perf_counter() - started, 3),
@@ -50,12 +67,13 @@ def _record_usage(provider: str, model: str, started: float, response=None, erro
 class LLMClient:
     """统一 LLM 调用接口"""
 
-    def __init__(self, provider: str = "deepseek", model: Optional[str] = None):
+    def __init__(self, provider: str = "deepseek", model: Optional[str] = None, role: str = "general"):
         """
         provider: "deepseek" | "openai"
         model: 模型名，None 则使用默认
         """
         self.provider = provider
+        self.role = role
         if provider == "deepseek":
             if not config.DEEPSEEK_API_KEY:
                 raise RuntimeError("DEEPSEEK_API_KEY is not configured")
@@ -105,10 +123,10 @@ class LLMClient:
                 resp = self.client.chat.completions.create(
                     **request,
                 )
-                _record_usage(self.provider, self.model, started, response=resp)
+                _record_usage(self.provider, self.model, self.role, started, response=resp)
                 return resp.choices[0].message.content or ""
             except Exception as exc:
-                _record_usage(self.provider, self.model, started, error=exc)
+                _record_usage(self.provider, self.model, self.role, started, error=exc)
                 last_error = exc
                 if attempt >= config.LLM_RETRIES:
                     break
@@ -129,10 +147,10 @@ class LLMClient:
                 if config.LLM_MAX_TOKENS > 0:
                     request["max_tokens"] = config.LLM_MAX_TOKENS
                 resp = self.client.chat.completions.create(**request)
-                _record_usage(self.provider, self.model, started, response=resp)
+                _record_usage(self.provider, self.model, self.role, started, response=resp)
                 return resp.choices[0].message.content or ""
             except Exception as exc:
-                _record_usage(self.provider, self.model, started, error=exc)
+                _record_usage(self.provider, self.model, self.role, started, error=exc)
                 last_error = exc
                 if attempt >= config.LLM_RETRIES:
                     break
@@ -142,23 +160,38 @@ class LLMClient:
 
 # -------- 快捷创建函数 --------
 def spec_llm() -> LLMClient:
-    """Spec Agent 用弱模型省钱"""
-    return LLMClient(provider="deepseek", model=config.SPEC_MODEL)
+    """Create the configured specification model adapter."""
+    return LLMClient(provider=config.SPEC_PROVIDER, model=config.SPEC_MODEL, role="specification")
 
 
 def code_llm() -> LLMClient:
-    """Code Agent 用强模型"""
-    return LLMClient(provider="deepseek", model=config.CODE_MODEL)
+    """Create the configured candidate-generation model adapter."""
+    return LLMClient(provider=config.CODE_PROVIDER, model=config.CODE_MODEL, role="generation")
 
 
 def repair_llm() -> LLMClient:
-    """Repair Agent 用强模型"""
-    return LLMClient(provider="deepseek", model=config.REPAIR_MODEL)
+    """Create the configured candidate-repair model adapter."""
+    return LLMClient(provider=config.REPAIR_PROVIDER, model=config.REPAIR_MODEL, role="repair")
+
+
+def requirement_llm() -> LLMClient:
+    """Create the requirement-analysis model adapter."""
+    return LLMClient(provider=config.REQUIREMENT_PROVIDER, model=config.REQUIREMENT_MODEL, role="requirement")
+
+
+def planner_llm() -> LLMClient:
+    """Create the spec-guided planning model adapter."""
+    return LLMClient(provider=config.PLANNER_PROVIDER, model=config.PLANNER_MODEL, role="planning")
+
+
+def diagnosis_llm() -> LLMClient:
+    """Create the failure-attribution model adapter."""
+    return LLMClient(provider=config.DIAGNOSIS_PROVIDER, model=config.DIAGNOSIS_MODEL, role="diagnosis")
 
 
 def critic_llm() -> LLMClient:
     """Create a fresh semantic critic client behind an experiment interface."""
-    return LLMClient(provider=config.CRITIC_PROVIDER, model=config.CRITIC_MODEL)
+    return LLMClient(provider=config.CRITIC_PROVIDER, model=config.CRITIC_MODEL, role="critic")
 
 
 def semantic_probe_llm() -> LLMClient:
@@ -166,4 +199,5 @@ def semantic_probe_llm() -> LLMClient:
     return LLMClient(
         provider=config.CRITIC_PROBE_PROVIDER,
         model=config.CRITIC_PROBE_MODEL,
+        role="semantic_probe",
     )

@@ -4,7 +4,7 @@ The critic is independent at the *role and context* level: it receives only
 the task artifact and the candidate specification, never the producer's chain
 of thought or conversation history.  Provider and model selection live behind
 ``critic_llm`` so experiments can later use a different model family without
-changing the pipeline.
+changing the authority interface.
 """
 
 from __future__ import annotations
@@ -2435,7 +2435,7 @@ def execute_approved_boundary_checks(
         # Once a direct Reference implementation has been constructed, a
         # deterministic Dafny resolution/verification failure is actionable
         # contract evidence rather than missing semantic evidence. Route it to
-        # bounded spec repair instead of ending the pipeline as an abstention.
+        # bounded spec repair instead of ending the authority pass as an abstention.
         detail = "; ".join(
             item["message"] or item["subtype"] or item["error_type"]
             for item in diagnostics[:3]

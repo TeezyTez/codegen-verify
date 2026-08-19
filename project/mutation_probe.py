@@ -3,7 +3,7 @@ Reusable mutation-based specification adequacy probe.
 
 The probe asks a focused question: can a simple, obviously suspicious
 implementation still satisfy the current spec? It is intentionally lightweight
-so the main pipeline can use it as a repair signal.
+so the specification authority can use it as an approval signal.
 """
 import re
 from dataclasses import dataclass

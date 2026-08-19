@@ -40,17 +40,20 @@ class RunProtocolTests(unittest.TestCase):
         result.update(updates)
         return result
 
-    def test_strict_mode_never_places_official_test_inside_pipeline(self):
+    def test_strict_mode_never_places_official_test_inside_agent(self):
         with tempfile.TemporaryDirectory() as directory, patch.object(
-            run_humaneval, "run_pipeline", return_value=self._final()
-        ) as pipeline, patch.object(
+            run_humaneval, "run_agent", return_value=self._final()
+        ) as agent, patch.object(
             run_humaneval, "run_humaneval_test", return_value=(True, {"error": None})
         ) as holdout:
             results = run_humaneval.run_benchmark(
                 [PROBLEM], limit=1, evaluation_mode="strict", output_dir=Path(directory)
             )
+            task_dir = Path(directory) / "tasks" / "HumanEval_test"
+            self.assertTrue((task_dir / "requirement.json").exists())
+            self.assertTrue((task_dir / "code_final.dfy").exists())
 
-        self.assertIsNone(pipeline.call_args.kwargs["behavior_problem"])
+        self.assertIsNone(agent.call_args.kwargs["behavior_problem"])
         holdout.assert_called_once()
         self.assertTrue(results[0]["passed"])
         self.assertTrue(results[0]["official_test_executed"])
@@ -59,9 +62,9 @@ class RunProtocolTests(unittest.TestCase):
         dev = {"test": "def check(candidate):\n    assert candidate(1) == 1\n"}
         with tempfile.TemporaryDirectory() as directory, patch.object(
             run_humaneval,
-            "run_pipeline",
+            "run_agent",
             return_value=self._final(behavior_executed=True, behavior_passed=True),
-        ) as pipeline, patch.object(
+        ) as agent, patch.object(
             run_humaneval, "run_humaneval_test", return_value=(True, {"error": None})
         ) as holdout:
             results = run_humaneval.run_benchmark(
@@ -72,7 +75,7 @@ class RunProtocolTests(unittest.TestCase):
                 output_dir=Path(directory),
             )
 
-        inloop = pipeline.call_args.kwargs["behavior_problem"]
+        inloop = agent.call_args.kwargs["behavior_problem"]
         self.assertEqual(inloop["test"], dev["test"])
         self.assertNotEqual(inloop["test"], PROBLEM["test"])
         holdout.assert_called_once()

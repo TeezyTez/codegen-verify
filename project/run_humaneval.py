@@ -4,7 +4,7 @@ HumanEval → Dafny 批量评测脚本
 
 对每个 HumanEval 问题：
 1. 提取自然语言描述
-2. 用 pipeline 生成 Dafny 规约 + 代码
+2. 用 spec-guided agent 生成冻结规约与 Dafny 代码
 3. Dafny 验证器检查
 4. 统计结果
 """
@@ -19,10 +19,9 @@ from pathlib import Path
 
 # 添加项目路径
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pipeline import run_pipeline
+from agent import run_agent
 from humaneval_tester import run_humaneval_test
 from spec_adequacy import check_spec_adequacy
-from research_trace import trace_event
 from task_normalizer import (
     TaskNormalizationError,
     normalize_humaneval_problem,
@@ -110,6 +109,7 @@ def run_benchmark(
 
         try:
             start_time = time.time()
+            usage_start = get_usage_metrics()["calls"]
             dev_behavior_problem = None
             if evaluation_mode == "assisted":
                 dev_behavior_problem = repair_tests.get(tid)
@@ -119,7 +119,7 @@ def run_benchmark(
                         "entry_point": entry,
                         **dev_behavior_problem,
                     }
-            final = run_pipeline(
+            final = run_agent(
                 problem_id=tid,
                 problem_desc=desc,
                 max_rounds=config.MAX_REPAIR_ROUNDS,
@@ -130,6 +130,7 @@ def run_benchmark(
                 task_ir=task_ir.to_dict(),
             )
             elapsed = time.time() - start_time
+            task_llm_usage = get_usage_metrics(start_call=usage_start)
 
             dafny_verified = bool(final.get("dafny_verified", final.get("passed", False)))
             rounds = final.get("round", 0)
@@ -140,7 +141,7 @@ def run_benchmark(
             dev_behavior_error = final.get("behavior_error") or None
 
             # Official tests are a final, one-shot holdout. Their diagnostics
-            # are recorded only after the pipeline has stopped and are never
+            # are recorded only after the agent has stopped and are never
             # sent back to an agent.
             humaneval_passed = False
             humaneval_error = None
@@ -169,17 +170,18 @@ def run_benchmark(
             )
             research_trace = list(final.get("research_trace", []))
             if not any(event.get("stage") == "spec_adequacy_after_tests" for event in research_trace):
-                research_trace.append(trace_event(
-                    "spec_adequacy_after_tests",
-                    rounds,
-                    adequacy=spec_adequacy,
-                    dafny_verified=dafny_verified,
-                    humaneval_passed=humaneval_passed,
-                ))
+                research_trace.append({
+                    "stage": "spec_adequacy_after_tests",
+                    "round": rounds,
+                    "adequacy": spec_adequacy,
+                    "dafny_verified": dafny_verified,
+                    "humaneval_passed": humaneval_passed,
+                })
 
             result = {
                 "task_id": tid,
                 "entry_point": entry,
+                "status": final.get("status", ""),
                 "dafny_verified": dafny_verified,
                 "humaneval_passed": humaneval_passed,
                 "humaneval_error": humaneval_error,
@@ -191,16 +193,23 @@ def run_benchmark(
                 "passed": final_passed,
                 "rounds": rounds,
                 "time": round(elapsed, 1),
+                "llm_usage": task_llm_usage,
                 "code": code,
                 "spec": spec,
+                "spec_artifact": final.get("spec_artifact", {}),
                 "spec_adequacy": spec_adequacy,
                 "inloop_mutation_adequacy": final.get("mutation_adequacy", {}),
                 "spec_critic": final.get("spec_critic", {}),
                 "critic_gate_status": final.get("critic_gate_status", "not_run"),
                 "critic_repair_rounds": final.get("critic_repair_rounds", 0),
                 "research_trace": research_trace,
-                "final_attribution": final.get("last_attribution", {}),
+                "verification_evidence": final.get("verification_evidence", {}),
                 "verification_attempts": final.get("verification_attempts", 0),
+                "requirement_analysis": final.get("requirement_analysis", {}),
+                "plan": final.get("plan", {}),
+                "diagnoses": final.get("diagnoses", []),
+                "traceability": final.get("traceability", {}),
+                "spec_history": final.get("spec_history", []),
                 "contract_fidelity": not bool(contract_fidelity_issues(spec, code, entry)),
                 "task_ir": task_ir.to_dict(),
             }
@@ -210,6 +219,12 @@ def run_benchmark(
             else:
                 status = "PASS" if final_passed else ("DAFNY_OK" if dafny_verified else "FAIL")
             print(f"  结果: {status}  rounds={rounds}  time={elapsed:.1f}s")
+            write_task_artifacts(
+                output_dir=output_dir,
+                task_id=tid,
+                final=final,
+                result=result,
+            )
 
         except Exception as e:
             print(f"  错误: {e}")
@@ -226,6 +241,55 @@ def run_benchmark(
         save_intermediate(results, i, output_dir=output_dir)
 
     return results
+
+
+def write_task_artifacts(
+    *,
+    output_dir: Path | None,
+    task_id: str,
+    final: dict,
+    result: dict,
+) -> Path | None:
+    """Persist replayable shared-IR artifacts for one completed task."""
+    if output_dir is None:
+        return None
+    safe_task_id = "".join(char if char.isalnum() or char in "-_" else "_" for char in task_id)
+    task_dir = output_dir / "tasks" / safe_task_id
+    task_dir.mkdir(parents=True, exist_ok=True)
+
+    def write_json(name: str, value) -> None:
+        (task_dir / name).write_text(
+            json.dumps(value, indent=2, ensure_ascii=False, default=str),
+            encoding="utf-8",
+        )
+
+    spec_artifact = final.get("spec_artifact", {})
+    version = int(spec_artifact.get("version", 0) or 0)
+    write_json("requirement.json", final.get("requirement_analysis", {}))
+    history = final.get("spec_history") or [spec_artifact]
+    for item in history:
+        item_version = int(item.get("version", version) or version)
+        write_json(f"spec_v{item_version}.json", item)
+    write_json("plan.json", final.get("plan", {}))
+    write_json("verification_final.json", final.get("verification_evidence", {}))
+    write_json("diagnoses.json", final.get("diagnoses", []))
+    write_json("traceability.json", final.get("traceability", {}))
+    write_json("metrics.json", {
+        "status": result.get("status"),
+        "verification_attempts": result.get("verification_attempts", 0),
+        "dafny_verified": result.get("dafny_verified", False),
+        "humaneval_passed": result.get("humaneval_passed", False),
+        "time_seconds": result.get("time", 0),
+        "llm_usage": result.get("llm_usage", {}),
+    })
+    write_json("result.json", result)
+    for snapshot in final.get("code_history", []):
+        attempt = int(snapshot.get("attempt", 0) or 0)
+        (task_dir / f"code_v{attempt}.dfy").write_text(
+            snapshot.get("code", ""), encoding="utf-8"
+        )
+    (task_dir / "code_final.dfy").write_text(final.get("code", ""), encoding="utf-8")
+    return task_dir
 
 
 def save_intermediate(results, idx, *, output_dir: Path | None = None):
@@ -357,9 +421,6 @@ def main():
     if args.rounds is not None:
         config.MAX_REPAIR_ROUNDS = args.rounds
 
-    if args.mode == "strict":
-        # A strict benchmark can never be short-circuited by task-id templates.
-        config.USE_TEMPLATE_FALLBACK = False
     if args.mode == "assisted" and args.repair_tests is None:
         parser.error("--mode assisted requires a separately curated --repair-tests file")
 

@@ -1,6 +1,6 @@
 """Utilities for keeping generated Dafny code bound to a frozen contract.
 
-The pipeline stores a specification separately from the generated program.  A
+The agent stores a specification separately from the generated program.  A
 repair is only meaningful when the program that is sent to Dafny still carries
 the same public method signature and contract.  This module performs a small,
 purpose-built parse of the public method contract and compares contracts modulo
@@ -258,6 +258,42 @@ def build_direct_reference_program(
     ]
     rebuilt = [*lines[:start], *implementation, *lines[end:]]
     return "\n".join(rebuilt).strip()
+
+
+def reference_implementation_calls(
+    frozen_spec: str,
+    candidate_source: str,
+    method_name: str = "",
+) -> tuple[str, ...]:
+    """Return direct calls that collapse an implementation into its spec helper.
+
+    Executable helpers remain useful for critic evidence.  They are not accepted
+    as the candidate implementation by default, because ``result := Reference``
+    measures reference-program synthesis rather than spec-guided coding.
+    """
+    contract = parse_method_contract(frozen_spec, method_name)
+    if contract is None:
+        return ()
+
+    calls: list[str] = []
+    for return_param in contract.returns:
+        for clause in contract.ensures:
+            match = re.fullmatch(
+                rf"\s*{re.escape(return_param.name)}\s*(?:==|<==>)\s*"
+                r"([A-Za-z_]\w*)\s*(\(.*\))\s*",
+                clause,
+                flags=re.DOTALL,
+            )
+            if not match:
+                continue
+            helper = match.group(1)
+            assignment = re.compile(
+                rf"\b{re.escape(return_param.name)}\s*:=\s*{re.escape(helper)}\s*\("
+            )
+            if assignment.search(candidate_source or ""):
+                calls.append(f"{return_param.name} := {helper}(...)")
+            break
+    return tuple(calls)
 
 
 def bodyless_callable_names(source: str) -> set[str]:

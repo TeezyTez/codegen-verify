@@ -13,6 +13,23 @@ if str(PROJECT_PACKAGE_DIR) not in sys.path:
 import humaneval_tester as tester
 
 
+def test_worker_environment_drops_model_keys_and_unrelated_secrets():
+    env = tester._worker_environment({
+        "PATH": "tools",
+        "TEMP": "temp",
+        "DEEPSEEK_API_KEY": "secret",
+        "OPENAI_API_KEY": "secret",
+        "DATABASE_URL": "secret",
+    })
+
+    assert env["PATH"] == "tools"
+    assert env["TEMP"] == "temp"
+    assert env["PYTHONNOUSERSITE"] == "1"
+    assert "DEEPSEEK_API_KEY" not in env
+    assert "OPENAI_API_KEY" not in env
+    assert "DATABASE_URL" not in env
+
+
 def test_complete_check_catches_assertion_omitted_by_diagnostic_pattern():
     test_code = """
 def check(candidate):

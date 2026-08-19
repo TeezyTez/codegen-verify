@@ -34,34 +34,48 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
 # ===== 模型配置 =====
-SPEC_MODEL = os.getenv("SPEC_MODEL", "deepseek-chat")       # Spec Agent
-CODE_MODEL = os.getenv("CODE_MODEL", "deepseek-chat")       # Code Agent
-REPAIR_MODEL = os.getenv("REPAIR_MODEL", "deepseek-chat")   # Repair Agent
+DEFAULT_PROVIDER = os.getenv("LLM_PROVIDER", "deepseek").strip().lower()
+SPEC_PROVIDER = os.getenv("SPEC_PROVIDER", DEFAULT_PROVIDER).strip().lower()
+CODE_PROVIDER = os.getenv("CODE_PROVIDER", DEFAULT_PROVIDER).strip().lower()
+REPAIR_PROVIDER = os.getenv("REPAIR_PROVIDER", CODE_PROVIDER).strip().lower()
+REQUIREMENT_PROVIDER = os.getenv("REQUIREMENT_PROVIDER", SPEC_PROVIDER).strip().lower()
+PLANNER_PROVIDER = os.getenv("PLANNER_PROVIDER", CODE_PROVIDER).strip().lower()
+DIAGNOSIS_PROVIDER = os.getenv("DIAGNOSIS_PROVIDER", REPAIR_PROVIDER).strip().lower()
+SPEC_MODEL = os.getenv(
+    "SPEC_MODEL",
+    "deepseek-v4-pro" if SPEC_PROVIDER == "deepseek" else "gpt-4.1-2025-04-14",
+)
+CODE_MODEL = os.getenv(
+    "CODE_MODEL",
+    "deepseek-v4-pro" if CODE_PROVIDER == "deepseek" else "gpt-4.1-2025-04-14",
+)
+REPAIR_MODEL = os.getenv("REPAIR_MODEL", CODE_MODEL)
+REQUIREMENT_MODEL = os.getenv("REQUIREMENT_MODEL", SPEC_MODEL)
+PLANNER_MODEL = os.getenv("PLANNER_MODEL", CODE_MODEL)
+DIAGNOSIS_MODEL = os.getenv("DIAGNOSIS_MODEL", REPAIR_MODEL)
 CRITIC_PROVIDER = os.getenv("CRITIC_PROVIDER", "deepseek").strip().lower()
 CRITIC_MODEL = os.getenv(
     "CRITIC_MODEL",
-    SPEC_MODEL if CRITIC_PROVIDER == "deepseek" else "gpt-4o",
+    "deepseek-v4-pro" if CRITIC_PROVIDER == "deepseek" else "gpt-4.1-2025-04-14",
 )
 CRITIC_PROBE_PROVIDER = os.getenv("CRITIC_PROBE_PROVIDER", CRITIC_PROVIDER).strip().lower()
 CRITIC_PROBE_MODEL = os.getenv("CRITIC_PROBE_MODEL", CRITIC_MODEL)
 
-# ===== Pipeline 配置 =====
+# ===== Agent 配置 =====
 MAX_REPAIR_ROUNDS = int(os.getenv("MAX_REPAIR_ROUNDS", "3"))
+MAX_SPEC_REVISIONS = int(os.getenv("MAX_SPEC_REVISIONS", "1"))
 LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))
 LLM_RETRIES = int(os.getenv("LLM_RETRIES", "2"))
 LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.2"))
 LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "0"))
-USE_TEMPLATE_FALLBACK = os.getenv("USE_TEMPLATE_FALLBACK", "0") != "0"
 EVALUATION_MODE = os.getenv("EVALUATION_MODE", "strict").strip().lower()
-ENABLE_SPEC_REPAIR = os.getenv("ENABLE_SPEC_REPAIR", "1") != "0"
-MAX_SPEC_REPAIR_RETRIES = int(os.getenv("MAX_SPEC_REPAIR_RETRIES", "2"))
-ENABLE_PROOF_REPAIR = os.getenv("ENABLE_PROOF_REPAIR", "1") != "0"
-ENABLE_BEHAVIOR_REPAIR_LOOP = os.getenv("ENABLE_BEHAVIOR_REPAIR_LOOP", "1") != "0"
-ENABLE_INLOOP_MUTATION_ADEQUACY = os.getenv("ENABLE_INLOOP_MUTATION_ADEQUACY", "1") != "0"
-ENABLE_MUTATION_SPEC_STRENGTHENING = os.getenv("ENABLE_MUTATION_SPEC_STRENGTHENING", "1") != "0"
-MAX_MUTATION_STRENGTHENING_ROUNDS = int(os.getenv("MAX_MUTATION_STRENGTHENING_ROUNDS", "1"))
+MAX_SPEC_REPAIR_ROUNDS = int(os.getenv("MAX_SPEC_REPAIR_ROUNDS", "1"))
+ENABLE_STRUCTURED_REQUIREMENTS = os.getenv("ENABLE_STRUCTURED_REQUIREMENTS", "1") != "0"
+ENABLE_SPEC_PLANNING = os.getenv("ENABLE_SPEC_PLANNING", "1") != "0"
+ENABLE_FAILURE_DIAGNOSIS = os.getenv("ENABLE_FAILURE_DIAGNOSIS", "1") != "0"
+ENABLE_MUTATION_GUARD = os.getenv("ENABLE_MUTATION_GUARD", "1") != "0"
 ENABLE_SPEC_CRITIC = os.getenv("ENABLE_SPEC_CRITIC", "1") != "0"
-MAX_CRITIC_REPAIR_ROUNDS = int(os.getenv("MAX_CRITIC_REPAIR_ROUNDS", "1"))
+ALLOW_REFERENCE_IMPLEMENTATION = os.getenv("ALLOW_REFERENCE_IMPLEMENTATION", "0") != "0"
 MAX_CRITIC_PARSE_RETRIES = int(os.getenv("MAX_CRITIC_PARSE_RETRIES", "1"))
 CRITIC_REVIEW_PASSES = int(os.getenv("CRITIC_REVIEW_PASSES", "1"))
 CRITIC_TEMPERATURE = float(os.getenv("CRITIC_TEMPERATURE", "0.0"))
