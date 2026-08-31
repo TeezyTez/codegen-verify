@@ -44,6 +44,18 @@ def load_humaneval():
     return problems
 
 
+def native_supported_problems(problems: list[dict]) -> list[dict]:
+    """Freeze the native typed subset without consulting tests or canonical solutions."""
+    supported: list[dict] = []
+    for problem in problems:
+        try:
+            if normalize_humaneval_problem(problem).supported:
+                supported.append(problem)
+        except TaskNormalizationError:
+            continue
+    return supported
+
+
 def extract_description(problem: dict) -> str:
     """兼容旧调用方：通过结构化 Task IR 渲染完整、无截断描述。"""
     return render_problem_description(normalize_humaneval_problem(problem))
@@ -57,6 +69,7 @@ def run_benchmark(
     evaluation_mode: str = "strict",
     repair_tests: dict[str, dict] | None = None,
     output_dir: Path | None = None,
+    condition_id: str = "spec_guided",
 ):
     """批量运行评测"""
     results = []
@@ -128,6 +141,7 @@ def run_benchmark(
                 behavior_problem=dev_behavior_problem,
                 entry_point=entry,
                 task_ir=task_ir.to_dict(),
+                condition_id=condition_id,
             )
             elapsed = time.time() - start_time
             task_llm_usage = get_usage_metrics(start_call=usage_start)
@@ -161,12 +175,15 @@ def run_benchmark(
             # 最终通过 = Dafny 验证通过 && HumanEval 测试通过
             final_passed = dafny_verified and humaneval_passed
             spec = final.get("spec", "")
-            spec_adequacy = check_spec_adequacy(
-                spec=spec,
-                problem_desc=desc,
-                entry_point=entry,
-                dafny_verified=dafny_verified,
-                humaneval_passed=humaneval_passed,
+            spec_adequacy = (
+                check_spec_adequacy(
+                    spec=spec,
+                    problem_desc=desc,
+                    entry_point=entry,
+                    dafny_verified=dafny_verified,
+                    humaneval_passed=humaneval_passed,
+                )
+                if condition_id == "spec_guided" else {}
             )
             research_trace = list(final.get("research_trace", []))
             if not any(event.get("stage") == "spec_adequacy_after_tests" for event in research_trace):
@@ -190,6 +207,8 @@ def run_benchmark(
                 "dev_behavior_passed": dev_behavior_passed,
                 "dev_behavior_error": dev_behavior_error,
                 "evaluation_mode": evaluation_mode,
+                "condition_id": final.get("condition_id", condition_id),
+                "stop_reason": final.get("stop_reason", ""),
                 "passed": final_passed,
                 "rounds": rounds,
                 "time": round(elapsed, 1),
@@ -200,6 +219,7 @@ def run_benchmark(
                 "spec_adequacy": spec_adequacy,
                 "inloop_mutation_adequacy": final.get("mutation_adequacy", {}),
                 "spec_critic": final.get("spec_critic", {}),
+                "spec_harness": final.get("spec_harness", {}),
                 "critic_gate_status": final.get("critic_gate_status", "not_run"),
                 "critic_repair_rounds": final.get("critic_repair_rounds", 0),
                 "research_trace": research_trace,
@@ -212,6 +232,9 @@ def run_benchmark(
                 "spec_history": final.get("spec_history", []),
                 "contract_fidelity": not bool(contract_fidelity_issues(spec, code, entry)),
                 "task_ir": task_ir.to_dict(),
+                "budget": final.get("budget", {}),
+                "search": final.get("search", {}),
+                "verified_wrong": bool(dafny_verified and official_test_executed and not humaneval_passed),
             }
 
             if final.get("critic_gate_status") in {"rejected", "abstained"}:
@@ -281,6 +304,9 @@ def write_task_artifacts(
         "humaneval_passed": result.get("humaneval_passed", False),
         "time_seconds": result.get("time", 0),
         "llm_usage": result.get("llm_usage", {}),
+        "budget": result.get("budget", {}),
+        "condition_id": result.get("condition_id", "spec_guided"),
+        "stop_reason": result.get("stop_reason", ""),
     })
     write_json("result.json", result)
     for snapshot in final.get("code_history", []):
@@ -416,18 +442,57 @@ def main():
         help="Assisted mode only: separate JSON/JSONL dev tests; never the official HumanEval test file",
     )
     parser.add_argument("--output-dir", type=Path, default=None, help="Explicit unique run directory")
+    parser.add_argument(
+        "--condition",
+        choices=("spec_guided", "direct_1", "direct_verify"),
+        default=config.EXPERIMENT_CONDITION,
+        help="Experimental condition to run under the same holdout protocol",
+    )
+    parser.add_argument("--replicate-id", type=int, default=0, help="Recorded replicate index")
+    parser.add_argument(
+        "--seed", type=int, default=0,
+        help="Recorded replicate seed; provider-level determinism is not assumed",
+    )
+    parser.add_argument("--max-model-calls", type=int, default=None)
+    parser.add_argument("--max-total-tokens", type=int, default=None)
+    parser.add_argument("--max-verifier-calls", type=int, default=None)
+    parser.add_argument("--max-wall-seconds", type=float, default=None)
+    parser.add_argument("--max-candidates", type=int, default=None)
+    parser.add_argument("--search-width", type=int, default=None)
+    parser.add_argument(
+        "--supported-only",
+        action="store_true",
+        help="Run only the native public-prompt typed subset, frozen before start/limit slicing",
+    )
     args = parser.parse_args()
 
     if args.rounds is not None:
         config.MAX_REPAIR_ROUNDS = args.rounds
 
+    overrides = {
+        "MAX_MODEL_CALLS": args.max_model_calls,
+        "MAX_TOTAL_TOKENS": args.max_total_tokens,
+        "MAX_VERIFIER_CALLS": args.max_verifier_calls,
+        "MAX_WALL_SECONDS": args.max_wall_seconds,
+        "MAX_CANDIDATES": args.max_candidates,
+        "SEARCH_WIDTH": args.search_width,
+    }
+    for name, value in overrides.items():
+        if value is not None:
+            if value < 0 or (name == "SEARCH_WIDTH" and value < 1):
+                parser.error(f"--{name.lower().replace('_', '-')} has an invalid value")
+            setattr(config, name, value)
+
     if args.mode == "assisted" and args.repair_tests is None:
         parser.error("--mode assisted requires a separately curated --repair-tests file")
 
     problems = load_humaneval()
+    if args.supported_only:
+        problems = native_supported_problems(problems)
+        print(f"[Data] Native supported subset: {len(problems)} tasks")
     selected = problems[args.start : min(len(problems), args.start + args.limit)]
     output_dir = args.output_dir or create_run_directory(
-        f"humaneval_{args.mode}_{args.start}_{len(selected)}"
+        f"humaneval_{args.condition}_{args.mode}_{args.start}_{len(selected)}"
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     manifest = build_manifest(
@@ -436,7 +501,11 @@ def main():
         limit=args.limit,
         task_ids=[problem["task_id"] for problem in selected],
         data_path=config.DATA_DIR / "HumanEval.jsonl",
+        condition_id=args.condition,
+        replicate_id=args.replicate_id,
+        seed=args.seed,
     )
+    manifest["selection"]["supported_only"] = bool(args.supported_only)
     write_manifest(output_dir / "manifest.json", manifest)
 
     reset_usage_metrics()
@@ -447,6 +516,7 @@ def main():
         evaluation_mode=args.mode,
         repair_tests=load_repair_tests(args.repair_tests),
         output_dir=output_dir,
+        condition_id=args.condition,
     )
     summary = print_summary(results, output_dir=output_dir)
     manifest["llm_usage"] = get_usage_metrics()

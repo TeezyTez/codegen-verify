@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "project"))
 
 import config
+from artifacts import Requirement, RequirementAnalysis, VerificationCase
 from dafny_wrapper import VerificationResult
 from spec_authority import SpecAuthority
 
@@ -66,6 +67,7 @@ def authority(model, *, critic=approve, mutation=clean_mutation, repairs=1):
 def test_approved_spec_is_versioned_and_hashed(monkeypatch):
     monkeypatch.setattr(config, "ENABLE_MUTATION_GUARD", True)
     monkeypatch.setattr(config, "ENABLE_SPEC_CRITIC", True)
+    monkeypatch.setattr(config, "ENABLE_SPEC_HARNESS", True)
     result = authority(FakeModel([SPEC])).assess(
         problem_id="HumanEval/test",
         problem_desc="Return x.",
@@ -80,6 +82,8 @@ def test_approved_spec_is_versioned_and_hashed(monkeypatch):
     assert result.structured.requirements[0].id == "REQ-001"
     assert result.structured.clauses[0].id == "SPEC-POST-001"
     assert result.structured.clauses[0].status == "validated"
+    assert result.harness is not None
+    assert result.harness.cells["negative_implementations"]["status"] == "passed"
 
 
 def test_structured_spec_bundle_preserves_explicit_requirement_mapping(monkeypatch):
@@ -107,6 +111,106 @@ def test_structured_spec_bundle_preserves_explicit_requirement_mapping(monkeypat
     assert result.approved
     assert clause.natural_language == "The result equals the input."
     assert clause.related_requirements == ("REQ-001",)
+
+
+def test_non_contract_requirements_do_not_force_formal_clause_links(monkeypatch):
+    """Signature and public-example evidence are not Dafny contract clauses."""
+
+    monkeypatch.setattr(config, "ENABLE_MUTATION_GUARD", False)
+    monkeypatch.setattr(config, "ENABLE_SPEC_CRITIC", False)
+    analysis = RequirementAnalysis(
+        requirements=(
+            Requirement("REQ-001", "The method must be named f.", kind="naming"),
+            Requirement("REQ-002", "The method accepts an integer x.", kind="signature"),
+            Requirement("REQ-003", "The method returns x.", kind="behavior"),
+            Requirement("REQ-004", "For input 2, return 2.", kind="example"),
+        ),
+        verification_cases=(
+            VerificationCase(
+                "TEST-001",
+                "public_example",
+                "f(2) -> 2",
+                related_requirements=("REQ-004",),
+            ),
+        ),
+        confidence=1.0,
+    )
+    bundle = {
+        "clauses": [{
+            "kind": "postcondition",
+            "natural_language": "The result equals the input.",
+            "formal_expression": "result == x",
+            "related_requirements": ["REQ-003"],
+            "confidence": 1.0,
+        }],
+        "formal_spec": SPEC,
+    }
+
+    result = authority(FakeModel([json.dumps(bundle)]), repairs=0).assess(
+        problem_id="HumanEval/test",
+        problem_desc="Return x.",
+        entry_point="f",
+        task_ir=PROBLEM,
+        analysis=analysis,
+    )
+
+    assert result.approved
+
+
+def test_partial_behavior_traceability_is_risk_evidence_not_a_structural_reject(monkeypatch):
+    monkeypatch.setattr(config, "ENABLE_MUTATION_GUARD", False)
+    monkeypatch.setattr(config, "ENABLE_SPEC_CRITIC", False)
+    monkeypatch.setattr(config, "ENABLE_SPEC_HARNESS", True)
+    analysis = RequirementAnalysis(
+        requirements=(
+            Requirement("REQ-001", "Return the input.", kind="behavior"),
+            Requirement("REQ-002", "The returned value is unchanged.", kind="behavior"),
+        ),
+        confidence=1.0,
+    )
+    bundle = {
+        "clauses": [{
+            "kind": "postcondition",
+            "natural_language": "The result equals the input.",
+            "formal_expression": "result == x",
+            "related_requirements": ["REQ-001"],
+            "confidence": 1.0,
+        }],
+        "formal_spec": SPEC,
+    }
+
+    result = authority(FakeModel([json.dumps(bundle)]), repairs=0).assess(
+        problem_id="HumanEval/test",
+        problem_desc="Return x unchanged.",
+        entry_point="f",
+        task_ir=PROBLEM,
+        analysis=analysis,
+    )
+
+    assert result.approved
+    assert result.harness is not None
+    assert result.harness.cells["traceability"]["status"] == "unknown"
+    assert result.harness.cells["well_formed"]["status"] == "passed"
+
+
+def test_non_executable_relational_spec_is_repaired_before_critic(monkeypatch):
+    monkeypatch.setattr(config, "ENABLE_MUTATION_GUARD", False)
+    monkeypatch.setattr(config, "ENABLE_SPEC_CRITIC", False)
+    relational = """method f(x: int) returns (result: int)
+    ensures exists n: int :: n == x && result == n
+"""
+    model = FakeModel([relational, SPEC])
+
+    result = authority(model, repairs=1).assess(
+        problem_id="HumanEval/test",
+        problem_desc="Return x.",
+        entry_point="f",
+        task_ir=PROBLEM,
+    )
+
+    assert result.approved
+    assert len(model.calls) == 2
+    assert "directly executable" in model.calls[1][1]
 
 
 def test_mutation_failure_causes_bounded_regeneration(monkeypatch):

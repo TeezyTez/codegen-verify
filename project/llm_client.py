@@ -6,6 +6,7 @@ from openai import OpenAI
 from typing import Optional
 import time
 import config
+from budget import current_budget
 
 
 DEEPSEEK_BASE_URL = "https://api.deepseek.com"
@@ -51,7 +52,7 @@ def get_usage_metrics(start_call: int = 0) -> dict:
 
 def _record_usage(provider: str, model: str, role: str, started: float, response=None, error: Exception | None = None) -> None:
     usage = getattr(response, "usage", None)
-    _USAGE_EVENTS.append({
+    event = {
         "provider": provider,
         "model": model,
         "role": role,
@@ -61,7 +62,15 @@ def _record_usage(provider: str, model: str, role: str, started: float, response
         "prompt_tokens": int(getattr(usage, "prompt_tokens", 0) or 0),
         "completion_tokens": int(getattr(usage, "completion_tokens", 0) or 0),
         "total_tokens": int(getattr(usage, "total_tokens", 0) or 0),
-    })
+    }
+    _USAGE_EVENTS.append(event)
+    ledger = current_budget()
+    if ledger:
+        ledger.record_model_call(
+            prompt_tokens=event["prompt_tokens"],
+            completion_tokens=event["completion_tokens"],
+            total_tokens=event["total_tokens"],
+        )
 
 
 class LLMClient:
@@ -107,6 +116,9 @@ class LLMClient:
         """单轮对话"""
         last_error = None
         for attempt in range(config.LLM_RETRIES + 1):
+            ledger = current_budget()
+            if ledger:
+                ledger.before_model_call()
             started = time.perf_counter()
             try:
                 request = {
@@ -120,6 +132,12 @@ class LLMClient:
                 token_limit = config.LLM_MAX_TOKENS if max_tokens is None else max_tokens
                 if token_limit > 0:
                     request["max_tokens"] = token_limit
+                if self.provider == "deepseek":
+                    request["extra_body"] = {
+                        "thinking": {"type": config.DEEPSEEK_THINKING}
+                    }
+                    if config.DEEPSEEK_THINKING == "enabled":
+                        request["reasoning_effort"] = config.DEEPSEEK_REASONING_EFFORT
                 resp = self.client.chat.completions.create(
                     **request,
                 )
@@ -137,6 +155,9 @@ class LLMClient:
         """多轮对话（messages 已包含 role/content）"""
         last_error = None
         for attempt in range(config.LLM_RETRIES + 1):
+            ledger = current_budget()
+            if ledger:
+                ledger.before_model_call()
             started = time.perf_counter()
             try:
                 request = {
@@ -146,6 +167,12 @@ class LLMClient:
                 }
                 if config.LLM_MAX_TOKENS > 0:
                     request["max_tokens"] = config.LLM_MAX_TOKENS
+                if self.provider == "deepseek":
+                    request["extra_body"] = {
+                        "thinking": {"type": config.DEEPSEEK_THINKING}
+                    }
+                    if config.DEEPSEEK_THINKING == "enabled":
+                        request["reasoning_effort"] = config.DEEPSEEK_REASONING_EFFORT
                 resp = self.client.chat.completions.create(**request)
                 _record_usage(self.provider, self.model, self.role, started, response=resp)
                 return resp.choices[0].message.content or ""

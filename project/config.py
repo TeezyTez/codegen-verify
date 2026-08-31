@@ -68,6 +68,10 @@ LLM_TIMEOUT = float(os.getenv("LLM_TIMEOUT", "60"))
 LLM_RETRIES = int(os.getenv("LLM_RETRIES", "2"))
 LLM_TEMPERATURE = float(os.getenv("LLM_TEMPERATURE", "0.2"))
 LLM_MAX_TOKENS = int(os.getenv("LLM_MAX_TOKENS", "0"))
+DEEPSEEK_THINKING = os.getenv("DEEPSEEK_THINKING", "disabled").strip().lower()
+if DEEPSEEK_THINKING not in {"enabled", "disabled"}:
+    raise ValueError("DEEPSEEK_THINKING must be enabled or disabled")
+DEEPSEEK_REASONING_EFFORT = os.getenv("DEEPSEEK_REASONING_EFFORT", "high").strip().lower()
 EVALUATION_MODE = os.getenv("EVALUATION_MODE", "strict").strip().lower()
 MAX_SPEC_REPAIR_ROUNDS = int(os.getenv("MAX_SPEC_REPAIR_ROUNDS", "1"))
 ENABLE_STRUCTURED_REQUIREMENTS = os.getenv("ENABLE_STRUCTURED_REQUIREMENTS", "1") != "0"
@@ -75,6 +79,16 @@ ENABLE_SPEC_PLANNING = os.getenv("ENABLE_SPEC_PLANNING", "1") != "0"
 ENABLE_FAILURE_DIAGNOSIS = os.getenv("ENABLE_FAILURE_DIAGNOSIS", "1") != "0"
 ENABLE_MUTATION_GUARD = os.getenv("ENABLE_MUTATION_GUARD", "1") != "0"
 ENABLE_SPEC_CRITIC = os.getenv("ENABLE_SPEC_CRITIC", "1") != "0"
+ENABLE_SPEC_HARNESS = os.getenv("ENABLE_SPEC_HARNESS", "1") != "0"
+ENABLE_DUAL_REPAIR = os.getenv("ENABLE_DUAL_REPAIR", "1") != "0"
+ENABLE_PROOF_EDIT_GUARD = os.getenv("ENABLE_PROOF_EDIT_GUARD", "1") != "0"
+EXPERIMENT_CONDITION = os.getenv("EXPERIMENT_CONDITION", "spec_guided").strip().lower()
+SEARCH_WIDTH = max(1, int(os.getenv("SEARCH_WIDTH", "1")))
+MAX_MODEL_CALLS = max(0, int(os.getenv("MAX_MODEL_CALLS", "0")))
+MAX_TOTAL_TOKENS = max(0, int(os.getenv("MAX_TOTAL_TOKENS", "0")))
+MAX_VERIFIER_CALLS = max(0, int(os.getenv("MAX_VERIFIER_CALLS", "0")))
+MAX_WALL_SECONDS = max(0.0, float(os.getenv("MAX_WALL_SECONDS", "0")))
+MAX_CANDIDATES = max(0, int(os.getenv("MAX_CANDIDATES", "0")))
 ALLOW_REFERENCE_IMPLEMENTATION = os.getenv("ALLOW_REFERENCE_IMPLEMENTATION", "0") != "0"
 MAX_CRITIC_PARSE_RETRIES = int(os.getenv("MAX_CRITIC_PARSE_RETRIES", "1"))
 CRITIC_REVIEW_PASSES = int(os.getenv("CRITIC_REVIEW_PASSES", "1"))

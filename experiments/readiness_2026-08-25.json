@@ -1,0 +1,48 @@
+{
+  "schema_version": 2,
+  "date": "2026-08-25",
+  "status": "phase0_protocol_failure_spec_guided_blocked",
+  "environment": {
+    "python": "3.12.13",
+    "dafny": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "environment_check": "passed"
+  },
+  "protocol_validation": {
+    "tests": 177,
+    "subtests": 2,
+    "result": "passed",
+    "native_supported_tasks": 29,
+    "phase0_matrix_jobs": 54,
+    "phase0_planned_task_runs": 261,
+    "phase1_matrix_jobs": 180,
+    "phase1_planned_task_runs": 870
+  },
+  "model_configuration": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-pro",
+    "thinking": "disabled",
+    "credentials_loaded_from_local_env": true,
+    "secrets_logged": false
+  },
+  "live_execution": {
+    "formal_phase0_task_runs_completed": 179,
+    "formal_phase0_model_calls": 386,
+    "formal_phase0_holdout_executions": 47,
+    "direct_1_complete": true,
+    "direct_verify_complete": true,
+    "spec_guided_complete": false,
+    "spec_guided_pilot_task_runs": 5,
+    "spec_guided_pilot_protocol_failures": 5,
+    "phase1_unlocked": false
+  },
+  "blocking_findings": [
+    "The original spec-guided pilot rejected all five tasks before implementation.",
+    "Raw LLM Dafny specifications remain unstable across type syntax, method-call syntax, requirement-link metadata, and executable-reference construction.",
+    "The spec-guided condition changed during diagnosis and must be versioned and rerun from scratch before any effect comparison."
+  ],
+  "artifacts": {
+    "aggregate_json": "experiments/phase0_observed_results.json",
+    "aggregate_csv": "experiments/phase0_observed_results.csv",
+    "report": "experiments/PHASE0_RESULTS.md"
+  }
+}

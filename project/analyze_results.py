@@ -25,6 +25,7 @@ def result_row(result: dict[str, Any]) -> dict[str, Any]:
     spec_artifact = result.get("spec_artifact") or {}
     critic = result.get("spec_critic") or spec_artifact.get("critic_report") or {}
     mutation = result.get("inloop_mutation_adequacy") or spec_artifact.get("mutation") or {}
+    harness = result.get("spec_harness") or spec_artifact.get("harness") or {}
     verification = result.get("verification_evidence") or {}
     structured = spec_artifact.get("structured") or {}
     requirements = result.get("requirement_analysis") or {}
@@ -32,6 +33,7 @@ def result_row(result: dict[str, Any]) -> dict[str, Any]:
     diagnoses = result.get("diagnoses") or []
     traceability = result.get("traceability") or {}
     usage = result.get("llm_usage") or {}
+    budget = result.get("budget") or {}
     trace = result.get("research_trace") or []
     status = result.get("status") or (
         "passed" if result.get("passed") else
@@ -48,10 +50,15 @@ def result_row(result: dict[str, Any]) -> dict[str, Any]:
     clause_mapping = plan.get("clause_mapping") or {}
     return {
         "task_id": result.get("task_id", ""),
+        "condition_id": result.get("condition_id", "spec_guided"),
         "status": status,
         "passed": bool(result.get("passed")),
         "dafny_verified": bool(result.get("dafny_verified")),
         "humaneval_passed": bool(result.get("humaneval_passed")),
+        "verified_wrong": bool(result.get("verified_wrong") or (
+            result.get("dafny_verified") and result.get("official_test_executed")
+            and not result.get("humaneval_passed")
+        )),
         "official_test_executed": bool(result.get("official_test_executed")),
         "spec_decision": spec_artifact.get("decision") or critic.get("decision", ""),
         "spec_version": int(spec_artifact.get("version", 0) or 0),
@@ -63,6 +70,8 @@ def result_row(result: dict[str, Any]) -> dict[str, Any]:
         "mutants_verified": mutants_verified,
         "spec_strength": spec_strength,
         "mutation_risk": mutation.get("mutation_adequacy_risk", ""),
+        "spec_harness_risk": harness.get("risk", ""),
+        "spec_harness_missing": len(harness.get("missing_evidence") or []),
         "spec_drift": bool((spec_artifact.get("drift_report") or {}).get("changed")),
         "reference_collapse": bool(verification.get("reference_collapse")),
         "last_failure_type": diagnoses[-1].get("category", "") if diagnoses else "",
@@ -72,6 +81,9 @@ def result_row(result: dict[str, Any]) -> dict[str, Any]:
         "llm_tokens": int(usage.get("total_tokens", 0) or 0),
         "llm_latency_seconds": float(usage.get("latency_seconds", 0.0) or 0.0),
         "verification_attempts": int(result.get("verification_attempts", 0) or 0),
+        "verifier_calls": int(budget.get("verifier_calls", 0) or 0),
+        "candidate_count": int(budget.get("candidates", 0) or 0),
+        "stop_reason": result.get("stop_reason", ""),
         "repair_events": sum(1 for event in trace if event.get("stage") == "repair"),
         "time_seconds": float(result.get("time", 0.0) or 0.0),
     }
@@ -87,6 +99,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "spec_rejected": sum(1 for row in rows if row["spec_decision"] == "reject"),
         "spec_abstained": sum(1 for row in rows if row["spec_decision"] == "abstain"),
         "reference_collapses": sum(1 for row in rows if row["reference_collapse"]),
+        "verified_wrong": sum(1 for row in rows if row["verified_wrong"]),
         "verification_attempts": sum(row["verification_attempts"] for row in rows),
         "repair_events": sum(row["repair_events"] for row in rows),
         "failure_type_counts": dict(Counter(row["last_failure_type"] for row in rows if row["last_failure_type"])),
@@ -98,6 +111,7 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
         "llm_tokens": sum(row["llm_tokens"] for row in rows),
         "llm_latency_seconds": round(sum(row["llm_latency_seconds"] for row in rows), 3),
         "status_counts": dict(Counter(row["status"] for row in rows)),
+        "condition_counts": dict(Counter(row["condition_id"] for row in rows)),
     }
 
 

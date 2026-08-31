@@ -2900,6 +2900,7 @@ def _review_user_prompt(
         retry = (
             "\n\nYour previous validation response was invalid: "
             + last_error
+            + _typed_json_retry_hint(last_error)
             + "\nReturn exactly one complete JSON audit object."
         )
     return f"""Target entry point: {entry_point or "(not supplied)"}
@@ -2933,6 +2934,7 @@ def _reconciliation_user_prompt(
         retry = (
             "\n\nYour previous reconciliation response was invalid: "
             + last_error
+            + _typed_json_retry_hint(last_error)
             + "\nReturn exactly one complete JSON audit object."
         )
     return f"""Target entry point: {entry_point or "(not supplied)"}
@@ -2980,6 +2982,7 @@ def _user_prompt(
         retry = (
             "\n\nYour previous response was invalid: "
             + last_error
+            + _typed_json_retry_hint(last_error)
             + "\nReturn exactly one JSON object matching the schema."
         )
     return f"""Target entry point: {entry_point or "(not supplied)"}
@@ -2995,6 +2998,16 @@ Candidate Dafny specification:
 ```
 
 Audit semantic fidelity. Do not produce replacement Dafny code.{retry}"""
+
+
+def _typed_json_retry_hint(error: str) -> str:
+    if "does not match" not in error or "type" not in error:
+        return ""
+    return (
+        "\nUse native JSON types. JSON numbers must be unquoted: write 3.0, not "
+        "\"3.0\"; write 3, not \"3\". Use true/false for booleans and quote "
+        "only actual string values. Apply this to arguments and expected_value."
+    )
 
 
 __all__ = [

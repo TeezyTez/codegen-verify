@@ -198,6 +198,26 @@ class FailureDiagnosis:
 
 
 @dataclass(frozen=True)
+class SpecHarnessEvidence:
+    """Comparable evidence grid for specification quality claims."""
+
+    decision: str
+    cells: Mapping[str, Mapping[str, Any]] = field(default_factory=dict)
+    missing_evidence: tuple[str, ...] = ()
+    failed_cells: tuple[str, ...] = ()
+    risk: str = "unknown"
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "decision": self.decision,
+            "cells": {key: dict(value) for key, value in self.cells.items()},
+            "missing_evidence": list(self.missing_evidence),
+            "failed_cells": list(self.failed_cells),
+            "risk": self.risk,
+        }
+
+
+@dataclass(frozen=True)
 class SpecArtifact:
     """A versioned specification plus the evidence authorizing its use."""
 
@@ -209,6 +229,7 @@ class SpecArtifact:
     critic_report: Mapping[str, Any] = field(default_factory=dict)
     adequacy: Mapping[str, Any] = field(default_factory=dict)
     mutation: Mapping[str, Any] = field(default_factory=dict)
+    harness: SpecHarnessEvidence | None = None
     structured: StructuredSpecification | None = None
     drift_report: Mapping[str, Any] = field(default_factory=dict)
     issues: tuple[str, ...] = ()
@@ -237,6 +258,7 @@ class SpecArtifact:
             "critic_report": dict(self.critic_report),
             "adequacy": dict(self.adequacy),
             "mutation": dict(self.mutation),
+            "harness": self.harness.to_dict() if self.harness else {},
             "structured": self.structured.to_dict() if self.structured else {},
             "drift_report": dict(self.drift_report),
             "issues": list(self.issues),
@@ -319,6 +341,10 @@ class AgentResult:
     traceability: TraceabilityGraph = field(default_factory=TraceabilityGraph)
     spec_history: tuple[SpecArtifact, ...] = ()
     code_history: tuple[Mapping[str, Any], ...] = ()
+    condition_id: str = "spec_guided"
+    stop_reason: str = ""
+    budget: Mapping[str, Any] = field(default_factory=dict)
+    search: Mapping[str, Any] = field(default_factory=dict)
 
     @property
     def dafny_verified(self) -> bool:
@@ -341,6 +367,7 @@ class AgentResult:
             "research_trace": [dict(event) for event in self.trace],
             "spec_adequacy": dict(self.spec.adequacy),
             "mutation_adequacy": dict(self.spec.mutation),
+            "spec_harness": self.spec.harness.to_dict() if self.spec.harness else {},
             "spec_critic": dict(self.spec.critic_report),
             "critic_gate_status": {
                 "approve": "approved",
@@ -362,4 +389,8 @@ class AgentResult:
             "traceability": self.traceability.to_dict(),
             "spec_history": [item.to_dict() for item in self.spec_history],
             "code_history": [dict(item) for item in self.code_history],
+            "condition_id": self.condition_id,
+            "stop_reason": self.stop_reason,
+            "budget": dict(self.budget),
+            "search": dict(self.search),
         }

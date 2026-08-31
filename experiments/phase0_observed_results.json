@@ -1,0 +1,93 @@
+{
+  "conditions": {
+    "direct_1": {
+      "task_runs": 87,
+      "passed": 22,
+      "pass_rate": 0.2529,
+      "dafny_verified": 22,
+      "verified_wrong": 0,
+      "repair_success": 0,
+      "llm_calls": 87,
+      "llm_tokens": 69186,
+      "verifier_calls": 87,
+      "wall_seconds": 743.9,
+      "average_tokens": 795.241,
+      "average_seconds": 8.551
+    },
+    "direct_verify": {
+      "task_runs": 87,
+      "passed": 24,
+      "pass_rate": 0.2759,
+      "dafny_verified": 25,
+      "verified_wrong": 1,
+      "repair_success": 10,
+      "llm_calls": 284,
+      "llm_tokens": 436022,
+      "verifier_calls": 284,
+      "wall_seconds": 2695.1,
+      "average_tokens": 5011.747,
+      "average_seconds": 30.978
+    },
+    "spec_guided": {
+      "task_runs": 5,
+      "passed": 0,
+      "pass_rate": 0.0,
+      "dafny_verified": 0,
+      "verified_wrong": 0,
+      "repair_success": 0,
+      "llm_calls": 15,
+      "llm_tokens": 45008,
+      "verifier_calls": 0,
+      "wall_seconds": 192.8,
+      "average_tokens": 9001.6,
+      "average_seconds": 38.56
+    }
+  },
+  "by_seed": {
+    "direct_1": {
+      "0": {
+        "passed": 7,
+        "task_runs": 29
+      },
+      "1": {
+        "passed": 7,
+        "task_runs": 29
+      },
+      "2": {
+        "passed": 8,
+        "task_runs": 29
+      }
+    },
+    "direct_verify": {
+      "0": {
+        "passed": 7,
+        "task_runs": 29
+      },
+      "1": {
+        "passed": 10,
+        "task_runs": 29
+      },
+      "2": {
+        "passed": 7,
+        "task_runs": 29
+      }
+    },
+    "spec_guided": {
+      "0": {
+        "passed": 0,
+        "task_runs": 5
+      }
+    }
+  },
+  "direct_1_vs_direct_verify": {
+    "pairs": 87,
+    "both_pass": 17,
+    "direct_1_only": 5,
+    "direct_verify_only": 7,
+    "both_fail": 58,
+    "net_pass_gain": 2,
+    "exact_mcnemar_p": 0.774414,
+    "token_ratio": 6.302,
+    "time_ratio": 3.623
+  }
+}

@@ -210,23 +210,37 @@ def build_direct_reference_program(
         reference_call = ""
         helper_name = ""
         for clause in contract.ensures:
-            match = re.fullmatch(
+            helper_match = re.fullmatch(
                 rf"\s*{re.escape(return_param.name)}\s*(?:==|<==>)\s*"
                 r"([A-Za-z_]\w*)\s*(\(.*\))\s*",
                 clause,
                 flags=re.DOTALL,
             )
-            if match:
-                helper_name = match.group(1)
-                reference_call = helper_name + match.group(2)
+            if helper_match:
+                helper_name = helper_match.group(1)
+                reference_call = helper_name + helper_match.group(2)
+                break
+            expression_match = re.fullmatch(
+                rf"\s*{re.escape(return_param.name)}\s*(?:==|<==>)\s*(.+?)\s*",
+                clause,
+                flags=re.DOTALL,
+            )
+            if expression_match:
+                expression = expression_match.group(1).strip()
+                if re.match(r"^\(?\s*(?:exists|forall)\b", expression):
+                    continue
+                if re.search(rf"\b{re.escape(return_param.name)}\b", expression):
+                    continue
+                reference_call = expression
                 break
         if not reference_call:
             return None
-        helper_pattern = re.compile(
-            rf"\b(?:function|predicate)\s+{re.escape(helper_name)}\s*\("
-        )
-        if not helper_pattern.search(frozen_spec) or helper_name in bodyless:
-            return None
+        if helper_name:
+            helper_pattern = re.compile(
+                rf"\b(?:function|predicate)\s+{re.escape(helper_name)}\s*\("
+            )
+            if not helper_pattern.search(frozen_spec) or helper_name in bodyless:
+                return None
         assignments.append((return_param.name, reference_call))
 
     lines = frozen_spec.splitlines()

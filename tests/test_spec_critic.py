@@ -418,6 +418,40 @@ class SpecCriticTests(unittest.TestCase):
         self.assertEqual(report["parse_attempts"], 2)
         self.assertIn("does not match task type", llm.calls[1]["user"])
 
+    def test_numeric_string_retry_explains_json_number_encoding(self):
+        task_ir = normalize_humaneval_problem({
+            "task_id": "test/real-evidence-types",
+            "entry_point": "f",
+            "prompt": "def f(x: float) -> float:\n    \"\"\"Return x.\"\"\"\n",
+        }).to_dict()
+        invalid = _approval_report_for((["3.0"], "3.0"), (["4.0"], "4.0"))
+        corrected = _approval_report_for(([3.0], 3.0), ([4.0], 4.0))
+
+        class RetryAwareLLM(FakeLLM):
+            def __init__(self):
+                super().__init__([])
+
+            def chat(self, **kwargs):
+                self.calls.append(kwargs)
+                if "JSON numbers must be unquoted" in kwargs["user"]:
+                    return json.dumps(corrected)
+                return json.dumps(invalid)
+
+        llm = RetryAwareLLM()
+        report = review_spec_with_llm(
+            llm,
+            problem_desc="Return x.",
+            spec="method f(x: real) returns (result: real) ensures result == x",
+            entry_point="f",
+            task_ir=task_ir,
+            execute_boundary_checks=False,
+            review_passes=1,
+            max_parse_retries=1,
+        )
+
+        self.assertEqual(report["decision"], "approve")
+        self.assertEqual(report["parse_attempts"], 2)
+
     def test_reconciliation_retries_a_dafny_validity_only_rejection(self):
         validity_reject = _report(
             "reject",

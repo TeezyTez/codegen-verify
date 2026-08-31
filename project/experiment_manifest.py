@@ -29,6 +29,9 @@ def build_manifest(
     limit: int,
     task_ids: list[str],
     data_path: Path,
+    condition_id: str = "spec_guided",
+    replicate_id: int = 0,
+    seed: int = 0,
 ) -> dict[str, Any]:
     git_sha = _command(["git", "rev-parse", "HEAD"])
     git_status = _command(["git", "status", "--short"])
@@ -48,8 +51,12 @@ def build_manifest(
         )
     ]
     return {
-        "schema_version": 3,
+        "schema_version": 4,
         "started_at_utc": datetime.now(timezone.utc).isoformat(),
+        "condition_id": condition_id,
+        "replicate_id": replicate_id,
+        "seed": seed,
+        "seed_control": "metadata_only_provider_determinism_not_assumed",
         "evaluation_mode": mode,
         "official_test_feedback_allowed": False,
         "reference_implementation_allowed": bool(config.ALLOW_REFERENCE_IMPLEMENTATION),
@@ -84,6 +91,11 @@ def build_manifest(
             "temperature": config.LLM_TEMPERATURE,
             "max_tokens": config.LLM_MAX_TOKENS or None,
             "retries": config.LLM_RETRIES,
+            "deepseek_thinking": config.DEEPSEEK_THINKING,
+            "deepseek_reasoning_effort": (
+                config.DEEPSEEK_REASONING_EFFORT
+                if config.DEEPSEEK_THINKING == "enabled" else None
+            ),
         },
         "agent": {
             "max_repair_rounds": config.MAX_REPAIR_ROUNDS,
@@ -94,6 +106,10 @@ def build_manifest(
             "enable_failure_diagnosis": config.ENABLE_FAILURE_DIAGNOSIS,
             "enable_mutation_guard": config.ENABLE_MUTATION_GUARD,
             "enable_spec_critic": config.ENABLE_SPEC_CRITIC,
+            "enable_spec_harness": config.ENABLE_SPEC_HARNESS,
+            "enable_dual_repair": config.ENABLE_DUAL_REPAIR,
+            "enable_proof_edit_guard": config.ENABLE_PROOF_EDIT_GUARD,
+            "search_width": config.SEARCH_WIDTH,
             "max_critic_parse_retries": config.MAX_CRITIC_PARSE_RETRIES,
             "critic_review_passes": config.CRITIC_REVIEW_PASSES,
             "max_critic_probe_parse_retries": config.MAX_CRITIC_PROBE_PARSE_RETRIES,
@@ -103,6 +119,13 @@ def build_manifest(
             "require_critic_precondition_evidence": (
                 config.CRITIC_REQUIRE_PRECONDITION_EVIDENCE
             ),
+        },
+        "budget": {
+            "max_model_calls": config.MAX_MODEL_CALLS,
+            "max_total_tokens": config.MAX_TOTAL_TOKENS,
+            "max_verifier_calls": config.MAX_VERIFIER_CALLS,
+            "max_wall_seconds": config.MAX_WALL_SECONDS,
+            "max_candidates": config.MAX_CANDIDATES,
         },
         "selection": {
             "start": start,

@@ -8,6 +8,7 @@ from typing import Any, Mapping
 
 from artifacts import FailureDiagnosis, ProgramPlan, SpecArtifact, VerificationEvidence
 from contract_utils import restore_public_contract
+from proof_edit_guard import proof_edit_issues
 
 
 def extract_dafny_code(text: str) -> str:
@@ -22,9 +23,11 @@ def extract_dafny_code(text: str) -> str:
 class CandidateSynthesizer:
     """Generate and repair code without authority to modify the frozen spec."""
 
-    def __init__(self, generation_model, repair_model):
+    def __init__(self, generation_model, repair_model, *, enforce_proof_guard: bool = True):
         self._generation_model = generation_model
         self._repair_model = repair_model
+        self._enforce_proof_guard = enforce_proof_guard
+        self.last_guard_issues: tuple[str, ...] = ()
 
     def generate(
         self,
@@ -71,13 +74,22 @@ proofs but must not be called as the returned implementation. Output only comple
         attempt: int,
         plan: ProgramPlan | None = None,
         diagnosis: FailureDiagnosis | None = None,
+        repair_kind: str = "implementation",
+        search_memory: tuple[str, ...] = (),
     ) -> str:
         spec_text = spec.text if isinstance(spec, SpecArtifact) else spec
         diagnostics = _format_evidence(evidence)
         diagnosis_data = diagnosis.to_dict() if diagnosis else {}
         plan_data = plan.to_dict() if plan else {}
+        repair_kind = repair_kind if repair_kind in {"implementation", "proof"} else "implementation"
+        scope = (
+            "Change only proof annotations, assertions, ghost code, or lemmas; executable logic "
+            "and assignments must remain textually unchanged."
+            if repair_kind == "proof"
+            else "Repair executable logic as needed while preserving the frozen contract."
+        )
         raw = self._repair_model.chat(
-            system=_repair_system_prompt(),
+            system=_scoped_repair_system_prompt(repair_kind),
             user=f"""Public task:
 {problem_desc}
 
@@ -96,11 +108,20 @@ Current complete Dafny candidate:
 Verification evidence for repair {attempt}:
 {diagnostics}
 
+Bounded search memory (do not repeat these failed strategies):
+{json.dumps(list(search_memory), ensure_ascii=False)}
+
+Repair channel: {repair_kind}. {scope}
 Repair only the diagnosed code/proof concern, preserve already satisfied clauses, and do not
 weaken or delete any contract. Do not use a Reference/Helper as the returned implementation.
 Output only the complete repaired Dafny program.""",
         )
-        return restore_public_contract(spec_text, extract_dafny_code(raw), entry_point)
+        repaired = restore_public_contract(spec_text, extract_dafny_code(raw), entry_point)
+        self.last_guard_issues = (
+            proof_edit_issues(code, repaired)
+            if repair_kind == "proof" and self._enforce_proof_guard else ()
+        )
+        return code if self.last_guard_issues else repaired
 
 
 def _format_evidence(evidence: VerificationEvidence) -> str:
@@ -117,6 +138,18 @@ def _generation_system_prompt() -> str:
 优先使用简单循环、明确 decreases、足够的不变量和局部 assert。function/predicate
 保持纯表达式；method 才能使用赋值和循环。不得增加前置条件、删除后置条件或把
 可执行规约 helper 直接当作实现。"""
+
+
+def _scoped_repair_system_prompt(repair_kind: str) -> str:
+    channel = (
+        "Use the proof-only channel: never alter executable control flow, assignments, or returns."
+        if repair_kind == "proof"
+        else "Use the implementation channel: correct behavior without weakening the contract."
+    )
+    return (
+        "You are a Dafny repair expert. Use structured verifier evidence, but never modify the "
+        "frozen contract or bypass it through a reference implementation. " + channel
+    )
 
 
 def _repair_system_prompt() -> str:

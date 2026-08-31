@@ -111,6 +111,16 @@ python -m compileall -q project tests
 python project/run_humaneval.py --mode strict --start 0 --limit 5 --rounds 3
 ```
 
+三种正式实验条件共用同一 Holdout 与预算协议：
+
+```powershell
+python project/run_humaneval.py --condition direct_1 --mode strict --start 0 --limit 5
+python project/run_humaneval.py --condition direct_verify --mode strict --start 0 --limit 5 --rounds 3
+python project/run_humaneval.py --condition spec_guided --mode strict --start 0 --limit 5 --rounds 3
+```
+
+当前模块边界、搜索流程和完整流程图见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)。
+
 Assisted 模式必须显式提供独立开发集：
 
 ```powershell

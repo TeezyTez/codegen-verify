@@ -14,6 +14,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 
 import config
+from budget import current_budget
 
 
 _DIAGNOSTIC_HEADER_RE = re.compile(
@@ -175,6 +176,10 @@ class DafnyVerifier:
         return "\n".join(parts)
 
     def verify(self, code: str) -> VerificationResult:
+        ledger = current_budget()
+        if ledger:
+            ledger.before_verifier_call()
+            ledger.record_verifier_call()
         """验证 Dafny 代码（先 resolve 快速检查语法，再 verify）。"""
 
         with tempfile.NamedTemporaryFile(mode="w", suffix=".dfy", delete=False, encoding="utf-8") as f:
@@ -217,6 +222,10 @@ class DafnyVerifier:
                 pass
 
     def resolve(self, code: str, timeout: int = 15) -> VerificationResult:
+        ledger = current_budget()
+        if ledger:
+            ledger.before_verifier_call()
+            ledger.record_verifier_call()
         """Run only Dafny resolution/type checking for a generated candidate."""
         with tempfile.NamedTemporaryFile(mode="w", suffix=".dfy", delete=False, encoding="utf-8") as handle:
             handle.write(code)

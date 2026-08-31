@@ -16,12 +16,13 @@ from artifacts import (
     StructuredSpecification,
     stable_hash,
 )
-from contract_utils import bodyless_callable_names
+from contract_utils import bodyless_callable_names, build_direct_reference_program
 from model_output import parse_json_object
 from mutation_probe import probe_spec_mutants
 from requirement_analyzer import fallback_analysis
 from spec_adequacy import check_spec_adequacy
 from spec_critic import critic_feedback_obligations, review_spec_with_llm
+from spec_harness import build_spec_harness
 from task_normalizer import render_dafny_signature
 
 
@@ -90,6 +91,7 @@ class SpecAuthority:
             drift = _spec_drift(previous, structured, feedback, revision_evidence)
             structural_issues = list(self._validate(candidate, entry_point))
             structural_issues.extend(_cross_level_issues(candidate, structured))
+            traceability_issues = list(_traceability_issues(structured))
             if drift.get("unjustified"):
                 structural_issues.append("approved spec changed without revision evidence")
             adequacy = check_spec_adequacy(candidate, problem_desc, entry_point=entry_point)
@@ -104,6 +106,16 @@ class SpecAuthority:
                 final_structured = _with_clause_status(
                     structured, "validated" if decision == "approve" else "rejected"
                 )
+                harness = None
+                if config.ENABLE_SPEC_HARNESS:
+                    harness = build_spec_harness(
+                        decision=decision,
+                        structural_issues=structural_issues,
+                        traceability_issues=traceability_issues,
+                        adequacy=adequacy,
+                        mutation=mutation,
+                        critic_report=critic_report,
+                    )
                 return SpecArtifact(
                     text=candidate,
                     version=version,
@@ -113,14 +125,16 @@ class SpecAuthority:
                     critic_report=critic_report or {},
                     adequacy=adequacy,
                     mutation=mutation or {},
+                    harness=harness,
                     structured=final_structured,
                     drift_report=drift,
-                    issues=issues,
+                    issues=(*issues, *traceability_issues),
                 )
 
             if structural_issues:
                 if attempt < self._max_repairs:
-                    prior_text, last_issues = candidate, structural_issues
+                    prior_text = candidate
+                    last_issues = [*structural_issues, *traceability_issues]
                     continue
                 return artifact("reject", issues=tuple(structural_issues))
 
@@ -239,6 +253,13 @@ complete Dafny declarations and a bodyless public method. Do not emit a public i
         for helper in sorted(bodyless & direct_references):
             issues.append(f"result reference helper has no body: {helper}")
 
+        if build_direct_reference_program(spec, entry_point) is None:
+            issues.append(
+                "public result has no directly executable definition; add an equality "
+                "such as `ensures result == Reference(args)` backed by a total pure "
+                "function/predicate, or use a directly executable result expression"
+            )
+
         if issues:
             return tuple(issues)
         resolved = self._verifier.resolve(spec)
@@ -320,14 +341,36 @@ def _cross_level_issues(spec: str, structured: StructuredSpecification) -> tuple
         issues.append("structured specification has no formal clauses")
     if formal != mapped:
         issues.append("structured clauses and formal specification diverged")
-    requirement_ids = {item.id for item in structured.requirements}
+    return tuple(issues)
+
+
+def _traceability_issues(structured: StructuredSpecification) -> tuple[str, ...]:
+    requirement_ids = {
+        item.id for item in structured.requirements if _requires_formal_clause(item.kind)
+    }
     covered = {
         value for clause in structured.clauses for value in clause.related_requirements
     }
     missing = sorted(requirement_ids - covered)
-    if missing:
-        issues.append("requirements without formal clauses: " + ", ".join(missing))
-    return tuple(issues)
+    if not missing:
+        return ()
+    return ("requirements without formal clauses: " + ", ".join(missing),)
+
+
+def _requires_formal_clause(kind: str) -> bool:
+    """Return whether a requirement must be represented by a Dafny clause.
+
+    Naming and signature requirements are represented by the fixed public method,
+    while examples are represented by verification cases. Treating those evidence
+    types as missing contract clauses makes every otherwise valid specification
+    fail the gate.
+    """
+
+    return kind.strip().lower().replace("-", "_") not in {
+        "example",
+        "naming",
+        "signature",
+    }
 
 
 def _spec_drift(
@@ -433,5 +476,9 @@ def _spec_system_prompt() -> str:
     return """You are the Specification Agent and authority for a spec-guided Dafny coding agent.
 Create atomic structured clauses mapped to REQ IDs and an equivalent formal Dafny contract. Keep
 the fixed public method and full legal input domain. Do not invent preconditions, omit requirements,
-or emit a public method body. Pure helpers are allowed only when total. Return only JSON. The result
-will face independent semantic review, public-example probes, mutation testing, and Dafny resolution."""
+or emit a public method body. Define every public return with at least one directly executable
+equality, preferably `ensures result == Reference(args)`, where Reference is a total pure
+function/predicate with a body. Relational-only existential/forall postconditions are additional
+properties, not an executable reference definition. Keep int/real casts explicit and valid. Return
+only JSON. The result will face independent semantic review, public-example probes, mutation testing,
+and Dafny resolution."""

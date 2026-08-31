@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "protocol": "strict_holdout",
+  "conditions": ["direct_1", "direct_verify", "spec_guided"],
+  "seeds": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  "dataset": {
+    "name": "HumanEval",
+    "total_tasks": 164,
+    "shard_size": 10,
+    "type_overlay_policy": "public_task_evidence_only"
+  },
+  "budget_per_task": {
+    "max_model_calls": 12,
+    "max_total_tokens": 50000,
+    "max_verifier_calls": 30,
+    "max_wall_seconds": 900,
+    "max_candidates": 8
+  },
+  "search": {
+    "max_repair_rounds": 3,
+    "width": 2,
+    "dual_repair": true,
+    "proof_edit_guard": true
+  },
+  "primary_metrics": [
+    "humaneval_passed",
+    "verified_wrong",
+    "coverage_rate",
+    "llm_tokens",
+    "verifier_calls",
+    "wall_time_seconds"
+  ],
+  "statistics": {
+    "unit": "task",
+    "paired": true,
+    "confidence_interval": "task_bootstrap_95",
+    "binary_test": "paired_permutation_or_mcnemar",
+    "multiple_comparisons": "holm"
+  }
+}
+

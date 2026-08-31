@@ -81,6 +81,16 @@ class RunProtocolTests(unittest.TestCase):
         holdout.assert_called_once()
         self.assertTrue(results[0]["passed"])
 
+    def test_native_supported_filter_uses_only_public_prompt_types(self):
+        untyped = {
+            **PROBLEM,
+            "task_id": "HumanEval/untyped",
+            "prompt": 'def identity(x):\n    """Return x."""\n',
+        }
+        selected = run_humaneval.native_supported_problems([PROBLEM, untyped])
+
+        self.assertEqual([problem["task_id"] for problem in selected], [PROBLEM["task_id"]])
+
 
 if __name__ == "__main__":
     unittest.main()

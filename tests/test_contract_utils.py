@@ -142,6 +142,15 @@ method below_zero(operations: seq<int>) returns (result: bool)
         self.assertEqual(code.count("function BelowZero"), 1)
         self.assertTrue(check_contract_fidelity(spec, code, "below_zero").ok)
 
+    def test_build_direct_reference_program_uses_direct_result_expression(self):
+        spec = """method f(x: int) returns (result: int)
+    ensures result == x + 1
+"""
+        code = build_direct_reference_program(spec, "f")
+        self.assertIsNotNone(code)
+        self.assertIn("result := x + 1;", code)
+        self.assertTrue(check_contract_fidelity(spec, code, "f").ok)
+
     def test_direct_reference_requires_a_frozen_helper_definition(self):
         spec = """method f(x: int) returns (result: int)
     ensures result == Missing(x)
