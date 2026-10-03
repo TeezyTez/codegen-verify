@@ -1,0 +1,64 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "80e07223470940ca871e15a261963b48",
+  "task_id": "sequence_max",
+  "task_family": "loop",
+  "source": "codegen-verify-representation-demo",
+  "origin": "synthetic_demo",
+  "strategy": "iterative_repair",
+  "representation": "structured",
+  "replicate": 0,
+  "is_mock": true,
+  "audit_status": "pending",
+  "real_verifier_executed": true,
+  "success": true,
+  "first_candidate_verified": false,
+  "candidate_count": 2,
+  "stop_reason": "verified",
+  "status": "verified",
+  "usage": {
+    "model_calls": 2,
+    "model_retry_calls": 0,
+    "verifier_calls": 3,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 7882,
+    "unknown_usage_calls": 2,
+    "cost_usd": 0.0,
+    "reserved_cost_usd": 0.0,
+    "model_seconds": 1.7249003576580435e-05,
+    "verification_seconds": 2.086493041002541
+  },
+  "failures": {
+    "verification_failed": 1
+  },
+  "completed": true,
+  "seconds": 2.095248334000644,
+  "final_sha256": "a9a73c5ccf312d4f8bd1b02cefff167c993607d8a9c57a87762700c8f64649c6",
+  "final_verification": {
+    "status": "verified",
+    "stdout": "\nDafny program verifier finished with 2 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-mpf7r6w3/results.csv\n",
+    "stderr": "",
+    "returncode": 0,
+    "seconds": 0.69758529200044,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-mpf7r6w3/program.dfy",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "15",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-mpf7r6w3/results.csv"
+    ],
+    "diagnostics": [],
+    "obligations": {
+      "Maximum (well-formedness)": "passed",
+      "Maximum (correctness)": "passed"
+    },
+    "executed": true,
+    "real_verifier": true,
+    "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nMaximum (well-formedness),Passed,00:00:00.0214374,9335,0\nMaximum (correctness),Passed,00:00:00.0060393,27198,0\n"
+  }
+}

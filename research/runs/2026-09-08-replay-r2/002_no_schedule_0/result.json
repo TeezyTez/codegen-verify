@@ -1,0 +1,89 @@
+{
+  "protocol": "fixed_contract_repair_v1",
+  "task_id": "clover-double-mutated",
+  "source_project": "Clover",
+  "split": "dev",
+  "mode": "implementation",
+  "failure_type": "arithmetic_mutation",
+  "origin": "artificial_mutation",
+  "condition": "no_schedule",
+  "replicate": 0,
+  "model_kind": "scripted_replay",
+  "research_eligible": false,
+  "success": true,
+  "stop_reason": "accepted",
+  "usage": {
+    "model_calls": 1,
+    "verifier_calls": 3,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 6360,
+    "unknown_usage_calls": 1,
+    "cost_usd": 0.0
+  },
+  "regressions": 0,
+  "lost_observability": 0,
+  "boundary_rejections": 0,
+  "initial": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/program.dfy(5,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 5,
+        "location_col": 0,
+        "related_spec": "  ensures a == 2 * x && b == 4 * x",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures a == 2 * x && b == 4 * x",
+        "related_location_line": 4,
+        "related_location_col": 12
+      }
+    ],
+    "obligations": {
+      "DoubleQuadruple (correctness)": "failed",
+      "Consumer (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/program.dfy(5,0): Error: a postcondition could not be proved on this return path\n  |\n5 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/program.dfy(4,12): Related location: this is the postcondition that could not be proved\n  |\n4 |   ensures a == 2 * x && b == 4 * x\n  |             ^^\n\n\nDafny program verifier finished with 1 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.73257329199987,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-6xs_xnbl/results.csv"
+    ]
+  },
+  "final": {
+    "status": "passed",
+    "diagnostics": [],
+    "obligations": {
+      "DoubleQuadruple (correctness)": "passed",
+      "Consumer (correctness)": "passed"
+    },
+    "raw": "\nDafny program verifier finished with 2 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-w8v99ytw/results.csv\n",
+    "returncode": 0,
+    "seconds": 0.7499255000002449,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-w8v99ytw/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-w8v99ytw/results.csv"
+    ]
+  },
+  "final_sha256": "a312a57de62f50f27b3379cdde13da7a065a03984dbb8bdae9bda33280c9d8d7",
+  "seconds": 2.620221249999304,
+  "changed_lines": 2
+}

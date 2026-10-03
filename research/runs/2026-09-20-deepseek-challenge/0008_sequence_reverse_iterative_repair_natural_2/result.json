@@ -1,0 +1,37 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "cecb18669cd244bcad00185c2a49da1b",
+  "task_id": "sequence_reverse",
+  "task_family": "sequence_loop",
+  "source": "codegen-verify-challenge-demo",
+  "origin": "synthetic_demo",
+  "strategy": "iterative_repair",
+  "representation": "natural",
+  "replicate": 2,
+  "is_mock": false,
+  "audit_status": "pending",
+  "real_verifier_executed": true,
+  "success": false,
+  "first_candidate_verified": false,
+  "candidate_count": 4,
+  "stop_reason": "model_budget_exhausted",
+  "status": "verification_failed",
+  "usage": {
+    "model_calls": 4,
+    "model_retry_calls": 0,
+    "verifier_calls": 4,
+    "input_tokens": 1582,
+    "output_tokens": 412,
+    "accounted_tokens": 1994,
+    "unknown_usage_calls": 0,
+    "cost_usd": 0.0009689999999999998,
+    "reserved_cost_usd": 0.0009689999999999994,
+    "model_seconds": 4.219174001002102,
+    "verification_seconds": 3.125472917003208
+  },
+  "failures": {
+    "verification_failed": 4
+  },
+  "completed": true,
+  "seconds": 7.3570574579935055
+}

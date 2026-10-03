@@ -1,0 +1,162 @@
+{
+  "id": "clamp",
+  "task_id": "clamp",
+  "source_project": "codegen-verify-representation-demo",
+  "family": "boundary",
+  "task_family": "boundary",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Hand-authored protocol demonstration, not a paper benchmark.",
+  "source": "Original synthetic example authored for this repository, 2026-09-17; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Clamp",
+      "signature": "method Clamp(request: int, cap: int) returns (r: int)",
+      "header": "method Clamp(request: int, cap: int) returns (r: int)\n  requires request >= 0\n  requires cap >= 0\n  ensures r == (if request <= cap then request else cap)"
+    }
+  ],
+  "reference": {
+    "Clamp": "if request <= cap {\n  r := request;\n} else {\n  r := cap;\n}"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails at least one fixed postcondition for a permitted input.",
+      "bodies": {
+        "Clamp": "r := request;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Clamp",
+      "inputs": [
+        8,
+        3
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Clamp",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "Clamp",
+      "inputs": [
+        2,
+        5
+      ],
+      "outputs": [
+        2
+      ]
+    }
+  ],
+  "rule": {
+    "name": "clamp",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input request is nonnegative. [R2] The input cap is nonnegative. [R3] The result r is the smaller of request and cap.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input request is nonnegative."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The input cap is nonnegative."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The result r is the smaller of request and cap."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "request",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "precondition",
+          "subject": "cap",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "equals",
+          "value": "minimum(request, cap)"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input request is nonnegative.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Clamp",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The input cap is nonnegative.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Clamp",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The result r is the smaller of request and cap.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "Clamp",
+        "header_line": 4
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Clamp(request: int, cap: int) returns (r: int)\n  requires request >= 0\n  requires cap >= 0\n  ensures r == (if request <= cap then request else cap)\n{\n  <generate body: Clamp>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "23fee8341ec69472892bb2aa7ebd2cb27995d65aa435ade2c2e4cec19b8211ca",
+    "checklist": "e5c9174e77be1d70e2921f60cff17d54d8d1cb361fa949c4196dbca1312d28bd",
+    "structured": "042c287ca6080a763f90340904b9dc2dbb107cecff55ab1274cd0d5bc0692fd0",
+    "spec": "9f414f2adeffbe51e0bbf09ebb34bec7dd7562b9a0865664bbd7da4a26447885",
+    "template": "a1cb40cc90c9f1083f38537fb16fe4bfb0d72acf18812dc186f7a82caef2137a",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "2c7b7a289b2374b926f8b12b072235a29cfc72f6efaf0a7052cf8a5c9efaed96"
+  }
+}

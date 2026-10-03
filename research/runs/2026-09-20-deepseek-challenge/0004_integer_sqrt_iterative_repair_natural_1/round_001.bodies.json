@@ -1,0 +1,3 @@
+{
+  "IntegerSqrt": "var lo: int := 0;\nvar hi: int := n + 1;\nwhile (lo + 1 < hi)\n    invariant 0 <= lo <= hi\n    invariant lo * lo <= n\n    invariant n < hi * hi\n    decreases hi - lo\n{\n    var mid: int := lo + (hi - lo) / 2;\n    if (mid * mid <= n) {\n        lo := mid;\n    } else {\n        hi := mid;\n    }\n}\nr := lo;"
+}

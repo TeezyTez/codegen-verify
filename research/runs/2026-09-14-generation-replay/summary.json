@@ -1,0 +1,249 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "live_research": [],
+  "scripted_diagnostics": [
+    {
+      "condition": "G00",
+      "split": "dev",
+      "runs": 36,
+      "accepted": 36,
+      "supported": 36,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic-generation": {
+          "runs": 36,
+          "accepted": 36
+        }
+      },
+      "by_family": {
+        "structural": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "guarded_update": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "composition": {
+          "runs": 12,
+          "accepted": 12
+        }
+      },
+      "stop_reasons": {
+        "accepted": 36
+      },
+      "seconds_all_runs": 117.43297229100426,
+      "cost_usd": 0.0,
+      "boundary_rejections": 36,
+      "regressions": 0,
+      "lost_observability": 0,
+      "mean_generated_body_lines": 4.416666666666667,
+      "first_candidate_passed": 0,
+      "last_evidence": {
+        "structure": {
+          "passed": 36
+        },
+        "formal": {
+          "passed": 36
+        },
+        "behavioral": {
+          "passed": 36
+        }
+      },
+      "model_calls": 108,
+      "action_calls": 108,
+      "oracle_calls": 108,
+      "verifier_calls": 108,
+      "runtime_calls": 72,
+      "unknown_usage_calls": 108,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "condition": "G01",
+      "split": "dev",
+      "runs": 36,
+      "accepted": 36,
+      "supported": 36,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic-generation": {
+          "runs": 36,
+          "accepted": 36
+        }
+      },
+      "by_family": {
+        "structural": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "guarded_update": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "composition": {
+          "runs": 12,
+          "accepted": 12
+        }
+      },
+      "stop_reasons": {
+        "accepted": 36
+      },
+      "seconds_all_runs": 117.14935732998856,
+      "cost_usd": 0.0,
+      "boundary_rejections": 36,
+      "regressions": 0,
+      "lost_observability": 0,
+      "mean_generated_body_lines": 4.416666666666667,
+      "first_candidate_passed": 0,
+      "last_evidence": {
+        "structure": {
+          "passed": 36
+        },
+        "formal": {
+          "passed": 36
+        },
+        "behavioral": {
+          "passed": 36
+        }
+      },
+      "model_calls": 108,
+      "action_calls": 108,
+      "oracle_calls": 108,
+      "verifier_calls": 108,
+      "runtime_calls": 72,
+      "unknown_usage_calls": 108,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "condition": "G10",
+      "split": "dev",
+      "runs": 36,
+      "accepted": 36,
+      "supported": 36,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic-generation": {
+          "runs": 36,
+          "accepted": 36
+        }
+      },
+      "by_family": {
+        "structural": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "guarded_update": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "composition": {
+          "runs": 12,
+          "accepted": 12
+        }
+      },
+      "stop_reasons": {
+        "accepted": 36
+      },
+      "seconds_all_runs": 116.90059791300155,
+      "cost_usd": 0.0,
+      "boundary_rejections": 36,
+      "regressions": 0,
+      "lost_observability": 0,
+      "mean_generated_body_lines": 4.416666666666667,
+      "first_candidate_passed": 0,
+      "last_evidence": {
+        "structure": {
+          "passed": 36
+        },
+        "formal": {
+          "passed": 36
+        },
+        "behavioral": {
+          "passed": 36
+        }
+      },
+      "model_calls": 108,
+      "action_calls": 108,
+      "oracle_calls": 108,
+      "verifier_calls": 108,
+      "runtime_calls": 72,
+      "unknown_usage_calls": 108,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "condition": "G11",
+      "split": "dev",
+      "runs": 36,
+      "accepted": 36,
+      "supported": 36,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic-generation": {
+          "runs": 36,
+          "accepted": 36
+        }
+      },
+      "by_family": {
+        "structural": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "guarded_update": {
+          "runs": 12,
+          "accepted": 12
+        },
+        "composition": {
+          "runs": 12,
+          "accepted": 12
+        }
+      },
+      "stop_reasons": {
+        "accepted": 36
+      },
+      "seconds_all_runs": 116.9294389610368,
+      "cost_usd": 0.0,
+      "boundary_rejections": 36,
+      "regressions": 0,
+      "lost_observability": 0,
+      "mean_generated_body_lines": 4.416666666666667,
+      "first_candidate_passed": 0,
+      "last_evidence": {
+        "structure": {
+          "passed": 36
+        },
+        "formal": {
+          "passed": 36
+        },
+        "behavioral": {
+          "passed": 36
+        }
+      },
+      "model_calls": 108,
+      "action_calls": 108,
+      "oracle_calls": 108,
+      "verifier_calls": 108,
+      "runtime_calls": 72,
+      "unknown_usage_calls": 108,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  ],
+  "deterministic_baseline": [],
+  "missing_planned_runs": [],
+  "paired_live": [],
+  "total_completed": 144,
+  "planned_runs": 144,
+  "interaction_live": null,
+  "interpretation": "Replay tests infrastructure only. Templates are genuine executions on their stated support, not LLM evidence. Resolve missing runs before inference."
+}

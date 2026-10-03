@@ -1,0 +1,13 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "audited": 144,
+  "accepted": 144,
+  "oracle_events": 432,
+  "note": "Read-only artifact audit, not replacement for recorded fresh formal and runtime acceptance.",
+  "tasks_with_equal_inputs": 12,
+  "prompts_checked": 432,
+  "fresh_no_feedback_prompts": 216,
+  "budget_versions": 1,
+  "live_model_settings": 0,
+  "interpretation": "Input/permission protocol audit only, not effect-size evidence."
+}

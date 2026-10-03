@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Remaining(used: int, cap: int) returns (r: int)\\n  requires 0 <= used <= cap\\n  ensures r == cap - used\\n{\\n  r := cap - used;\\n}\\n\"}",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0,
+  "usage_source": "not_applicable_template"
+}

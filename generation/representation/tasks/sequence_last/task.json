@@ -1,0 +1,135 @@
+{
+  "id": "sequence_last",
+  "task_id": "sequence_last",
+  "source_project": "codegen-verify-representation-demo",
+  "family": "sequence",
+  "task_family": "sequence",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Hand-authored protocol demonstration, not a paper benchmark.",
+  "source": "Original synthetic example authored for this repository, 2026-09-17; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Last",
+      "signature": "method Last(s: seq<int>) returns (r: int)",
+      "header": "method Last(s: seq<int>) returns (r: int)\n  requires |s| > 0\n  ensures r == s[|s|-1]"
+    }
+  ],
+  "reference": {
+    "Last": "r := s[|s|-1];"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails at least one fixed postcondition for a permitted input.",
+      "bodies": {
+        "Last": "r := s[0];"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Last",
+      "inputs": [
+        [
+          1,
+          2,
+          3
+        ]
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Last",
+      "inputs": [
+        [
+          -5
+        ]
+      ],
+      "outputs": [
+        -5
+      ]
+    }
+  ],
+  "rule": {
+    "name": "sequence_last",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input sequence s is nonempty. [R2] The result r equals the final element of s.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input sequence s is nonempty."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result r equals the final element of s."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "length(s)",
+          "relation": "greater_than",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "equals",
+          "value": "s[length(s)-1]"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input sequence s is nonempty.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Last",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result r equals the final element of s.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Last",
+        "header_line": 3
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Last(s: seq<int>) returns (r: int)\n  requires |s| > 0\n  ensures r == s[|s|-1]\n{\n  <generate body: Last>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "9d737b4ca3ace2a22b5397c9fbffd55dde9bb89b35e15c4276c44e9937b36209",
+    "checklist": "5004a0aa4596744c422e3c6e14c6be31c24f097fa276d0c19a0cecfac13bc777",
+    "structured": "64d48370917f419c70fb3415e769a7dbdd8093025a82c63d563603b17505c8d0",
+    "spec": "aed74d39c2c4344b94f33ad9df00ba147724feedeb29643222cc29351c9a11c3",
+    "template": "8c70b3667aff9b4616ae9927aa0ec7aa2308121a93fc0d5dff4b5c06e9998c04",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "995ed9bbcba441f2970d64e577aca28ae5d123d04082055d31677fb74ad4438c"
+  }
+}

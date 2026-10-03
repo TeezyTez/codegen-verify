@@ -1,0 +1,89 @@
+{
+  "task": {
+    "id": "clamp",
+    "description": "Clamp a nonnegative request to the available capacity.",
+    "methods": [
+      {
+        "name": "Clamp",
+        "header": "method Clamp(req: int, cap: int) returns (grant: int)\n  requires req >= 0 && cap >= 0\n  ensures grant == (if req <= cap then req else cap)"
+      }
+    ],
+    "rule": {
+      "name": "clamp",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": "method Clamp(req: int, cap: int) returns (grant: int)\n  requires req >= 0 && cap >= 0\n  ensures grant == (if req <= cap then req else cap)\n{\n  grant := req;\n}\n",
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    },
+    {
+      "action": "generate",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "not_run",
+        "verifier_calls": 1,
+        "runtime_calls": 0,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/program.dfy(4,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 4,
+                "location_col": 0,
+                "related_spec": "  ensures grant == (if req <= cap then req else cap)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures grant == (if req <= cap then req else cap)",
+                "related_location_line": 3,
+                "related_location_col": 16
+              }
+            ],
+            "obligations": {
+              "Clamp (correctness)": "failed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/program.dfy(4,0): Error: a postcondition could not be proved on this return path\n  |\n4 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/program.dfy(3,16): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures grant == (if req <= cap then req else cap)\n  |                 ^^\n\n\nDafny program verifier finished with 0 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.6871460830006981,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-16ytveln/results.csv"
+            ]
+          }
+        },
+        "seconds": 0.6875149999978021
+      },
+      "regression": {
+        "confirmed": [],
+        "lost_observability": [],
+        "new_failures": [
+          "Clamp (correctness)"
+        ]
+      }
+    }
+  ]
+}

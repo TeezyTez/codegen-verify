@@ -1,0 +1,93 @@
+{
+  "protocol": "fixed_contract_repair_v1",
+  "task_id": "clover-array-proof",
+  "source_project": "Clover",
+  "split": "dev",
+  "mode": "proof",
+  "failure_type": "missing_loop_invariant",
+  "origin": "missing_annotation",
+  "condition": "generic_agent",
+  "replicate": 2,
+  "model_kind": "scripted_replay",
+  "research_eligible": false,
+  "success": true,
+  "stop_reason": "accepted",
+  "usage": {
+    "model_calls": 1,
+    "verifier_calls": 3,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 6019,
+    "unknown_usage_calls": 1,
+    "cost_usd": 0.0
+  },
+  "regressions": 0,
+  "lost_observability": 0,
+  "boundary_rejections": 0,
+  "initial": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(7,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 7,
+        "location_col": 0,
+        "related_spec": "  ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]",
+        "related_location_line": 6,
+        "related_location_col": 10
+      }
+    ],
+    "obligations": {
+      "arraySum (well-formedness)": "passed",
+      "arraySum (correctness)": "failed",
+      "ArrayClient (well-formedness)": "passed",
+      "ArrayClient (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(7,0): Error: a postcondition could not be proved on this return path\n  |\n7 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(6,10): Related location: this is the postcondition that could not be proved\n  |\n6 |   ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]\n  |           ^^^^^^\n\n\nDafny program verifier finished with 3 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.7839473339990946,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/results.csv"
+    ]
+  },
+  "final": {
+    "status": "passed",
+    "diagnostics": [],
+    "obligations": {
+      "arraySum (well-formedness)": "passed",
+      "arraySum (correctness)": "passed",
+      "ArrayClient (well-formedness)": "passed",
+      "ArrayClient (correctness)": "passed"
+    },
+    "raw": "\nDafny program verifier finished with 4 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-u0qf8q4p/results.csv\n",
+    "returncode": 0,
+    "seconds": 0.7726423330022953,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-u0qf8q4p/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-u0qf8q4p/results.csv"
+    ]
+  },
+  "final_sha256": "d37ed5fb9ef3846eba2c5f661aea34c6389a0a6af59ae7e84d2b62369fcdb13c",
+  "seconds": 2.722511375002796,
+  "changed_lines": 1
+}

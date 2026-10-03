@@ -1,0 +1,39 @@
+{
+  "status": "verification_failed",
+  "stdout": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/program.dfy(5,0): Error: a postcondition could not be proved on this return path\n  |\n5 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/program.dfy(3,10): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures forall k :: 0 <= k < |s| ==> s[k] <= m\n  |           ^^^^^^\n\n\nDafny program verifier finished with 1 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/results.csv\n",
+  "stderr": "",
+  "returncode": 4,
+  "seconds": 0.6816709579943563,
+  "command": [
+    "/Users/zhangfangying/.local/bin/dafny",
+    "verify",
+    "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/program.dfy",
+    "--cores",
+    "1",
+    "--verification-time-limit",
+    "15",
+    "--log-format",
+    "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/results.csv"
+  ],
+  "diagnostics": [
+    {
+      "error_type": "postcondition",
+      "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rodd1xma/program.dfy(5,0): Error: a postcondition could not be proved on this return path",
+      "location_line": 5,
+      "location_col": 0,
+      "related_spec": "  ensures forall k :: 0 <= k < |s| ==> s[k] <= m",
+      "subtype": "postcondition",
+      "source": "{",
+      "related_source": "  ensures forall k :: 0 <= k < |s| ==> s[k] <= m",
+      "related_location_line": 3,
+      "related_location_col": 10
+    }
+  ],
+  "obligations": {
+    "Maximum (well-formedness)": "passed",
+    "Maximum (correctness)": "failed"
+  },
+  "executed": true,
+  "real_verifier": true,
+  "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nMaximum (well-formedness),Passed,00:00:00.0215014,9335,0\nMaximum (correctness),Failed,00:00:00.0162405,8757,0\n"
+}

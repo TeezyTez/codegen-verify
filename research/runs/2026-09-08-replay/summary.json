@@ -1,0 +1,428 @@
+{
+  "research": [],
+  "scripted_diagnostics": [
+    {
+      "condition": "dependency",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 18.053224624985887,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "generic_agent",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 17.98960129101033,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "independent",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 17.836367333009548,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "linear",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 17.97498141699907,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "no_dependencies",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 18.040308959003596,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "no_schedule",
+      "mode": "implementation",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "arithmetic_mutation": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 12,
+      "cost_usd": 0.0,
+      "seconds": 18.08731708300911,
+      "regressions": 3,
+      "boundary_rejections": 3,
+      "mean_changed_lines": 3
+    },
+    {
+      "condition": "dependency",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 19.051640372999827,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    },
+    {
+      "condition": "generic_agent",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 19.74853187501867,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    },
+    {
+      "condition": "independent",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 19.912213876006717,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    },
+    {
+      "condition": "linear",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 19.615009790984914,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    },
+    {
+      "condition": "no_dependencies",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 18.67942958198546,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    },
+    {
+      "condition": "no_schedule",
+      "mode": "proof",
+      "split": "dev",
+      "runs": 6,
+      "accepted": 6,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "Clover": {
+          "runs": 3,
+          "accepted": 3
+        },
+        "codegen-verify-synthetic": {
+          "runs": 3,
+          "accepted": 3
+        }
+      },
+      "by_failure_type": {
+        "missing_loop_invariant": {
+          "runs": 6,
+          "accepted": 6
+        }
+      },
+      "verifier_calls": 21,
+      "input_tokens": null,
+      "output_tokens": null,
+      "unknown_usage_calls": 9,
+      "cost_usd": 0.0,
+      "seconds": 18.388886166998418,
+      "regressions": 0,
+      "boundary_rejections": 0,
+      "mean_changed_lines": 1
+    }
+  ],
+  "missing_planned_runs": [],
+  "interpretation": "Scripted diagnostics test infrastructure only. No pass@k or method advantage inferred. Missing jobs must be resolved before inference.",
+  "paired_research": []
+}

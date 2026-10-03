@@ -1,0 +1,14 @@
+{
+  "status": "verification_failed",
+  "diagnostics": [
+    {
+      "category": "postcondition",
+      "requirement_ids": [
+        "R1"
+      ],
+      "candidate_location": "unknown"
+    }
+  ],
+  "property_satisfaction": "unknown",
+  "additional_spec_disclosure": false
+}

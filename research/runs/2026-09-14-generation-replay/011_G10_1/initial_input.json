@@ -1,0 +1,27 @@
+{
+  "task": {
+    "id": "transfer",
+    "description": "Transfer atomically between two tenants. Rejection changes neither tenant.",
+    "methods": [
+      {
+        "name": "Transfer",
+        "header": "method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\n  requires a >= 0 && 0 <= b <= cap && req >= 0\n  ensures ok == (req <= a && b + req <= cap)\n  ensures na == (if ok then a - req else a)\n  ensures nb == (if ok then b + req else b)\n  ensures na + nb == a + b"
+      }
+    ],
+    "rule": {
+      "name": "transfer",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "bodies",
+  "feedback_policy": "none",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "skeleton": "method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\n  requires a >= 0 && 0 <= b <= cap && req >= 0\n  ensures ok == (req <= a && b + req <= cap)\n  ensures na == (if ok then a - req else a)\n  ensures nb == (if ok then b + req else b)\n  ensures na + nb == a + b\n{\n  <generate body: Transfer>\n}\n"
+}

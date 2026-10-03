@@ -1,0 +1,677 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "planned_runs": 45,
+  "recorded_runs": 45,
+  "missing_runs": [],
+  "conditions": [
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "independent_sampling",
+      "representation": "checklist",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.316264458997466,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "independent_sampling",
+      "representation": "natural",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.291523167004925,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "independent_sampling",
+      "representation": "structured",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.193346166997799,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "iterative_repair",
+      "representation": "checklist",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.222725541010732,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "iterative_repair",
+      "representation": "natural",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.2916997909997,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "iterative_repair",
+      "representation": "structured",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 5,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "verified": 5
+      },
+      "seconds": 10.31630774999212,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 10,
+      "model_retry_calls": 0,
+      "verifier_calls": 15,
+      "unknown_usage_calls": 10,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "single_shot",
+      "representation": "checklist",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 0,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 0,
+      "task_macro_success_rate": 0,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "single_shot_complete": 5
+      },
+      "seconds": 3.4364557920052903,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        }
+      },
+      "model_calls": 5,
+      "model_retry_calls": 0,
+      "verifier_calls": 5,
+      "unknown_usage_calls": 5,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "single_shot",
+      "representation": "natural",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 0,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 0,
+      "task_macro_success_rate": 0,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "single_shot_complete": 5
+      },
+      "seconds": 3.45218837599532,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        }
+      },
+      "model_calls": 5,
+      "model_retry_calls": 0,
+      "verifier_calls": 5,
+      "unknown_usage_calls": 5,
+      "input_tokens": null,
+      "output_tokens": null
+    },
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "single_shot",
+      "representation": "structured",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 5,
+      "recorded_runs": 5,
+      "completed_runs": 5,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 0,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 0,
+      "task_macro_success_rate": 0,
+      "real_verifier_runs": 5,
+      "failure_events": {
+        "verification_failed": 5
+      },
+      "stop_reasons": {
+        "single_shot_complete": 5
+      },
+      "seconds": 3.4588207900014822,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "clamp": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "remaining": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_last": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        },
+        "sequence_max": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 0,
+          "success_fraction": 0
+        }
+      },
+      "model_calls": 5,
+      "model_retry_calls": 0,
+      "verifier_calls": 5,
+      "unknown_usage_calls": 5,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  ],
+  "interpretation": "Descriptive only; task repeats are correlated. Mock outcomes are fixture diagnostics, not model evidence.",
+  "incomplete_runs": 0,
+  "complete_matrix": true
+}

@@ -1,0 +1,317 @@
+[
+  {
+    "directory": "0000_absolute_single_shot_natural_0",
+    "task_id": "absolute",
+    "strategy": "single_shot",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0001_absolute_single_shot_checklist_0",
+    "task_id": "absolute",
+    "strategy": "single_shot",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0002_absolute_single_shot_structured_0",
+    "task_id": "absolute",
+    "strategy": "single_shot",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0003_absolute_iterative_repair_natural_0",
+    "task_id": "absolute",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0004_absolute_iterative_repair_checklist_0",
+    "task_id": "absolute",
+    "strategy": "iterative_repair",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0005_absolute_iterative_repair_structured_0",
+    "task_id": "absolute",
+    "strategy": "iterative_repair",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0006_absolute_independent_sampling_natural_0",
+    "task_id": "absolute",
+    "strategy": "independent_sampling",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0007_absolute_independent_sampling_checklist_0",
+    "task_id": "absolute",
+    "strategy": "independent_sampling",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0008_absolute_independent_sampling_structured_0",
+    "task_id": "absolute",
+    "strategy": "independent_sampling",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0009_clamp_single_shot_natural_0",
+    "task_id": "clamp",
+    "strategy": "single_shot",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0010_clamp_single_shot_checklist_0",
+    "task_id": "clamp",
+    "strategy": "single_shot",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0011_clamp_single_shot_structured_0",
+    "task_id": "clamp",
+    "strategy": "single_shot",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0012_clamp_iterative_repair_natural_0",
+    "task_id": "clamp",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0013_clamp_iterative_repair_checklist_0",
+    "task_id": "clamp",
+    "strategy": "iterative_repair",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0014_clamp_iterative_repair_structured_0",
+    "task_id": "clamp",
+    "strategy": "iterative_repair",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0015_clamp_independent_sampling_natural_0",
+    "task_id": "clamp",
+    "strategy": "independent_sampling",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0016_clamp_independent_sampling_checklist_0",
+    "task_id": "clamp",
+    "strategy": "independent_sampling",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0017_clamp_independent_sampling_structured_0",
+    "task_id": "clamp",
+    "strategy": "independent_sampling",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0018_remaining_single_shot_natural_0",
+    "task_id": "remaining",
+    "strategy": "single_shot",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0019_remaining_single_shot_checklist_0",
+    "task_id": "remaining",
+    "strategy": "single_shot",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0020_remaining_single_shot_structured_0",
+    "task_id": "remaining",
+    "strategy": "single_shot",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0021_remaining_iterative_repair_natural_0",
+    "task_id": "remaining",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0022_remaining_iterative_repair_checklist_0",
+    "task_id": "remaining",
+    "strategy": "iterative_repair",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0023_remaining_iterative_repair_structured_0",
+    "task_id": "remaining",
+    "strategy": "iterative_repair",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0024_remaining_independent_sampling_natural_0",
+    "task_id": "remaining",
+    "strategy": "independent_sampling",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0025_remaining_independent_sampling_checklist_0",
+    "task_id": "remaining",
+    "strategy": "independent_sampling",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0026_remaining_independent_sampling_structured_0",
+    "task_id": "remaining",
+    "strategy": "independent_sampling",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0027_sequence_last_single_shot_natural_0",
+    "task_id": "sequence_last",
+    "strategy": "single_shot",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0028_sequence_last_single_shot_checklist_0",
+    "task_id": "sequence_last",
+    "strategy": "single_shot",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0029_sequence_last_single_shot_structured_0",
+    "task_id": "sequence_last",
+    "strategy": "single_shot",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0030_sequence_last_iterative_repair_natural_0",
+    "task_id": "sequence_last",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0031_sequence_last_iterative_repair_checklist_0",
+    "task_id": "sequence_last",
+    "strategy": "iterative_repair",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0032_sequence_last_iterative_repair_structured_0",
+    "task_id": "sequence_last",
+    "strategy": "iterative_repair",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0033_sequence_last_independent_sampling_natural_0",
+    "task_id": "sequence_last",
+    "strategy": "independent_sampling",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0034_sequence_last_independent_sampling_checklist_0",
+    "task_id": "sequence_last",
+    "strategy": "independent_sampling",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0035_sequence_last_independent_sampling_structured_0",
+    "task_id": "sequence_last",
+    "strategy": "independent_sampling",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0036_sequence_max_single_shot_natural_0",
+    "task_id": "sequence_max",
+    "strategy": "single_shot",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0037_sequence_max_single_shot_checklist_0",
+    "task_id": "sequence_max",
+    "strategy": "single_shot",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0038_sequence_max_single_shot_structured_0",
+    "task_id": "sequence_max",
+    "strategy": "single_shot",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0039_sequence_max_iterative_repair_natural_0",
+    "task_id": "sequence_max",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0040_sequence_max_iterative_repair_checklist_0",
+    "task_id": "sequence_max",
+    "strategy": "iterative_repair",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0041_sequence_max_iterative_repair_structured_0",
+    "task_id": "sequence_max",
+    "strategy": "iterative_repair",
+    "representation": "structured",
+    "replicate": 0
+  },
+  {
+    "directory": "0042_sequence_max_independent_sampling_natural_0",
+    "task_id": "sequence_max",
+    "strategy": "independent_sampling",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0043_sequence_max_independent_sampling_checklist_0",
+    "task_id": "sequence_max",
+    "strategy": "independent_sampling",
+    "representation": "checklist",
+    "replicate": 0
+  },
+  {
+    "directory": "0044_sequence_max_independent_sampling_structured_0",
+    "task_id": "sequence_max",
+    "strategy": "independent_sampling",
+    "representation": "structured",
+    "replicate": 0
+  }
+]

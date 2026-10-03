@@ -1,0 +1,3 @@
+{
+  "Reverse": "r := [];\nvar i := |s| - 1;\nwhile i >= 0\n    invariant 0 <= i + 1 <= |s|\n    invariant |r| == |s| - 1 - i\n    invariant forall k :: 0 <= k < |r| ==> r[k] == s[|s| - 1 - k]\n    decreases i + 1\n{\n    r := r + [s[i]];\n    i := i - 1;\n}\nassert |r| == |s|;\nassert forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k];"
+}

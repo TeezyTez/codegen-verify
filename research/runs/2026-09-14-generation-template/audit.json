@@ -1,0 +1,7 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "audited": 12,
+  "accepted": 12,
+  "oracle_events": 24,
+  "note": "Read-only artifact audit, not replacement for recorded fresh formal and runtime acceptance."
+}

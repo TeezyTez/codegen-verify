@@ -1,0 +1,8 @@
+{
+  "text": "{\"action\": \"patch\", \"replacements\": {\"increment_body\": \"  r := x + 1;\\n\", \"double_body\": \"  r := 2 * x;\\n\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "seconds": 0.0,
+  "usage_source": "not_applicable_replay"
+}

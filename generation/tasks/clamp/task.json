@@ -1,0 +1,66 @@
+{
+  "id": "clamp",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "structural",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Clamp a nonnegative request to the available capacity.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Clamp",
+      "header": "method Clamp(req: int, cap: int) returns (grant: int)\n  requires req >= 0 && cap >= 0\n  ensures grant == (if req <= cap then req else cap)"
+    }
+  ],
+  "rule": {
+    "name": "clamp",
+    "version": 1
+  },
+  "reference": {
+    "Clamp": "  if req > cap { grant := cap; } else { grant := req; }"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Ignoring cap allows grant=12 when cap=8.",
+      "bodies": {
+        "Clamp": "  grant := req;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Clamp",
+      "inputs": [
+        12,
+        8
+      ],
+      "outputs": [
+        8
+      ]
+    },
+    {
+      "method": "Clamp",
+      "inputs": [
+        3,
+        8
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Clamp",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

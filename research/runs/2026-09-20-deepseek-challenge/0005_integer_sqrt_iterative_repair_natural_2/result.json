@@ -1,0 +1,61 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "9de08a86312647a99ffb3e69bb45c24a",
+  "task_id": "integer_sqrt",
+  "task_family": "nonlinear_loop",
+  "source": "codegen-verify-challenge-demo",
+  "origin": "synthetic_demo",
+  "strategy": "iterative_repair",
+  "representation": "natural",
+  "replicate": 2,
+  "is_mock": false,
+  "audit_status": "pending",
+  "real_verifier_executed": true,
+  "success": true,
+  "first_candidate_verified": true,
+  "candidate_count": 1,
+  "stop_reason": "verified",
+  "status": "verified",
+  "usage": {
+    "model_calls": 1,
+    "model_retry_calls": 0,
+    "verifier_calls": 2,
+    "input_tokens": 280,
+    "output_tokens": 101,
+    "accounted_tokens": 381,
+    "unknown_usage_calls": 0,
+    "cost_usd": 0.0002052,
+    "reserved_cost_usd": 0.0002052,
+    "model_seconds": 1.251194917000248,
+    "verification_seconds": 1.4541126669937512
+  },
+  "failures": {},
+  "completed": true,
+  "seconds": 2.710672708999482,
+  "final_sha256": "2cbed6ada11850dea0f9c5747881332a7533301fa66f5e08449566f3c9452f28",
+  "final_verification": {
+    "status": "verified",
+    "stdout": "\nDafny program verifier finished with 1 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-uvwqzym6/results.csv\n",
+    "stderr": "",
+    "returncode": 0,
+    "seconds": 0.7454006660118466,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-uvwqzym6/program.dfy",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "15",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-uvwqzym6/results.csv"
+    ],
+    "diagnostics": [],
+    "obligations": {
+      "IntegerSqrt (correctness)": "passed"
+    },
+    "executed": true,
+    "real_verifier": true,
+    "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nIntegerSqrt (correctness),Passed,00:00:00.0262004,12605,0\n"
+  }
+}

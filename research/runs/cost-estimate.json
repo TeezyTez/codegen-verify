@@ -1,0 +1,9 @@
+{
+  "jobs": 72,
+  "max_model_calls": 432,
+  "max_verifier_calls": 720,
+  "token_ceiling": 3456000,
+  "cost_usd": null,
+  "price_formula": "input_tokens * input_USD_per_M / 1e6 + output_tokens * output_USD_per_M / 1e6",
+  "note": "Supply current provider prices in config; no price is invented. No model calls made."
+}

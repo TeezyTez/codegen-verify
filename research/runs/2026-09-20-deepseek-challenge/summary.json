@@ -1,0 +1,79 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "planned_runs": 9,
+  "recorded_runs": 9,
+  "missing_runs": [],
+  "conditions": [
+    {
+      "is_mock": false,
+      "audit_status": "pending",
+      "strategy": "iterative_repair",
+      "representation": "natural",
+      "config_sha256": "69e3bbc9a9e3df817d04489ea7f01706f6e66f1d96b288ca797b485d781d83b5",
+      "unique_tasks": 3,
+      "recorded_runs": 9,
+      "completed_runs": 9,
+      "replicate_ids": [
+        0,
+        1,
+        2
+      ],
+      "successes": 7,
+      "first_candidate_rate": 0.6666666666666666,
+      "budget_success_rate_recorded": 0.7777777777777778,
+      "task_macro_success_rate": 0.7777777777777778,
+      "real_verifier_runs": 9,
+      "failure_events": {
+        "parse_error": 3,
+        "verification_failed": 8
+      },
+      "stop_reasons": {
+        "verified": 7,
+        "model_budget_exhausted": 2
+      },
+      "seconds": 38.05146533496736,
+      "cost_usd": 0.0043893,
+      "by_task": {
+        "binary_lower_bound": {
+          "runs": 3,
+          "replicate_ids": [
+            0,
+            1,
+            2
+          ],
+          "successes": 3,
+          "success_fraction": 1
+        },
+        "integer_sqrt": {
+          "runs": 3,
+          "replicate_ids": [
+            0,
+            1,
+            2
+          ],
+          "successes": 3,
+          "success_fraction": 1
+        },
+        "sequence_reverse": {
+          "runs": 3,
+          "replicate_ids": [
+            0,
+            1,
+            2
+          ],
+          "successes": 1,
+          "success_fraction": 0.3333333333333333
+        }
+      },
+      "model_calls": 18,
+      "model_retry_calls": 0,
+      "verifier_calls": 25,
+      "unknown_usage_calls": 0,
+      "input_tokens": 6375,
+      "output_tokens": 2064
+    }
+  ],
+  "interpretation": "Descriptive only; task repeats are correlated. Mock outcomes are fixture diagnostics, not model evidence.",
+  "incomplete_runs": 0,
+  "complete_matrix": true
+}

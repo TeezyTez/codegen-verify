@@ -1,0 +1,28 @@
+{
+  "task": {
+    "id": "reserve",
+    "description": "Accept an entire request iff it fits; rejected requests leave used unchanged.",
+    "methods": [
+      {
+        "name": "Reserve",
+        "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+      }
+    ],
+    "rule": {
+      "name": "reserve",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": null,
+  "recent_actions": []
+}

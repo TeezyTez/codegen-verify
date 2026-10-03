@@ -1,0 +1,93 @@
+{
+  "id": "reserve_release",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "composition",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Reserve req, then release that same req only if reservation succeeded. Final occupancy equals original.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Reserve",
+      "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+    },
+    {
+      "name": "Release",
+      "header": "method Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0"
+    },
+    {
+      "name": "ReserveRelease",
+      "header": "method ReserveRelease(used: int, req: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures next == used"
+    }
+  ],
+  "rule": {
+    "name": "reserve_release",
+    "version": 1
+  },
+  "reference": {
+    "Reserve": "  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }",
+    "Release": "  if req > used { next := used; ok := false; }\n  else { next := used - req; ok := true; }",
+    "ReserveRelease": "  var mid, ok := Reserve(used, req, cap);\n  if ok { var released: bool; next, released := Release(mid, req); }\n  else { next := used; }"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Successful reservation is never released.",
+      "bodies": {
+        "Reserve": "  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }",
+        "Release": "  if req > used { next := used; ok := false; }\n  else { next := used - req; ok := true; }",
+        "ReserveRelease": "  var ok: bool;\n  next, ok := Reserve(used, req, cap);"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "ReserveRelease",
+      "inputs": [
+        3,
+        4,
+        10
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "ReserveRelease",
+      "inputs": [
+        3,
+        8,
+        10
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Reserve",
+      "inputs": [
+        3,
+        4,
+        10
+      ],
+      "outputs": [
+        7,
+        true
+      ]
+    },
+    {
+      "method": "Release",
+      "inputs": [
+        7,
+        4
+      ],
+      "outputs": [
+        3,
+        true
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

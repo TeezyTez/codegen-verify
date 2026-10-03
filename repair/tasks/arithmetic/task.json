@@ -1,0 +1,12 @@
+{
+  "id": "arithmetic-implementation", "mode": "implementation",
+  "source_project": "codegen-verify-synthetic", "split": "dev",
+  "failure_type": "arithmetic_mutation", "origin": "artificial_mutation",
+  "provenance": "Hand-authored four-method diagnostic fixture; two seeded arithmetic faults and one regression sentinel.",
+  "trusted_assumptions": [],
+  "regions": {
+    "increment_body": {"kind": "implementation", "owner": "Increment"},
+    "double_body": {"kind": "implementation", "owner": "Double"},
+    "stable_body": {"kind": "implementation", "owner": "Stable"}
+  }
+}

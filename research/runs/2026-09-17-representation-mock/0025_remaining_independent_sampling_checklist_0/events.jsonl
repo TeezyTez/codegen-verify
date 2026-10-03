@@ -1,0 +1,5 @@
+{"elapsed":0.0003488329966785386,"messages_sha256":"8c396fd261fc9be24c0a80ee4f60f1fdb9236f82007c27103501df6e0c128af4","stage":"model_call_started","step":1}
+{"elapsed":0.6858544579954469,"executed":true,"label":"round_001","real_verifier":true,"source_sha256":"3f314a42b21487eb5440a78f66b43a6acbdf96538dba30b0d1c0182f0d11a948","stage":"verification","status":"verification_failed"}
+{"elapsed":0.6862928330010618,"messages_sha256":"8c396fd261fc9be24c0a80ee4f60f1fdb9236f82007c27103501df6e0c128af4","stage":"model_call_started","step":2}
+{"elapsed":1.3411815419967752,"executed":true,"label":"round_002","real_verifier":true,"source_sha256":"18de789fd4af58c042fb20ddc3faa79d6ee4bf48f1910c5eee50c7a2dbe0efc2","stage":"verification","status":"verified"}
+{"elapsed":2.001092582999263,"executed":true,"label":"final","real_verifier":true,"source_sha256":"18de789fd4af58c042fb20ddc3faa79d6ee4bf48f1910c5eee50c7a2dbe0efc2","stage":"verification","status":"verified"}

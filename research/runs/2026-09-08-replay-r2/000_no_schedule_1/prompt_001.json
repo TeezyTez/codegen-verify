@@ -1,0 +1,145 @@
+{
+  "task": {
+    "id": "arithmetic-implementation",
+    "mode": "implementation",
+    "regions": {
+      "increment_body": {
+        "kind": "implementation",
+        "owner": "Increment"
+      },
+      "double_body": {
+        "kind": "implementation",
+        "owner": "Double"
+      },
+      "stable_body": {
+        "kind": "implementation",
+        "owner": "Stable"
+      }
+    }
+  },
+  "source": "method Increment(x: int) returns (r: int)\n  ensures r == x + 1\n{\n// repair-begin increment_body\n  r := x - 1;\n// repair-end increment_body\n}\n\nmethod Double(x: int) returns (r: int)\n  ensures r == 2 * x\n{\n// repair-begin double_body\n  r := x;\n// repair-end double_body\n}\n\nmethod Compose(x: int) returns (r: int)\n  ensures r == 2 * x + 1\n{\n  var d := Double(x);\n  r := Increment(d);\n}\n\nmethod Stable(x: int) returns (r: int)\n  ensures r == x\n{\n// repair-begin stable_body\n  r := x;\n// repair-end stable_body\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.88987249999627,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "verifier": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(3,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 3,
+        "location_col": 0,
+        "related_spec": "  ensures r == x + 1",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == x + 1",
+        "related_location_line": 2,
+        "related_location_col": 12
+      },
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(11,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 11,
+        "location_col": 0,
+        "related_spec": "  ensures r == 2 * x",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == 2 * x",
+        "related_location_line": 10,
+        "related_location_col": 12
+      }
+    ],
+    "obligations": {
+      "Increment (correctness)": "failed",
+      "Double (correctness)": "failed",
+      "Compose (correctness)": "passed",
+      "Stable (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(3,0): Error: a postcondition could not be proved on this return path\n  |\n3 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(2,12): Related location: this is the postcondition that could not be proved\n  |\n2 |   ensures r == x + 1\n  |             ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(11,0): Error: a postcondition could not be proved on this return path\n   |\n11 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy(10,12): Related location: this is the postcondition that could not be proved\n   |\n10 |   ensures r == 2 * x\n   |             ^^\n\n\nDafny program verifier finished with 2 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.712690542000928,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-4u5_otmf/results.csv"
+    ]
+  },
+  "recent_actions": [],
+  "dependencies": {
+    "nodes": {
+      "Increment": {
+        "kind": "method",
+        "start_line": 1,
+        "end_line": 9,
+        "source": "method Increment(x: int) returns (r: int)\n  ensures r == x + 1\n{\n\n  r := x - 1;\n\n}\n\n"
+      },
+      "Double": {
+        "kind": "method",
+        "start_line": 9,
+        "end_line": 17,
+        "source": "method Double(x: int) returns (r: int)\n  ensures r == 2 * x\n{\n\n  r := x;\n\n}\n\n"
+      },
+      "Compose": {
+        "kind": "method",
+        "start_line": 17,
+        "end_line": 24,
+        "source": "method Compose(x: int) returns (r: int)\n  ensures r == 2 * x + 1\n{\n  var d := Double(x);\n  r := Increment(d);\n}\n\n"
+      },
+      "Stable": {
+        "kind": "method",
+        "start_line": 24,
+        "end_line": 31,
+        "source": "method Stable(x: int) returns (r: int)\n  ensures r == x\n{\n\n  r := x;\n\n}\n"
+      }
+    },
+    "edges": [
+      {
+        "from": "Compose",
+        "to": "Double",
+        "kind": "syntactic_call",
+        "evidence": "conservative_lexical_approximation"
+      },
+      {
+        "from": "Compose",
+        "to": "Increment",
+        "kind": "syntactic_call",
+        "evidence": "conservative_lexical_approximation"
+      }
+    ],
+    "reported_failures": [
+      {
+        "line": 3,
+        "owners": [
+          "Increment"
+        ],
+        "type": "postcondition"
+      },
+      {
+        "line": 11,
+        "owners": [
+          "Double"
+        ],
+        "type": "postcondition"
+      }
+    ],
+    "granularity": "callable verification batches",
+    "confirmed_logical_edges": [],
+    "limitations": "Top-level, unique unqualified names only; no alias/dynamic dispatch/SMT cores."
+  },
+  "strategy": "Propose the next repair candidate."
+}

@@ -1,0 +1,26 @@
+{
+  "task": {
+    "id": "clamp",
+    "description": "Clamp a nonnegative request to the available capacity.",
+    "methods": [
+      {
+        "name": "Clamp",
+        "header": "method Clamp(req: int, cap: int) returns (grant: int)\n  requires req >= 0 && cap >= 0\n  ensures grant == (if req <= cap then req else cap)"
+      }
+    ],
+    "rule": {
+      "name": "clamp",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "none",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions."
+}

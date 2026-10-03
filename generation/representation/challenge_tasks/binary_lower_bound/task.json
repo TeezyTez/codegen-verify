@@ -1,0 +1,191 @@
+{
+  "id": "binary_lower_bound",
+  "task_id": "binary_lower_bound",
+  "source_project": "codegen-verify-challenge-demo",
+  "family": "search_loop",
+  "task_family": "search_loop",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Exploratory challenge task, not a held-out paper benchmark.",
+  "source": "Original synthetic example authored for this repository on 2026-09-20; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "LowerBound",
+      "signature": "method LowerBound(s: seq<int>, key: int) returns (p: int)",
+      "header": "method LowerBound(s: seq<int>, key: int) returns (p: int)\n  requires forall i, j :: 0 <= i < j < |s| ==> s[i] <= s[j]\n  ensures 0 <= p <= |s|\n  ensures forall i :: 0 <= i < p ==> s[i] < key\n  ensures forall i :: p <= i < |s| ==> s[i] >= key"
+    }
+  ],
+  "reference": {
+    "LowerBound": "var lo := 0;\nvar hi := |s|;\nwhile lo < hi\n  invariant 0 <= lo <= hi <= |s|\n  invariant forall i :: 0 <= i < lo ==> s[i] < key\n  invariant forall i :: hi <= i < |s| ==> s[i] >= key\n  decreases hi - lo\n{\n  var mid := lo + (hi - lo) / 2;\n  if s[mid] < key {\n    assert forall i :: 0 <= i <= mid ==> s[i] < key;\n    lo := mid + 1;\n  } else {\n    assert forall i :: mid <= i < |s| ==> s[i] >= key;\n    hi := mid;\n  }\n}\np := lo;"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails a fixed postcondition for a permitted input.",
+      "bodies": {
+        "LowerBound": "p := 0;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          1,
+          2,
+          2,
+          4
+        ],
+        2
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [],
+        5
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          1,
+          2
+        ],
+        3
+      ],
+      "outputs": [
+        2
+      ]
+    }
+  ],
+  "rule": {
+    "name": "binary_lower_bound",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The sequence s is nondecreasing: for all valid indices i < j, s[i] is at most s[j]. [R2] The result p is between zero and the length of s, inclusive. [R3] Every element before index p is strictly less than key. [R4] Every element at or after index p is at least key.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The sequence s is nondecreasing: for all valid indices i < j, s[i] is at most s[j]."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result p is between zero and the length of s, inclusive."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "Every element before index p is strictly less than key."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "Every element at or after index p is at least key."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "s",
+          "relation": "ordered_by",
+          "value": "nondecreasing"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "p",
+          "relation": "in_range",
+          "value": "[0, length(s)]"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "s[0..p)",
+          "relation": "each_less_than",
+          "value": "key"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "s[p..length(s))",
+          "relation": "each_greater_or_equal",
+          "value": "key"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The sequence s is nondecreasing: for all valid indices i < j, s[i] is at most s[j].",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result p is between zero and the length of s, inclusive.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] Every element before index p is strictly less than key.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] Every element at or after index p is at least key.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 5
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method LowerBound(s: seq<int>, key: int) returns (p: int)\n  requires forall i, j :: 0 <= i < j < |s| ==> s[i] <= s[j]\n  ensures 0 <= p <= |s|\n  ensures forall i :: 0 <= i < p ==> s[i] < key\n  ensures forall i :: p <= i < |s| ==> s[i] >= key\n{\n  <generate body: LowerBound>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "03e95a3eb38439e5f36b64ee9fa5b4102045a70778822b9a9c76faf00cefd1aa",
+    "checklist": "76a89f9e7c6b433bb0af647f8ae55cf04d55e677ac9bb33861f9f8e8c6bc8983",
+    "structured": "09852030f7afce9c72d4cfc6e99ad28457ae5189fc3623117f3a09efcbbed89f",
+    "spec": "b8082078bce9c51f5b96d45cf1afefb3c9389876f1e12947ad19a1d2a823ca91",
+    "template": "ccfd1b241761ed9e66b2b75f1f47206f71bbee1ec911d7f037e0c328d847a4a1",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "31dbde6a5a7b3d411a044aa9d74d65b6e45e8d97abd982083fcf2fb255fb6fd6"
+  }
+}

@@ -1,0 +1,9 @@
+[
+  {
+    "directory": "0000_absolute_iterative_repair_natural_0",
+    "task_id": "absolute",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  }
+]

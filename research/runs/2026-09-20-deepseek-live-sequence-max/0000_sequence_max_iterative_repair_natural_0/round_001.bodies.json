@@ -1,0 +1,3 @@
+{
+  "Maximum": "m := s[0];\nvar i := 1;\nwhile i < |s|\n  invariant 1 <= i <= |s|\n  invariant forall j :: 0 <= j < i ==> s[j] <= m\n  invariant exists j :: 0 <= j < i && s[j] == m\n  decreases |s| - i\n{\n  if s[i] > m {\n    m := s[i];\n  }\n  i := i + 1;\n}\nassert forall j :: 0 <= j < |s| ==> s[j] <= m;\nassert exists j :: 0 <= j < |s| && s[j] == m;\nreturn m;"
+}

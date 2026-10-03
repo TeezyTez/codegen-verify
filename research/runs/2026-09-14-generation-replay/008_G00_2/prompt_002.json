@@ -1,0 +1,30 @@
+{
+  "task": {
+    "id": "reserve_twice",
+    "description": "Process two all-or-nothing requests in order. The second sees the first accepted update.",
+    "methods": [
+      {
+        "name": "Reserve",
+        "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+      },
+      {
+        "name": "ReserveTwice",
+        "header": "method ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\n  ensures ok1 == (used + q1 <= cap)\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n  ensures 0 <= next <= cap"
+      }
+    ],
+    "rule": {
+      "name": "reserve_twice",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "none",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions."
+}

@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Scale(units: int, rate: int) returns (r: int)\\n  requires units >= 0 && rate >= 0\\n  ensures r == units * rate\\n{\\n  r := units * rate;\\n}\\n\"}",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0,
+  "usage_source": "not_applicable_template"
+}

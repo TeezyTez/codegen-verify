@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"bodies\": {\"Reserve\": \"  if used + req > cap { next := used; ok := false; }\\n  else { next := used + req; ok := true; }\", \"ReserveTwice\": \"  var mid: int;\\n  mid, ok1 := Reserve(used, q1, cap);\\n  next, ok2 := Reserve(mid, q2, cap);\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

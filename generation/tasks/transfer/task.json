@@ -1,0 +1,78 @@
+{
+  "id": "transfer",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "guarded_update",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Transfer atomically between two tenants. Rejection changes neither tenant.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Transfer",
+      "header": "method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\n  requires a >= 0 && 0 <= b <= cap && req >= 0\n  ensures ok == (req <= a && b + req <= cap)\n  ensures na == (if ok then a - req else a)\n  ensures nb == (if ok then b + req else b)\n  ensures na + nb == a + b"
+    }
+  ],
+  "rule": {
+    "name": "transfer",
+    "version": 1
+  },
+  "reference": {
+    "Transfer": "  if req <= a && b + req <= cap {\n    na := a - req; nb := b + req; ok := true;\n  } else { na := a; nb := b; ok := false; }"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Credits target without debiting source, breaking conservation and failure atomicity.",
+      "bodies": {
+        "Transfer": "  na := a; nb := b + req; ok := true;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Transfer",
+      "inputs": [
+        7,
+        2,
+        3,
+        10
+      ],
+      "outputs": [
+        4,
+        5,
+        true
+      ]
+    },
+    {
+      "method": "Transfer",
+      "inputs": [
+        2,
+        2,
+        3,
+        10
+      ],
+      "outputs": [
+        2,
+        2,
+        false
+      ]
+    },
+    {
+      "method": "Transfer",
+      "inputs": [
+        7,
+        9,
+        3,
+        10
+      ],
+      "outputs": [
+        7,
+        9,
+        false
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

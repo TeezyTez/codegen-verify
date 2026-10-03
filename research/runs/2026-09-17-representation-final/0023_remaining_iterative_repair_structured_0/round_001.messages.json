@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"feedback_policy\":\"controlled_v1\",\"task\":{\"requirements\":{\"constraints\":[{\"kind\":\"precondition\",\"relation\":\"in_closed_interval\",\"requirement_id\":\"R1\",\"subject\":\"used\",\"value\":\"[0, cap]\"},{\"kind\":\"postcondition\",\"relation\":\"equals\",\"requirement_id\":\"R2\",\"subject\":\"r\",\"value\":\"cap - used\"}],\"schema_version\":\"constraints_v1\"},\"shared_definitions\":\"\",\"signatures\":[\"method Remaining(cap: int, used: int) returns (r: int)\"],\"task_id\":\"remaining\"}}"
+    }
+  ],
+  "sha256": "f80fa8a6c00fbf3d591150b32272976b3dd7b99d0f953e6c10b01201afa035bb"
+}

@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"feedback_policy\":\"none\",\"task\":{\"requirements\":\"[R1] The result r is nonnegative. [R2] The result r equals x when x is nonnegative, and equals its negation otherwise.\",\"shared_definitions\":\"\",\"signatures\":[\"method Absolute(x: int) returns (r: int)\"],\"task_id\":\"absolute\"}}"
+    }
+  ],
+  "sha256": "ab02fa6260c9e5aeb543f0158caeba5602fd9bfd9d4454f2db81b4aec97c70e2"
+}

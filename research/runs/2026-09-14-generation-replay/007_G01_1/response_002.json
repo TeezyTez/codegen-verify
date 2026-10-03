@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\\n  requires 0 <= used <= cap\\n  requires req >= 0\\n  ensures ok == (used + req <= cap)\\n  ensures next == (if ok then used + req else used)\\n  ensures 0 <= next <= cap\\n{\\n  if used + req > cap { next := used; ok := false; }\\n  else { next := used + req; ok := true; }\\n}\\n\\nmethod Release(used: int, req: int) returns (next: int, ok: bool)\\n  requires used >= 0 && req >= 0\\n  ensures ok == (req <= used)\\n  ensures next == (if ok then used - req else used)\\n  ensures next >= 0\\n{\\n  if req > used { next := used; ok := false; }\\n  else { next := used - req; ok := true; }\\n}\\n\\nmethod ReserveRelease(used: int, req: int, cap: int) returns (next: int)\\n  requires 0 <= used <= cap && req >= 0\\n  ensures next == used\\n{\\n  var ok: bool;\\n  next, ok := Reserve(used, req, cap);\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

@@ -1,0 +1,3 @@
+{
+  "LowerBound": "var lo := 0;\nvar hi := |s|;\nwhile lo < hi\n    invariant 0 <= lo <= hi <= |s|\n    invariant forall i: int :: 0 <= i < lo ==> s[i] < key\n    invariant forall i: int :: hi <= i < |s| ==> s[i] >= key\n    decreases hi - lo\n{\n    var mid := lo + (hi - lo) / 2;\n    if s[mid] < key {\n        lo := mid + 1;\n    } else {\n        hi := mid;\n    }\n}\np := lo;\nassert forall i: int :: 0 <= i < p ==> s[i] < key;\nassert forall i: int :: p <= i < |s| ==> s[i] >= key;\nreturn p;"
+}

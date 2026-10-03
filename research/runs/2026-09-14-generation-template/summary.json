@@ -1,0 +1,72 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "live_research": [],
+  "scripted_diagnostics": [],
+  "deterministic_baseline": [
+    {
+      "condition": "T",
+      "split": "dev",
+      "runs": 12,
+      "accepted": 12,
+      "supported": 12,
+      "observed_rate": 1,
+      "source_macro_rate": 1,
+      "source_cluster_ci95": null,
+      "by_source": {
+        "codegen-verify-synthetic-generation": {
+          "runs": 12,
+          "accepted": 12
+        }
+      },
+      "by_family": {
+        "structural": {
+          "runs": 4,
+          "accepted": 4
+        },
+        "guarded_update": {
+          "runs": 4,
+          "accepted": 4
+        },
+        "composition": {
+          "runs": 4,
+          "accepted": 4
+        }
+      },
+      "stop_reasons": {
+        "accepted": 12
+      },
+      "seconds_all_runs": 31.700349792998168,
+      "cost_usd": 0.0,
+      "boundary_rejections": 0,
+      "regressions": 0,
+      "lost_observability": 0,
+      "mean_generated_body_lines": 3.9166666666666665,
+      "first_candidate_passed": 12,
+      "last_evidence": {
+        "structure": {
+          "passed": 12
+        },
+        "formal": {
+          "passed": 12
+        },
+        "behavioral": {
+          "passed": 12
+        }
+      },
+      "model_calls": 0,
+      "action_calls": 12,
+      "oracle_calls": 24,
+      "verifier_calls": 24,
+      "runtime_calls": 24,
+      "unknown_usage_calls": 0,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  ],
+  "missing_planned_runs": [],
+  "paired_live": [],
+  "total_completed": 12,
+  "planned_runs": 12,
+  "interaction_live": null,
+  "interpretation": "Replay tests infrastructure only. Templates are genuine executions on their stated support, not LLM evidence. Resolve missing runs before inference."
+}

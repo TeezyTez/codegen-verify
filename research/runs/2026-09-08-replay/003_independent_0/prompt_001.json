@@ -1,0 +1,25 @@
+{
+  "task": {
+    "id": "counter-proof",
+    "mode": "proof",
+    "regions": {
+      "count_invariants": {
+        "kind": "invariants",
+        "owner": "Count"
+      }
+    }
+  },
+  "source": "method Count(n: int) returns (r: int)\n  requires n >= 0\n  ensures r == n\n{\n  var i := 0;\n  r := 0;\n  while i < n\n    decreases n - i\n// repair-begin count_invariants\n    invariant 0 <= i <= n\n// repair-end count_invariants\n  {\n    i := i + 1;\n    r := r + 1;\n  }\n}\n\nmethod Twice(n: int) returns (r: int)\n  requires n >= 0\n  ensures r == 2 * n\n{\n  var a := Count(n);\n  var b := Count(n);\n  r := a + b;\n}\n\nmethod Client(n: int) returns (r: int)\n  requires n >= 0\n  ensures r == 2 * n + 1\n{\n  r := Twice(n);\n  r := r + 1;\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.84868475000258,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "strategy": "Propose the next repair candidate."
+}

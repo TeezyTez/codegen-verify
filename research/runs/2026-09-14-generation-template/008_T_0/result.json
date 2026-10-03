@@ -1,0 +1,88 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "task_id": "reserve_twice",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "composition",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "condition": "T",
+  "replicate": 0,
+  "model_kind": "deterministic_template",
+  "research_eligible": false,
+  "success": true,
+  "supported": true,
+  "stop_reason": "accepted",
+  "usage": {
+    "model_calls": 0,
+    "action_calls": 1,
+    "oracle_calls": 2,
+    "verifier_calls": 2,
+    "runtime_calls": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 0,
+    "unknown_usage_calls": 0,
+    "cost_usd": 0.0
+  },
+  "boundary_rejections": 0,
+  "regressions": 0,
+  "lost_observability": 0,
+  "first_candidate_passed": true,
+  "structure": "passed",
+  "formal": "passed",
+  "behavioral": "passed",
+  "final": {
+    "status": "passed",
+    "structure": "passed",
+    "formal": "passed",
+    "behavioral": "passed",
+    "verifier_calls": 1,
+    "runtime_calls": 1,
+    "details": {
+      "formal": {
+        "status": "passed",
+        "diagnostics": [],
+        "obligations": {
+          "Reserve (correctness)": "passed",
+          "ReserveTwice (correctness)": "passed"
+        },
+        "raw": "\nDafny program verifier finished with 2 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l2osghr9/results.csv\n",
+        "returncode": 0,
+        "seconds": 0.6937576249983977,
+        "command": [
+          "/Users/zhangfangying/.local/bin/dafny",
+          "verify",
+          "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l2osghr9/program.dfy",
+          "--allow-warnings",
+          "--cores",
+          "1",
+          "--verification-time-limit",
+          "20",
+          "--log-format",
+          "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l2osghr9/results.csv"
+        ]
+      },
+      "runtime": {
+        "status": "passed",
+        "returncode": 0,
+        "raw": "\nDafny program verifier did not attempt verification\nGENERATION_WITNESSES_PASSED\n",
+        "command": [
+          "/Users/zhangfangying/.local/bin/dafny",
+          "run",
+          "--no-verify",
+          "--target",
+          "py",
+          "--allow-warnings",
+          "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/generation-witness-wcjfq3yt/program.dfy"
+        ],
+        "seconds": 0.5347480000054929,
+        "executed": true
+      }
+    },
+    "seconds": 1.2295198749998235
+  },
+  "final_sha256": "679ae62523788d37951493423a4e0d56f9f6db549e6ef3b994be501a08526d1a",
+  "seconds": 2.6628201249986887,
+  "candidate_count": 1,
+  "generated_body_lines": 8
+}

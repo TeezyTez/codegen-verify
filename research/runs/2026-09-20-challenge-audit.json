@@ -1,0 +1,8 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "runs_checked": 9,
+  "prompts_checked": 18,
+  "verification_events_checked": 25,
+  "complete_matrix": true,
+  "note": "Read-only artifact/input audit, not a fresh proof or a semantic equivalence review."
+}

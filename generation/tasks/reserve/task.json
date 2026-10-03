@@ -1,0 +1,72 @@
+{
+  "id": "reserve",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "guarded_update",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Accept an entire request iff it fits; rejected requests leave used unchanged.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Reserve",
+      "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+    }
+  ],
+  "rule": {
+    "name": "reserve",
+    "version": 1
+  },
+  "reference": {
+    "Reserve": "  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Removing the acceptance guard overallocates used=3 req=8 cap=10.",
+      "bodies": {
+        "Reserve": "  next := used + req; ok := true;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Reserve",
+      "inputs": [
+        3,
+        7,
+        10
+      ],
+      "outputs": [
+        10,
+        true
+      ]
+    },
+    {
+      "method": "Reserve",
+      "inputs": [
+        3,
+        8,
+        10
+      ],
+      "outputs": [
+        3,
+        false
+      ]
+    },
+    {
+      "method": "Reserve",
+      "inputs": [
+        0,
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        true
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

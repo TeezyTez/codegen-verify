@@ -1,0 +1,26 @@
+{
+  "text": "{\"bodies\":{\"IntegerSqrt\":\"r := 0;\\nwhile ((r + 1) * (r + 1)) <= n\\n  invariant 0 <= r\\n  invariant r * r <= n\\n  decreases n - r * r\\n{\\n  r := r + 1;\\n}\\nreturn r;\"}}",
+  "error": null,
+  "retryable": false,
+  "input_tokens": 407,
+  "output_tokens": 71,
+  "cost_usd": 0.00020730000000000002,
+  "usage_source": "provider_reported",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 4096,
+    "temperature": 0.2,
+    "extra_body": {
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "parameters_accepted": true,
+  "response_model": "deepseek-flash",
+  "prompt_cache_hit_tokens": 256,
+  "prompt_cache_miss_tokens": 151,
+  "cost_basis": "configured per-token price estimate, not provider billing receipt",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop"
+}

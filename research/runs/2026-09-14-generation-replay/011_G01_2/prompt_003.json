@@ -1,0 +1,101 @@
+{
+  "task": {
+    "id": "transfer",
+    "description": "Transfer atomically between two tenants. Rejection changes neither tenant.",
+    "methods": [
+      {
+        "name": "Transfer",
+        "header": "method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\n  requires a >= 0 && 0 <= b <= cap && req >= 0\n  ensures ok == (req <= a && b + req <= cap)\n  ensures na == (if ok then a - req else a)\n  ensures nb == (if ok then b + req else b)\n  ensures na + nb == a + b"
+      }
+    ],
+    "rule": {
+      "name": "transfer",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": "method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\n  requires a >= 0 && 0 <= b <= cap && req >= 0\n  ensures ok == (req <= a && b + req <= cap)\n  ensures na == (if ok then a - req else a)\n  ensures nb == (if ok then b + req else b)\n  ensures na + nb == a + b\n{\n  na := a; nb := b + req; ok := true;\n}\n",
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    },
+    {
+      "action": "generate",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "not_run",
+        "verifier_calls": 1,
+        "runtime_calls": 0,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(7,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 7,
+                "location_col": 0,
+                "related_spec": "  ensures ok == (req <= a && b + req <= cap)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures ok == (req <= a && b + req <= cap)",
+                "related_location_line": 3,
+                "related_location_col": 13
+              },
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(7,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 7,
+                "location_col": 0,
+                "related_spec": "  ensures na == (if ok then a - req else a)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures na == (if ok then a - req else a)",
+                "related_location_line": 4,
+                "related_location_col": 13
+              }
+            ],
+            "obligations": {
+              "Transfer (correctness)": "failed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(7,0): Error: a postcondition could not be proved on this return path\n  |\n7 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(3,13): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures ok == (req <= a && b + req <= cap)\n  |              ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(7,0): Error: a postcondition could not be proved on this return path\n  |\n7 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy(4,13): Related location: this is the postcondition that could not be proved\n  |\n4 |   ensures na == (if ok then a - req else a)\n  |              ^^\n\n\nDafny program verifier finished with 0 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.667050708005263,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-l0w3bzgq/results.csv"
+            ]
+          }
+        },
+        "seconds": 0.6673028750010417
+      },
+      "regression": {
+        "confirmed": [],
+        "lost_observability": [],
+        "new_failures": [
+          "Transfer (correctness)"
+        ]
+      }
+    }
+  ]
+}

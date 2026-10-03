@@ -1,0 +1,17 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "tasks": 12,
+  "model_runs": 144,
+  "template_runs": 12,
+  "max_model_calls": 864,
+  "max_oracle_calls": 1440,
+  "max_verifier_calls": 1440,
+  "max_runtime_calls": 1440,
+  "token_ceiling": 6912000,
+  "prices": {
+    "input": null,
+    "output": null
+  },
+  "cost_usd": null,
+  "note": "No API calls. Admission/template preparation costs additional and separately recorded."
+}

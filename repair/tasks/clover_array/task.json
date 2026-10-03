@@ -1,0 +1,10 @@
+{
+  "id": "clover-array-proof", "mode": "proof", "source_project": "Clover",
+  "split": "dev", "failure_type": "missing_loop_invariant", "origin": "missing_annotation",
+  "provenance": "Public DafnyBench/Clover array_sum; one invariant removed locally, with synthetic immutable ArrayClient. Not an upstream natural bug or the official hints_removed task.",
+  "source_url": "https://raw.githubusercontent.com/sun-wendy/DafnyBench/main/DafnyBench/dataset/ground_truth/Clover_array_sum.dfy",
+  "retrieved": "2026-09-08", "source_revision": "main; exact retrieved bytes pinned by original.dfy SHA256 in validation log",
+  "license": "DafnyBench repository Apache-2.0; see research/THIRD_PARTY.md",
+  "trusted_assumptions": [],
+  "regions": {"array_invariants": {"kind": "invariants", "owner": "arraySum"}}
+}

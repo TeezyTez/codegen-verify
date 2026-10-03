@@ -1,0 +1,39 @@
+{
+  "status": "verification_failed",
+  "stdout": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/program.dfy(4,0): Error: a postcondition could not be proved on this return path\n  |\n4 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/program.dfy(3,12): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures r == s[|s|-1]\n  |             ^^\n\n\nDafny program verifier finished with 1 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/results.csv\n",
+  "stderr": "",
+  "returncode": 4,
+  "seconds": 0.6783343750066706,
+  "command": [
+    "/Users/zhangfangying/.local/bin/dafny",
+    "verify",
+    "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/program.dfy",
+    "--cores",
+    "1",
+    "--verification-time-limit",
+    "15",
+    "--log-format",
+    "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/results.csv"
+  ],
+  "diagnostics": [
+    {
+      "error_type": "postcondition",
+      "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-sv8l7jyv/program.dfy(4,0): Error: a postcondition could not be proved on this return path",
+      "location_line": 4,
+      "location_col": 0,
+      "related_spec": "  ensures r == s[|s|-1]",
+      "subtype": "postcondition",
+      "source": "{",
+      "related_source": "  ensures r == s[|s|-1]",
+      "related_location_line": 3,
+      "related_location_col": 12
+    }
+  ],
+  "obligations": {
+    "Last (well-formedness)": "passed",
+    "Last (correctness)": "failed"
+  },
+  "executed": true,
+  "real_verifier": true,
+  "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nLast (well-formedness),Passed,00:00:00.0226148,6677,0\nLast (correctness),Failed,00:00:00.0129426,7272,0\n"
+}

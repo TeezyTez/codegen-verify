@@ -1,0 +1,7 @@
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-_e_z6k1p/program.dfy(7,4): Error: Duplicate local-variable name: r
+  |
+7 | var r := 0;
+  |     ^
+
+1 resolution/type errors detected in program.dfy
+Results File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-_e_z6k1p/results.csv

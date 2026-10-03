@@ -1,0 +1,866 @@
+[
+  {
+    "task_id": "clamp",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "000_G00_0"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "000_G00_1"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "000_G00_2"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "000_G01_0"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "000_G01_1"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "000_G01_2"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "000_G10_0"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "000_G10_1"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "000_G10_2"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "000_G11_0"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "000_G11_1"
+  },
+  {
+    "task_id": "clamp",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "000_G11_2"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "001_G00_0"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "001_G00_1"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "001_G00_2"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "001_G01_0"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "001_G01_1"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "001_G01_2"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "001_G10_0"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "001_G10_1"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "001_G10_2"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "001_G11_0"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "001_G11_1"
+  },
+  {
+    "task_id": "partial",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "001_G11_2"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "002_G00_0"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "002_G00_1"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "002_G00_2"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "002_G01_0"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "002_G01_1"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "002_G01_2"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "002_G10_0"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "002_G10_1"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "002_G10_2"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "002_G11_0"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "002_G11_1"
+  },
+  {
+    "task_id": "refill",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "002_G11_2"
+  },
+  {
+    "task_id": "release",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "003_G00_0"
+  },
+  {
+    "task_id": "release",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "003_G00_1"
+  },
+  {
+    "task_id": "release",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "003_G00_2"
+  },
+  {
+    "task_id": "release",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "003_G01_0"
+  },
+  {
+    "task_id": "release",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "003_G01_1"
+  },
+  {
+    "task_id": "release",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "003_G01_2"
+  },
+  {
+    "task_id": "release",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "003_G10_0"
+  },
+  {
+    "task_id": "release",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "003_G10_1"
+  },
+  {
+    "task_id": "release",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "003_G10_2"
+  },
+  {
+    "task_id": "release",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "003_G11_0"
+  },
+  {
+    "task_id": "release",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "003_G11_1"
+  },
+  {
+    "task_id": "release",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "003_G11_2"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "004_G00_0"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "004_G00_1"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "004_G00_2"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "004_G01_0"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "004_G01_1"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "004_G01_2"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "004_G10_0"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "004_G10_1"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "004_G10_2"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "004_G11_0"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "004_G11_1"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "004_G11_2"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "005_G00_0"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "005_G00_1"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "005_G00_2"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "005_G01_0"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "005_G01_1"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "005_G01_2"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "005_G10_0"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "005_G10_1"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "005_G10_2"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "005_G11_0"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "005_G11_1"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "005_G11_2"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "006_G00_0"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "006_G00_1"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "006_G00_2"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "006_G01_0"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "006_G01_1"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "006_G01_2"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "006_G10_0"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "006_G10_1"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "006_G10_2"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "006_G11_0"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "006_G11_1"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "006_G11_2"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "007_G00_0"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "007_G00_1"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "007_G00_2"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "007_G01_0"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "007_G01_1"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "007_G01_2"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "007_G10_0"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "007_G10_1"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "007_G10_2"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "007_G11_0"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "007_G11_1"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "007_G11_2"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "008_G00_0"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "008_G00_1"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "008_G00_2"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "008_G01_0"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "008_G01_1"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "008_G01_2"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "008_G10_0"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "008_G10_1"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "008_G10_2"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "008_G11_0"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "008_G11_1"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "008_G11_2"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "009_G00_0"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "009_G00_1"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "009_G00_2"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "009_G01_0"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "009_G01_1"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "009_G01_2"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "009_G10_0"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "009_G10_1"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "009_G10_2"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "009_G11_0"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "009_G11_1"
+  },
+  {
+    "task_id": "scale",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "009_G11_2"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "010_G00_0"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "010_G00_1"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "010_G00_2"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "010_G01_0"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "010_G01_1"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "010_G01_2"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "010_G10_0"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "010_G10_1"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "010_G10_2"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "010_G11_0"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "010_G11_1"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "010_G11_2"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G00",
+    "replicate": 0,
+    "directory": "011_G00_0"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G00",
+    "replicate": 1,
+    "directory": "011_G00_1"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G00",
+    "replicate": 2,
+    "directory": "011_G00_2"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G01",
+    "replicate": 0,
+    "directory": "011_G01_0"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G01",
+    "replicate": 1,
+    "directory": "011_G01_1"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G01",
+    "replicate": 2,
+    "directory": "011_G01_2"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G10",
+    "replicate": 0,
+    "directory": "011_G10_0"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G10",
+    "replicate": 1,
+    "directory": "011_G10_1"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G10",
+    "replicate": 2,
+    "directory": "011_G10_2"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G11",
+    "replicate": 0,
+    "directory": "011_G11_0"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G11",
+    "replicate": 1,
+    "directory": "011_G11_1"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "G11",
+    "replicate": 2,
+    "directory": "011_G11_2"
+  }
+]

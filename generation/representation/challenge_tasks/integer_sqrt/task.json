@@ -1,0 +1,180 @@
+{
+  "id": "integer_sqrt",
+  "task_id": "integer_sqrt",
+  "source_project": "codegen-verify-challenge-demo",
+  "family": "nonlinear_loop",
+  "task_family": "nonlinear_loop",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Exploratory challenge task, not a held-out paper benchmark.",
+  "source": "Original synthetic example authored for this repository on 2026-09-20; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "IntegerSqrt",
+      "signature": "method IntegerSqrt(n: int) returns (r: int)",
+      "header": "method IntegerSqrt(n: int) returns (r: int)\n  requires n >= 0\n  ensures r >= 0\n  ensures r * r <= n\n  ensures n < (r + 1) * (r + 1)"
+    }
+  ],
+  "reference": {
+    "IntegerSqrt": "r := 0;\nwhile (r + 1) * (r + 1) <= n\n  invariant 0 <= r\n  invariant r * r <= n\n  invariant r <= n\n  decreases n - r\n{\n  r := r + 1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails a fixed postcondition for a permitted input.",
+      "bodies": {
+        "IntegerSqrt": "r := n;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "IntegerSqrt",
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "IntegerSqrt",
+      "inputs": [
+        2
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "IntegerSqrt",
+      "inputs": [
+        16
+      ],
+      "outputs": [
+        4
+      ]
+    }
+  ],
+  "rule": {
+    "name": "integer_sqrt",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input n is a nonnegative integer. [R2] The result r is nonnegative. [R3] The square of r is at most n. [R4] The square of r plus one, (r + 1) * (r + 1), is strictly greater than n.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input n is a nonnegative integer."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result r is nonnegative."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The square of r is at most n."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "The square of r plus one, (r + 1) * (r + 1), is strictly greater than n."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "n",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "r * r",
+          "relation": "less_or_equal",
+          "value": "n"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "(r + 1) * (r + 1)",
+          "relation": "greater_than",
+          "value": "n"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input n is a nonnegative integer.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "IntegerSqrt",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result r is nonnegative.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "IntegerSqrt",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The square of r is at most n.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "IntegerSqrt",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] The square of r plus one, (r + 1) * (r + 1), is strictly greater than n.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "IntegerSqrt",
+        "header_line": 5
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method IntegerSqrt(n: int) returns (r: int)\n  requires n >= 0\n  ensures r >= 0\n  ensures r * r <= n\n  ensures n < (r + 1) * (r + 1)\n{\n  <generate body: IntegerSqrt>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "7dee0ec5fb3dc34dcb55a434c7da96af751e4cf2c18c71ec374436a5bc69d68f",
+    "checklist": "cccab51e79891725c4462f53fca924e577f067c830d6d85672d5ad3d9c5ad09a",
+    "structured": "2f52f27537f77b8ad3632c94e1fa136cdb132af2f298caa8802858f0726209aa",
+    "spec": "0f5b62e151937a964bdc1e6913489ec3b5e0b55108b96d2bcd733c173c20a168",
+    "template": "7bc29d886df2fa0102cf3d9a84b7a9d57f0a0e7e1082a5e04842fb3d3232c057",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "68252a6c3e470b65fa65a7a37ffbccc6c43fd52b52ab0baefbdc20f1af20bcf6"
+  }
+}

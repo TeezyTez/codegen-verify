@@ -1,0 +1,90 @@
+{
+  "task": {
+    "id": "partial",
+    "description": "Grant as much as fits, updating state only by the granted amount.",
+    "methods": [
+      {
+        "name": "Partial",
+        "header": "method Partial(used: int, req: int, cap: int) returns (next: int, grant: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures grant == (if req <= cap - used then req else cap - used)\n  ensures next == used + grant\n  ensures 0 <= next <= cap"
+      }
+    ],
+    "rule": {
+      "name": "partial",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "bodies",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "skeleton": "method Partial(used: int, req: int, cap: int) returns (next: int, grant: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures grant == (if req <= cap - used then req else cap - used)\n  ensures next == used + grant\n  ensures 0 <= next <= cap\n{\n  <generate body: Partial>\n}\n",
+  "current_source": "method Partial(used: int, req: int, cap: int) returns (next: int, grant: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures grant == (if req <= cap - used then req else cap - used)\n  ensures next == used + grant\n  ensures 0 <= next <= cap\n{\n  grant := req; next := used + req;\n}\n",
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    },
+    {
+      "action": "generate",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "not_run",
+        "verifier_calls": 1,
+        "runtime_calls": 0,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/program.dfy(6,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 6,
+                "location_col": 0,
+                "related_spec": "  ensures grant == (if req <= cap - used then req else cap - used)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures grant == (if req <= cap - used then req else cap - used)",
+                "related_location_line": 3,
+                "related_location_col": 16
+              }
+            ],
+            "obligations": {
+              "Partial (correctness)": "failed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/program.dfy(6,0): Error: a postcondition could not be proved on this return path\n  |\n6 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/program.dfy(3,16): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures grant == (if req <= cap - used then req else cap - used)\n  |                 ^^\n\n\nDafny program verifier finished with 0 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.6533747920038877,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-8sp8s5eu/results.csv"
+            ]
+          }
+        },
+        "seconds": 0.6537500000049477
+      },
+      "regression": {
+        "confirmed": [],
+        "lost_observability": [],
+        "new_failures": [
+          "Partial (correctness)"
+        ]
+      }
+    }
+  ]
+}

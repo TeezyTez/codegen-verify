@@ -1,0 +1,26 @@
+{
+  "text": "{\"bodies\":{\"Reverse\":\"r := [];\\nvar i := |s| - 1;\\nwhile i >= 0\\n    invariant 0 <= i + 1 <= |s|\\n    invariant |r| == |s| - 1 - i\\n    invariant forall k :: 0 <= k < |r| ==> r[k] == s[|s| - 1 - k]\\n    decreases i + 1\\n{\\n    r := r + [s[i]];\\n    i := i - 1;\\n}\\nassert |r| == |s|;\\nassert forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k];\"}}",
+  "error": null,
+  "retryable": false,
+  "input_tokens": 262,
+  "output_tokens": 161,
+  "cost_usd": 0.00027179999999999994,
+  "usage_source": "provider_reported",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 4096,
+    "temperature": 0.2,
+    "extra_body": {
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "parameters_accepted": true,
+  "response_model": "deepseek-flash",
+  "prompt_cache_hit_tokens": 128,
+  "prompt_cache_miss_tokens": 134,
+  "cost_basis": "configured per-token price estimate, not provider billing receipt",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop"
+}

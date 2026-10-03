@@ -1,0 +1,13 @@
+--- 
+
++++ 
+
+@@ -10,6 +10,7 @@
+
+   while i<a.Length
+ // repair-begin array_invariants
+     invariant 0<=i<=a.Length
++    invariant forall j:: 0 <= j< i==> a[j] + b[j]==c[j]
+ // repair-end array_invariants
+   {
+     c[i]:=a[i]+b[i];

@@ -1,5 +1,7 @@
 # Refactor guide implementation map
 
+> Historical specification-generation track. The active repair protocol is [research/PROTOCOL.md](../research/PROTOCOL.md).
+
 This document maps the supplied *Spec-Guided Coding Agent Project Refactor Guide* to the current
 vertical slice. The implementation deliberately keeps one orchestration interface and a small
 number of deep modules instead of copying the guide's illustrative directory tree.

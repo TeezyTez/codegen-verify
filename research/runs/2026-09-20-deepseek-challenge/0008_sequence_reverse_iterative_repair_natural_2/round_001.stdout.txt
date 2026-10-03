@@ -1,0 +1,18 @@
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-7wabd5fy/program.dfy(4,0): Error: a postcondition could not be proved on this return path
+  |
+4 | {
+  | ^
+
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-7wabd5fy/program.dfy(2,14): Related location: this is the postcondition that could not be proved
+  |
+2 |   ensures |r| == |s|
+  |               ^^
+
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-7wabd5fy/program.dfy(9,48): Error: index out of range
+  |
+9 |   invariant forall k :: 0 <= k < i ==> r[k] == s[|s| - 1 - k]
+  |                                                 ^
+
+
+Dafny program verifier finished with 1 verified, 2 errors
+Results File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-7wabd5fy/results.csv

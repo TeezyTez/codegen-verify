@@ -1,0 +1,56 @@
+{
+  "id": "scale",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "structural",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Convert units to integer capacity at a nonnegative integer rate.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Scale",
+      "header": "method Scale(units: int, rate: int) returns (r: int)\n  requires units >= 0 && rate >= 0\n  ensures r == units * rate"
+    }
+  ],
+  "rule": {
+    "name": "scale",
+    "version": 1
+  },
+  "reference": {
+    "Scale": "  r := units * rate;"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Addition is not multiplication, e.g. 3 units at rate 4.",
+      "bodies": {
+        "Scale": "  r := units + rate;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Scale",
+      "inputs": [
+        3,
+        4
+      ],
+      "outputs": [
+        12
+      ]
+    },
+    {
+      "method": "Scale",
+      "inputs": [
+        0,
+        7
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

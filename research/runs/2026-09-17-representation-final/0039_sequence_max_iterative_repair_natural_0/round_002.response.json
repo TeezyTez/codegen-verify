@@ -1,0 +1,12 @@
+{
+  "text": "{\"bodies\": {\"Maximum\": \"m := s[0];\\nvar i := 1;\\nwhile i < |s|\\n  invariant 1 <= i <= |s|\\n  invariant forall k :: 0 <= k < i ==> s[k] <= m\\n  invariant exists k :: 0 <= k < i && m == s[k]\\n  decreases |s| - i\\n{\\n  if s[i] > m {\\n    m := s[i];\\n  }\\n  i := i + 1;\\n}\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "error": null,
+  "usage_source": "not_applicable_mock",
+  "request_parameters": {
+    "max_output_tokens": 2048,
+    "seed_sent": null
+  }
+}

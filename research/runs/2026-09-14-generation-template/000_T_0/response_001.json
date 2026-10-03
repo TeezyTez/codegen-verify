@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Clamp(req: int, cap: int) returns (grant: int)\\n  requires req >= 0 && cap >= 0\\n  ensures grant == (if req <= cap then req else cap)\\n{\\n  grant := if req <= cap then req else cap;\\n}\\n\"}",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0,
+  "usage_source": "not_applicable_template"
+}

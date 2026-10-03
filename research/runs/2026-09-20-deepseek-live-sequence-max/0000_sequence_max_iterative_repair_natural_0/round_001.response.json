@@ -1,0 +1,26 @@
+{
+  "text": "{\"bodies\":{\"Maximum\":\"m := s[0];\\nvar i := 1;\\nwhile i < |s|\\n  invariant 1 <= i <= |s|\\n  invariant forall j :: 0 <= j < i ==> s[j] <= m\\n  invariant exists j :: 0 <= j < i && s[j] == m\\n  decreases |s| - i\\n{\\n  if s[i] > m {\\n    m := s[i];\\n  }\\n  i := i + 1;\\n}\\nassert forall j :: 0 <= j < |s| ==> s[j] <= m;\\nassert exists j :: 0 <= j < |s| && s[j] == m;\\nreturn m;\"}}",
+  "error": null,
+  "retryable": false,
+  "input_tokens": 251,
+  "output_tokens": 162,
+  "cost_usd": 0.0002697,
+  "usage_source": "provider_reported",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 2048,
+    "temperature": 0.2,
+    "extra_body": {
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "parameters_accepted": true,
+  "response_model": "deepseek-flash",
+  "prompt_cache_hit_tokens": 0,
+  "prompt_cache_miss_tokens": 251,
+  "cost_basis": "configured per-token price estimate, not provider billing receipt",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop"
+}

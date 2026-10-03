@@ -1,0 +1,64 @@
+{
+  "task": {
+    "id": "clover-array-proof",
+    "mode": "proof",
+    "regions": {
+      "array_invariants": {
+        "kind": "invariants",
+        "owner": "arraySum"
+      }
+    }
+  },
+  "source": "// Adapted from DafnyBench/Clover, Apache-2.0; see research/THIRD_PARTY.md.\n// Modified 2026-09-08: missing invariant, edit markers, synthetic ArrayClient.\nmethod arraySum(a: array<int>, b: array<int>) returns (c: array<int> )\n  requires a.Length==b.Length\n  ensures c.Length==a.Length\n  ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]\n{\n  c:= new int[a.Length];\n  var i:=0;\n  while i<a.Length\n// repair-begin array_invariants\n    invariant 0<=i<=a.Length\n// repair-end array_invariants\n  {\n    c[i]:=a[i]+b[i];\n    i:=i+1;\n  }\n}\n\nmethod ArrayClient(a: array<int>, b: array<int>) returns (c: array<int>)\n  requires a.Length == b.Length\n  ensures c.Length == a.Length\n  ensures forall i :: 0 <= i < a.Length ==> c[i] == a[i] + b[i]\n{\n  c := arraySum(a, b);\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.809053666002,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "verifier": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(7,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 7,
+        "location_col": 0,
+        "related_spec": "  ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]",
+        "related_location_line": 6,
+        "related_location_col": 10
+      }
+    ],
+    "obligations": {
+      "arraySum (well-formedness)": "passed",
+      "arraySum (correctness)": "failed",
+      "ArrayClient (well-formedness)": "passed",
+      "ArrayClient (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(7,0): Error: a postcondition could not be proved on this return path\n  |\n7 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy(6,10): Related location: this is the postcondition that could not be proved\n  |\n6 |   ensures forall i:: 0 <= i< a.Length==> a[i] + b[i]==c[i]\n  |           ^^^^^^\n\n\nDafny program verifier finished with 3 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.7839473339990946,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-xzx0c_hr/results.csv"
+    ]
+  },
+  "recent_actions": [],
+  "strategy": "Plan your own inspection, edits and verification using the available tools."
+}

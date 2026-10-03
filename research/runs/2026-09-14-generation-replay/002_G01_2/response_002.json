@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Refill(used: int, steps: int, cap: int) returns (next: int)\\n  requires 0 <= used <= cap && steps >= 0\\n  ensures next == (if used + steps <= cap then used + steps else cap)\\n{\\n  next := used + steps;\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

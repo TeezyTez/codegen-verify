@@ -1,0 +1,2 @@
+is_mock,audit_status,strategy,representation,unique_tasks,recorded_runs,completed_runs,replicate_ids,first_candidate_rate,budget_success_rate_recorded,model_calls,model_retry_calls,verifier_calls,real_verifier_runs,seconds,input_tokens,output_tokens,cost_usd,failure_events,stop_reasons
+False,pending,iterative_repair,natural,3,9,9,"[0,1,2]",0.6666666666666666,0.7777777777777778,18,0,25,9,38.05146533496736,6375,2064,0.0043893,"{""parse_error"":3,""verification_failed"":8}","{""model_budget_exhausted"":2,""verified"":7}"

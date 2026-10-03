@@ -1,0 +1,107 @@
+{
+  "task": {
+    "id": "reserve_twice",
+    "description": "Process two all-or-nothing requests in order. The second sees the first accepted update.",
+    "methods": [
+      {
+        "name": "Reserve",
+        "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+      },
+      {
+        "name": "ReserveTwice",
+        "header": "method ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\n  ensures ok1 == (used + q1 <= cap)\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n  ensures 0 <= next <= cap"
+      }
+    ],
+    "rule": {
+      "name": "reserve_twice",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "bodies",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "skeleton": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap\n{\n  <generate body: Reserve>\n}\n\nmethod ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\n  ensures ok1 == (used + q1 <= cap)\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n  ensures 0 <= next <= cap\n{\n  <generate body: ReserveTwice>\n}\n",
+  "current_source": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap\n{\n  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }\n}\n\nmethod ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\n  ensures ok1 == (used + q1 <= cap)\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n  ensures 0 <= next <= cap\n{\n  var mid: int;\n  mid, ok1 := Reserve(used, q1, cap);\n  next, ok2 := Reserve(used, q2, cap);\n}\n",
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    },
+    {
+      "action": "generate",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "not_run",
+        "verifier_calls": 1,
+        "runtime_calls": 0,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(18,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 18,
+                "location_col": 0,
+                "related_spec": "  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)",
+                "related_location_line": 15,
+                "related_location_col": 14
+              },
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(18,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 18,
+                "location_col": 0,
+                "related_spec": "  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)",
+                "related_location_line": 16,
+                "related_location_col": 15
+              }
+            ],
+            "obligations": {
+              "Reserve (correctness)": "passed",
+              "ReserveTwice (correctness)": "failed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(18,0): Error: a postcondition could not be proved on this return path\n   |\n18 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(15,14): Related location: this is the postcondition that could not be proved\n   |\n15 |   ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n   |               ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(18,0): Error: a postcondition could not be proved on this return path\n   |\n18 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy(16,15): Related location: this is the postcondition that could not be proved\n   |\n16 |   ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n   |                ^^\n\n\nDafny program verifier finished with 1 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.7021984999955748,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-efm1h_tv/results.csv"
+            ]
+          }
+        },
+        "seconds": 0.7025204580058926
+      },
+      "regression": {
+        "confirmed": [],
+        "lost_observability": [],
+        "new_failures": [
+          "ReserveTwice (correctness)"
+        ]
+      }
+    }
+  ]
+}

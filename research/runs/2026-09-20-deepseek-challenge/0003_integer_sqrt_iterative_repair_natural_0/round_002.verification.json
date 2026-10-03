@@ -1,0 +1,36 @@
+{
+  "status": "parse_error",
+  "stdout": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-ql9gfoxn/program.dfy(7,4): Error: Duplicate local-variable name: r\n  |\n7 | var r := 0;\n  |     ^\n\n1 resolution/type errors detected in program.dfy\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-ql9gfoxn/results.csv\n",
+  "stderr": "",
+  "returncode": 2,
+  "seconds": 0.4661662079888629,
+  "command": [
+    "/Users/zhangfangying/.local/bin/dafny",
+    "verify",
+    "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-ql9gfoxn/program.dfy",
+    "--cores",
+    "1",
+    "--verification-time-limit",
+    "15",
+    "--log-format",
+    "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-ql9gfoxn/results.csv"
+  ],
+  "diagnostics": [
+    {
+      "error_type": "other",
+      "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-ql9gfoxn/program.dfy(7,4): Error: Duplicate local-variable name: r",
+      "location_line": 7,
+      "location_col": 4,
+      "related_spec": "",
+      "subtype": "other",
+      "source": "var r := 0;",
+      "related_source": "",
+      "related_location_line": 0,
+      "related_location_col": 0
+    }
+  ],
+  "obligations": {},
+  "executed": true,
+  "real_verifier": true,
+  "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\n"
+}

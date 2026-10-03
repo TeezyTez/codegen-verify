@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"feedback_policy\":\"none\",\"task\":{\"requirements\":{\"constraints\":[{\"kind\":\"postcondition\",\"relation\":\"greater_or_equal\",\"requirement_id\":\"R1\",\"subject\":\"r\",\"value\":\"0\"},{\"kind\":\"postcondition\",\"relation\":\"equals\",\"requirement_id\":\"R2\",\"subject\":\"r\",\"value\":\"x if x >= 0; otherwise -x\"}],\"schema_version\":\"constraints_v1\"},\"shared_definitions\":\"\",\"signatures\":[\"method Absolute(x: int) returns (r: int)\"],\"task_id\":\"absolute\"}}"
+    }
+  ],
+  "sha256": "115a69a382c04fb0b3653dd9f309a41505810654e5c3245a0fc63448bfae92da"
+}

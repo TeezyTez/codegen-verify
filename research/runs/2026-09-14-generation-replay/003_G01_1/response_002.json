@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Release(used: int, req: int) returns (next: int, ok: bool)\\n  requires used >= 0 && req >= 0\\n  ensures ok == (req <= used)\\n  ensures next == (if ok then used - req else used)\\n  ensures next >= 0\\n{\\n  next := used - req; ok := true;\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

@@ -1,0 +1,3 @@
+{
+  "Absolute": "if x >= 0 {\n  r := x;\n} else {\n  r := -x;\n}"
+}

@@ -1,0 +1,26 @@
+{
+  "text": "{\"bodies\":{\"LowerBound\":\"var lo := 0;\\nvar hi := |s|;\\nwhile lo < hi\\n    invariant 0 <= lo <= hi <= |s|\\n    invariant forall i :: 0 <= i < lo ==> s[i] < key\\n    invariant forall i :: hi <= i < |s| ==> key <= s[i]\\n    decreases hi - lo\\n{\\n    var mid := lo + (hi - lo) / 2;\\n    if s[mid] < key {\\n        lo := mid + 1;\\n    } else {\\n        hi := mid;\\n    }\\n}\\np := lo;\"}}",
+  "error": null,
+  "retryable": false,
+  "input_tokens": 296,
+  "output_tokens": 141,
+  "cost_usd": 0.000258,
+  "usage_source": "provider_reported",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 4096,
+    "temperature": 0.2,
+    "extra_body": {
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "parameters_accepted": true,
+  "response_model": "deepseek-flash",
+  "prompt_cache_hit_tokens": 128,
+  "prompt_cache_miss_tokens": 168,
+  "cost_basis": "configured per-token price estimate, not provider billing receipt",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop"
+}

@@ -1,0 +1,25 @@
+{
+  "task": {
+    "id": "clover-double-mutated",
+    "mode": "implementation",
+    "regions": {
+      "arithmetic": {
+        "kind": "implementation",
+        "owner": "DoubleQuadruple"
+      }
+    }
+  },
+  "source": "// Adapted from DafnyBench/Clover, Apache-2.0; see research/THIRD_PARTY.md.\n// Modified 2026-09-08: operator mutation, edit markers, synthetic Consumer.\nmethod DoubleQuadruple(x: int) returns (a: int, b: int)\n  ensures a == 2 * x && b == 4 * x\n{\n// repair-begin arithmetic\n  a := 2 + x;\n  b := 2 * a;\n// repair-end arithmetic\n}\n\nmethod Consumer(x: int) returns (r: int)\n  ensures r == 6 * x\n{\n  var a, b := DoubleQuadruple(x);\n  r := a + b;\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.88146520900045,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "strategy": "Propose the next repair candidate."
+}

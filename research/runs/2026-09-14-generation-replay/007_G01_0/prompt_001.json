@@ -1,0 +1,36 @@
+{
+  "task": {
+    "id": "reserve_release",
+    "description": "Reserve req, then release that same req only if reservation succeeded. Final occupancy equals original.",
+    "methods": [
+      {
+        "name": "Reserve",
+        "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+      },
+      {
+        "name": "Release",
+        "header": "method Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0"
+      },
+      {
+        "name": "ReserveRelease",
+        "header": "method ReserveRelease(used: int, req: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures next == used"
+      }
+    ],
+    "rule": {
+      "name": "reserve_release",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": null,
+  "recent_actions": []
+}

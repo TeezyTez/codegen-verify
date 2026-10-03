@@ -1,0 +1,26 @@
+{
+  "python": "3.12.13",
+  "openai_sdk": "3.2.0",
+  "dafny": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+    "bundled_solver_candidates": {
+      "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+      "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": true,
+    "real_verifier": true
+  },
+  "tested_dafny_series": "4.11.0",
+  "api_called": false
+}

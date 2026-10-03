@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Partial(used: int, req: int, cap: int) returns (next: int, grant: int)\\n  requires 0 <= used <= cap && req >= 0\\n  ensures grant == (if req <= cap - used then req else cap - used)\\n  ensures next == used + grant\\n  ensures 0 <= next <= cap\\n{\\n  grant := req; next := used + req;\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

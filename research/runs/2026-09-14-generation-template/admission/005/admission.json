@@ -1,0 +1,129 @@
+{
+  "task_id": "remaining",
+  "task_sha256": "6a4698d490b20cf12be5ca7b723c4e2c76586db8d4c689f1a1eef2a00bbe6208",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "structural",
+  "origin": "hand_authored_diagnostic",
+  "review_status": "agent_authored; independent human semantic review pending",
+  "reference_sha256": "953a3f3a01b74e2d86941e286a0fb85bd8b55291d90ed93f3159223bc94f4594",
+  "reference": {
+    "status": "passed",
+    "structure": "passed",
+    "formal": "passed",
+    "behavioral": "passed",
+    "verifier_calls": 1,
+    "runtime_calls": 1,
+    "details": {
+      "formal": {
+        "status": "passed",
+        "diagnostics": [],
+        "obligations": {
+          "Remaining (correctness)": "passed"
+        },
+        "raw": "\nDafny program verifier finished with 1 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ir8dhlyo/results.csv\n",
+        "returncode": 0,
+        "seconds": 0.6883472499976051,
+        "command": [
+          "/Users/zhangfangying/.local/bin/dafny",
+          "verify",
+          "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ir8dhlyo/program.dfy",
+          "--allow-warnings",
+          "--cores",
+          "1",
+          "--verification-time-limit",
+          "20",
+          "--log-format",
+          "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ir8dhlyo/results.csv"
+        ]
+      },
+      "runtime": {
+        "status": "passed",
+        "returncode": 0,
+        "raw": "\nDafny program verifier did not attempt verification\nGENERATION_WITNESSES_PASSED\n",
+        "command": [
+          "/Users/zhangfangying/.local/bin/dafny",
+          "run",
+          "--no-verify",
+          "--target",
+          "py",
+          "--allow-warnings",
+          "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/generation-witness-9cmvo5br/program.dfy"
+        ],
+        "seconds": 0.5390676250026445,
+        "executed": true
+      }
+    },
+    "seconds": 1.229184209005325
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Returns used instead of remaining: used=3 cap=10 should produce 7, not 3.",
+      "source_sha256": "37706f1be1ead972e63f5e8babe26773ceac36ba0edc19f8363eac8f929537be",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "behavior_failed",
+        "verifier_calls": 1,
+        "runtime_calls": 1,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/program.dfy(4,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 4,
+                "location_col": 0,
+                "related_spec": "  ensures r == cap - used",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures r == cap - used",
+                "related_location_line": 3,
+                "related_location_col": 12
+              }
+            ],
+            "obligations": {
+              "Remaining (correctness)": "failed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/program.dfy(4,0): Error: a postcondition could not be proved on this return path\n  |\n4 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/program.dfy(3,12): Related location: this is the postcondition that could not be proved\n  |\n3 |   ensures r == cap - used\n  |             ^^\n\n\nDafny program verifier finished with 0 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.7020590829997673,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-0xd0p4vs/results.csv"
+            ]
+          },
+          "runtime": {
+            "status": "behavior_failed",
+            "returncode": 3,
+            "raw": "\nDafny program verifier did not attempt verification\n[Program halted] /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/generation-witness-ecpw1370/program.dfy(10,2): expectation violation\n",
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "run",
+              "--no-verify",
+              "--target",
+              "py",
+              "--allow-warnings",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/generation-witness-ecpw1370/program.dfy"
+            ],
+            "seconds": 0.5411794159954297,
+            "executed": true
+          }
+        },
+        "seconds": 1.2442202910024207
+      },
+      "detected": true
+    }
+  ],
+  "admitted": true
+}

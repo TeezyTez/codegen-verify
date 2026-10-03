@@ -1,0 +1,33 @@
+{
+  "task": {
+    "id": "arithmetic-implementation",
+    "mode": "implementation",
+    "regions": {
+      "increment_body": {
+        "kind": "implementation",
+        "owner": "Increment"
+      },
+      "double_body": {
+        "kind": "implementation",
+        "owner": "Double"
+      },
+      "stable_body": {
+        "kind": "implementation",
+        "owner": "Stable"
+      }
+    }
+  },
+  "source": "method Increment(x: int) returns (r: int)\n  ensures r == x + 1\n{\n// repair-begin increment_body\n  r := x - 1;\n// repair-end increment_body\n}\n\nmethod Double(x: int) returns (r: int)\n  ensures r == 2 * x\n{\n// repair-begin double_body\n  r := x;\n// repair-end double_body\n}\n\nmethod Compose(x: int) returns (r: int)\n  ensures r == 2 * x + 1\n{\n  var d := Double(x);\n  r := Increment(d);\n}\n\nmethod Stable(x: int) returns (r: int)\n  ensures r == x\n{\n// repair-begin stable_body\n  r := x;\n// repair-end stable_body\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.83569329199963,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "strategy": "Propose the next repair candidate."
+}

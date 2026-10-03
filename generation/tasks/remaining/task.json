@@ -1,0 +1,66 @@
+{
+  "id": "remaining",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "structural",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Return remaining capacity; do not return occupied capacity.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Remaining",
+      "header": "method Remaining(used: int, cap: int) returns (r: int)\n  requires 0 <= used <= cap\n  ensures r == cap - used"
+    }
+  ],
+  "rule": {
+    "name": "remaining",
+    "version": 1
+  },
+  "reference": {
+    "Remaining": "  r := cap - used;"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Returns used instead of remaining: used=3 cap=10 should produce 7, not 3.",
+      "bodies": {
+        "Remaining": "  r := used;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Remaining",
+      "inputs": [
+        3,
+        10
+      ],
+      "outputs": [
+        7
+      ]
+    },
+    {
+      "method": "Remaining",
+      "inputs": [
+        10,
+        10
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "Remaining",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

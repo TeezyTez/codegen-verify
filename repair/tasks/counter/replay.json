@@ -1,0 +1,4 @@
+[
+  {"action": "patch", "replacements": {"count_invariants": "    invariant 0 <= i <= n\n    invariant r == i + 1\n"}},
+  {"action": "patch", "replacements": {"count_invariants": "    invariant 0 <= i <= n\n    invariant r == i\n"}}
+]

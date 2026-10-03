@@ -1,0 +1,434 @@
+[
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "independent",
+    "replicate": 0,
+    "directory": "000_independent_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "independent",
+    "replicate": 1,
+    "directory": "000_independent_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "independent",
+    "replicate": 2,
+    "directory": "000_independent_2"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "linear",
+    "replicate": 0,
+    "directory": "000_linear_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "linear",
+    "replicate": 1,
+    "directory": "000_linear_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "linear",
+    "replicate": 2,
+    "directory": "000_linear_2"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "generic_agent",
+    "replicate": 0,
+    "directory": "000_generic_agent_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "generic_agent",
+    "replicate": 1,
+    "directory": "000_generic_agent_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "generic_agent",
+    "replicate": 2,
+    "directory": "000_generic_agent_2"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "dependency",
+    "replicate": 0,
+    "directory": "000_dependency_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "dependency",
+    "replicate": 1,
+    "directory": "000_dependency_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "dependency",
+    "replicate": 2,
+    "directory": "000_dependency_2"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_dependencies",
+    "replicate": 0,
+    "directory": "000_no_dependencies_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_dependencies",
+    "replicate": 1,
+    "directory": "000_no_dependencies_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_dependencies",
+    "replicate": 2,
+    "directory": "000_no_dependencies_2"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_schedule",
+    "replicate": 0,
+    "directory": "000_no_schedule_0"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_schedule",
+    "replicate": 1,
+    "directory": "000_no_schedule_1"
+  },
+  {
+    "task_id": "arithmetic-implementation",
+    "condition": "no_schedule",
+    "replicate": 2,
+    "directory": "000_no_schedule_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "independent",
+    "replicate": 0,
+    "directory": "001_independent_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "independent",
+    "replicate": 1,
+    "directory": "001_independent_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "independent",
+    "replicate": 2,
+    "directory": "001_independent_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "linear",
+    "replicate": 0,
+    "directory": "001_linear_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "linear",
+    "replicate": 1,
+    "directory": "001_linear_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "linear",
+    "replicate": 2,
+    "directory": "001_linear_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "generic_agent",
+    "replicate": 0,
+    "directory": "001_generic_agent_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "generic_agent",
+    "replicate": 1,
+    "directory": "001_generic_agent_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "generic_agent",
+    "replicate": 2,
+    "directory": "001_generic_agent_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "dependency",
+    "replicate": 0,
+    "directory": "001_dependency_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "dependency",
+    "replicate": 1,
+    "directory": "001_dependency_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "dependency",
+    "replicate": 2,
+    "directory": "001_dependency_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_dependencies",
+    "replicate": 0,
+    "directory": "001_no_dependencies_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_dependencies",
+    "replicate": 1,
+    "directory": "001_no_dependencies_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_dependencies",
+    "replicate": 2,
+    "directory": "001_no_dependencies_2"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_schedule",
+    "replicate": 0,
+    "directory": "001_no_schedule_0"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_schedule",
+    "replicate": 1,
+    "directory": "001_no_schedule_1"
+  },
+  {
+    "task_id": "clover-array-proof",
+    "condition": "no_schedule",
+    "replicate": 2,
+    "directory": "001_no_schedule_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "independent",
+    "replicate": 0,
+    "directory": "002_independent_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "independent",
+    "replicate": 1,
+    "directory": "002_independent_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "independent",
+    "replicate": 2,
+    "directory": "002_independent_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "linear",
+    "replicate": 0,
+    "directory": "002_linear_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "linear",
+    "replicate": 1,
+    "directory": "002_linear_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "linear",
+    "replicate": 2,
+    "directory": "002_linear_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "generic_agent",
+    "replicate": 0,
+    "directory": "002_generic_agent_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "generic_agent",
+    "replicate": 1,
+    "directory": "002_generic_agent_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "generic_agent",
+    "replicate": 2,
+    "directory": "002_generic_agent_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "dependency",
+    "replicate": 0,
+    "directory": "002_dependency_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "dependency",
+    "replicate": 1,
+    "directory": "002_dependency_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "dependency",
+    "replicate": 2,
+    "directory": "002_dependency_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_dependencies",
+    "replicate": 0,
+    "directory": "002_no_dependencies_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_dependencies",
+    "replicate": 1,
+    "directory": "002_no_dependencies_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_dependencies",
+    "replicate": 2,
+    "directory": "002_no_dependencies_2"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_schedule",
+    "replicate": 0,
+    "directory": "002_no_schedule_0"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_schedule",
+    "replicate": 1,
+    "directory": "002_no_schedule_1"
+  },
+  {
+    "task_id": "clover-double-mutated",
+    "condition": "no_schedule",
+    "replicate": 2,
+    "directory": "002_no_schedule_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "independent",
+    "replicate": 0,
+    "directory": "003_independent_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "independent",
+    "replicate": 1,
+    "directory": "003_independent_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "independent",
+    "replicate": 2,
+    "directory": "003_independent_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "linear",
+    "replicate": 0,
+    "directory": "003_linear_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "linear",
+    "replicate": 1,
+    "directory": "003_linear_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "linear",
+    "replicate": 2,
+    "directory": "003_linear_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "generic_agent",
+    "replicate": 0,
+    "directory": "003_generic_agent_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "generic_agent",
+    "replicate": 1,
+    "directory": "003_generic_agent_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "generic_agent",
+    "replicate": 2,
+    "directory": "003_generic_agent_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "dependency",
+    "replicate": 0,
+    "directory": "003_dependency_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "dependency",
+    "replicate": 1,
+    "directory": "003_dependency_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "dependency",
+    "replicate": 2,
+    "directory": "003_dependency_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_dependencies",
+    "replicate": 0,
+    "directory": "003_no_dependencies_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_dependencies",
+    "replicate": 1,
+    "directory": "003_no_dependencies_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_dependencies",
+    "replicate": 2,
+    "directory": "003_no_dependencies_2"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_schedule",
+    "replicate": 0,
+    "directory": "003_no_schedule_0"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_schedule",
+    "replicate": 1,
+    "directory": "003_no_schedule_1"
+  },
+  {
+    "task_id": "counter-proof",
+    "condition": "no_schedule",
+    "replicate": 2,
+    "directory": "003_no_schedule_2"
+  }
+]

@@ -1,0 +1,13 @@
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-yhidtcw9/program.dfy(4,0): Error: a postcondition could not be proved on this return path
+  |
+4 | {
+  | ^
+
+/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-yhidtcw9/program.dfy(2,12): Related location: this is the postcondition that could not be proved
+  |
+2 |   ensures r >= 0
+  |             ^^
+
+
+Dafny program verifier finished with 0 verified, 1 error
+Results File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-yhidtcw9/results.csv

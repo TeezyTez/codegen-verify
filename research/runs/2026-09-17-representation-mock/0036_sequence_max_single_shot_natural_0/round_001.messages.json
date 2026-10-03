@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"feedback_policy\":\"none\",\"task\":{\"requirements\":\"[R1] The input sequence s is nonempty. [R2] Every element of s is at most the result m. [R3] The result m equals some element of s.\",\"shared_definitions\":\"\",\"signatures\":[\"method Maximum(s: seq<int>) returns (m: int)\"],\"task_id\":\"sequence_max\"}}"
+    }
+  ],
+  "sha256": "0d74884fa3e458acfa687291b6b11ade563dd81bdea827b701570aef94267f2f"
+}

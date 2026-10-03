@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\\n  requires 0 <= used <= cap\\n  requires req >= 0\\n  ensures ok == (used + req <= cap)\\n  ensures next == (if ok then used + req else used)\\n  ensures 0 <= next <= cap\\n{\\n  ok := used + req <= cap;\\n  next := if ok then used + req else used;\\n}\\n\\nmethod ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\\n  ensures ok1 == (used + q1 <= cap)\\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\\n  ensures 0 <= next <= cap\\n{\\n  ok1 := used + q1 <= cap;\\n  var mid := if ok1 then used + q1 else used;\\n  ok2 := mid + q2 <= cap;\\n  next := if ok2 then mid + q2 else mid;\\n}\\n\"}",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0,
+  "usage_source": "not_applicable_template"
+}

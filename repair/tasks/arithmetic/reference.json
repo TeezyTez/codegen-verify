@@ -1,0 +1,1 @@
+{"increment_body": "  r := x + 1;\n", "double_body": "  r := 2 * x;\n", "stable_body": "  r := x;\n"}

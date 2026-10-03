@@ -1,0 +1,62 @@
+{
+  "check": "single_run_preflight_v1",
+  "api_called": false,
+  "task_id": "integer_sqrt",
+  "strategy": "iterative_repair",
+  "representation": "natural",
+  "replicate": 0,
+  "model_kind": "deepseek",
+  "model": "deepseek-flash",
+  "endpoint": "https://api.deepseek.com",
+  "credential_env": "DEEPSEEK_API_KEY",
+  "credential_present": true,
+  "ready_for_authorized_attempt": true,
+  "online_compatibility": "not_checked",
+  "blockers": [],
+  "warnings": [
+    "representation equivalence is pending; engineering smoke only"
+  ],
+  "toolchain": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+    "bundled_solver_candidates": {
+      "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+      "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": true,
+    "real_verifier": true
+  },
+  "budget": {
+    "model_calls_max": 4,
+    "verification_calls_max": 5,
+    "output_tokens_per_call_max": 4096,
+    "accounted_token_ceiling": 48000,
+    "task_seconds": 180,
+    "cost_usd_ceiling": 0.05,
+    "price_source": "https://api-docs.deepseek.com/quick_start/pricing/ checked 2026-09-20; peak cache-miss input $0.30/M and output $1.20/M; conservative estimate, ignores cache/off-peak discount",
+    "note": "Engineering reservations are not a guaranteed provider billing bound; admission is separate."
+  },
+  "initial_messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"feedback_policy\":\"controlled_v1\",\"task\":{\"requirements\":\"[R1] The input n is a nonnegative integer. [R2] The result r is nonnegative. [R3] The square of r is at most n. [R4] The square of r plus one, (r + 1) * (r + 1), is strictly greater than n.\",\"shared_definitions\":\"\",\"signatures\":[\"method IntegerSqrt(n: int) returns (r: int)\"],\"task_id\":\"integer_sqrt\"}}"
+    }
+  ],
+  "initial_messages_sha256": "95a390e3e62faab8ec2267191064b9f3e0eb8e8502025e80d36f3ffed68b9117",
+  "task_sha256": "e345802f7f03e82f823bcc162e18af500b2ca70d570a92ef9e38131f1df13f83",
+  "config_sha256": "69e3bbc9a9e3df817d04489ea7f01706f6e66f1d96b288ca797b485d781d83b5"
+}

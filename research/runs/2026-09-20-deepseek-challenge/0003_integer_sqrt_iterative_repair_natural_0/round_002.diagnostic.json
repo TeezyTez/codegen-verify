@@ -1,0 +1,15 @@
+{
+  "status": "parse_error",
+  "diagnostics": [
+    {
+      "category": "unknown",
+      "requirement_ids": "unknown",
+      "candidate_location": {
+        "method": "IntegerSqrt",
+        "line": 1
+      }
+    }
+  ],
+  "property_satisfaction": "unknown",
+  "additional_spec_disclosure": false
+}

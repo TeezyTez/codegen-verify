@@ -1,0 +1,124 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "5a3825ca4dd34cf1ba65bbc441835f88",
+  "task_id": "sequence_reverse",
+  "strategy": "iterative_repair",
+  "representation": "natural",
+  "replicate": 1,
+  "seed": 18,
+  "model": {
+    "kind": "live",
+    "provider": "deepseek",
+    "name": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "sdk_version": "3.2.0",
+    "sampling_requested": {
+      "temperature": 0.2
+    },
+    "seed_requested": false,
+    "parameter_support": "only confirmed by successful API response; unsupported options are not silently dropped",
+    "output_token_parameter": "max_tokens",
+    "prices_usd_per_million": {
+      "input": 0.3,
+      "output": 1.2
+    },
+    "price_source": "https://api-docs.deepseek.com/quick_start/pricing/ checked 2026-09-20; peak cache-miss input $0.30/M and output $1.20/M; conservative estimate, ignores cache/off-peak discount",
+    "sdk_max_retries": 0
+  },
+  "toolchain": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+    "bundled_solver_candidates": {
+      "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+      "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": true,
+    "real_verifier": true
+  },
+  "config": {
+    "version": 1,
+    "strategies": [
+      "iterative_repair"
+    ],
+    "representations": [
+      "natural"
+    ],
+    "replicates": 3,
+    "seed": 17,
+    "budget": {
+      "model_calls": 4,
+      "verifier_calls": 5,
+      "output_tokens": 4096,
+      "total_tokens": 48000,
+      "cost_usd": 0.05,
+      "verification_seconds": 15,
+      "model_seconds": 60,
+      "task_seconds": 180
+    },
+    "model": {
+      "kind": "deepseek",
+      "name": "deepseek-flash",
+      "base_url": "https://api.deepseek.com",
+      "api_key_env": "DEEPSEEK_API_KEY",
+      "sampling": {
+        "temperature": 0.2
+      },
+      "send_seed": false,
+      "thinking": "disabled",
+      "output_token_parameter": "max_tokens",
+      "input_usd_per_million": 0.3,
+      "output_usd_per_million": 1.2,
+      "price_source": "https://api-docs.deepseek.com/quick_start/pricing/ checked 2026-09-20; peak cache-miss input $0.30/M and output $1.20/M; conservative estimate, ignores cache/off-peak discount"
+    }
+  },
+  "config_sha256": "69e3bbc9a9e3df817d04489ea7f01706f6e66f1d96b288ca797b485d781d83b5",
+  "task_sha256": "5f80d100cd43c2b66b0b4d276e6c5125f5a91e48b69d4ed4df77652e409d999d",
+  "asset_hashes": {
+    "natural": "60fe519da5c45087767323a579c4a188f43c520e5d44a974424c7155c47ccf35",
+    "checklist": "87c01086366a1f9204c8d3687839c736c97210202847fa062a30a1e660be9f39",
+    "structured": "32b8e25adee2b2bc5c6d7b0ba09c027fb698c2c65e45ff8dfc261d805579a19c",
+    "spec": "ab6b57802f0c2417fceff405b27ca6b0eadf121496968eb957c3995fec98bb28",
+    "template": "3b7d349e58cd41d5cbc9a25540f47872e8c30a2724140e5edfb3f186e9a6cef5",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "d2b10eaa834d03250c1906ef16055d7a70cc46905f8489aaf7c9af574cff4167"
+  },
+  "task_path": "/Users/zhangfangying/workspace/codegen-verify/generation/representation/challenge_tasks/sequence_reverse/task.json",
+  "source_hashes": {
+    "generation/representation/__init__.py": "e5c0b28401071d6505dbcc4671b4e09f3d1286b21ab58ef6636a98ed328a0f7f",
+    "generation/representation/analyze.py": "4ef85d2030aac89c87f2f75b603db4b932aa671ae523d3e713f6b9310267d3a7",
+    "generation/representation/cli.py": "cd2a843bff1ccbdae0bb8a813c05733263fc17d632465999439ccc37faf9ecb3",
+    "generation/representation/config.py": "73330e9da17bcea19c42614b5208b215d8a28ec9df798082a8a1e9eaa90f110f",
+    "generation/representation/guard.py": "4e14c22e24c6313c02c723a5d705ceeaa484381e795a661f004106e5fcf4b079",
+    "generation/representation/models.py": "9107c944dab620beddf7c1216816a67b5c7044c9f42f97483f6182810ad9070b",
+    "generation/representation/preflight.py": "8ab98b6cbc153366395cb41cebee525a8c10601b04d89334f82342a035a45a84",
+    "generation/representation/runner.py": "3657a705c6f9b956ae7e47e9c0ed8c3b5be0613d29e88706d476360f403a9fdb",
+    "generation/representation/task.py": "7aa9455029359a762e8c5b1c6becb04e2ada6de8ab503bdd3c174c039c4fe6a9",
+    "generation/representation/verifier.py": "1baa17ea2f940fe70d134dca90c21f95e79cb91cab422eebb5ea3ad05d5aeeaf",
+    "generation/task.py": "96b7d538f9122099e730f961703f65af7a655cc1edf08278ef4266256099d447",
+    "repair/task.py": "fa9bcec6b4960e281f6f830626b439edf76efca49b06764dc212febfa46b2446",
+    "repair/verifier.py": "3bb4506572e2d4982a392e73439c3235187812a30abb629a68b207652c2a03a6",
+    "repair/runner.py": "c8b388f66e01566b4b3d9b30fe50587f28875d654698ad7f980a4cb35a5d9e51",
+    "project/config.py": "882f009f883c42a58a4c8743d8b179e444c6fa4757b14d04c17e953450beb92d",
+    "project/dafny_wrapper.py": "2f671b41593c1b952677565618aa1aeefc3714dae87c46f52a5e86cb4211cbec"
+  },
+  "git_revision": "ddd6c41c3c3559b83f541e613417b493c8a50fae",
+  "system_prompt_sha256": "525c45b52ec0189c564acc2e04460f6a0d6720b7ee30dad1f3fe80fc38a26872",
+  "feedback_policy": "controlled_v1",
+  "audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "token_policy": "UTF-8 message bytes + 256 framing + output cap reservation, provider usage when known; not a billing guarantee"
+}

@@ -1,0 +1,2 @@
+{"elapsed":0.002685625004232861,"messages_sha256":"e40d1b1a2bfd6005533f9cda92910509c606d7df9c71d95f19350df51a317bd4","stage":"model_call_started","step":1}
+{"elapsed":0.690127375004522,"executed":true,"label":"final","real_verifier":true,"source_sha256":"982e06643133db0e37c1b4499531e03345261557fb5f7a13563841f5ab818b6e","stage":"verification","status":"verification_failed"}

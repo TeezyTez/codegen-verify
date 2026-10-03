@@ -231,6 +231,7 @@ class SpecArtifact:
     mutation: Mapping[str, Any] = field(default_factory=dict)
     harness: SpecHarnessEvidence | None = None
     structured: StructuredSpecification | None = None
+    typed_ir: Mapping[str, Any] = field(default_factory=dict)
     drift_report: Mapping[str, Any] = field(default_factory=dict)
     issues: tuple[str, ...] = ()
 
@@ -245,6 +246,7 @@ class SpecArtifact:
             "version": self.version,
             "spec": self.text,
             "structured": self.structured.to_dict() if self.structured else {},
+            "typed_ir": dict(self.typed_ir),
         })
 
     def to_dict(self) -> dict[str, Any]:
@@ -260,6 +262,7 @@ class SpecArtifact:
             "mutation": dict(self.mutation),
             "harness": self.harness.to_dict() if self.harness else {},
             "structured": self.structured.to_dict() if self.structured else {},
+            "typed_ir": dict(self.typed_ir),
             "drift_report": dict(self.drift_report),
             "issues": list(self.issues),
         }

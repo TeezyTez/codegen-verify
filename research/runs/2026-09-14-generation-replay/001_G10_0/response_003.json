@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"bodies\": {\"Partial\": \"  if req + used <= cap { grant := req; } else { grant := cap - used; }\\n  next := used + grant;\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

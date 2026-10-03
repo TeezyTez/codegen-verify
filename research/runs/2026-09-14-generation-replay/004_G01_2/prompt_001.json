@@ -1,0 +1,32 @@
+{
+  "task": {
+    "id": "release_twice",
+    "description": "Process two releases sequentially, leaving state unchanged for each rejected release.",
+    "methods": [
+      {
+        "name": "Release",
+        "header": "method Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0"
+      },
+      {
+        "name": "ReleaseTwice",
+        "header": "method ReleaseTwice(used: int, q1: int, q2: int) returns (next: int, ok1: bool, ok2: bool)\n  requires used >= 0 && q1 >= 0 && q2 >= 0\n  ensures ok1 == (q1 <= used)\n  ensures ok2 == (q2 <= (if ok1 then used - q1 else used))\n  ensures next == (if ok1 then used - q1 else used) - (if ok2 then q2 else 0)\n  ensures next >= 0"
+      }
+    ],
+    "rule": {
+      "name": "release_twice",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": null,
+  "recent_actions": []
+}

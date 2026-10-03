@@ -1,0 +1,26 @@
+{
+  "text": "{\"bodies\":{\"IntegerSqrt\":\"var lo: int := 0;\\nvar hi: int := n + 1;\\nwhile (lo + 1 < hi)\\n    invariant 0 <= lo <= hi\\n    invariant lo * lo <= n\\n    invariant n < hi * hi\\n    decreases hi - lo\\n{\\n    var mid: int := lo + (hi - lo) / 2;\\n    if (mid * mid <= n) {\\n        lo := mid;\\n    } else {\\n        hi := mid;\\n    }\\n}\\nr := lo;\"}}",
+  "error": null,
+  "retryable": false,
+  "input_tokens": 280,
+  "output_tokens": 126,
+  "cost_usd": 0.0002352,
+  "usage_source": "provider_reported",
+  "request_parameters": {
+    "model": "deepseek-flash",
+    "max_tokens": 4096,
+    "temperature": 0.2,
+    "extra_body": {
+      "thinking": {
+        "type": "disabled"
+      }
+    }
+  },
+  "parameters_accepted": true,
+  "response_model": "deepseek-flash",
+  "prompt_cache_hit_tokens": 128,
+  "prompt_cache_miss_tokens": 152,
+  "cost_basis": "configured per-token price estimate, not provider billing receipt",
+  "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+  "finish_reason": "stop"
+}

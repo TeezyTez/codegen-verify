@@ -1,0 +1,1 @@
+{"count_invariants": "    invariant 0 <= i <= n\n    invariant r == i\n"}

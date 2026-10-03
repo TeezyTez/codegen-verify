@@ -1,0 +1,115 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "80e07223470940ca871e15a261963b48",
+  "task_id": "sequence_max",
+  "strategy": "iterative_repair",
+  "representation": "structured",
+  "replicate": 0,
+  "seed": 17,
+  "model": {
+    "kind": "mock",
+    "name": "wrong_then_reference_v1",
+    "uses_reference": true,
+    "sequence_sha256": "98912187057c98863ae83e420e0c3ae31062aae494705cac8140e88fc16d50e6",
+    "sampling": {},
+    "seed_supported": false,
+    "price_source": "offline fixture; no API call",
+    "research_eligible": false
+  },
+  "toolchain": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+    "bundled_solver_candidates": {
+      "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+      "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": true,
+    "real_verifier": true
+  },
+  "config": {
+    "version": 1,
+    "strategies": [
+      "single_shot",
+      "iterative_repair",
+      "independent_sampling"
+    ],
+    "representations": [
+      "natural",
+      "checklist",
+      "structured"
+    ],
+    "replicates": 1,
+    "seed": 17,
+    "budget": {
+      "model_calls": 3,
+      "verifier_calls": 4,
+      "output_tokens": 2048,
+      "total_tokens": 48000,
+      "cost_usd": null,
+      "verification_seconds": 15,
+      "model_seconds": 60,
+      "task_seconds": 120
+    },
+    "model": {
+      "kind": "mock",
+      "name": null,
+      "base_url": null,
+      "api_key_env": "OPENAI_API_KEY",
+      "sampling": {},
+      "send_seed": false,
+      "output_token_parameter": "max_completion_tokens",
+      "input_usd_per_million": null,
+      "output_usd_per_million": null,
+      "price_source": null
+    }
+  },
+  "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+  "task_sha256": "af03e7b7f76c1a16299fa8fe3d0a4c3f4f0043aa208802c83871382d3ea1d262",
+  "asset_hashes": {
+    "natural": "f846af7f02efcec6223d4133e47124d1ce8fdc0d7e8f047b16c824dcf2c6b278",
+    "checklist": "83a001c0c39eb4829e8f6daafa6dad22474e3594bb2931dd1e8ccd35a0916b37",
+    "structured": "7758b05662e58e4cb78c898df8607da7c54a369a33644f927d5af468ea26c04b",
+    "spec": "6410afd3ef1b2747c71de454f3fc5148430b41f385fb8b82aaf9eacecf7f1b72",
+    "template": "dbc82c118af4ed21fee54f28d5dbd5d029cb8e6c1bbfd624634d5b65098df95e",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "5a97b2d7173fe14f1fcd5011331aa9adeaaf50ace8b6105a08fc265cd44e0041"
+  },
+  "task_path": "/Users/zhangfangying/workspace/codegen-verify/generation/representation/tasks/sequence_max/task.json",
+  "source_hashes": {
+    "generation/representation/__init__.py": "e5c0b28401071d6505dbcc4671b4e09f3d1286b21ab58ef6636a98ed328a0f7f",
+    "generation/representation/analyze.py": "f54a5004c8546301901e0effa50f3b6d1a6b2ea4669644b3cfb5b51fd823855e",
+    "generation/representation/cli.py": "187681656c56437c6ef0be4ec83493c06d80ad746260df395feca778d0987530",
+    "generation/representation/config.py": "a104e0e394c53101fc1cd9784c575f9920949d13afa89dc244e34b0edc447045",
+    "generation/representation/guard.py": "4e14c22e24c6313c02c723a5d705ceeaa484381e795a661f004106e5fcf4b079",
+    "generation/representation/models.py": "0f7beed98fcb3999a13ecae9904d5a72bf1002aa40a72dee86946ccd7df37282",
+    "generation/representation/runner.py": "64bafff2497eeaac7ca25c5b9023877af0c4305c8e87195c7ee3d4d14accdfcc",
+    "generation/representation/task.py": "7aa9455029359a762e8c5b1c6becb04e2ada6de8ab503bdd3c174c039c4fe6a9",
+    "generation/representation/verifier.py": "1baa17ea2f940fe70d134dca90c21f95e79cb91cab422eebb5ea3ad05d5aeeaf",
+    "generation/task.py": "96b7d538f9122099e730f961703f65af7a655cc1edf08278ef4266256099d447",
+    "repair/task.py": "fa9bcec6b4960e281f6f830626b439edf76efca49b06764dc212febfa46b2446",
+    "repair/verifier.py": "3bb4506572e2d4982a392e73439c3235187812a30abb629a68b207652c2a03a6",
+    "repair/runner.py": "c8b388f66e01566b4b3d9b30fe50587f28875d654698ad7f980a4cb35a5d9e51",
+    "project/config.py": "882f009f883c42a58a4c8743d8b179e444c6fa4757b14d04c17e953450beb92d",
+    "project/dafny_wrapper.py": "2f671b41593c1b952677565618aa1aeefc3714dae87c46f52a5e86cb4211cbec"
+  },
+  "git_revision": "ddd6c41c3c3559b83f541e613417b493c8a50fae",
+  "system_prompt_sha256": "525c45b52ec0189c564acc2e04460f6a0d6720b7ee30dad1f3fe80fc38a26872",
+  "feedback_policy": "controlled_v1",
+  "audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "token_policy": "UTF-8 message bytes + 256 framing + output cap reservation, provider usage when known; not a billing guarantee"
+}

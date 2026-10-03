@@ -1,0 +1,9 @@
+[
+  {
+    "directory": "0000_sequence_max_iterative_repair_natural_0",
+    "task_id": "sequence_max",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  }
+]

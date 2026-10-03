@@ -1,0 +1,37 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "f63bce8bf4a24d71a013d99336193ab8",
+  "task_id": "clamp",
+  "task_family": "boundary",
+  "source": "codegen-verify-representation-demo",
+  "origin": "synthetic_demo",
+  "strategy": "single_shot",
+  "representation": "checklist",
+  "replicate": 0,
+  "is_mock": true,
+  "audit_status": "pending",
+  "real_verifier_executed": true,
+  "success": false,
+  "first_candidate_verified": false,
+  "candidate_count": 1,
+  "stop_reason": "single_shot_complete",
+  "status": "verification_failed",
+  "usage": {
+    "model_calls": 1,
+    "model_retry_calls": 0,
+    "verifier_calls": 1,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 3590,
+    "unknown_usage_calls": 1,
+    "cost_usd": 0.0,
+    "reserved_cost_usd": 0.0,
+    "model_seconds": 7.834001735318452e-06,
+    "verification_seconds": 0.6997527499988792
+  },
+  "failures": {
+    "verification_failed": 1
+  },
+  "completed": true,
+  "seconds": 0.7031156250013737
+}

@@ -1,0 +1,22 @@
+{
+  "status": "verification_failed",
+  "diagnostics": [
+    {
+      "category": "postcondition",
+      "requirement_ids": [
+        "R1"
+      ],
+      "candidate_location": "unknown"
+    },
+    {
+      "category": "bounds",
+      "requirement_ids": "unknown",
+      "candidate_location": {
+        "method": "Reverse",
+        "line": 5
+      }
+    }
+  ],
+  "property_satisfaction": "unknown",
+  "additional_spec_disclosure": false
+}

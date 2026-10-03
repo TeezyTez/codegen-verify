@@ -1,0 +1,94 @@
+{
+  "task": {
+    "id": "arithmetic-implementation",
+    "mode": "implementation",
+    "regions": {
+      "increment_body": {
+        "kind": "implementation",
+        "owner": "Increment"
+      },
+      "double_body": {
+        "kind": "implementation",
+        "owner": "Double"
+      },
+      "stable_body": {
+        "kind": "implementation",
+        "owner": "Stable"
+      }
+    }
+  },
+  "source": "method Increment(x: int) returns (r: int)\n  ensures r == x + 1\n{\n// repair-begin increment_body\n  r := x - 1;\n// repair-end increment_body\n}\n\nmethod Double(x: int) returns (r: int)\n  ensures r == 2 * x\n{\n// repair-begin double_body\n  r := x;\n// repair-end double_body\n}\n\nmethod Compose(x: int) returns (r: int)\n  ensures r == 2 * x + 1\n{\n  var d := Double(x);\n  r := Increment(d);\n}\n\nmethod Stable(x: int) returns (r: int)\n  ensures r == x\n{\n// repair-begin stable_body\n  r := x;\n// repair-end stable_body\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.85849895799765,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "verifier": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(3,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 3,
+        "location_col": 0,
+        "related_spec": "  ensures r == x + 1",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == x + 1",
+        "related_location_line": 2,
+        "related_location_col": 12
+      },
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(11,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 11,
+        "location_col": 0,
+        "related_spec": "  ensures r == 2 * x",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == 2 * x",
+        "related_location_line": 10,
+        "related_location_col": 12
+      }
+    ],
+    "obligations": {
+      "Increment (correctness)": "failed",
+      "Double (correctness)": "failed",
+      "Compose (correctness)": "passed",
+      "Stable (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(3,0): Error: a postcondition could not be proved on this return path\n  |\n3 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(2,12): Related location: this is the postcondition that could not be proved\n  |\n2 |   ensures r == x + 1\n  |             ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(11,0): Error: a postcondition could not be proved on this return path\n   |\n11 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy(10,12): Related location: this is the postcondition that could not be proved\n   |\n10 |   ensures r == 2 * x\n   |             ^^\n\n\nDafny program verifier finished with 2 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.7423298339999747,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ewmlvg8k/results.csv"
+    ]
+  },
+  "recent_actions": [],
+  "suggested_repair": {
+    "region": "double_body",
+    "action": "implementation",
+    "ranking": [
+      "double_body",
+      "increment_body",
+      "stable_body"
+    ],
+    "rule": "failed-first; stable ID tie-break"
+  },
+  "strategy": "Propose the next repair candidate."
+}

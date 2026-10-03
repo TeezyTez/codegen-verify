@@ -1,0 +1,64 @@
+{
+  "protocol": "fixed_contract_repair_v1",
+  "task": {
+    "id": "clover-double-mutated",
+    "mode": "implementation",
+    "source_project": "Clover",
+    "split": "dev",
+    "failure_type": "arithmetic_mutation",
+    "origin": "artificial_mutation",
+    "provenance": "Public single-method DafnyBench/Clover source, with one artificial operator mutation and a hand-authored frozen Consumer. Not a naturally occurring multi-function bug.",
+    "source_url": "https://raw.githubusercontent.com/sun-wendy/DafnyBench/main/DafnyBench/dataset/ground_truth/Clover_double_quadruple.dfy",
+    "retrieved": "2026-09-08",
+    "source_revision": "main; exact retrieved bytes pinned by original.dfy SHA256 in validation log",
+    "license": "DafnyBench repository Apache-2.0; see research/THIRD_PARTY.md",
+    "trusted_assumptions": [],
+    "regions": {
+      "arithmetic": {
+        "kind": "implementation",
+        "owner": "DoubleQuadruple"
+      }
+    }
+  },
+  "template_sha256": "9b94f8e112025eb03e1f00098caf03c49da07213992435c62fca95983ef7f96a",
+  "limits": {
+    "model_calls": 6,
+    "verifier_calls": 10,
+    "total_tokens": 48000,
+    "output_tokens": 2048,
+    "seconds": 180
+  },
+  "task_manifest_sha256": "e618fc2aa5c40ca332215891858b5c3ae24b139bb13416fd150fb6ad0fa2e543",
+  "replay_actions_sha256": "dac50c42a1c593b6f1ed2530d8d7f229dfcbc67e025c65e93dcc2e544b24ff3d",
+  "condition": "dependency",
+  "model_kind": "scripted_replay",
+  "replicate": 2,
+  "verifier_version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+  "runtime": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/bin/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 20,
+    "cores": 1
+  },
+  "model": "scripted",
+  "provider": "none",
+  "system_prompt": "Repair verification failures under the frozen task boundaries. A failed\nverification obligation is not necessarily an implementation bug. Return JSON only:\n{\"action\":\"patch\",\"replacements\":{\"region_id\":\"complete replacement text\"}}\nor {\"action\":\"read\",\"symbol\":\"name\"}, {\"action\":\"verify\"}, {\"action\":\"stop\"}.\nEvery condition has the same tools. All patches affect only declared regions.\nNever modify target contracts, introduce assumptions/axioms, or skip verification.\nProof regions support single-line invariants or assert expressions as declared.\nImplementation regions support balanced Dafny statements. No comments, strings,\nattributes, new declarations, nondeterminism or nonterminating loops. Use the\nfull-file verifier feedback to choose an edit. Final acceptance rechecks the file.",
+  "temperature": null,
+  "source_hashes": {
+    "__init__.py": "23555d95bce4780bee010b2dcd5982eefd84052be5c6353331b3198a92a245da",
+    "analyze.py": "1de94ce2a89da41a03867975a76519ea02e0fb4e3be08d26498f3cbc353b0267",
+    "cli.py": "0fe7f4ba3243565205cd4998569e3b2c2263505a3b44c3893744c35449713e07",
+    "dependencies.py": "6391366d7721179cefbb7d3b3a7d946482a9ef37270b649a72ef9259a1c3324c",
+    "models.py": "a7d97345cbb5ba8777dd253474aea6c76feb0e6b7276c1332a0d28933d9d0ea2",
+    "runner.py": "042c34bc241652f8beef658d01f7a038f2cc5a3d2bff24d9502425606a445cee",
+    "task.py": "fa9bcec6b4960e281f6f830626b439edf76efca49b06764dc212febfa46b2446",
+    "verifier.py": "9651a6781eeac81a395db89b495e7a36b7ade9c626bfabc1278bdb924fa6f2ab"
+  },
+  "token_policy": "reserve UTF-8 prompt bytes + 256 overhead + output cap; use provider usage when known",
+  "graph_policy": "lexical conservative references, no certified logical dependencies"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "clover-double-mutated", "mode": "implementation", "source_project": "Clover",
+  "split": "dev", "failure_type": "arithmetic_mutation", "origin": "artificial_mutation",
+  "provenance": "Public single-method DafnyBench/Clover source, with one artificial operator mutation and a hand-authored frozen Consumer. Not a naturally occurring multi-function bug.",
+  "source_url": "https://raw.githubusercontent.com/sun-wendy/DafnyBench/main/DafnyBench/dataset/ground_truth/Clover_double_quadruple.dfy",
+  "retrieved": "2026-09-08", "source_revision": "main; exact retrieved bytes pinned by original.dfy SHA256 in validation log",
+  "license": "DafnyBench repository Apache-2.0; see research/THIRD_PARTY.md",
+  "trusted_assumptions": [],
+  "regions": {"arithmetic": {"kind": "implementation", "owner": "DoubleQuadruple"}}
+}

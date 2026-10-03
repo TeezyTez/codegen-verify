@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Transfer(a: int, b: int, req: int, cap: int) returns (na: int, nb: int, ok: bool)\\n  requires a >= 0 && 0 <= b <= cap && req >= 0\\n  ensures ok == (req <= a && b + req <= cap)\\n  ensures na == (if ok then a - req else a)\\n  ensures nb == (if ok then b + req else b)\\n  ensures na + nb == a + b\\n{\\n  if req <= a && b + req <= cap {\\n    na := a - req; nb := b + req; ok := true;\\n  } else { na := a; nb := b; ok := false; }\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

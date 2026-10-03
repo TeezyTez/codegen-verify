@@ -1,0 +1,58 @@
+{
+  "run": "0008_sequence_reverse_iterative_repair_natural_2",
+  "original": "research/runs/2026-09-20-deepseek-challenge/0008_sequence_reverse_iterative_repair_natural_2/round_001.dfy",
+  "original_sha256": "e77d139ad46d150def0b0a6fe22ad88894af1e8c3ceec9d84cc8cdabb23f4670",
+  "source": "method Reverse(s: seq<int>) returns (r: seq<int>)\n  ensures |r| == |s|\n  ensures forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k]\n{\nr := [];\nvar i := 0;\nwhile i < |s|\n  invariant 0 <= i <= |s|\n  invariant |r| == i\n  invariant forall k :: 0 <= k < i ==> r[k] == s[|s| - 1 - k]\n  decreases |s| - i\n{\n  r := r + [s[|s| - 1 - i]];\n  i := i + 1;\n}\n}\n",
+  "source_sha256": "d859f8941d4caa9c8b2de03eea6c32dfe9f03cddb6482b2105ee691d587ff0fa",
+  "task_sha256": "5f80d100cd43c2b66b0b4d276e6c5125f5a91e48b69d4ed4df77652e409d999d",
+  "source_kind": "investigator_edited_not_model_output",
+  "change": "Added exactly invariant 0 <= i <= |s|; no executable statement or frozen header changed",
+  "verification": {
+    "status": "verified",
+    "stdout": "\nDafny program verifier finished with 2 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rv2dxz2m/results.csv\n",
+    "stderr": "",
+    "returncode": 0,
+    "seconds": 0.7549344579892932,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rv2dxz2m/program.dfy",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "15",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-rv2dxz2m/results.csv"
+    ],
+    "diagnostics": [],
+    "obligations": {
+      "Reverse (well-formedness)": "passed",
+      "Reverse (correctness)": "passed"
+    },
+    "executed": true,
+    "real_verifier": true,
+    "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nReverse (well-formedness),Passed,00:00:00.0310293,8798,0\nReverse (correctness),Passed,00:00:00.0063436,23151,0\n"
+  },
+  "toolchain": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+    "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+    "bundled_solver_candidates": {
+      "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+      "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.13",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": true,
+    "real_verifier": true
+  },
+  "model_calls": 0,
+  "excluded_from_agent_success": true
+}

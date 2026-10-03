@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"bodies\": {\"Release\": \"  if req > used { next := used; ok := false; }\\n  else { next := used - req; ok := true; }\", \"ReleaseTwice\": \"  var mid: int;\\n  mid, ok1 := Release(used, q1);\\n  next, ok2 := Release(used, q2);\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

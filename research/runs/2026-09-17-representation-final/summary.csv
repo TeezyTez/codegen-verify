@@ -1,0 +1,10 @@
+is_mock,audit_status,strategy,representation,unique_tasks,recorded_runs,completed_runs,replicate_ids,first_candidate_rate,budget_success_rate_recorded,model_calls,model_retry_calls,verifier_calls,real_verifier_runs,seconds,input_tokens,output_tokens,cost_usd,failure_events,stop_reasons
+True,pending,independent_sampling,checklist,5,5,5,[0],0,1,10,0,15,5,10.188285876000009,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,independent_sampling,natural,5,5,5,[0],0,1,10,0,15,5,10.377862291003112,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,independent_sampling,structured,5,5,5,[0],0,1,10,0,15,5,10.265172957995674,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,iterative_repair,checklist,5,5,5,[0],0,1,10,0,15,5,10.42697658399993,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,iterative_repair,natural,5,5,5,[0],0,1,10,0,15,5,10.23070974899747,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,iterative_repair,structured,5,5,5,[0],0,1,10,0,15,5,10.856214666993765,,,0.0,"{""verification_failed"":5}","{""verified"":5}"
+True,pending,single_shot,checklist,5,5,5,[0],0,0,5,0,5,5,3.461627624994435,,,0.0,"{""verification_failed"":5}","{""single_shot_complete"":5}"
+True,pending,single_shot,natural,5,5,5,[0],0,0,5,0,5,5,3.4621522500092397,,,0.0,"{""verification_failed"":5}","{""single_shot_complete"":5}"
+True,pending,single_shot,structured,5,5,5,[0],0,0,5,0,5,5,3.4316230839976924,,,0.0,"{""verification_failed"":5}","{""single_shot_complete"":5}"

@@ -1,0 +1,169 @@
+{
+  "id": "sequence_max",
+  "task_id": "sequence_max",
+  "source_project": "codegen-verify-representation-demo",
+  "family": "loop",
+  "task_family": "loop",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Hand-authored protocol demonstration, not a paper benchmark.",
+  "source": "Original synthetic example authored for this repository, 2026-09-17; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Maximum",
+      "signature": "method Maximum(s: seq<int>) returns (m: int)",
+      "header": "method Maximum(s: seq<int>) returns (m: int)\n  requires |s| > 0\n  ensures forall k :: 0 <= k < |s| ==> s[k] <= m\n  ensures exists k :: 0 <= k < |s| && m == s[k]"
+    }
+  ],
+  "reference": {
+    "Maximum": "m := s[0];\nvar i := 1;\nwhile i < |s|\n  invariant 1 <= i <= |s|\n  invariant forall k :: 0 <= k < i ==> s[k] <= m\n  invariant exists k :: 0 <= k < i && m == s[k]\n  decreases |s| - i\n{\n  if s[i] > m {\n    m := s[i];\n  }\n  i := i + 1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails at least one fixed postcondition for a permitted input.",
+      "bodies": {
+        "Maximum": "m := s[0];"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Maximum",
+      "inputs": [
+        [
+          2,
+          5,
+          1
+        ]
+      ],
+      "outputs": [
+        5
+      ]
+    },
+    {
+      "method": "Maximum",
+      "inputs": [
+        [
+          -8,
+          -3,
+          -6
+        ]
+      ],
+      "outputs": [
+        -3
+      ]
+    },
+    {
+      "method": "Maximum",
+      "inputs": [
+        [
+          0
+        ]
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "rule": {
+    "name": "sequence_max",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input sequence s is nonempty. [R2] Every element of s is at most the result m. [R3] The result m equals some element of s.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input sequence s is nonempty."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "Every element of s is at most the result m."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The result m equals some element of s."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "length(s)",
+          "relation": "greater_than",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "each element of s",
+          "relation": "less_or_equal",
+          "value": "m"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "m",
+          "relation": "member_of",
+          "value": "s"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input sequence s is nonempty.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Maximum",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] Every element of s is at most the result m.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Maximum",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The result m equals some element of s.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "Maximum",
+        "header_line": 4
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Maximum(s: seq<int>) returns (m: int)\n  requires |s| > 0\n  ensures forall k :: 0 <= k < |s| ==> s[k] <= m\n  ensures exists k :: 0 <= k < |s| && m == s[k]\n{\n  <generate body: Maximum>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "f846af7f02efcec6223d4133e47124d1ce8fdc0d7e8f047b16c824dcf2c6b278",
+    "checklist": "83a001c0c39eb4829e8f6daafa6dad22474e3594bb2931dd1e8ccd35a0916b37",
+    "structured": "7758b05662e58e4cb78c898df8607da7c54a369a33644f927d5af468ea26c04b",
+    "spec": "6410afd3ef1b2747c71de454f3fc5148430b41f385fb8b82aaf9eacecf7f1b72",
+    "template": "dbc82c118af4ed21fee54f28d5dbd5d029cb8e6c1bbfd624634d5b65098df95e",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "5a97b2d7173fe14f1fcd5011331aa9adeaaf50ace8b6105a08fc265cd44e0041"
+  }
+}

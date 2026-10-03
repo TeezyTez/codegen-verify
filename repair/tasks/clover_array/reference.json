@@ -1,0 +1,1 @@
+{"array_invariants": "    invariant 0<=i<=a.Length\n    invariant forall j:: 0 <= j< i==> a[j] + b[j]==c[j]\n"}

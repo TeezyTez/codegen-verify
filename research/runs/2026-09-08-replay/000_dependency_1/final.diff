@@ -1,0 +1,24 @@
+--- 
+
++++ 
+
+@@ -2,7 +2,7 @@
+
+   ensures r == x + 1
+ {
+ // repair-begin increment_body
+-  r := x - 1;
++  r := x + 1;
+ // repair-end increment_body
+ }
+ 
+@@ -10,7 +10,7 @@
+
+   ensures r == 2 * x
+ {
+ // repair-begin double_body
+-  r := x;
++  r := 2 * x;
+ // repair-end double_body
+ }
+ 

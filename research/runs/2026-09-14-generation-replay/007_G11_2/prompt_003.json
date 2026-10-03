@@ -1,0 +1,100 @@
+{
+  "task": {
+    "id": "reserve_release",
+    "description": "Reserve req, then release that same req only if reservation succeeded. Final occupancy equals original.",
+    "methods": [
+      {
+        "name": "Reserve",
+        "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+      },
+      {
+        "name": "Release",
+        "header": "method Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0"
+      },
+      {
+        "name": "ReserveRelease",
+        "header": "method ReserveRelease(used: int, req: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures next == used"
+      }
+    ],
+    "rule": {
+      "name": "reserve_release",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "bodies",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "skeleton": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap\n{\n  <generate body: Reserve>\n}\n\nmethod Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0\n{\n  <generate body: Release>\n}\n\nmethod ReserveRelease(used: int, req: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures next == used\n{\n  <generate body: ReserveRelease>\n}\n",
+  "current_source": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap\n{\n  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }\n}\n\nmethod Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0\n{\n  if req > used { next := used; ok := false; }\n  else { next := used - req; ok := true; }\n}\n\nmethod ReserveRelease(used: int, req: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures next == used\n{\n  var ok: bool;\n  next, ok := Reserve(used, req, cap);\n}\n",
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    },
+    {
+      "action": "generate",
+      "evidence": {
+        "status": "verification_failed",
+        "structure": "passed",
+        "formal": "verification_failed",
+        "behavioral": "not_run",
+        "verifier_calls": 1,
+        "runtime_calls": 0,
+        "details": {
+          "formal": {
+            "status": "verification_failed",
+            "diagnostics": [
+              {
+                "error_type": "postcondition",
+                "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/program.dfy(25,0): Error: a postcondition could not be proved on this return path",
+                "location_line": 25,
+                "location_col": 0,
+                "related_spec": "  ensures next == used",
+                "subtype": "postcondition",
+                "source": "{",
+                "related_source": "  ensures next == used",
+                "related_location_line": 24,
+                "related_location_col": 15
+              }
+            ],
+            "obligations": {
+              "Reserve (correctness)": "passed",
+              "ReserveRelease (correctness)": "failed",
+              "Release (correctness)": "passed"
+            },
+            "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/program.dfy(25,0): Error: a postcondition could not be proved on this return path\n   |\n25 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/program.dfy(24,15): Related location: this is the postcondition that could not be proved\n   |\n24 |   ensures next == used\n   |                ^^\n\n\nDafny program verifier finished with 2 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/results.csv\n",
+            "returncode": 4,
+            "seconds": 0.6963924579977174,
+            "command": [
+              "/Users/zhangfangying/.local/bin/dafny",
+              "verify",
+              "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/program.dfy",
+              "--allow-warnings",
+              "--cores",
+              "1",
+              "--verification-time-limit",
+              "20",
+              "--log-format",
+              "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-zazaz0xc/results.csv"
+            ]
+          }
+        },
+        "seconds": 0.6968107079956098
+      },
+      "regression": {
+        "confirmed": [],
+        "lost_observability": [],
+        "new_failures": [
+          "ReserveRelease (correctness)"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "task": {
+    "id": "refill",
+    "description": "Repeated unit increments stop after steps or at cap; any equivalent terminating implementation is allowed.",
+    "methods": [
+      {
+        "name": "Refill",
+        "header": "method Refill(used: int, steps: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && steps >= 0\n  ensures next == (if used + steps <= cap then used + steps else cap)"
+      }
+    ],
+    "rule": {
+      "name": "refill",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "bodies",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "skeleton": "method Refill(used: int, steps: int, cap: int) returns (next: int)\n  requires 0 <= used <= cap && steps >= 0\n  ensures next == (if used + steps <= cap then used + steps else cap)\n{\n  <generate body: Refill>\n}\n",
+  "current_source": null,
+  "recent_actions": []
+}

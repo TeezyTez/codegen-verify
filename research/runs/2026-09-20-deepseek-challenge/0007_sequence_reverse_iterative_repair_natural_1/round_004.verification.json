@@ -1,0 +1,51 @@
+{
+  "status": "verification_failed",
+  "stdout": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy(4,0): Error: a postcondition could not be proved on this return path\n  |\n4 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy(2,14): Related location: this is the postcondition that could not be proved\n  |\n2 |   ensures |r| == |s|\n  |               ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy(9,48): Error: index out of range\n  |\n9 |   invariant forall k :: 0 <= k < i ==> r[k] == s[|s| - 1 - k]\n  |                                                 ^\n\n\nDafny program verifier finished with 1 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/results.csv\n",
+  "stderr": "",
+  "returncode": 4,
+  "seconds": 0.7775399170059245,
+  "command": [
+    "/Users/zhangfangying/.local/bin/dafny",
+    "verify",
+    "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy",
+    "--cores",
+    "1",
+    "--verification-time-limit",
+    "15",
+    "--log-format",
+    "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/results.csv"
+  ],
+  "diagnostics": [
+    {
+      "error_type": "postcondition",
+      "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy(4,0): Error: a postcondition could not be proved on this return path",
+      "location_line": 4,
+      "location_col": 0,
+      "related_spec": "  ensures |r| == |s|",
+      "subtype": "postcondition",
+      "source": "{",
+      "related_source": "  ensures |r| == |s|",
+      "related_location_line": 2,
+      "related_location_col": 14
+    },
+    {
+      "error_type": "out_of_range",
+      "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-y5v5vm0h/program.dfy(9,48): Error: index out of range",
+      "location_line": 9,
+      "location_col": 48,
+      "related_spec": "",
+      "subtype": "out_of_range",
+      "source": "  invariant forall k :: 0 <= k < i ==> r[k] == s[|s| - 1 - k]",
+      "related_source": "",
+      "related_location_line": 0,
+      "related_location_col": 0
+    }
+  ],
+  "obligations": {
+    "Reverse (well-formedness)": "passed",
+    "Reverse (correctness)": "failed"
+  },
+  "executed": true,
+  "real_verifier": true,
+  "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nReverse (well-formedness),Passed,00:00:00.0281166,8798,0\nReverse (correctness),Failed,00:00:00.0165653,21028,0\n"
+}

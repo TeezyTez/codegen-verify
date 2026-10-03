@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "strategies": [
+    "iterative_repair"
+  ],
+  "representations": [
+    "natural"
+  ],
+  "replicates": 3,
+  "seed": 17,
+  "budget": {
+    "model_calls": 4,
+    "verifier_calls": 5,
+    "output_tokens": 4096,
+    "total_tokens": 48000,
+    "cost_usd": 0.05,
+    "verification_seconds": 15,
+    "model_seconds": 60,
+    "task_seconds": 180
+  },
+  "model": {
+    "kind": "deepseek",
+    "name": "deepseek-flash",
+    "base_url": "https://api.deepseek.com",
+    "api_key_env": "DEEPSEEK_API_KEY",
+    "sampling": {
+      "temperature": 0.2
+    },
+    "send_seed": false,
+    "thinking": "disabled",
+    "output_token_parameter": "max_tokens",
+    "input_usd_per_million": 0.3,
+    "output_usd_per_million": 1.2,
+    "price_source": "https://api-docs.deepseek.com/quick_start/pricing/ checked 2026-09-20; peak cache-miss input $0.30/M and output $1.20/M; conservative estimate, ignores cache/off-peak discount"
+  }
+}

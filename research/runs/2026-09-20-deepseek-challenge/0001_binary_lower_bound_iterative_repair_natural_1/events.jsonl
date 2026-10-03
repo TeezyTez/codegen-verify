@@ -1,0 +1,5 @@
+{"elapsed":0.0004007499956060201,"messages_sha256":"a8600014b63b6a0ca01fc09d652ebc479ff3343889b9e9fe4eb70129e28cfd50","stage":"model_call_started","step":1}
+{"elapsed":1.2557871250028256,"error":null,"finish_reason":"stop","stage":"model_response_received","step":1}
+{"elapsed":2.0310753749945434,"executed":true,"label":"round_001","real_verifier":true,"source_sha256":"311a8254cf3924e0e3c0bfedae69300d936806eb96ebf8d5bfb166a7601b93d8","stage":"verification","status":"verified"}
+{"elapsed":2.8183114169951295,"executed":true,"label":"final","real_verifier":true,"source_sha256":"311a8254cf3924e0e3c0bfedae69300d936806eb96ebf8d5bfb166a7601b93d8","stage":"verification","status":"verified"}
+{"elapsed":2.8201473749941215,"model_calls":1,"stage":"run_finished","stop_reason":"verified","success":true,"verifier_calls":2}

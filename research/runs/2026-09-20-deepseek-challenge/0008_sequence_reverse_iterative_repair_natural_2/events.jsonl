@@ -1,0 +1,13 @@
+{"elapsed":0.00030908299959264696,"messages_sha256":"a70bf5f918b591b5c840649ebbee78eb886adf492966d6c8701c5d4b5523b12e","stage":"model_call_started","step":1}
+{"elapsed":0.9600090830062982,"error":null,"finish_reason":"stop","stage":"model_response_received","step":1}
+{"elapsed":1.7247623750008643,"executed":true,"label":"round_001","real_verifier":true,"source_sha256":"e77d139ad46d150def0b0a6fe22ad88894af1e8c3ceec9d84cc8cdabb23f4670","stage":"verification","status":"verification_failed"}
+{"elapsed":1.7253936659981264,"messages_sha256":"5a2377a21359bf2edfe34e98fb9082a5dd2f859d7dc13bc6058d097e26aa85fc","stage":"model_call_started","step":2}
+{"elapsed":2.8507462910056347,"error":null,"finish_reason":"stop","stage":"model_response_received","step":2}
+{"elapsed":3.6127127910003765,"executed":true,"label":"round_002","real_verifier":true,"source_sha256":"e77d139ad46d150def0b0a6fe22ad88894af1e8c3ceec9d84cc8cdabb23f4670","stage":"verification","status":"verification_failed"}
+{"elapsed":3.6133429579931544,"messages_sha256":"5a2377a21359bf2edfe34e98fb9082a5dd2f859d7dc13bc6058d097e26aa85fc","stage":"model_call_started","step":3}
+{"elapsed":4.727898750003078,"error":null,"finish_reason":"stop","stage":"model_response_received","step":3}
+{"elapsed":5.5460486660012975,"executed":true,"label":"round_003","real_verifier":true,"source_sha256":"e77d139ad46d150def0b0a6fe22ad88894af1e8c3ceec9d84cc8cdabb23f4670","stage":"verification","status":"verification_failed"}
+{"elapsed":5.546648207993712,"messages_sha256":"5a2377a21359bf2edfe34e98fb9082a5dd2f859d7dc13bc6058d097e26aa85fc","stage":"model_call_started","step":4}
+{"elapsed":6.569341583002824,"error":null,"finish_reason":"stop","stage":"model_response_received","step":4}
+{"elapsed":7.356638708006358,"executed":true,"label":"round_004","real_verifier":true,"source_sha256":"e77d139ad46d150def0b0a6fe22ad88894af1e8c3ceec9d84cc8cdabb23f4670","stage":"verification","status":"verification_failed"}
+{"elapsed":7.35722624999471,"model_calls":4,"stage":"run_finished","stop_reason":"model_budget_exhausted","success":false,"verifier_calls":4}

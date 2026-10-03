@@ -1,0 +1,3 @@
+{
+  "Clamp": "if request <= cap {\n  r := request;\n} else {\n  r := cap;\n}"
+}

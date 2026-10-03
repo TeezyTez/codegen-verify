@@ -1,0 +1,7 @@
+{
+  "id": "counter-proof", "mode": "proof", "source_project": "codegen-verify-synthetic",
+  "split": "dev", "failure_type": "missing_loop_invariant", "origin": "missing_annotation",
+  "provenance": "Hand-authored local three-method diagnostic fixture; not a public benchmark or real bug.",
+  "trusted_assumptions": [],
+  "regions": {"count_invariants": {"kind": "invariants", "owner": "Count"}}
+}

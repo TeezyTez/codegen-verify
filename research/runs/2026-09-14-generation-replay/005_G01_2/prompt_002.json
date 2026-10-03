@@ -1,0 +1,33 @@
+{
+  "task": {
+    "id": "remaining",
+    "description": "Return remaining capacity; do not return occupied capacity.",
+    "methods": [
+      {
+        "name": "Remaining",
+        "header": "method Remaining(used: int, cap: int) returns (r: int)\n  requires 0 <= used <= cap\n  ensures r == cap - used"
+      }
+    ],
+    "rule": {
+      "name": "remaining",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "full",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions.",
+  "current_source": null,
+  "recent_actions": [
+    {
+      "action": "rejected",
+      "reason": "target contract/declaration change or proof bypass"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "id": "remaining",
+  "task_id": "remaining",
+  "source_project": "codegen-verify-representation-demo",
+  "family": "arithmetic",
+  "task_family": "arithmetic",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Hand-authored protocol demonstration, not a paper benchmark.",
+  "source": "Original synthetic example authored for this repository, 2026-09-17; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Remaining",
+      "signature": "method Remaining(cap: int, used: int) returns (r: int)",
+      "header": "method Remaining(cap: int, used: int) returns (r: int)\n  requires 0 <= used <= cap\n  ensures r == cap - used"
+    }
+  ],
+  "reference": {
+    "Remaining": "r := cap - used;"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails at least one fixed postcondition for a permitted input.",
+      "bodies": {
+        "Remaining": "r := cap + used;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Remaining",
+      "inputs": [
+        5,
+        2
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Remaining",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "Remaining",
+      "inputs": [
+        5,
+        5
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "rule": {
+    "name": "remaining",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input used is between zero and cap, inclusive. [R2] The result r equals cap minus used.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input used is between zero and cap, inclusive."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result r equals cap minus used."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "used",
+          "relation": "in_closed_interval",
+          "value": "[0, cap]"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "equals",
+          "value": "cap - used"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input used is between zero and cap, inclusive.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Remaining",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result r equals cap minus used.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Remaining",
+        "header_line": 3
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Remaining(cap: int, used: int) returns (r: int)\n  requires 0 <= used <= cap\n  ensures r == cap - used\n{\n  <generate body: Remaining>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "6222a1a15de9e98d6f14d6904f9634860a0f46628496e742807dfa338222e05a",
+    "checklist": "378aa9a001b1045b106644c00daa67d5d60e09f21e270881c51776a2142654cd",
+    "structured": "8181f2194b5933bc77326d935232c1c3baf90979718e64588ecb1a7c5dbf90fd",
+    "spec": "6ff4b294787ad868f9553373c334d5e3e117ca3b02220ce233a74b98dd74a099",
+    "template": "29268efa1a4819ae685d63bb9e84a93ad3d75e42b3887334ad87ae13a321b589",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "5082aa75dd698737ae9ff9799a9c03b0545c3daa3b6a2f93f2968a0ac7f25bfe"
+  }
+}

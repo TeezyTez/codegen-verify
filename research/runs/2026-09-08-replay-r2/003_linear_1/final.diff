@@ -1,0 +1,13 @@
+--- 
+
++++ 
+
+@@ -8,6 +8,7 @@
+
+     decreases n - i
+ // repair-begin count_invariants
+     invariant 0 <= i <= n
++    invariant r == i
+ // repair-end count_invariants
+   {
+     i := i + 1;

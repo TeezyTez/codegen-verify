@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Release(used: int, req: int) returns (next: int, ok: bool)\\n  requires used >= 0 && req >= 0\\n  ensures ok == (req <= used)\\n  ensures next == (if ok then used - req else used)\\n  ensures next >= 0\\n{\\n  if req > used { next := used; ok := false; }\\n  else { next := used - req; ok := true; }\\n}\\n\\nmethod ReleaseTwice(used: int, q1: int, q2: int) returns (next: int, ok1: bool, ok2: bool)\\n  requires used >= 0 && q1 >= 0 && q2 >= 0\\n  ensures ok1 == (q1 <= used)\\n  ensures ok2 == (q2 <= (if ok1 then used - q1 else used))\\n  ensures next == (if ok1 then used - q1 else used) - (if ok2 then q2 else 0)\\n  ensures next >= 0\\n{\\n  var mid: int;\\n  mid, ok1 := Release(used, q1);\\n  next, ok2 := Release(used, q2);\\n}\\n\"}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

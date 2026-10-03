@@ -1,0 +1,69 @@
+{
+  "id": "release",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "guarded_update",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Release only when req does not exceed used; rejection changes no state.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Release",
+      "header": "method Release(used: int, req: int) returns (next: int, ok: bool)\n  requires used >= 0 && req >= 0\n  ensures ok == (req <= used)\n  ensures next == (if ok then used - req else used)\n  ensures next >= 0"
+    }
+  ],
+  "rule": {
+    "name": "release",
+    "version": 1
+  },
+  "reference": {
+    "Release": "  if req > used { next := used; ok := false; }\n  else { next := used - req; ok := true; }"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Releasing more than used creates negative occupancy.",
+      "bodies": {
+        "Release": "  next := used - req; ok := true;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Release",
+      "inputs": [
+        7,
+        7
+      ],
+      "outputs": [
+        0,
+        true
+      ]
+    },
+    {
+      "method": "Release",
+      "inputs": [
+        3,
+        5
+      ],
+      "outputs": [
+        3,
+        false
+      ]
+    },
+    {
+      "method": "Release",
+      "inputs": [
+        0,
+        0
+      ],
+      "outputs": [
+        0,
+        true
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

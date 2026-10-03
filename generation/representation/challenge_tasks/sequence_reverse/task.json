@@ -1,0 +1,150 @@
+{
+  "id": "sequence_reverse",
+  "task_id": "sequence_reverse",
+  "source_project": "codegen-verify-challenge-demo",
+  "family": "sequence_loop",
+  "task_family": "sequence_loop",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Exploratory challenge task, not a held-out paper benchmark.",
+  "source": "Original synthetic example authored for this repository on 2026-09-20; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Reverse",
+      "signature": "method Reverse(s: seq<int>) returns (r: seq<int>)",
+      "header": "method Reverse(s: seq<int>) returns (r: seq<int>)\n  ensures |r| == |s|\n  ensures forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k]"
+    }
+  ],
+  "reference": {
+    "Reverse": "r := [];\nvar i := |s|;\nwhile i > 0\n  invariant 0 <= i <= |s|\n  invariant |r| == |s| - i\n  invariant forall k :: 0 <= k < |r| ==> r[k] == s[|s| - 1 - k]\n  decreases i\n{\n  i := i - 1;\n  r := r + [s[i]];\n}"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails a fixed postcondition for a permitted input.",
+      "bodies": {
+        "Reverse": "r := s;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Reverse",
+      "inputs": [
+        []
+      ],
+      "outputs": [
+        []
+      ]
+    },
+    {
+      "method": "Reverse",
+      "inputs": [
+        [
+          1,
+          2,
+          3
+        ]
+      ],
+      "outputs": [
+        [
+          3,
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "method": "Reverse",
+      "inputs": [
+        [
+          5
+        ]
+      ],
+      "outputs": [
+        [
+          5
+        ]
+      ]
+    }
+  ],
+  "rule": {
+    "name": "sequence_reverse",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The result sequence r has the same length as s, including when s is empty. [R2] For every valid index k of s, r[k] equals s[length(s) - 1 - k].",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The result sequence r has the same length as s, including when s is empty."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "For every valid index k of s, r[k] equals s[length(s) - 1 - k]."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "postcondition",
+          "subject": "length(r)",
+          "relation": "equals",
+          "value": "length(s)"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r[k] for every valid k of s",
+          "relation": "equals",
+          "value": "s[length(s) - 1 - k]"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The result sequence r has the same length as s, including when s is empty.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Reverse",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] For every valid index k of s, r[k] equals s[length(s) - 1 - k].",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Reverse",
+        "header_line": 3
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Reverse(s: seq<int>) returns (r: seq<int>)\n  ensures |r| == |s|\n  ensures forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k]\n{\n  <generate body: Reverse>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "60fe519da5c45087767323a579c4a188f43c520e5d44a974424c7155c47ccf35",
+    "checklist": "87c01086366a1f9204c8d3687839c736c97210202847fa062a30a1e660be9f39",
+    "structured": "32b8e25adee2b2bc5c6d7b0ba09c027fb698c2c65e45ff8dfc261d805579a19c",
+    "spec": "ab6b57802f0c2417fceff405b27ca6b0eadf121496968eb957c3995fec98bb28",
+    "template": "3b7d349e58cd41d5cbc9a25540f47872e8c30a2724140e5edfb3f186e9a6cef5",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "d2b10eaa834d03250c1906ef16055d7a70cc46905f8489aaf7c9af574cff4167"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "task": {
+    "id": "snapshot",
+    "description": "Return both capacities in their original order without swapping fields.",
+    "methods": [
+      {
+        "name": "Snapshot",
+        "header": "method Snapshot(left: int, right: int) returns (a: int, b: int)\n  ensures a == left\n  ensures b == right"
+      }
+    ],
+    "rule": {
+      "name": "snapshot",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "none",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions."
+}

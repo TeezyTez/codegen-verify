@@ -1,0 +1,118 @@
+{
+  "task": {
+    "id": "clover-double-mutated",
+    "mode": "implementation",
+    "regions": {
+      "arithmetic": {
+        "kind": "implementation",
+        "owner": "DoubleQuadruple"
+      }
+    }
+  },
+  "source": "// Adapted from DafnyBench/Clover, Apache-2.0; see research/THIRD_PARTY.md.\n// Modified 2026-09-08: operator mutation, edit markers, synthetic Consumer.\nmethod DoubleQuadruple(x: int) returns (a: int, b: int)\n  ensures a == 2 * x && b == 4 * x\n{\n// repair-begin arithmetic\n  a := 2 + x;\n  b := 2 * a;\n// repair-end arithmetic\n}\n\nmethod Consumer(x: int) returns (r: int)\n  ensures r == 6 * x\n{\n  var a, b := DoubleQuadruple(x);\n  r := a + b;\n}\n",
+  "tools": [
+    "read",
+    "patch",
+    "verify",
+    "stop"
+  ],
+  "budget_remaining": {
+    "seconds": 178.90046562500356,
+    "model_calls": 6,
+    "verifier_calls": 9
+  },
+  "verifier": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/program.dfy(5,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 5,
+        "location_col": 0,
+        "related_spec": "  ensures a == 2 * x && b == 4 * x",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures a == 2 * x && b == 4 * x",
+        "related_location_line": 4,
+        "related_location_col": 12
+      }
+    ],
+    "obligations": {
+      "DoubleQuadruple (correctness)": "failed",
+      "Consumer (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/program.dfy(5,0): Error: a postcondition could not be proved on this return path\n  |\n5 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/program.dfy(4,12): Related location: this is the postcondition that could not be proved\n  |\n4 |   ensures a == 2 * x && b == 4 * x\n  |             ^^\n\n\nDafny program verifier finished with 1 verified, 1 error\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.715101333000348,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-kty4hjl6/results.csv"
+    ]
+  },
+  "recent_actions": [],
+  "dependencies": {
+    "nodes": {
+      "DoubleQuadruple": {
+        "kind": "method",
+        "start_line": 1,
+        "end_line": 11,
+        "source": "\n\nmethod DoubleQuadruple(x: int) returns (a: int, b: int)\n  ensures a == 2 * x && b == 4 * x\n{\n\n  a := 2 + x;\n  b := 2 * a;\n\n}\n"
+      },
+      "Consumer": {
+        "kind": "method",
+        "start_line": 11,
+        "end_line": 18,
+        "source": "\nmethod Consumer(x: int) returns (r: int)\n  ensures r == 6 * x\n{\n  var a, b := DoubleQuadruple(x);\n  r := a + b;\n}\n"
+      }
+    },
+    "edges": [
+      {
+        "from": "DoubleQuadruple",
+        "to": "DoubleQuadruple",
+        "kind": "syntactic_call",
+        "evidence": "conservative_lexical_approximation"
+      },
+      {
+        "from": "Consumer",
+        "to": "Consumer",
+        "kind": "syntactic_call",
+        "evidence": "conservative_lexical_approximation"
+      },
+      {
+        "from": "Consumer",
+        "to": "DoubleQuadruple",
+        "kind": "syntactic_call",
+        "evidence": "conservative_lexical_approximation"
+      }
+    ],
+    "reported_failures": [
+      {
+        "line": 5,
+        "owners": [
+          "DoubleQuadruple"
+        ],
+        "type": "postcondition"
+      }
+    ],
+    "granularity": "callable verification batches",
+    "confirmed_logical_edges": [],
+    "limitations": "Top-level, unique unqualified names only; no alias/dynamic dispatch/SMT cores."
+  },
+  "suggested_repair": {
+    "region": "arithmetic",
+    "action": "implementation",
+    "ranking": [
+      "arithmetic"
+    ],
+    "rule": "failed-first; unresolved referenced callees first; fan-in tie-break"
+  },
+  "strategy": "Propose the next repair candidate."
+}

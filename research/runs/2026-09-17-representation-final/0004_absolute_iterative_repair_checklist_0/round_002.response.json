@@ -1,0 +1,12 @@
+{
+  "text": "{\"bodies\": {\"Absolute\": \"if x >= 0 {\\n  r := x;\\n} else {\\n  r := -x;\\n}\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "error": null,
+  "usage_source": "not_applicable_mock",
+  "request_parameters": {
+    "max_output_tokens": 2048,
+    "seed_sent": null
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "id": "absolute",
+  "task_id": "absolute",
+  "source_project": "codegen-verify-representation-demo",
+  "family": "arithmetic",
+  "task_family": "arithmetic",
+  "split": "dev",
+  "origin": "synthetic_demo",
+  "description": "Hand-authored protocol demonstration, not a paper benchmark.",
+  "source": "Original synthetic example authored for this repository, 2026-09-17; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Absolute",
+      "signature": "method Absolute(x: int) returns (r: int)",
+      "header": "method Absolute(x: int) returns (r: int)\n  ensures r >= 0\n  ensures r == (if x >= 0 then x else -x)"
+    }
+  ],
+  "reference": {
+    "Absolute": "if x >= 0 {\n  r := x;\n} else {\n  r := -x;\n}"
+  },
+  "mutants": [
+    {
+      "id": "semantic_error",
+      "violation": "Fails at least one fixed postcondition for a permitted input.",
+      "bodies": {
+        "Absolute": "r := x;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Absolute",
+      "inputs": [
+        -3
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "Absolute",
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "Absolute",
+      "inputs": [
+        7
+      ],
+      "outputs": [
+        7
+      ]
+    }
+  ],
+  "rule": {
+    "name": "absolute",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The result r is nonnegative. [R2] The result r equals x when x is nonnegative, and equals its negation otherwise.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The result r is nonnegative."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result r equals x when x is nonnegative, and equals its negation otherwise."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "equals",
+          "value": "x if x >= 0; otherwise -x"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The result r is nonnegative.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Absolute",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result r equals x when x is nonnegative, and equals its negation otherwise.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Absolute",
+        "header_line": 3
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "template": "method Absolute(x: int) returns (r: int)\n  ensures r >= 0\n  ensures r == (if x >= 0 then x else -x)\n{\n  <generate body: Absolute>\n}\n",
+  "shared_definitions": "",
+  "asset_hashes": {
+    "natural": "22a110f139605bf5bc0cb36ef79474df98ecc6e61f1c31c871666ec38c7989bf",
+    "checklist": "7cd9a50c6d5179ed6ff3417635df63a932229b2c0ccab15d668e0d50658e36de",
+    "structured": "84268438f75bdb709d7b8253b6998c00df0505323b2ed9d48349a7ce9144b591",
+    "spec": "6bff3044cce1744cb892d7863d580cd181f3f4f84ce8273b9314b065fd5c88e9",
+    "template": "d2b80779fbb9f60d31c3aa59526ce24cbe1dac22ae839b99cabe7300f61486f6",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "5b32f406d4d914453947a7123bb1f5165cd4ce7d826f1efb4a83ab37a796b0fe"
+  }
+}

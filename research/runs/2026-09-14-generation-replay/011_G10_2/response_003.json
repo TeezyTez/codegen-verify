@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"bodies\": {\"Transfer\": \"  if req <= a && b + req <= cap {\\n    na := a - req; nb := b + req; ok := true;\\n  } else { na := a; nb := b; ok := false; }\"}}",
+  "input_tokens": null,
+  "output_tokens": null,
+  "cost_usd": 0.0,
+  "usage_source": "not_applicable_replay"
+}

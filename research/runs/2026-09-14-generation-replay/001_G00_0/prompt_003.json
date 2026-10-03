@@ -1,0 +1,26 @@
+{
+  "task": {
+    "id": "partial",
+    "description": "Grant as much as fits, updating state only by the granted amount.",
+    "methods": [
+      {
+        "name": "Partial",
+        "header": "method Partial(used: int, req: int, cap: int) returns (next: int, grant: int)\n  requires 0 <= used <= cap && req >= 0\n  ensures grant == (if req <= cap - used then req else cap - used)\n  ensures next == used + grant\n  ensures 0 <= next <= cap"
+      }
+    ],
+    "rule": {
+      "name": "partial",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "tools": [
+    "read",
+    "generate",
+    "verify",
+    "stop"
+  ],
+  "output_mode": "source",
+  "feedback_policy": "none",
+  "strategy": "Generate code satisfying the fixed input. Decide your own tool actions."
+}

@@ -1,0 +1,7 @@
+{
+  "text": "{\"action\": \"generate\", \"source\": \"method Snapshot(left: int, right: int) returns (a: int, b: int)\\n  ensures a == left\\n  ensures b == right\\n{\\n  a := left; b := right;\\n}\\n\"}",
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": 0,
+  "usage_source": "not_applicable_template"
+}

@@ -1,0 +1,105 @@
+{
+  "protocol": "fixed_contract_repair_v1",
+  "task_id": "arithmetic-implementation",
+  "source_project": "codegen-verify-synthetic",
+  "split": "dev",
+  "mode": "implementation",
+  "failure_type": "arithmetic_mutation",
+  "origin": "artificial_mutation",
+  "condition": "no_dependencies",
+  "replicate": 1,
+  "model_kind": "scripted_replay",
+  "research_eligible": false,
+  "success": true,
+  "stop_reason": "accepted",
+  "usage": {
+    "model_calls": 3,
+    "verifier_calls": 4,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 21079,
+    "unknown_usage_calls": 3,
+    "cost_usd": 0.0
+  },
+  "regressions": 1,
+  "lost_observability": 0,
+  "boundary_rejections": 1,
+  "initial": {
+    "status": "verification_failed",
+    "diagnostics": [
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(3,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 3,
+        "location_col": 0,
+        "related_spec": "  ensures r == x + 1",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == x + 1",
+        "related_location_line": 2,
+        "related_location_col": 12
+      },
+      {
+        "error_type": "postcondition",
+        "message": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(11,0): Error: a postcondition could not be proved on this return path",
+        "location_line": 11,
+        "location_col": 0,
+        "related_spec": "  ensures r == 2 * x",
+        "subtype": "postcondition",
+        "source": "{",
+        "related_source": "  ensures r == 2 * x",
+        "related_location_line": 10,
+        "related_location_col": 12
+      }
+    ],
+    "obligations": {
+      "Increment (correctness)": "failed",
+      "Double (correctness)": "failed",
+      "Compose (correctness)": "passed",
+      "Stable (correctness)": "passed"
+    },
+    "raw": "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(3,0): Error: a postcondition could not be proved on this return path\n  |\n3 | {\n  | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(2,12): Related location: this is the postcondition that could not be proved\n  |\n2 |   ensures r == x + 1\n  |             ^^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(11,0): Error: a postcondition could not be proved on this return path\n   |\n11 | {\n   | ^\n\n/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy(10,12): Related location: this is the postcondition that could not be proved\n   |\n10 |   ensures r == 2 * x\n   |             ^^\n\n\nDafny program verifier finished with 2 verified, 2 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/results.csv\n",
+    "returncode": 4,
+    "seconds": 0.7791127090022201,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-1w6mxvkc/results.csv"
+    ]
+  },
+  "final": {
+    "status": "passed",
+    "diagnostics": [],
+    "obligations": {
+      "Increment (correctness)": "passed",
+      "Compose (correctness)": "passed",
+      "Double (correctness)": "passed",
+      "Stable (correctness)": "passed"
+    },
+    "raw": "\nDafny program verifier finished with 4 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ndwltyxi/results.csv\n",
+    "returncode": 0,
+    "seconds": 0.7798784580008942,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ndwltyxi/program.dfy",
+      "--allow-warnings",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "20",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/contract-repair-ndwltyxi/results.csv"
+    ]
+  },
+  "final_sha256": "4a7695df53ff488df2acb203effb06c56e2b2f161806c906b24dedf51fb478cf",
+  "seconds": 3.5109625839977525,
+  "changed_lines": 4
+}

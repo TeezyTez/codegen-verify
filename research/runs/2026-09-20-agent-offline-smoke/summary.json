@@ -1,0 +1,53 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "planned_runs": 1,
+  "recorded_runs": 1,
+  "missing_runs": [],
+  "conditions": [
+    {
+      "is_mock": true,
+      "audit_status": "pending",
+      "strategy": "iterative_repair",
+      "representation": "natural",
+      "config_sha256": "4d3c56c8469efcc433f16a3c6f79274a9c5753c5e6e9ba955a0d4a004f6b1853",
+      "unique_tasks": 1,
+      "recorded_runs": 1,
+      "completed_runs": 1,
+      "replicate_ids": [
+        0
+      ],
+      "successes": 1,
+      "first_candidate_rate": 0,
+      "budget_success_rate_recorded": 1,
+      "task_macro_success_rate": 1,
+      "real_verifier_runs": 1,
+      "failure_events": {
+        "verification_failed": 1
+      },
+      "stop_reasons": {
+        "verified": 1
+      },
+      "seconds": 2.1709839169925544,
+      "cost_usd": 0.0,
+      "by_task": {
+        "absolute": {
+          "runs": 1,
+          "replicate_ids": [
+            0
+          ],
+          "successes": 1,
+          "success_fraction": 1
+        }
+      },
+      "model_calls": 2,
+      "model_retry_calls": 0,
+      "verifier_calls": 3,
+      "unknown_usage_calls": 2,
+      "input_tokens": null,
+      "output_tokens": null
+    }
+  ],
+  "interpretation": "Descriptive only; task repeats are correlated. Mock outcomes are fixture diagnostics, not model evidence.",
+  "incomplete_runs": 0,
+  "complete_matrix": true
+}

@@ -1,0 +1,10 @@
+{
+  "protocol": "fixed_contract_repair_v1",
+  "conditions": ["independent", "linear", "generic_agent", "dependency", "no_dependencies", "no_schedule"],
+  "replicates": 3,
+  "limits": {"model_calls": 6, "verifier_calls": 10, "total_tokens": 48000, "output_tokens": 2048, "seconds": 180},
+  "selection": "all task.json manifests under the supplied task root; group split validation required",
+  "tuning": "dev only; public frozen test set must be curated before confirmatory runs",
+  "prices_usd_per_million": {"input": null, "output": null},
+  "inference": "same model, temperature and tool privileges in all conditions; repeats are not provider-controlled seeds"
+}

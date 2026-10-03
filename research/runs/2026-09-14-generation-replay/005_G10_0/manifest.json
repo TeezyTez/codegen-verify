@@ -1,0 +1,79 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "task_sha256": "6a4698d490b20cf12be5ca7b723c4e2c76586db8d4c689f1a1eef2a00bbe6208",
+  "task": {
+    "id": "remaining",
+    "description": "Return remaining capacity; do not return occupied capacity.",
+    "methods": [
+      {
+        "name": "Remaining",
+        "header": "method Remaining(used: int, cap: int) returns (r: int)\n  requires 0 <= used <= cap\n  ensures r == cap - used"
+      }
+    ],
+    "rule": {
+      "name": "remaining",
+      "version": 1
+    },
+    "profile": "pure_dafny_methods_v1"
+  },
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "structural",
+  "limits": {
+    "model_calls": 6,
+    "verifier_calls": 10,
+    "total_tokens": 48000,
+    "output_tokens": 2048,
+    "seconds": 180
+  },
+  "condition": "G10",
+  "replicate": 0,
+  "model": {
+    "kind": "scripted_replay",
+    "sequence_sha256": "ff83f59422532e9e8de94a1b3e70633258d3da5f3caf4bd1db065dbb56d00854",
+    "uses_reference": true,
+    "research_eligible": false
+  },
+  "oracle": {
+    "verifier": {
+      "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+      "executable": "/Users/zhangfangying/.local/dafny/4.11.0/dafny/dafny",
+      "sha256": "5d02cbb88300aef0726e933bd6f19754960b7409a9e0e2212a5e07edd1686012",
+      "solver_path": "bundled",
+      "solver_sha256": null,
+      "driver_sha256": "929d47dd7553ce19737b044c2d20703f510abbc32c6d9dcb3452564c1a2cd1c7",
+      "bundled_solver_candidates": {
+        "z3-4.12.1": "7d15df1e4ba8f60b0808dce02ec85e0dd6dac4b975231a2f7b35fe8789464208",
+        "z3-4.14.1": "2fb05b03121f522fdea1ee523c73b9341d327814c81f051a887e97e931af06bf"
+      },
+      "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+      "python": "3.12.13",
+      "platform": "macOS-26.5.2-arm64-arm-64bit",
+      "timeout_seconds": 20,
+      "cores": 1
+    },
+    "runtime_target": "py",
+    "runtime_python": "/Users/zhangfangying/workspace/codegen-verify/.venv/bin/python",
+    "runtime_witnesses": "trusted expect statements",
+    "note": "runtime compilation uses --no-verify only after a separate formal check; never proof evidence"
+  },
+  "source_hashes": {
+    "generation/__init__.py": "af04ce098033738f343be18593227b25a152611e2ef0f4e4da93cc512c9e3a8b",
+    "generation/analyze.py": "3b4f8bcea70479aba75bacac0651dfeae95478980696965e833c1dc6fad0645c",
+    "generation/cli.py": "42abe9680014d80247bf766ce79fdb1f5e2b59354105ab0e88cd32c9dcb4d9d4",
+    "generation/models.py": "577bbc516887993b85d7ad70cd1b859af5cd328f3eedf00ab4d577be0560dbb0",
+    "generation/oracle.py": "f183a546e27d3f6d23fdcca0197b55a7b9e8c617aa247cd877bf30c2579db681",
+    "generation/runner.py": "a9d2045f4ecee89ef0be672fb146b66ec96e7f08456342dffac64d450ae78841",
+    "generation/task.py": "96b7d538f9122099e730f961703f65af7a655cc1edf08278ef4266256099d447",
+    "generation/templates.py": "0c16c45fc01f579bc1ced12fab8805d545a56262f4b89b337498e3ddb97a82fd",
+    "repair/runner.py": "c8b388f66e01566b4b3d9b30fe50587f28875d654698ad7f980a4cb35a5d9e51",
+    "repair/task.py": "fa9bcec6b4960e281f6f830626b439edf76efca49b06764dc212febfa46b2446",
+    "repair/verifier.py": "3bb4506572e2d4982a392e73439c3235187812a30abb629a68b207652c2a03a6",
+    "repair/dependencies.py": "6f4e2f8b22af1161283f8b1d007bca648c52f1e2cf7490a7c9e26be9d9653d0e",
+    "project/config.py": "882f009f883c42a58a4c8743d8b179e444c6fa4757b14d04c17e953450beb92d",
+    "project/dafny_wrapper.py": "2f671b41593c1b952677565618aa1aeefc3714dae87c46f52a5e86cb4211cbec",
+    "project/llm_client.py": "d8466cab82e354e35d90ef996e93a3f4ff666750c637273eeb37843d1701f8ea"
+  },
+  "system_prompt": "Generate implementations under externally frozen Dafny contracts.\nReturn JSON only. For full-source mode: {\"action\":\"generate\",\"source\":\"entire file\"}.\nFor skeleton mode: {\"action\":\"generate\",\"bodies\":{\"methodName\":\"complete body\"}}.\nOther tools: {\"action\":\"read\"}, {\"action\":\"verify\"}, {\"action\":\"stop\"}.\nPreserve the listed header tokens and method order (whitespace may vary). Implement every method. No\nextra declarations, comments, strings, imports, attributes, assumptions, I/O,\nallocation, or verification bypass. Loop invariants and assert are permitted.\nThe external task, formal contracts and runtime acceptance cannot be changed.\nTool feedback is available only as declared. No reference solution is available.",
+  "initial_state": "no implementation supplied",
+  "token_policy": "UTF-8 system+prompt bytes + 256 overhead + output cap reservation; actual usage when known"
+}

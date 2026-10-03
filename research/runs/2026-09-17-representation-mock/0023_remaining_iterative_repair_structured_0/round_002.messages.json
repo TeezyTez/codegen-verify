@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"current_bodies\":{\"Remaining\":\"r := cap + used;\"},\"diagnostic\":{\"additional_spec_disclosure\":false,\"diagnostics\":[{\"candidate_location\":\"unknown\",\"category\":\"postcondition\",\"requirement_ids\":[\"R2\"]}],\"property_satisfaction\":\"unknown\",\"status\":\"verification_failed\"},\"feedback_policy\":\"controlled_v1\",\"task\":{\"requirements\":{\"constraints\":[{\"kind\":\"precondition\",\"relation\":\"in_closed_interval\",\"requirement_id\":\"R1\",\"subject\":\"used\",\"value\":\"[0, cap]\"},{\"kind\":\"postcondition\",\"relation\":\"equals\",\"requirement_id\":\"R2\",\"subject\":\"r\",\"value\":\"cap - used\"}],\"schema_version\":\"constraints_v1\"},\"shared_definitions\":\"\",\"signatures\":[\"method Remaining(cap: int, used: int) returns (r: int)\"],\"task_id\":\"remaining\"}}"
+    }
+  ],
+  "sha256": "d407cdb2699b6f2445f751f5140a5e789240d53301bdcc6fee3155a1ac6d42f7"
+}

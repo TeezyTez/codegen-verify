@@ -1,0 +1,65 @@
+[
+  {
+    "directory": "0000_binary_lower_bound_iterative_repair_natural_0",
+    "task_id": "binary_lower_bound",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0001_binary_lower_bound_iterative_repair_natural_1",
+    "task_id": "binary_lower_bound",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 1
+  },
+  {
+    "directory": "0002_binary_lower_bound_iterative_repair_natural_2",
+    "task_id": "binary_lower_bound",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 2
+  },
+  {
+    "directory": "0003_integer_sqrt_iterative_repair_natural_0",
+    "task_id": "integer_sqrt",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0004_integer_sqrt_iterative_repair_natural_1",
+    "task_id": "integer_sqrt",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 1
+  },
+  {
+    "directory": "0005_integer_sqrt_iterative_repair_natural_2",
+    "task_id": "integer_sqrt",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 2
+  },
+  {
+    "directory": "0006_sequence_reverse_iterative_repair_natural_0",
+    "task_id": "sequence_reverse",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 0
+  },
+  {
+    "directory": "0007_sequence_reverse_iterative_repair_natural_1",
+    "task_id": "sequence_reverse",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 1
+  },
+  {
+    "directory": "0008_sequence_reverse_iterative_repair_natural_2",
+    "task_id": "sequence_reverse",
+    "strategy": "iterative_repair",
+    "representation": "natural",
+    "replicate": 2
+  }
+]

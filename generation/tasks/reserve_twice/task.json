@@ -1,0 +1,82 @@
+{
+  "id": "reserve_twice",
+  "source_project": "codegen-verify-synthetic-generation",
+  "family": "composition",
+  "split": "dev",
+  "origin": "hand_authored_diagnostic",
+  "description": "Process two all-or-nothing requests in order. The second sees the first accepted update.",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Reserve",
+      "header": "method Reserve(used: int, req: int, cap: int) returns (next: int, ok: bool)\n  requires 0 <= used <= cap\n  requires req >= 0\n  ensures ok == (used + req <= cap)\n  ensures next == (if ok then used + req else used)\n  ensures 0 <= next <= cap"
+    },
+    {
+      "name": "ReserveTwice",
+      "header": "method ReserveTwice(used: int, q1: int, q2: int, cap: int) returns (next: int, ok1: bool, ok2: bool)\n  requires 0 <= used <= cap && q1 >= 0 && q2 >= 0\n  ensures ok1 == (used + q1 <= cap)\n  ensures ok2 == ((if ok1 then used + q1 else used) + q2 <= cap)\n  ensures next == (if ok1 then used + q1 else used) + (if ok2 then q2 else 0)\n  ensures 0 <= next <= cap"
+    }
+  ],
+  "rule": {
+    "name": "reserve_twice",
+    "version": 1
+  },
+  "reference": {
+    "Reserve": "  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }",
+    "ReserveTwice": "  var mid: int;\n  mid, ok1 := Reserve(used, q1, cap);\n  next, ok2 := Reserve(mid, q2, cap);"
+  },
+  "mutants": [
+    {
+      "id": "semantic_mutant",
+      "violation": "Second request reads old state rather than first request's result.",
+      "bodies": {
+        "Reserve": "  if used + req > cap { next := used; ok := false; }\n  else { next := used + req; ok := true; }",
+        "ReserveTwice": "  var mid: int;\n  mid, ok1 := Reserve(used, q1, cap);\n  next, ok2 := Reserve(used, q2, cap);"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "ReserveTwice",
+      "inputs": [
+        0,
+        6,
+        6,
+        10
+      ],
+      "outputs": [
+        6,
+        true,
+        false
+      ]
+    },
+    {
+      "method": "ReserveTwice",
+      "inputs": [
+        3,
+        8,
+        2,
+        10
+      ],
+      "outputs": [
+        5,
+        false,
+        true
+      ]
+    },
+    {
+      "method": "Reserve",
+      "inputs": [
+        3,
+        8,
+        10
+      ],
+      "outputs": [
+        3,
+        false
+      ]
+    }
+  ],
+  "provenance": "Locally authored quota-domain diagnostic. Not a public/industrial PSM, independent external source, or held-out benchmark.",
+  "review_status": "agent_authored; independent human semantic review pending"
+}

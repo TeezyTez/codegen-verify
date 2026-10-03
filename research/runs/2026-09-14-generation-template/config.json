@@ -1,0 +1,27 @@
+{
+  "protocol": "fixed_spec_generation_v1",
+  "conditions": [
+    "G00",
+    "G01",
+    "G10",
+    "G11"
+  ],
+  "replicates": 3,
+  "limits": {
+    "model_calls": 6,
+    "verifier_calls": 10,
+    "total_tokens": 48000,
+    "output_tokens": 2048,
+    "seconds": 180
+  },
+  "prices_usd_per_million": {
+    "input": null,
+    "output": null
+  },
+  "scope": "12 locally authored diagnostic tasks, one source project, three design subfamilies, all dev; not a PSM or independent external benchmark",
+  "interventions": "fixed-header skeleton and online full semantic feedback; immutable external oracle in all conditions",
+  "no_feedback_policy": "fresh prompt, no history/current candidate/remaining time/diagnostics; independent samples stop at first external acceptance",
+  "preparation_minutes": null,
+  "inference": "Replay excluded from model-effect claims. Template coverage applies only to frozen diagnostic rule registry. Formal+runtime joint acceptance, not production certification.",
+  "effective_replicates": 1
+}

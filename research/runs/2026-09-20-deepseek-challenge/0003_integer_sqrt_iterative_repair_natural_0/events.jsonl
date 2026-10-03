@@ -1,0 +1,14 @@
+{"elapsed":0.00029508399893529713,"messages_sha256":"95a390e3e62faab8ec2267191064b9f3e0eb8e8502025e80d36f3ffed68b9117","stage":"model_call_started","step":1}
+{"elapsed":1.2600683750060853,"error":null,"finish_reason":"stop","stage":"model_response_received","step":1}
+{"elapsed":1.7385221669974271,"executed":true,"label":"round_001","real_verifier":true,"source_sha256":"4ec40b1273cd7ef03f528e27bedc67e25e615c531e05f4f8d54c16b48a0bb72a","stage":"verification","status":"parse_error"}
+{"elapsed":1.7393767920002574,"messages_sha256":"f06110c588c37a4fbc8b53cf4e8f2b2436bd0ea4e9704d92149f7c308cd0e754","stage":"model_call_started","step":2}
+{"elapsed":2.5306050420040265,"error":null,"finish_reason":"stop","stage":"model_response_received","step":2}
+{"elapsed":2.9981463340081973,"executed":true,"label":"round_002","real_verifier":true,"source_sha256":"4ec40b1273cd7ef03f528e27bedc67e25e615c531e05f4f8d54c16b48a0bb72a","stage":"verification","status":"parse_error"}
+{"elapsed":2.998813625003095,"messages_sha256":"f06110c588c37a4fbc8b53cf4e8f2b2436bd0ea4e9704d92149f7c308cd0e754","stage":"model_call_started","step":3}
+{"elapsed":3.9464609590067994,"error":null,"finish_reason":"stop","stage":"model_response_received","step":3}
+{"elapsed":4.4178090839996,"executed":true,"label":"round_003","real_verifier":true,"source_sha256":"4ec40b1273cd7ef03f528e27bedc67e25e615c531e05f4f8d54c16b48a0bb72a","stage":"verification","status":"parse_error"}
+{"elapsed":4.418533417003346,"messages_sha256":"f06110c588c37a4fbc8b53cf4e8f2b2436bd0ea4e9704d92149f7c308cd0e754","stage":"model_call_started","step":4}
+{"elapsed":5.229732624997268,"error":null,"finish_reason":"stop","stage":"model_response_received","step":4}
+{"elapsed":5.9610055000084685,"executed":true,"label":"round_004","real_verifier":true,"source_sha256":"2288835d598bdc12b00d876751fb3c9ccfcdc253636e26f2b5042153ec1e8135","stage":"verification","status":"verified"}
+{"elapsed":6.660187041998142,"executed":true,"label":"final","real_verifier":true,"source_sha256":"2288835d598bdc12b00d876751fb3c9ccfcdc253636e26f2b5042153ec1e8135","stage":"verification","status":"verified"}
+{"elapsed":6.660491834001732,"model_calls":4,"stage":"run_finished","stop_reason":"verified","success":true,"verifier_calls":5}

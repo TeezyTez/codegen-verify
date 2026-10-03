@@ -1,0 +1,13 @@
+{
+  "messages": [
+    {
+      "role": "system",
+      "content": "Implement the supplied requirements in Dafny 4.11. Return exactly one JSON\nobject: {\"bodies\":{\"MethodName\":\"complete implementation body\"}}.\nReturn only the bodies of all supplied method signatures, never declarations or\ncontracts. The trusted framework assembles and verifies the fixed acceptance file.\nAllowed: initialized local variables, assignments, if/else with explicit blocks,\nwhile with an explicit body, loop invariants/decreases, assert, return, integer and\nboolean expressions and sequence indexing/length, forall/exists in expressions.\nNo comments, strings, attributes, imports, I/O, allocation, declarations, assume,\naxioms, havoc, body-less loops or verification bypass. No host commands or tools.\nDo not add requirements. No reference solution is supplied in these messages."
+    },
+    {
+      "role": "user",
+      "content": "{\"current_bodies\":{\"Clamp\":\"r := request;\"},\"diagnostic\":{\"additional_spec_disclosure\":false,\"diagnostics\":[{\"candidate_location\":\"unknown\",\"category\":\"postcondition\",\"requirement_ids\":[\"R3\"]}],\"property_satisfaction\":\"unknown\",\"status\":\"verification_failed\"},\"feedback_policy\":\"controlled_v1\",\"task\":{\"requirements\":\"[R1] The input request is nonnegative. [R2] The input cap is nonnegative. [R3] The result r is the smaller of request and cap.\",\"shared_definitions\":\"\",\"signatures\":[\"method Clamp(request: int, cap: int) returns (r: int)\"],\"task_id\":\"clamp\"}}"
+    }
+  ],
+  "sha256": "23d3d88831a161685a2b37689cd490e360049ef89797164beed03c64dd08edbe"
+}

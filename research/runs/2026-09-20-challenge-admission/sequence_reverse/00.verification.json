@@ -1,0 +1,26 @@
+{
+  "status": "verified",
+  "stdout": "\nDafny program verifier finished with 2 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-71__pazs/results.csv\n",
+  "stderr": "",
+  "returncode": 0,
+  "seconds": 0.7296374580037082,
+  "command": [
+    "/Users/zhangfangying/.local/bin/dafny",
+    "verify",
+    "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-71__pazs/program.dfy",
+    "--cores",
+    "1",
+    "--verification-time-limit",
+    "15",
+    "--log-format",
+    "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-71__pazs/results.csv"
+  ],
+  "diagnostics": [],
+  "obligations": {
+    "Reverse (well-formedness)": "passed",
+    "Reverse (correctness)": "passed"
+  },
+  "executed": true,
+  "real_verifier": true,
+  "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nReverse (well-formedness),Passed,00:00:00.0293388,8798,0\nReverse (correctness),Passed,00:00:00.0063567,25166,0\n"
+}

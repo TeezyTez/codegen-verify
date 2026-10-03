@@ -1,0 +1,63 @@
+{
+  "protocol": "fixed_spec_representation_v1",
+  "run_id": "db8a9af0ab1b48eca62b0c72d6d59ced",
+  "task_id": "absolute",
+  "task_family": "arithmetic",
+  "source": "codegen-verify-representation-demo",
+  "origin": "synthetic_demo",
+  "strategy": "iterative_repair",
+  "representation": "natural",
+  "replicate": 0,
+  "is_mock": true,
+  "audit_status": "pending",
+  "real_verifier_executed": true,
+  "success": true,
+  "first_candidate_verified": false,
+  "candidate_count": 2,
+  "stop_reason": "verified",
+  "status": "verified",
+  "usage": {
+    "model_calls": 2,
+    "model_retry_calls": 0,
+    "verifier_calls": 3,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "accounted_tokens": 7238,
+    "unknown_usage_calls": 2,
+    "cost_usd": 0.0,
+    "reserved_cost_usd": 0.0,
+    "model_seconds": 1.7291000403929502e-05,
+    "verification_seconds": 2.0750602499902016
+  },
+  "failures": {
+    "verification_failed": 1
+  },
+  "completed": true,
+  "seconds": 2.078800666000461,
+  "final_sha256": "aba0e08e7cf7121911573a45133393db2fc0c7333154ffa0af343249fb2cff3e",
+  "final_verification": {
+    "status": "verified",
+    "stdout": "\nDafny program verifier finished with 1 verified, 0 errors\nResults File: /var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-1aqdsx6p/results.csv\n",
+    "stderr": "",
+    "returncode": 0,
+    "seconds": 0.6903327499967418,
+    "command": [
+      "/Users/zhangfangying/.local/bin/dafny",
+      "verify",
+      "/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-1aqdsx6p/program.dfy",
+      "--cores",
+      "1",
+      "--verification-time-limit",
+      "15",
+      "--log-format",
+      "csv;LogFileName=/var/folders/lp/b9k2c4gs43v5nf_rq14jp1fm0000gn/T/representation-verify-1aqdsx6p/results.csv"
+    ],
+    "diagnostics": [],
+    "obligations": {
+      "Absolute (correctness)": "passed"
+    },
+    "executed": true,
+    "real_verifier": true,
+    "csv_log": "TestResult.DisplayName,TestResult.Outcome,TestResult.Duration,TestResult.ResourceCount,RandomSeed\nAbsolute (correctness),Passed,00:00:00.0223007,4107,0\n"
+  }
+}

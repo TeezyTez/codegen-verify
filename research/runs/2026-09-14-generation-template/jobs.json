@@ -1,0 +1,74 @@
+[
+  {
+    "task_id": "clamp",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "000_T_0"
+  },
+  {
+    "task_id": "partial",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "001_T_0"
+  },
+  {
+    "task_id": "refill",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "002_T_0"
+  },
+  {
+    "task_id": "release",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "003_T_0"
+  },
+  {
+    "task_id": "release_twice",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "004_T_0"
+  },
+  {
+    "task_id": "remaining",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "005_T_0"
+  },
+  {
+    "task_id": "reserve",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "006_T_0"
+  },
+  {
+    "task_id": "reserve_release",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "007_T_0"
+  },
+  {
+    "task_id": "reserve_twice",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "008_T_0"
+  },
+  {
+    "task_id": "scale",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "009_T_0"
+  },
+  {
+    "task_id": "snapshot",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "010_T_0"
+  },
+  {
+    "task_id": "transfer",
+    "condition": "T",
+    "replicate": 0,
+    "directory": "011_T_0"
+  }
+]
