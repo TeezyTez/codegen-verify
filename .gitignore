@@ -9,3 +9,9 @@ __pycache__/
 logs/
 .tools/
 .claude/
+
+# Local verification output and compiled research bridge artifacts.
+research/data/large-scale-20261009/baf_preflight/
+research/data/large-scale-20261009/reference_census/
+research/bridge-v2-proposal/cache/
+research/bridge-v2-proposal/*.dll

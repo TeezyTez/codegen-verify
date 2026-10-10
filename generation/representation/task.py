@@ -25,7 +25,7 @@ class Task:
     def __init__(self, core):
         self.core = core
         self.path, self.meta = core.path, core.meta
-        self.file_hash = digest(self.path.read_text())
+        self.file_hash = digest(self.path.read_text(encoding='utf-8'))
         self.snapshot = canonical(self.meta)
 
     @classmethod
@@ -109,7 +109,7 @@ class Task:
         return self.core.names
 
     def check_frozen(self):
-        if digest(self.path.read_text()) != self.file_hash or canonical(self.meta) != self.snapshot:
+        if digest(self.path.read_text(encoding='utf-8')) != self.file_hash or canonical(self.meta) != self.snapshot:
             raise BoundaryError('frozen_assets_changed')
         if self.meta['asset_hashes'] != asset_hashes(self.meta):
             raise BoundaryError('frozen_assets_changed')

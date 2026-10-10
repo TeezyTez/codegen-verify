@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "strategies": [
+    "baseline",
+    "state",
+    "guided",
+    "independent_sampling"
+  ],
+  "representations": [
+    "contract"
+  ],
+  "replicates": 3,
+  "seed": 17,
+  "budget": {
+    "model_calls": 4,
+    "verifier_calls": 5,
+    "output_tokens": 4096,
+    "total_tokens": 48000,
+    "cost_usd": null,
+    "verification_seconds": 15,
+    "model_seconds": 60,
+    "task_seconds": 180
+  },
+  "model": {
+    "kind": "mock",
+    "name": null,
+    "base_url": null,
+    "api_key_env": "OPENAI_API_KEY",
+    "sampling": {},
+    "send_seed": false,
+    "output_token_parameter": "max_completion_tokens",
+    "input_usd_per_million": null,
+    "output_usd_per_million": null,
+    "price_source": null
+  }
+}

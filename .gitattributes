@@ -1,0 +1,4 @@
+# Preserve pinned upstream data byte-for-byte so snapshot hashes survive checkout.
+research/data/large-scale-20261009/algoveri/** -text
+research/data/large-scale-20261009/dafnybench/** -text
+research/data/large-scale-20261009/vericoding/** -text

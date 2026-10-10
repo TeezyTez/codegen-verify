@@ -1,0 +1,233 @@
+{
+  "stage": "0",
+  "protocol": "fixed_spec_obligation_v1",
+  "scope": "engineering_mock_only",
+  "task_count": 8,
+  "run_count": 32,
+  "api_calls": 0,
+  "fixture_calls": 64,
+  "online_verifier_calls": 96,
+  "admission_verifier_calls": 16,
+  "complete": true,
+  "all_final_artifacts_verified": true,
+  "run_directory": "logs\\obligation-stage0-20261006",
+  "toolchain": {
+    "version": "4.11.0+fcb2042d6d043a2634f0854338c08feeaaaf4ae2",
+    "executable": "C:\\workspace\\gencode\\codegen-verify\\.tools\\dafny\\4.11.0\\Dafny.exe",
+    "sha256": "aebb6e5ea4aa1a8ba5432ee214c47255fd7aa5a583f5cac8e83d27d9992c4dd0",
+    "solver_path": "bundled",
+    "solver_sha256": null,
+    "driver_sha256": "a44173c280220ba7d50e14755e4e351a927213494ba2d7794b5bd6d830d130e0",
+    "bundled_solver_candidates": {
+      "z3-4.12.1.exe": "53aca6c734e7d012ec07fe626bba1e3921269777133ce58784d26c4552e3fe0b",
+      "z3-4.14.1.exe": "4126fadf6068d6409030304c1b8d970d12627dc6fbe1e6888172b0974e8f5f91"
+    },
+    "solver_selection": "Dafny default; candidates fingerprinted, selected version not independently observed",
+    "python": "3.12.14",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "timeout_seconds": 15,
+    "cores": 1,
+    "adapter": "representation_formal_only_v1",
+    "process_group_timeout": false,
+    "real_verifier": true
+  },
+  "source_hashes": {
+    "generation\\engine.py": "418b34aaf72574fa4057e823c91b439bc7b97718e4989542973f92d727308a14",
+    "generation\\representation\\__init__.py": "e5c0b28401071d6505dbcc4671b4e09f3d1286b21ab58ef6636a98ed328a0f7f",
+    "generation\\representation\\analyze.py": "c96df6ba922deb82b952d2998d3735cd78a388e8505da442fa2fe51155f74301",
+    "generation\\representation\\cli.py": "a58d5fba9c49784a2d28eb47543cafd2c7375da95bb7b5bf17b96ff747fbf433",
+    "generation\\representation\\config.py": "c9d7a1a61a93c1c5595c141e951a5ed1f8060853781ae6ffb8b73738a1b02ef2",
+    "generation\\representation\\guard.py": "4e14c22e24c6313c02c723a5d705ceeaa484381e795a661f004106e5fcf4b079",
+    "generation\\representation\\models.py": "9107c944dab620beddf7c1216816a67b5c7044c9f42f97483f6182810ad9070b",
+    "generation\\representation\\preflight.py": "5a2b82d7f472c00c6b785bdf2987a454da2589c9bb6d90067e4c2e1a362bce83",
+    "generation\\representation\\runner.py": "399b62827a22081d49878f68118e36e39c3c9f7ae78054c119389b292e98445b",
+    "generation\\representation\\task.py": "66e98408ab05e3c3d1623e611f7bb7329f7a17b63b48046ac65fb7095feb2820",
+    "generation\\representation\\verifier.py": "a77ed580d6aac20dcf1eb342f74e3e1f230f98f5294a386e0754ea8d659b84d6",
+    "generation\\task.py": "ba2bd0df200dc7286e1a6d388ff7beac32f482a00ef5f5c8d2c121c6cff82816",
+    "repair\\task.py": "fa9bcec6b4960e281f6f830626b439edf76efca49b06764dc212febfa46b2446",
+    "repair\\verifier.py": "3bb4506572e2d4982a392e73439c3235187812a30abb629a68b207652c2a03a6",
+    "repair\\runner.py": "426ae9b8806b2d0c1e1d961850621df2d3b66a94d4acd69a46a0ad046fd63f35",
+    "project\\config.py": "882f009f883c42a58a4c8743d8b179e444c6fa4757b14d04c17e953450beb92d",
+    "project\\dafny_wrapper.py": "2f671b41593c1b952677565618aa1aeefc3714dae87c46f52a5e86cb4211cbec",
+    "generation\\obligations\\__init__.py": "522770614c1713bd3f8eca02a67d830730c07c2d5409839b35884e579ddd4de8",
+    "generation\\obligations\\analyze.py": "852b1e5df2246d760c66e711ebf96ac596ae84b098bf7e8449d2d33bb3c6ad23",
+    "generation\\obligations\\cli.py": "7fbc541858c6a9639edb6f09b2eb391dd20023d7b02bd0078913f04f68ee9ec1",
+    "generation\\obligations\\config.py": "552110d842022fb880c6a4f1069e491dae4baf75e51e35751a550a7d38b6c051",
+    "generation\\obligations\\policy.py": "fa07b468242edc70134ab16ae112f05fe2a9263617c8d0247ccb15bcea0f8b6e",
+    "generation\\obligations\\runner.py": "3820cc93fd3103423f2c8502e2b2a22dad24f9f3d33595c485b6d59b6e00b95b",
+    "generation\\obligations\\state.py": "b33282c9e130d29a0df19b22b3b21cfc4a03cb9f10de9196d5a316b4e17022e3"
+  },
+  "config": {
+    "version": 1,
+    "strategies": [
+      "baseline",
+      "state",
+      "guided",
+      "independent_sampling"
+    ],
+    "representations": [
+      "contract"
+    ],
+    "replicates": 1,
+    "seed": 17,
+    "budget": {
+      "model_calls": 4,
+      "verifier_calls": 5,
+      "output_tokens": 4096,
+      "total_tokens": 48000,
+      "cost_usd": null,
+      "verification_seconds": 15,
+      "model_seconds": 60,
+      "task_seconds": 180
+    },
+    "model": {
+      "kind": "mock",
+      "name": null,
+      "base_url": null,
+      "api_key_env": "OPENAI_API_KEY",
+      "sampling": {},
+      "send_seed": false,
+      "output_token_parameter": "max_completion_tokens",
+      "input_usd_per_million": null,
+      "output_usd_per_million": null,
+      "price_source": null
+    }
+  },
+  "next_stage": "isolated_codex_transport_probe_then_8_exploratory_runs",
+  "qualification": "dev fixtures with reference access; no statistical efficacy claims",
+  "limitations": [
+    "all tasks have one method",
+    "all equivalence audits pending",
+    "no independent holdout tasks admitted"
+  ],
+  "tasks": [
+    {
+      "task_id": "binary_lower_bound",
+      "family": "search_loop",
+      "split": "dev",
+      "task_sha256": "cd4e825e9614952fcf4934e26307c8023f7f30e791d9ea25a10f2bf367b34b0a",
+      "assets": {
+        "natural": "03e95a3eb38439e5f36b64ee9fa5b4102045a70778822b9a9c76faf00cefd1aa",
+        "checklist": "76a89f9e7c6b433bb0af647f8ae55cf04d55e677ac9bb33861f9f8e8c6bc8983",
+        "structured": "09852030f7afce9c72d4cfc6e99ad28457ae5189fc3623117f3a09efcbbed89f",
+        "spec": "b8082078bce9c51f5b96d45cf1afefb3c9389876f1e12947ad19a1d2a823ca91",
+        "template": "ccfd1b241761ed9e66b2b75f1f47206f71bbee1ec911d7f037e0c328d847a4a1",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "31dbde6a5a7b3d411a044aa9d74d65b6e45e8d97abd982083fcf2fb255fb6fd6"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\challenge_tasks\\binary_lower_bound\\task.json"
+    },
+    {
+      "task_id": "integer_sqrt",
+      "family": "nonlinear_loop",
+      "split": "dev",
+      "task_sha256": "e345802f7f03e82f823bcc162e18af500b2ca70d570a92ef9e38131f1df13f83",
+      "assets": {
+        "natural": "7dee0ec5fb3dc34dcb55a434c7da96af751e4cf2c18c71ec374436a5bc69d68f",
+        "checklist": "cccab51e79891725c4462f53fca924e577f067c830d6d85672d5ad3d9c5ad09a",
+        "structured": "2f52f27537f77b8ad3632c94e1fa136cdb132af2f298caa8802858f0726209aa",
+        "spec": "0f5b62e151937a964bdc1e6913489ec3b5e0b55108b96d2bcd733c173c20a168",
+        "template": "7bc29d886df2fa0102cf3d9a84b7a9d57f0a0e7e1082a5e04842fb3d3232c057",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "68252a6c3e470b65fa65a7a37ffbccc6c43fd52b52ab0baefbdc20f1af20bcf6"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\challenge_tasks\\integer_sqrt\\task.json"
+    },
+    {
+      "task_id": "sequence_reverse",
+      "family": "sequence_loop",
+      "split": "dev",
+      "task_sha256": "5f80d100cd43c2b66b0b4d276e6c5125f5a91e48b69d4ed4df77652e409d999d",
+      "assets": {
+        "natural": "60fe519da5c45087767323a579c4a188f43c520e5d44a974424c7155c47ccf35",
+        "checklist": "87c01086366a1f9204c8d3687839c736c97210202847fa062a30a1e660be9f39",
+        "structured": "32b8e25adee2b2bc5c6d7b0ba09c027fb698c2c65e45ff8dfc261d805579a19c",
+        "spec": "ab6b57802f0c2417fceff405b27ca6b0eadf121496968eb957c3995fec98bb28",
+        "template": "3b7d349e58cd41d5cbc9a25540f47872e8c30a2724140e5edfb3f186e9a6cef5",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "d2b10eaa834d03250c1906ef16055d7a70cc46905f8489aaf7c9af574cff4167"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\challenge_tasks\\sequence_reverse\\task.json"
+    },
+    {
+      "task_id": "absolute",
+      "family": "arithmetic",
+      "split": "dev",
+      "task_sha256": "095bae52702b1c0277e2cd3005fe1aef3b8ecefd9e92f2e429e1160b24f4bc68",
+      "assets": {
+        "natural": "22a110f139605bf5bc0cb36ef79474df98ecc6e61f1c31c871666ec38c7989bf",
+        "checklist": "7cd9a50c6d5179ed6ff3417635df63a932229b2c0ccab15d668e0d50658e36de",
+        "structured": "84268438f75bdb709d7b8253b6998c00df0505323b2ed9d48349a7ce9144b591",
+        "spec": "6bff3044cce1744cb892d7863d580cd181f3f4f84ce8273b9314b065fd5c88e9",
+        "template": "d2b80779fbb9f60d31c3aa59526ce24cbe1dac22ae839b99cabe7300f61486f6",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "5b32f406d4d914453947a7123bb1f5165cd4ce7d826f1efb4a83ab37a796b0fe"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\tasks\\absolute\\task.json"
+    },
+    {
+      "task_id": "clamp",
+      "family": "boundary",
+      "split": "dev",
+      "task_sha256": "b16bcc24fb3ead172d9fcc39b400ad9e2058ab7f7ad2bd8ff1331e4a539d06ff",
+      "assets": {
+        "natural": "23fee8341ec69472892bb2aa7ebd2cb27995d65aa435ade2c2e4cec19b8211ca",
+        "checklist": "e5c9174e77be1d70e2921f60cff17d54d8d1cb361fa949c4196dbca1312d28bd",
+        "structured": "042c287ca6080a763f90340904b9dc2dbb107cecff55ab1274cd0d5bc0692fd0",
+        "spec": "9f414f2adeffbe51e0bbf09ebb34bec7dd7562b9a0865664bbd7da4a26447885",
+        "template": "a1cb40cc90c9f1083f38537fb16fe4bfb0d72acf18812dc186f7a82caef2137a",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "2c7b7a289b2374b926f8b12b072235a29cfc72f6efaf0a7052cf8a5c9efaed96"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\tasks\\clamp\\task.json"
+    },
+    {
+      "task_id": "remaining",
+      "family": "arithmetic",
+      "split": "dev",
+      "task_sha256": "349ec0238b3015e3f44871b5f6b6bf534faab8698714374046718bed56f9c4d2",
+      "assets": {
+        "natural": "6222a1a15de9e98d6f14d6904f9634860a0f46628496e742807dfa338222e05a",
+        "checklist": "378aa9a001b1045b106644c00daa67d5d60e09f21e270881c51776a2142654cd",
+        "structured": "8181f2194b5933bc77326d935232c1c3baf90979718e64588ecb1a7c5dbf90fd",
+        "spec": "6ff4b294787ad868f9553373c334d5e3e117ca3b02220ce233a74b98dd74a099",
+        "template": "29268efa1a4819ae685d63bb9e84a93ad3d75e42b3887334ad87ae13a321b589",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "5082aa75dd698737ae9ff9799a9c03b0545c3daa3b6a2f93f2968a0ac7f25bfe"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\tasks\\remaining\\task.json"
+    },
+    {
+      "task_id": "sequence_last",
+      "family": "sequence",
+      "split": "dev",
+      "task_sha256": "aa69de95964cb17aff2ab8cbea210196ca9c2dc7c018691391e060cf6d009d86",
+      "assets": {
+        "natural": "9d737b4ca3ace2a22b5397c9fbffd55dde9bb89b35e15c4276c44e9937b36209",
+        "checklist": "5004a0aa4596744c422e3c6e14c6be31c24f097fa276d0c19a0cecfac13bc777",
+        "structured": "64d48370917f419c70fb3415e769a7dbdd8093025a82c63d563603b17505c8d0",
+        "spec": "aed74d39c2c4344b94f33ad9df00ba147724feedeb29643222cc29351c9a11c3",
+        "template": "8c70b3667aff9b4616ae9927aa0ec7aa2308121a93fc0d5dff4b5c06e9998c04",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "995ed9bbcba441f2970d64e577aca28ae5d123d04082055d31677fb74ad4438c"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\tasks\\sequence_last\\task.json"
+    },
+    {
+      "task_id": "sequence_max",
+      "family": "loop",
+      "split": "dev",
+      "task_sha256": "af03e7b7f76c1a16299fa8fe3d0a4c3f4f0043aa208802c83871382d3ea1d262",
+      "assets": {
+        "natural": "f846af7f02efcec6223d4133e47124d1ce8fdc0d7e8f047b16c824dcf2c6b278",
+        "checklist": "83a001c0c39eb4829e8f6daafa6dad22474e3594bb2931dd1e8ccd35a0916b37",
+        "structured": "7758b05662e58e4cb78c898df8607da7c54a369a33644f927d5af468ea26c04b",
+        "spec": "6410afd3ef1b2747c71de454f3fc5148430b41f385fb8b82aaf9eacecf7f1b72",
+        "template": "dbc82c118af4ed21fee54f28d5dbd5d029cb8e6c1bbfd624634d5b65098df95e",
+        "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mapping": "5a97b2d7173fe14f1fcd5011331aa9adeaaf50ace8b6105a08fc265cd44e0041"
+      },
+      "path": "C:\\workspace\\gencode\\codegen-verify\\generation\\representation\\tasks\\sequence_max\\task.json"
+    }
+  ]
+}

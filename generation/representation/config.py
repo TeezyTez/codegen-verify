@@ -38,11 +38,11 @@ DEFAULT_MODEL = {'kind':'mock','name':None,'base_url':None,'api_key_env':'OPENAI
                  'input_usd_per_million':None,'output_usd_per_million':None,'price_source':None}
 
 
-def validate_config(config):
+def validate_config(config, *, strategies=STRATEGIES, representations=REPRESENTATIONS):
     allowed = {'version','strategies','representations','replicates','seed','budget','model'}
     if set(config) != allowed or config['version'] != 1:
         raise ValueError('invalid config schema')
-    for key, values in (('strategies',STRATEGIES),('representations',REPRESENTATIONS)):
+    for key, values in (('strategies',strategies),('representations',representations)):
         items = config[key]
         if not isinstance(items,list) or not items or len(items) != len(set(items)) or not set(items) <= set(values):
             raise ValueError(f'invalid {key}')
@@ -86,7 +86,7 @@ def validate_config(config):
 
 
 def load_config(path):
-    config = json.loads(Path(path).read_text())
+    config = json.loads(Path(path).read_text(encoding='utf-8'))
     validate_config(config)
     return config
 

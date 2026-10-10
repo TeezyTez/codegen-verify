@@ -7,8 +7,9 @@ from .runner import messages_for
 from .task import canonical
 
 
-def inspect_run(task, config, verifier, *, strategy, representation, replicate=0):
-    budget = validate_config(config)
+def inspect_run(task, config, verifier, *, strategy, representation, replicate=0,
+                config_validator=validate_config, messages_factory=messages_for):
+    budget = config_validator(config)
     if strategy not in config['strategies'] or representation not in config['representations']:
         raise ValueError('selected condition is absent from config')
     if not 0 <= replicate < config['replicates']:
@@ -32,7 +33,7 @@ def inspect_run(task, config, verifier, *, strategy, representation, replicate=0
         warnings.append('pricing unknown; no dollar estimate is available')
     if task.meta['equivalence_audit']['status'] == 'pending':
         warnings.append('representation equivalence is pending; engineering smoke only')
-    messages = messages_for(task,representation,strategy)
+    messages = messages_factory(task,representation,strategy)
     reserve = len(canonical(messages).encode())+256+budget.output_tokens
     if budget.total_tokens is not None and reserve > budget.total_tokens:
         blockers.append('token budget cannot accommodate even the first request reservation')

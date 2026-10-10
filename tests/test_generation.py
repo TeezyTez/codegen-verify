@@ -274,7 +274,7 @@ def test_runtime_timeout_kills_process_group_and_strips_api_keys(monkeypatch):
         def kill(self): captured['killed']=True
     monkeypatch.setenv('OPENAI_API_KEY','unit-test-secret')
     monkeypatch.setattr(module.subprocess,'Popen',Process)
-    monkeypatch.setattr(module.os,'killpg',lambda pid,sig:captured.update(killed=True,pid=pid))
+    monkeypatch.setattr(module.os,'killpg',lambda pid,sig:captured.update(killed=True,pid=pid),raising=False)
     t=task()
     evidence=Oracle(SimpleNamespace(path='fake')).runtime(t.assemble(t.meta['reference']),t,1)
     assert evidence['status']=='timeout' and captured['killed']

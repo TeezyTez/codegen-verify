@@ -332,13 +332,22 @@ def test_timeout_kills_group_and_strips_env(monkeypatch):
             self.n+=1
             if self.n==1: raise subprocess.TimeoutExpired('fake',timeout)
             return 'partial output','partial error'
+        def kill(self):
+            seen['killed'] = self.pid
     monkeypatch.setenv('REPRESENTATION_SECRET','NEVER_PASS')
     monkeypatch.setattr(subprocess,'Popen',Process)
-    monkeypatch.setattr(os,'killpg',lambda pid,sig:seen.update(killed=pid))
+    monkeypatch.setattr(os,'killpg',lambda pid,sig:seen.update(killed=pid),raising=False)
+    def terminate_tree(command, **kwargs):
+        seen.update(tree_command=command,tree_options=kwargs,killed=int(command[2]))
+        return SimpleNamespace(returncode=0)
+    monkeypatch.setattr(subprocess,'run',terminate_tree)
     r=Dafny().verify('method X() {}',names=['X'])
     assert r.status=='timeout' and r.stdout=='partial output' and r.stderr=='partial error'
     assert 'REPRESENTATION_SECRET' not in seen['env']
-    if os.name=='posix': assert seen['killed']==123
+    assert seen['killed']==123
+    if os.name=='nt':
+        assert seen['tree_command']==['taskkill','/PID','123','/T','/F']
+        assert 0<seen['tree_options']['timeout']<=5
 
 
 class SDK:

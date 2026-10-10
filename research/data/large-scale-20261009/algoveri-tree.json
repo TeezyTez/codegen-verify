@@ -1,0 +1,4712 @@
+{
+  "repository": "haoyuzhao123/algoveri",
+  "commit": "8e313b0e8110a781009d4b67ca93b3771b5dc9db",
+  "sha": "8e313b0e8110a781009d4b67ca93b3771b5dc9db",
+  "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/8e313b0e8110a781009d4b67ca93b3771b5dc9db",
+  "tree": [
+    {
+      "path": ".gitignore",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "06bbe38205b0b4cd86142df156fe043335e13333",
+      "size": 5220,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/06bbe38205b0b4cd86142df156fe043335e13333"
+    },
+    {
+      "path": "LICENSE",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64",
+      "size": 11357,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64"
+    },
+    {
+      "path": "README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "612755b9e07b171aea4a68d389ca2e161870613f",
+      "size": 5820,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/612755b9e07b171aea4a68d389ca2e161870613f"
+    },
+    {
+      "path": "VERIFIER_README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0629904c7d2dba4e288ae25cad5fcd20cb296cb",
+      "size": 3720,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e0629904c7d2dba4e288ae25cad5fcd20cb296cb"
+    },
+    {
+      "path": "algoveri_data",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5ea5bd5142d8dde549756f5aa3b52ded8c9328e8",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/5ea5bd5142d8dde549756f5aa3b52ded8c9328e8"
+    },
+    {
+      "path": "algoveri_data/README.md",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "00fa1b251d4a29f79e69d7e517400e2f3c656946",
+      "size": 521,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/00fa1b251d4a29f79e69d7e517400e2f3c656946"
+    },
+    {
+      "path": "algoveri_data/ac_automata",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cf1f1dcfe99905ee059e19b7c35c353adbfe4347",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/cf1f1dcfe99905ee059e19b7c35c353adbfe4347"
+    },
+    {
+      "path": "algoveri_data/ac_automata/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1c7dec8434d23e9ed91eb5ef1a954352097991d",
+      "size": 1328,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f1c7dec8434d23e9ed91eb5ef1a954352097991d"
+    },
+    {
+      "path": "algoveri_data/ac_automata/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1e831cfbe8ab8502f101795ddf80dbf6767ccd3a",
+      "size": 1641,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1e831cfbe8ab8502f101795ddf80dbf6767ccd3a"
+    },
+    {
+      "path": "algoveri_data/ac_automata/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "275782cab56a440825271e7cba2baa7c6925e3d6",
+      "size": 1345,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/275782cab56a440825271e7cba2baa7c6925e3d6"
+    },
+    {
+      "path": "algoveri_data/ac_automata/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bfefd5a5ee48d7e9bf1619024a5e52af23fa5a05",
+      "size": 2142,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bfefd5a5ee48d7e9bf1619024a5e52af23fa5a05"
+    },
+    {
+      "path": "algoveri_data/ac_automata/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fd077313d14903fb10328ce41de64bd6fc35715",
+      "size": 1332,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3fd077313d14903fb10328ce41de64bd6fc35715"
+    },
+    {
+      "path": "algoveri_data/ac_automata/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "25c867c18c80709d46776ad60ac24b2e87f823c8",
+      "size": 2043,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/25c867c18c80709d46776ad60ac24b2e87f823c8"
+    },
+    {
+      "path": "algoveri_data/bellman_ford",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b66947f5ba6e2cda07bc75f051728b2816e099b3",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/b66947f5ba6e2cda07bc75f051728b2816e099b3"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75770afd9d87f88daa6654f06643b1a4cd8d0d5c",
+      "size": 1472,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/75770afd9d87f88daa6654f06643b1a4cd8d0d5c"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a72a49570a7f5f471f29f0dd6e94d18cb98be1b2",
+      "size": 4385,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a72a49570a7f5f471f29f0dd6e94d18cb98be1b2"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4f1f4e9ac33cab9072cffbe0b689be732bf0784d",
+      "size": 1279,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4f1f4e9ac33cab9072cffbe0b689be732bf0784d"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d315c56c1ab32124088d7e36985eeddfa59bbc0a",
+      "size": 3383,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d315c56c1ab32124088d7e36985eeddfa59bbc0a"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dddf866a4a87db84b1ba4ea739e14a055f2a20a3",
+      "size": 1470,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dddf866a4a87db84b1ba4ea739e14a055f2a20a3"
+    },
+    {
+      "path": "algoveri_data/bellman_ford/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e73a195062d50b17b58da371370501e922848db7",
+      "size": 5205,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e73a195062d50b17b58da371370501e922848db7"
+    },
+    {
+      "path": "algoveri_data/bfs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ff6e793650aa88079685cc419227c2b1193de167",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/ff6e793650aa88079685cc419227c2b1193de167"
+    },
+    {
+      "path": "algoveri_data/bfs/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28c6fdb95c575c6cf625233b0ab317cb6bc96467",
+      "size": 934,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/28c6fdb95c575c6cf625233b0ab317cb6bc96467"
+    },
+    {
+      "path": "algoveri_data/bfs/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4dbe799050764f2c3d84d07c668a449675947962",
+      "size": 2155,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4dbe799050764f2c3d84d07c668a449675947962"
+    },
+    {
+      "path": "algoveri_data/bfs/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "303f7417aa546f5bd4dd33a9bbc79997f66525bb",
+      "size": 948,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/303f7417aa546f5bd4dd33a9bbc79997f66525bb"
+    },
+    {
+      "path": "algoveri_data/bfs/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6e90d9aaa784a8618fd48a3d51f8cc434e6ab1e3",
+      "size": 2327,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6e90d9aaa784a8618fd48a3d51f8cc434e6ab1e3"
+    },
+    {
+      "path": "algoveri_data/bfs/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c8bbb5a55347d265333201acd78657bcc763c5b",
+      "size": 934,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2c8bbb5a55347d265333201acd78657bcc763c5b"
+    },
+    {
+      "path": "algoveri_data/bfs/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4869a5e795212a9be95a3d5d4d84032d17274992",
+      "size": 3093,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4869a5e795212a9be95a3d5d4d84032d17274992"
+    },
+    {
+      "path": "algoveri_data/binary_search",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "02ee199a5b5b5ea131cffce139e64c2d199b521b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/02ee199a5b5b5ea131cffce139e64c2d199b521b"
+    },
+    {
+      "path": "algoveri_data/binary_search/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "00acdca087e81caac5ce80771dcafe264797c061",
+      "size": 773,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/00acdca087e81caac5ce80771dcafe264797c061"
+    },
+    {
+      "path": "algoveri_data/binary_search/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7007c8b0bbc0baa51aa127390b23cb7c7e97990e",
+      "size": 892,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7007c8b0bbc0baa51aa127390b23cb7c7e97990e"
+    },
+    {
+      "path": "algoveri_data/binary_search/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e0fe5860ca0fa2eb30cd38d4326cd5f11d7fcb55",
+      "size": 592,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e0fe5860ca0fa2eb30cd38d4326cd5f11d7fcb55"
+    },
+    {
+      "path": "algoveri_data/binary_search/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "82a67a0745e18cff66a950a819500a65ad32c81d",
+      "size": 1413,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/82a67a0745e18cff66a950a819500a65ad32c81d"
+    },
+    {
+      "path": "algoveri_data/binary_search/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e961febcfa064c42bdc319a46327996a2b5af3ce",
+      "size": 767,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e961febcfa064c42bdc319a46327996a2b5af3ce"
+    },
+    {
+      "path": "algoveri_data/binary_search/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55ddbe9651ca06a91d455d93ad6e444574373af8",
+      "size": 1103,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/55ddbe9651ca06a91d455d93ad6e444574373af8"
+    },
+    {
+      "path": "algoveri_data/bipartite_check",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "16f9af9f3ddd2da99ca7854428a64c70f7d36fd7",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/16f9af9f3ddd2da99ca7854428a64c70f7d36fd7"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "be13972fbd74bef4fa8baf84de330339d380d633",
+      "size": 974,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/be13972fbd74bef4fa8baf84de330339d380d633"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3b10a9bdeb62d7a64a9cc126750e86b11c1a5585",
+      "size": 1970,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3b10a9bdeb62d7a64a9cc126750e86b11c1a5585"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9db54d4a602fdd6c41939f88c59fd549b33d3976",
+      "size": 988,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9db54d4a602fdd6c41939f88c59fd549b33d3976"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "52d8e9c6a18f82ec5706800fe5ebd535c546b87d",
+      "size": 1889,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/52d8e9c6a18f82ec5706800fe5ebd535c546b87d"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c42465d8765cfeb51cf4cdc34d77217fb24a971a",
+      "size": 974,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c42465d8765cfeb51cf4cdc34d77217fb24a971a"
+    },
+    {
+      "path": "algoveri_data/bipartite_check/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "143d3dda7c0d07114468915d0a0caead690ddc63",
+      "size": 2755,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/143d3dda7c0d07114468915d0a0caead690ddc63"
+    },
+    {
+      "path": "algoveri_data/bracket_matching",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0b0b11e787598bac984166cb8e81c15987d9e76e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/0b0b11e787598bac984166cb8e81c15987d9e76e"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5553f3dc2e2bac1cbde7d298f3a1de47d05ce39a",
+      "size": 1459,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5553f3dc2e2bac1cbde7d298f3a1de47d05ce39a"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b26adcdd09f6b24250a5a4ff9691e4aaef9cb03d",
+      "size": 1598,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b26adcdd09f6b24250a5a4ff9691e4aaef9cb03d"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ab6712373e0c367b93f03c8675050401a5051991",
+      "size": 1487,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ab6712373e0c367b93f03c8675050401a5051991"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d01bc8a8afcb043cddb562fd14dd99f4fd5364cb",
+      "size": 1522,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d01bc8a8afcb043cddb562fd14dd99f4fd5364cb"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c55551a2ee0a369bec0fb0f6c6dbd06b94884b8",
+      "size": 1461,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1c55551a2ee0a369bec0fb0f6c6dbd06b94884b8"
+    },
+    {
+      "path": "algoveri_data/bracket_matching/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "47a15b1bfea83d1d55affef9efeb0332735b91a7",
+      "size": 2241,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/47a15b1bfea83d1d55affef9efeb0332735b91a7"
+    },
+    {
+      "path": "algoveri_data/bst_delete",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "46ff9bd6a1df603ae42dcd84cd9353eb9e67ff85",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/46ff9bd6a1df603ae42dcd84cd9353eb9e67ff85"
+    },
+    {
+      "path": "algoveri_data/bst_delete/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ee65402c61d19996847d0f39ccfcb557695c6531",
+      "size": 595,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ee65402c61d19996847d0f39ccfcb557695c6531"
+    },
+    {
+      "path": "algoveri_data/bst_delete/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9a188860011cbe50200e940defd912720c71582d",
+      "size": 1075,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9a188860011cbe50200e940defd912720c71582d"
+    },
+    {
+      "path": "algoveri_data/bst_delete/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74b7e80c76b8c754c357f284eacd372989c63fad",
+      "size": 507,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/74b7e80c76b8c754c357f284eacd372989c63fad"
+    },
+    {
+      "path": "algoveri_data/bst_delete/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a882df1d84d5c992f52f579c355b7de22da2563f",
+      "size": 1553,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a882df1d84d5c992f52f579c355b7de22da2563f"
+    },
+    {
+      "path": "algoveri_data/bst_delete/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0804428a8982bf0aa49ff5c1db10269b80100582",
+      "size": 586,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0804428a8982bf0aa49ff5c1db10269b80100582"
+    },
+    {
+      "path": "algoveri_data/bst_delete/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6203b1cbe5a2641551051aeb712d674022f65a04",
+      "size": 2066,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6203b1cbe5a2641551051aeb712d674022f65a04"
+    },
+    {
+      "path": "algoveri_data/bst_insert",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6bd979df03ea171cdd3f4f00958d7c1570a2b06c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/6bd979df03ea171cdd3f4f00958d7c1570a2b06c"
+    },
+    {
+      "path": "algoveri_data/bst_insert/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cc75707dd0d2fddd29102963b766aa6ca351f1d6",
+      "size": 607,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cc75707dd0d2fddd29102963b766aa6ca351f1d6"
+    },
+    {
+      "path": "algoveri_data/bst_insert/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ebfd8c19ec9817d74c6680ddf9490a049445b74",
+      "size": 1077,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6ebfd8c19ec9817d74c6680ddf9490a049445b74"
+    },
+    {
+      "path": "algoveri_data/bst_insert/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0cdded0d66b42ac7a854ed2237ac76b23f76e435",
+      "size": 519,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0cdded0d66b42ac7a854ed2237ac76b23f76e435"
+    },
+    {
+      "path": "algoveri_data/bst_insert/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f485e257e12d6d5404858c9b4163fcb29e7ce3bd",
+      "size": 1555,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f485e257e12d6d5404858c9b4163fcb29e7ce3bd"
+    },
+    {
+      "path": "algoveri_data/bst_insert/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "13e923d67133cf5fecf013d3519dff54002d2af9",
+      "size": 598,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/13e923d67133cf5fecf013d3519dff54002d2af9"
+    },
+    {
+      "path": "algoveri_data/bst_insert/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e1b311cf8ba28d3b4cfa680178d79117565b2ae4",
+      "size": 1842,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e1b311cf8ba28d3b4cfa680178d79117565b2ae4"
+    },
+    {
+      "path": "algoveri_data/bst_search",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8bd992efae18bd2ec8524322b4283ff5c62f0ae3",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/8bd992efae18bd2ec8524322b4283ff5c62f0ae3"
+    },
+    {
+      "path": "algoveri_data/bst_search/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "41392cbc7eee5fc4e3a524f66c9f4caadaab2407",
+      "size": 601,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/41392cbc7eee5fc4e3a524f66c9f4caadaab2407"
+    },
+    {
+      "path": "algoveri_data/bst_search/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "627e3d3a74a148c4ddf135115dbe431b5e2ccb70",
+      "size": 1044,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/627e3d3a74a148c4ddf135115dbe431b5e2ccb70"
+    },
+    {
+      "path": "algoveri_data/bst_search/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cff0592dad99eaaa473727cc239f9fd8ce98b363",
+      "size": 484,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cff0592dad99eaaa473727cc239f9fd8ce98b363"
+    },
+    {
+      "path": "algoveri_data/bst_search/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ea443f38a05cc9c1ca0338503955facd8ba36cf",
+      "size": 1506,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7ea443f38a05cc9c1ca0338503955facd8ba36cf"
+    },
+    {
+      "path": "algoveri_data/bst_search/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fddc925c3a1be833cbc85c2944c77bf3ee884d5",
+      "size": 594,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3fddc925c3a1be833cbc85c2944c77bf3ee884d5"
+    },
+    {
+      "path": "algoveri_data/bst_search/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8dcb4b98ab47632d6c1ade115d06163122b3986a",
+      "size": 1789,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8dcb4b98ab47632d6c1ade115d06163122b3986a"
+    },
+    {
+      "path": "algoveri_data/bst_zig",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2a8ef0d071666c419373901f9cf3f1292c28dba1",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/2a8ef0d071666c419373901f9cf3f1292c28dba1"
+    },
+    {
+      "path": "algoveri_data/bst_zig/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5662d60b6e2c567e69616313304e79d03ab62b7d",
+      "size": 1257,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5662d60b6e2c567e69616313304e79d03ab62b7d"
+    },
+    {
+      "path": "algoveri_data/bst_zig/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "48fc1256381627bd06ff86f1762108c37bc7d815",
+      "size": 1378,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/48fc1256381627bd06ff86f1762108c37bc7d815"
+    },
+    {
+      "path": "algoveri_data/bst_zig/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6f30670dc47b7e275affc6a63d6f1883caf14ebf",
+      "size": 464,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6f30670dc47b7e275affc6a63d6f1883caf14ebf"
+    },
+    {
+      "path": "algoveri_data/bst_zig/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "064f9fd2bbbd00029b8ce62ba96d68176430518c",
+      "size": 2322,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/064f9fd2bbbd00029b8ce62ba96d68176430518c"
+    },
+    {
+      "path": "algoveri_data/bst_zig/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0208dbbcc11862a9fbd814d95c12d2e6e0be77f9",
+      "size": 1244,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0208dbbcc11862a9fbd814d95c12d2e6e0be77f9"
+    },
+    {
+      "path": "algoveri_data/bst_zig/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "497a842cf496a2bcde6f0ae8d5e40a96b575dc79",
+      "size": 1985,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/497a842cf496a2bcde6f0ae8d5e40a96b575dc79"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3a33b1671b9bab13181515b24a34216e3f62e5c1",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/3a33b1671b9bab13181515b24a34216e3f62e5c1"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5c81caaebca2032ca9fea633c17da7c9a935dbe",
+      "size": 1178,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e5c81caaebca2032ca9fea633c17da7c9a935dbe"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e92ed65970b8d7f3ac45a25baf7c9c1783739987",
+      "size": 1359,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e92ed65970b8d7f3ac45a25baf7c9c1783739987"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fe919a69c8e92b1fcdc4f644b5dfee55513666e",
+      "size": 462,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9fe919a69c8e92b1fcdc4f644b5dfee55513666e"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "994672725596550e9b669cc710a49cb2d037fe47",
+      "size": 2458,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/994672725596550e9b669cc710a49cb2d037fe47"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c7f0a3849588b0a2eff7f6693f3d3a82720d3d8",
+      "size": 1177,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2c7f0a3849588b0a2eff7f6693f3d3a82720d3d8"
+    },
+    {
+      "path": "algoveri_data/bst_zigzag/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a853c5231e0db1ac853357fe95226084f170ca0",
+      "size": 1851,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5a853c5231e0db1ac853357fe95226084f170ca0"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "702ecd79b3c14060c38f3820fb3b12fe57c31559",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/702ecd79b3c14060c38f3820fb3b12fe57c31559"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f82438db0061077d3d055d285b3e61a8e3fbcc01",
+      "size": 1253,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f82438db0061077d3d055d285b3e61a8e3fbcc01"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e7a010e34d509ff3edcc104cbd607e0b621bf11c",
+      "size": 1313,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e7a010e34d509ff3edcc104cbd607e0b621bf11c"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7ed9b949fb63026963b48ff3a835810b980e32a1",
+      "size": 484,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7ed9b949fb63026963b48ff3a835810b980e32a1"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43b5b13b6de26c6f186a0855d4d8a66d1fd9bbc2",
+      "size": 2428,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/43b5b13b6de26c6f186a0855d4d8a66d1fd9bbc2"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2475f4c49d7981f4e95d3bdb4503b5977be1b6fb",
+      "size": 1252,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2475f4c49d7981f4e95d3bdb4503b5977be1b6fb"
+    },
+    {
+      "path": "algoveri_data/bst_zigzig/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ffa159cd14dd27289113bd85581805d9d97c6c53",
+      "size": 1849,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ffa159cd14dd27289113bd85581805d9d97c6c53"
+    },
+    {
+      "path": "algoveri_data/bubble_sort",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "502ffed047af0385e04c9a266768cd88ece345c3",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/502ffed047af0385e04c9a266768cd88ece345c3"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ba062ba8cd4525edc74f399ae2067e5bd9fce85f",
+      "size": 495,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ba062ba8cd4525edc74f399ae2067e5bd9fce85f"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "573f2396e9299281a85c639f6bf85e8e1a66e735",
+      "size": 1109,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/573f2396e9299281a85c639f6bf85e8e1a66e735"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bec410ae0ebde08fb2c6ae8b93351954c87f0604",
+      "size": 544,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bec410ae0ebde08fb2c6ae8b93351954c87f0604"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "acc79dbecd8b5f5910cd2509dbc726b53d1d2a95",
+      "size": 973,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/acc79dbecd8b5f5910cd2509dbc726b53d1d2a95"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "27083b3d6369d591f5c535606c40a418d2cf5a4d",
+      "size": 495,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/27083b3d6369d591f5c535606c40a418d2cf5a4d"
+    },
+    {
+      "path": "algoveri_data/bubble_sort/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77ecb9724b74fa8f889d47b90102ec74e6917a69",
+      "size": 1330,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/77ecb9724b74fa8f889d47b90102ec74e6917a69"
+    },
+    {
+      "path": "algoveri_data/coin_change",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d67ba4c7d227bfa165a266872270b4be9ed1990a",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/d67ba4c7d227bfa165a266872270b4be9ed1990a"
+    },
+    {
+      "path": "algoveri_data/coin_change/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "79e028b9244a6e889391bff7fe0331d2dd47c66f",
+      "size": 1027,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/79e028b9244a6e889391bff7fe0331d2dd47c66f"
+    },
+    {
+      "path": "algoveri_data/coin_change/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b7565bdfd8c388ca5e01d2562ab0883f02eedb28",
+      "size": 2232,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b7565bdfd8c388ca5e01d2562ab0883f02eedb28"
+    },
+    {
+      "path": "algoveri_data/coin_change/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a1f5b096696a70761da2feba58bc67c9bf71b8e",
+      "size": 431,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5a1f5b096696a70761da2feba58bc67c9bf71b8e"
+    },
+    {
+      "path": "algoveri_data/coin_change/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "08bc3ff5404f7ce25f2612b0c7167a76b149c0d0",
+      "size": 2270,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/08bc3ff5404f7ce25f2612b0c7167a76b149c0d0"
+    },
+    {
+      "path": "algoveri_data/coin_change/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38f46f762fa3e3de4d853b395eb1e45b81f6e7d9",
+      "size": 1027,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/38f46f762fa3e3de4d853b395eb1e45b81f6e7d9"
+    },
+    {
+      "path": "algoveri_data/coin_change/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f79e818aa59dbe25ca8c400ef38f410bfafc60e1",
+      "size": 2873,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f79e818aa59dbe25ca8c400ef38f410bfafc60e1"
+    },
+    {
+      "path": "algoveri_data/cycle_detection",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4722992b1a65af7c4b27d0b666e6fdb8e9ac7d85",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/4722992b1a65af7c4b27d0b666e6fdb8e9ac7d85"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3518cc039c0912496282fd917573d0406b504ce7",
+      "size": 1181,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3518cc039c0912496282fd917573d0406b504ce7"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0465c9da3a9625db4d04f744280e2e587970987",
+      "size": 1417,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f0465c9da3a9625db4d04f744280e2e587970987"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a9a53560d86ba7350dadf3b5fb3f9976453ffc3",
+      "size": 876,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5a9a53560d86ba7350dadf3b5fb3f9976453ffc3"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f03c91e869dfcdae3a8ebe3ac8dbdfcb4037bcfd",
+      "size": 1715,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f03c91e869dfcdae3a8ebe3ac8dbdfcb4037bcfd"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b4ced5b0b9707eee5524b6290798351097a14bc5",
+      "size": 1158,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b4ced5b0b9707eee5524b6290798351097a14bc5"
+    },
+    {
+      "path": "algoveri_data/cycle_detection/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f21d8b3cc3789b1c98576794d862f91b1e8d62e1",
+      "size": 2367,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f21d8b3cc3789b1c98576794d862f91b1e8d62e1"
+    },
+    {
+      "path": "algoveri_data/dfs",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b5e1364d3776813e555c5095fbfcf7f29ca8b22e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/b5e1364d3776813e555c5095fbfcf7f29ca8b22e"
+    },
+    {
+      "path": "algoveri_data/dfs/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8bcc51b74d13463924d0904fe91df74cef3d8f86",
+      "size": 1091,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8bcc51b74d13463924d0904fe91df74cef3d8f86"
+    },
+    {
+      "path": "algoveri_data/dfs/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a6fea9809a8a6368c9ba09861b3a981eef672e34",
+      "size": 1521,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a6fea9809a8a6368c9ba09861b3a981eef672e34"
+    },
+    {
+      "path": "algoveri_data/dfs/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "41b00685470c19a585f0ab4eef7299dbacb4c3cf",
+      "size": 1100,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/41b00685470c19a585f0ab4eef7299dbacb4c3cf"
+    },
+    {
+      "path": "algoveri_data/dfs/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ce2172f3bd001fffcdafd61b520d110bc11e782f",
+      "size": 1956,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ce2172f3bd001fffcdafd61b520d110bc11e782f"
+    },
+    {
+      "path": "algoveri_data/dfs/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "94f7e608ee59f5251cf6e302caeb886d823e3094",
+      "size": 1065,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/94f7e608ee59f5251cf6e302caeb886d823e3094"
+    },
+    {
+      "path": "algoveri_data/dfs/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b57a25ea5c9019b8c966855a39515faa42daef05",
+      "size": 2313,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b57a25ea5c9019b8c966855a39515faa42daef05"
+    },
+    {
+      "path": "algoveri_data/dijkstra",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9054279e83c4d90604f1c60cfb667b57daad24a4",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/9054279e83c4d90604f1c60cfb667b57daad24a4"
+    },
+    {
+      "path": "algoveri_data/dijkstra/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6518b8ef7535f12668fda39ebc5cb42eb794939",
+      "size": 1131,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e6518b8ef7535f12668fda39ebc5cb42eb794939"
+    },
+    {
+      "path": "algoveri_data/dijkstra/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05839f0ee0b6d79c542d0640075c2fa823cffa24",
+      "size": 4239,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/05839f0ee0b6d79c542d0640075c2fa823cffa24"
+    },
+    {
+      "path": "algoveri_data/dijkstra/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6726481d7f17223e2322935c7b3cca8b2c4235ac",
+      "size": 1147,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6726481d7f17223e2322935c7b3cca8b2c4235ac"
+    },
+    {
+      "path": "algoveri_data/dijkstra/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3619d61f32ce9236b02b3ac65ce42c0cb857f6dc",
+      "size": 4070,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3619d61f32ce9236b02b3ac65ce42c0cb857f6dc"
+    },
+    {
+      "path": "algoveri_data/dijkstra/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb932da4602ef8ee857009b59483190231189801",
+      "size": 1127,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fb932da4602ef8ee857009b59483190231189801"
+    },
+    {
+      "path": "algoveri_data/dijkstra/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "94fe417e9bf11d3ce72a8e3e4e759d35bc224f13",
+      "size": 4911,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/94fe417e9bf11d3ce72a8e3e4e759d35bc224f13"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "51f352fb0854bbf4176de2f88a9b700dd0132219",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/51f352fb0854bbf4176de2f88a9b700dd0132219"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d46bb7eeca0cb554ddaca722380de787a92d4a32",
+      "size": 1466,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d46bb7eeca0cb554ddaca722380de787a92d4a32"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "742e41426235a9d29945a9ae6b86732920d10f1e",
+      "size": 1504,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/742e41426235a9d29945a9ae6b86732920d10f1e"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "30c59d788d4de5158a258066e8ce922647220ee2",
+      "size": 1612,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/30c59d788d4de5158a258066e8ce922647220ee2"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c16f219c5c06f51c957ee3f6ff53713caf4d9166",
+      "size": 1396,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c16f219c5c06f51c957ee3f6ff53713caf4d9166"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65588a85cfc9b797c061ad2a9c38f94eec0abee0",
+      "size": 1428,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/65588a85cfc9b797c061ad2a9c38f94eec0abee0"
+    },
+    {
+      "path": "algoveri_data/discrete_logarithm/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9803290a7116e5bab7d367932025602d0730b1e9",
+      "size": 2072,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9803290a7116e5bab7d367932025602d0730b1e9"
+    },
+    {
+      "path": "algoveri_data/edmond_karp",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "30a87840d6da4d0292fc16e41a32721cdba6401f",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/30a87840d6da4d0292fc16e41a32721cdba6401f"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c26ca05a7e597876d0dd20b82738a0cd7bf7fae0",
+      "size": 1626,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c26ca05a7e597876d0dd20b82738a0cd7bf7fae0"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "87b88833bece1fae8e796b1619ed7df02f5b69f6",
+      "size": 4712,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/87b88833bece1fae8e796b1619ed7df02f5b69f6"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "71686e09646fd5c6a5ffc135eac28513a32bcdf4",
+      "size": 770,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/71686e09646fd5c6a5ffc135eac28513a32bcdf4"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c18abd178495d2c09176a263ee7fe499b054a0cf",
+      "size": 3882,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c18abd178495d2c09176a263ee7fe499b054a0cf"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "385457e74ee2c78b93ae0ecd46be1ea034fbba6c",
+      "size": 1626,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/385457e74ee2c78b93ae0ecd46be1ea034fbba6c"
+    },
+    {
+      "path": "algoveri_data/edmond_karp/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58229ee446ef41c147ae58a79d205ed7745d1780",
+      "size": 5646,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/58229ee446ef41c147ae58a79d205ed7745d1780"
+    },
+    {
+      "path": "algoveri_data/fast_exponential",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "65d4a89f8292c4d2448badc2a86670c0621b675a",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/65d4a89f8292c4d2448badc2a86670c0621b675a"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d280865587b5fdeac9615e77fe97c0d5ce50a413",
+      "size": 1414,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d280865587b5fdeac9615e77fe97c0d5ce50a413"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdaff87c1fc5e2ef77f0e26e4c2b1f63b8f030c0",
+      "size": 952,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fdaff87c1fc5e2ef77f0e26e4c2b1f63b8f030c0"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "adc0d5dfa1cd9394a5dab216950dd70f03f74fb4",
+      "size": 1201,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/adc0d5dfa1cd9394a5dab216950dd70f03f74fb4"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "63f2d6d5e80f349f0e845c9fb26a0eebf9b633d0",
+      "size": 1024,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/63f2d6d5e80f349f0e845c9fb26a0eebf9b633d0"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c46bc6900ec067667e85320293023a39c5aa67d",
+      "size": 1737,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1c46bc6900ec067667e85320293023a39c5aa67d"
+    },
+    {
+      "path": "algoveri_data/fast_exponential/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66313d0bb93b1ae1af8e6cef7af53ff8d8cf19bc",
+      "size": 1033,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/66313d0bb93b1ae1af8e6cef7af53ff8d8cf19bc"
+    },
+    {
+      "path": "algoveri_data/gcd",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fb505d9dd72bb6e3ab1b4d505ea2e5b12adec53c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/fb505d9dd72bb6e3ab1b4d505ea2e5b12adec53c"
+    },
+    {
+      "path": "algoveri_data/gcd/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "91fa2b76f0abcc43f085240e7b5e6e309a604ddc",
+      "size": 1054,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/91fa2b76f0abcc43f085240e7b5e6e309a604ddc"
+    },
+    {
+      "path": "algoveri_data/gcd/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d868270312c1fe7cb3a662dc6ed339b803179e2f",
+      "size": 1592,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d868270312c1fe7cb3a662dc6ed339b803179e2f"
+    },
+    {
+      "path": "algoveri_data/gcd/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e10cbc19041ce04bdf57593e2cf3fdce2e3ef768",
+      "size": 452,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e10cbc19041ce04bdf57593e2cf3fdce2e3ef768"
+    },
+    {
+      "path": "algoveri_data/gcd/lean_nl_new.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "784aee61d62132fff53760cf75955e97f4afcb5d",
+      "size": 1061,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/784aee61d62132fff53760cf75955e97f4afcb5d"
+    },
+    {
+      "path": "algoveri_data/gcd/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "027f43f132d82d141de7599066cf55413323156b",
+      "size": 1031,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/027f43f132d82d141de7599066cf55413323156b"
+    },
+    {
+      "path": "algoveri_data/gcd/lean_spec_new.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e420f32299574b6e9afa888dd173a340379e4eee",
+      "size": 1772,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e420f32299574b6e9afa888dd173a340379e4eee"
+    },
+    {
+      "path": "algoveri_data/gcd/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28a7a52bad02eb515a6d9d6c7f49cee3954be7cb",
+      "size": 1054,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/28a7a52bad02eb515a6d9d6c7f49cee3954be7cb"
+    },
+    {
+      "path": "algoveri_data/gcd/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "68c86528dfdd94564eef37d9f780ef77f56b0d4d",
+      "size": 1711,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/68c86528dfdd94564eef37d9f780ef77f56b0d4d"
+    },
+    {
+      "path": "algoveri_data/house_robber",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "401ca5220a263b16e4825e5e88b44e7c82c5c5a0",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/401ca5220a263b16e4825e5e88b44e7c82c5c5a0"
+    },
+    {
+      "path": "algoveri_data/house_robber/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "02bc499d12c983722278bf1edf119fdeaf2aaff0",
+      "size": 1054,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/02bc499d12c983722278bf1edf119fdeaf2aaff0"
+    },
+    {
+      "path": "algoveri_data/house_robber/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43f8d6a37356ebec7b0a268e3e1abc495d5d9beb",
+      "size": 2083,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/43f8d6a37356ebec7b0a268e3e1abc495d5d9beb"
+    },
+    {
+      "path": "algoveri_data/house_robber/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "480dc15b9179e1d54f8dacaef377fb9a917a3a36",
+      "size": 319,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/480dc15b9179e1d54f8dacaef377fb9a917a3a36"
+    },
+    {
+      "path": "algoveri_data/house_robber/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6bbcd5cd63231da8b1c1e5fa682608030806a186",
+      "size": 1648,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6bbcd5cd63231da8b1c1e5fa682608030806a186"
+    },
+    {
+      "path": "algoveri_data/house_robber/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf1d8a82ca2b59b95e21ce9a13ca034d65837b3a",
+      "size": 1054,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bf1d8a82ca2b59b95e21ce9a13ca034d65837b3a"
+    },
+    {
+      "path": "algoveri_data/house_robber/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "97ff3b0d90559b81738eb0993d79bd58d20b6ce8",
+      "size": 2618,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/97ff3b0d90559b81738eb0993d79bd58d20b6ce8"
+    },
+    {
+      "path": "algoveri_data/insertion_sort",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "10f9442dc8ed99a9c2832203efff6544cd22a96f",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/10f9442dc8ed99a9c2832203efff6544cd22a96f"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "234a1ca85fe10f0b7be43f7e22bc6cef3859b944",
+      "size": 660,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/234a1ca85fe10f0b7be43f7e22bc6cef3859b944"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "155be1e56b53ddf84a68f418077a471aea3558c6",
+      "size": 1115,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/155be1e56b53ddf84a68f418077a471aea3558c6"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa7a2dcea571be853a1f47a12856fcb244312a52",
+      "size": 354,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fa7a2dcea571be853a1f47a12856fcb244312a52"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "43e901b663ebe98a80933cffc6f1a0ec9ece56ce",
+      "size": 992,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/43e901b663ebe98a80933cffc6f1a0ec9ece56ce"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b9d6797131f6595e330b55528458d73b1322fff",
+      "size": 660,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9b9d6797131f6595e330b55528458d73b1322fff"
+    },
+    {
+      "path": "algoveri_data/insertion_sort/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a776979bbd536ddb9e1d5d22547a229cfeb84cd8",
+      "size": 1327,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a776979bbd536ddb9e1d5d22547a229cfeb84cd8"
+    },
+    {
+      "path": "algoveri_data/integer_exponential",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6a07b26d53a26c0964aad6d1f4744625de6940e0",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/6a07b26d53a26c0964aad6d1f4744625de6940e0"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bd6c7f02e078a50fb7cfa3a48adb5d3bf8b850d7",
+      "size": 1110,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bd6c7f02e078a50fb7cfa3a48adb5d3bf8b850d7"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdaff87c1fc5e2ef77f0e26e4c2b1f63b8f030c0",
+      "size": 952,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fdaff87c1fc5e2ef77f0e26e4c2b1f63b8f030c0"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "53b83416171cfbe9696fd9c7dbf16ba9aa7878ea",
+      "size": 693,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/53b83416171cfbe9696fd9c7dbf16ba9aa7878ea"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6b0c66dcaa36b425c24fbb7fd12e41d6c22dba43",
+      "size": 950,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6b0c66dcaa36b425c24fbb7fd12e41d6c22dba43"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9818f5d07887609e9d8cc2e0c634777b61cb3d99",
+      "size": 1312,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9818f5d07887609e9d8cc2e0c634777b61cb3d99"
+    },
+    {
+      "path": "algoveri_data/integer_exponential/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9af0c0f7d69cb63a3c98201e232c8408aad2bae7",
+      "size": 1008,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9af0c0f7d69cb63a3c98201e232c8408aad2bae7"
+    },
+    {
+      "path": "algoveri_data/jump_game",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fa6c024668217732f63811cfbf60636a9f9cd2d7",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/fa6c024668217732f63811cfbf60636a9f9cd2d7"
+    },
+    {
+      "path": "algoveri_data/jump_game/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ec7f5e9d11ea6d26b05c642192f8786085366f1",
+      "size": 771,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6ec7f5e9d11ea6d26b05c642192f8786085366f1"
+    },
+    {
+      "path": "algoveri_data/jump_game/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cf009a62718e12c4cf03df4437288af630acfb22",
+      "size": 1482,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cf009a62718e12c4cf03df4437288af630acfb22"
+    },
+    {
+      "path": "algoveri_data/jump_game/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c08463e0ba04f60ea64ed7df94d2d0a5e82f509a",
+      "size": 406,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c08463e0ba04f60ea64ed7df94d2d0a5e82f509a"
+    },
+    {
+      "path": "algoveri_data/jump_game/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c1b552a971a4e2af4d05cb8b00fb195a44b3e14",
+      "size": 1440,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9c1b552a971a4e2af4d05cb8b00fb195a44b3e14"
+    },
+    {
+      "path": "algoveri_data/jump_game/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "08bb68143e41843f4700288568c522d29511d594",
+      "size": 771,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/08bb68143e41843f4700288568c522d29511d594"
+    },
+    {
+      "path": "algoveri_data/jump_game/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32223e284d910ed201d68cfe21bdbaadd50b2767",
+      "size": 1903,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/32223e284d910ed201d68cfe21bdbaadd50b2767"
+    },
+    {
+      "path": "algoveri_data/k_smallest",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5f5c71163f791c1f55e634cf16a51d05dd0c3d3c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/5f5c71163f791c1f55e634cf16a51d05dd0c3d3c"
+    },
+    {
+      "path": "algoveri_data/k_smallest/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7c03725e727c70e93eef3e6be3dde222bc66201b",
+      "size": 823,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7c03725e727c70e93eef3e6be3dde222bc66201b"
+    },
+    {
+      "path": "algoveri_data/k_smallest/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6dd9b19b31f5f7c3b69f76616a6153970fcbe4d1",
+      "size": 1737,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6dd9b19b31f5f7c3b69f76616a6153970fcbe4d1"
+    },
+    {
+      "path": "algoveri_data/k_smallest/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbe9d410d39e4fe7e14ca0b5cda92300c47929ee",
+      "size": 552,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dbe9d410d39e4fe7e14ca0b5cda92300c47929ee"
+    },
+    {
+      "path": "algoveri_data/k_smallest/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9999d4c159b0f4ddbe8eb29ad55555105d4bfd5b",
+      "size": 1134,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9999d4c159b0f4ddbe8eb29ad55555105d4bfd5b"
+    },
+    {
+      "path": "algoveri_data/k_smallest/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "16b27e754403c777e733a8b6f9bc8af4b1c945cf",
+      "size": 823,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/16b27e754403c777e733a8b6f9bc8af4b1c945cf"
+    },
+    {
+      "path": "algoveri_data/k_smallest/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4b275301db1f170d77a1c88f51902d2ab9a0ddc1",
+      "size": 2088,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4b275301db1f170d77a1c88f51902d2ab9a0ddc1"
+    },
+    {
+      "path": "algoveri_data/kmp",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5d5d9ed3df68f4b1b6bc51224603d80ab1d28664",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/5d5d9ed3df68f4b1b6bc51224603d80ab1d28664"
+    },
+    {
+      "path": "algoveri_data/kmp/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbb0d40e8f1bd4a4410796d4618540bf2c1f27d6",
+      "size": 1405,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dbb0d40e8f1bd4a4410796d4618540bf2c1f27d6"
+    },
+    {
+      "path": "algoveri_data/kmp/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa49cc24df23d0c9c73e598c3c706d62bb5405fd",
+      "size": 1341,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fa49cc24df23d0c9c73e598c3c706d62bb5405fd"
+    },
+    {
+      "path": "algoveri_data/kmp/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "590c259b7f75bfaa525bcc3bf2c7bef8f96ac2a2",
+      "size": 1369,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/590c259b7f75bfaa525bcc3bf2c7bef8f96ac2a2"
+    },
+    {
+      "path": "algoveri_data/kmp/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "41225521b6f6f9e612b5e7057ae02093e431bd08",
+      "size": 1567,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/41225521b6f6f9e612b5e7057ae02093e431bd08"
+    },
+    {
+      "path": "algoveri_data/kmp/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "16dc8b21916ac1c3b6cb99589144d9573ba3f169",
+      "size": 1390,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/16dc8b21916ac1c3b6cb99589144d9573ba3f169"
+    },
+    {
+      "path": "algoveri_data/kmp/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32530b6b1aa7f83a4e5393c5a4aae31f3ab7f6d5",
+      "size": 1441,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/32530b6b1aa7f83a4e5393c5a4aae31f3ab7f6d5"
+    },
+    {
+      "path": "algoveri_data/knapsack_01",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c203534abe51043b228cc9c61341682d5b0aa452",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/c203534abe51043b228cc9c61341682d5b0aa452"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6db9589924b8fa23ae5194a51042b2417257dd4",
+      "size": 1069,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e6db9589924b8fa23ae5194a51042b2417257dd4"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6d26f127e313e88f5f6825b63dae303613d661b",
+      "size": 2314,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e6d26f127e313e88f5f6825b63dae303613d661b"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2032f10e11cae131023253de2ba7e85fb4849b95",
+      "size": 397,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2032f10e11cae131023253de2ba7e85fb4849b95"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "88228914f5f4574b3cf7e3a51224137fc2996dbf",
+      "size": 1953,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/88228914f5f4574b3cf7e3a51224137fc2996dbf"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "677fa866afa46147f577fd036f49c7bf2a52901c",
+      "size": 926,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/677fa866afa46147f577fd036f49c7bf2a52901c"
+    },
+    {
+      "path": "algoveri_data/knapsack_01/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ba8c38ae4cc75fed03a2c1e096f3f7986d7f60e",
+      "size": 2748,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3ba8c38ae4cc75fed03a2c1e096f3f7986d7f60e"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2af03e10999e75c6ee28ec59e2b5b8a55e5fa642",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/2af03e10999e75c6ee28ec59e2b5b8a55e5fa642"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed666953d38d7f60c576610a333993f48f4a4f88",
+      "size": 1214,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ed666953d38d7f60c576610a333993f48f4a4f88"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b47c6c4ee3b01ec195cc2a447d6e57cc065bc05b",
+      "size": 2410,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b47c6c4ee3b01ec195cc2a447d6e57cc065bc05b"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "750062507bec000fa6276c69e7bdf1f6617c42be",
+      "size": 366,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/750062507bec000fa6276c69e7bdf1f6617c42be"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3bc9be9e17adcfed2e097df2c9de4a791b0f10a7",
+      "size": 2518,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3bc9be9e17adcfed2e097df2c9de4a791b0f10a7"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f67ca2a2738ca528c2afb4694db927b751d8813b",
+      "size": 1008,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f67ca2a2738ca528c2afb4694db927b751d8813b"
+    },
+    {
+      "path": "algoveri_data/knapsack_unbounded/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a9ed36c7711ce4640e362ce37ba62fd6c1a090cd",
+      "size": 2906,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a9ed36c7711ce4640e362ce37ba62fd6c1a090cd"
+    },
+    {
+      "path": "algoveri_data/kruskal",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "afc65dbd0c2fb0f8d71abb52c757bf2e3a80d223",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/afc65dbd0c2fb0f8d71abb52c757bf2e3a80d223"
+    },
+    {
+      "path": "algoveri_data/kruskal/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "535d9bf7050ba327887ed1e377d3c9cbddee4ca1",
+      "size": 1480,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/535d9bf7050ba327887ed1e377d3c9cbddee4ca1"
+    },
+    {
+      "path": "algoveri_data/kruskal/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c97d6d7aa8b42c414bebbf4735353378f878a68a",
+      "size": 4682,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c97d6d7aa8b42c414bebbf4735353378f878a68a"
+    },
+    {
+      "path": "algoveri_data/kruskal/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77c0a452e45e2cc7f82097d7fab6914512862426",
+      "size": 3684,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/77c0a452e45e2cc7f82097d7fab6914512862426"
+    },
+    {
+      "path": "algoveri_data/kruskal/lean_spec.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80a768aa9490648f61def2e1cef5da60bcb49484",
+      "size": 1676,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/80a768aa9490648f61def2e1cef5da60bcb49484"
+    },
+    {
+      "path": "algoveri_data/kruskal/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01c74bcdf422ec0e4310e6df22cfdd30abf9b920",
+      "size": 1461,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/01c74bcdf422ec0e4310e6df22cfdd30abf9b920"
+    },
+    {
+      "path": "algoveri_data/kruskal/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b6f952e5bc9cd4ea7abcc30c212250d61f9124ab",
+      "size": 6054,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b6f952e5bc9cd4ea7abcc30c212250d61f9124ab"
+    },
+    {
+      "path": "algoveri_data/lca",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "29cb1c0acbf2852e26c593ce8d7701bb37bdac43",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/29cb1c0acbf2852e26c593ce8d7701bb37bdac43"
+    },
+    {
+      "path": "algoveri_data/lca/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f2b82447840faf9781ef5193402e6ac77712d9b1",
+      "size": 1280,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f2b82447840faf9781ef5193402e6ac77712d9b1"
+    },
+    {
+      "path": "algoveri_data/lca/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3a9a7175570d1a49aa36383a0ef10567fe2993f1",
+      "size": 3459,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3a9a7175570d1a49aa36383a0ef10567fe2993f1"
+    },
+    {
+      "path": "algoveri_data/lca/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "faf1cdb422f4ce2a9dd5e3c78a7de4ba35a8c883",
+      "size": 356,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/faf1cdb422f4ce2a9dd5e3c78a7de4ba35a8c883"
+    },
+    {
+      "path": "algoveri_data/lca/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0434f63de5bb15d44ecc1cd24068094e212a823e",
+      "size": 3353,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0434f63de5bb15d44ecc1cd24068094e212a823e"
+    },
+    {
+      "path": "algoveri_data/lca/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55e901a59553bf35388de18db13ff479b354ce6f",
+      "size": 1291,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/55e901a59553bf35388de18db13ff479b354ce6f"
+    },
+    {
+      "path": "algoveri_data/lca/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c04305f49c3606cc0fe51e70d10927b45b312a1",
+      "size": 5051,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1c04305f49c3606cc0fe51e70d10927b45b312a1"
+    },
+    {
+      "path": "algoveri_data/linear_search",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "90178d36bcebd2e1d78fbc21230cf48450720b99",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/90178d36bcebd2e1d78fbc21230cf48450720b99"
+    },
+    {
+      "path": "algoveri_data/linear_search/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95634dec63115501dd847ee4fce3889fd1dbe08a",
+      "size": 718,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/95634dec63115501dd847ee4fce3889fd1dbe08a"
+    },
+    {
+      "path": "algoveri_data/linear_search/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9f15a0e3d4925818f737933e1873965bc06896d4",
+      "size": 892,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9f15a0e3d4925818f737933e1873965bc06896d4"
+    },
+    {
+      "path": "algoveri_data/linear_search/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0d076b7f2efb71fc1097d4add6a7f7f60a5677fb",
+      "size": 1141,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0d076b7f2efb71fc1097d4add6a7f7f60a5677fb"
+    },
+    {
+      "path": "algoveri_data/linear_search/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d0e168c3d0d88c653aa3f0144120bf095189373e",
+      "size": 1413,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d0e168c3d0d88c653aa3f0144120bf095189373e"
+    },
+    {
+      "path": "algoveri_data/linear_search/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fa47bdbf14e33b3af17e1e8d5a51974cce7d291b",
+      "size": 737,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fa47bdbf14e33b3af17e1e8d5a51974cce7d291b"
+    },
+    {
+      "path": "algoveri_data/linear_search/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4b3c55cb81e451abb40b6df8e05c94133cf7a461",
+      "size": 908,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4b3c55cb81e451abb40b6df8e05c94133cf7a461"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "342360f993b0915d68ea80784fc88876aeccef9c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/342360f993b0915d68ea80784fc88876aeccef9c"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "29cb24df53c9f4ef7e6a793f3c78ecc100b3ae5f",
+      "size": 2111,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/29cb24df53c9f4ef7e6a793f3c78ecc100b3ae5f"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c03ad7b2efa6f332f468d1670cf62fdbfe6ae42",
+      "size": 2937,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2c03ad7b2efa6f332f468d1670cf62fdbfe6ae42"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d7a4cc6e158f594af8b00137b9d675e13eac0a8",
+      "size": 611,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3d7a4cc6e158f594af8b00137b9d675e13eac0a8"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ed487e51e10e634b43c74aed646dbfdec0608737",
+      "size": 1918,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ed487e51e10e634b43c74aed646dbfdec0608737"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1959608632557d6ee6ad4a25fe4fdee34002e15b",
+      "size": 2112,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1959608632557d6ee6ad4a25fe4fdee34002e15b"
+    },
+    {
+      "path": "algoveri_data/linearsys_gf2/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "487ce82c96e7a854553397b541f7abd352a39ee9",
+      "size": 3731,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/487ce82c96e7a854553397b541f7abd352a39ee9"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d27a1b07b7f439eab9534ea514e2f5f89a67d08e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/d27a1b07b7f439eab9534ea514e2f5f89a67d08e"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ac9c77c83b80dc06720eacd8854a6e991cab29a2",
+      "size": 831,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ac9c77c83b80dc06720eacd8854a6e991cab29a2"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdffb574a95388b6dd2afc64f1ccfd2b8c6738fc",
+      "size": 3416,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fdffb574a95388b6dd2afc64f1ccfd2b8c6738fc"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a4d89346b076ecf6dcb6c1eb159ff1d93dd4af0d",
+      "size": 606,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a4d89346b076ecf6dcb6c1eb159ff1d93dd4af0d"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fdd52448c177bc111965f140ea73cef5f563c751",
+      "size": 2355,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fdd52448c177bc111965f140ea73cef5f563c751"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d156dc21f00c6e54f3917cb1197d9eb13f2ef18e",
+      "size": 1001,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d156dc21f00c6e54f3917cb1197d9eb13f2ef18e"
+    },
+    {
+      "path": "algoveri_data/llrbt_delete/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dbe9d2d85548add331b54b5760161a6ea454ed45",
+      "size": 3821,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dbe9d2d85548add331b54b5760161a6ea454ed45"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2b1066cbef76aab4b537c2490e7be67f85fa2324",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/2b1066cbef76aab4b537c2490e7be67f85fa2324"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1223b7e9d72939e487ba318666e55edc8a4be5c2",
+      "size": 961,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1223b7e9d72939e487ba318666e55edc8a4be5c2"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b2cbbeb21179147bf937239e4e12ec3c985e9f94",
+      "size": 3556,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b2cbbeb21179147bf937239e4e12ec3c985e9f94"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eb59c227811fd58698f07ea80bb772511f90dd7c",
+      "size": 749,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/eb59c227811fd58698f07ea80bb772511f90dd7c"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a37ecac9a2d98d188b3b85214e02306c8f03703d",
+      "size": 3353,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a37ecac9a2d98d188b3b85214e02306c8f03703d"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ddb607804c68ab5656201477c578b881a8ac7c6c",
+      "size": 987,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ddb607804c68ab5656201477c578b881a8ac7c6c"
+    },
+    {
+      "path": "algoveri_data/llrbt_flipcolor/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b41350e5ebafe07756c7c682bd987964a3fc00e",
+      "size": 4063,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5b41350e5ebafe07756c7c682bd987964a3fc00e"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5692588986918013df3a1407d2277552e1b8dbf2",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/5692588986918013df3a1407d2277552e1b8dbf2"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "65cd9212b594d3095fe875b1815a1e2e8faab44c",
+      "size": 1050,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/65cd9212b594d3095fe875b1815a1e2e8faab44c"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "706ef31fb4f2019ac84db1848307cf868adfa464",
+      "size": 3420,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/706ef31fb4f2019ac84db1848307cf868adfa464"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2310f1d83c565731fea96a94ad9b18d6c6d36886",
+      "size": 569,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2310f1d83c565731fea96a94ad9b18d6c6d36886"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a88141ea5c8436a58365c5be5696a33704b8acd",
+      "size": 3844,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2a88141ea5c8436a58365c5be5696a33704b8acd"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "21f965de4a63cca574bed0a7b06a408c535a5dea",
+      "size": 992,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/21f965de4a63cca574bed0a7b06a408c535a5dea"
+    },
+    {
+      "path": "algoveri_data/llrbt_insert/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "aebde0a011ec876ba10dcf3db1fd3b0f5720cf1f",
+      "size": 3715,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/aebde0a011ec876ba10dcf3db1fd3b0f5720cf1f"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "beef4f40762d6ca1e5c4ae1f57ffb2ae07b1b6b1",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/beef4f40762d6ca1e5c4ae1f57ffb2ae07b1b6b1"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad2f42f4e2a43c771cee9e8ee732a53e7334e748",
+      "size": 722,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ad2f42f4e2a43c771cee9e8ee732a53e7334e748"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "52131605e2af143e61b106ed324ee1b11d6b070c",
+      "size": 3342,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/52131605e2af143e61b106ed324ee1b11d6b070c"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9ecad6b9fec2ad7cd023be7181f468da8ebda000",
+      "size": 724,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9ecad6b9fec2ad7cd023be7181f468da8ebda000"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fe661a06c5c56871fe02b61340ff22cd88dcf7f7",
+      "size": 2850,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fe661a06c5c56871fe02b61340ff22cd88dcf7f7"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0ca4d00ce32430aac2a7eb4294a4c6c329009b4a",
+      "size": 846,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0ca4d00ce32430aac2a7eb4294a4c6c329009b4a"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateleft/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a566fd4e2df4946f96f5122e5f9fdb56aa23b92",
+      "size": 4051,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2a566fd4e2df4946f96f5122e5f9fdb56aa23b92"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3a5ca42c1376b15e85daa76405540f39f86e86e5",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/3a5ca42c1376b15e85daa76405540f39f86e86e5"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dd01cabd2ef4cb2ddd3f422d65b32ae6d3b70044",
+      "size": 748,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dd01cabd2ef4cb2ddd3f422d65b32ae6d3b70044"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "daec5a47b2413324225c4984af98bcbece8d3bd7",
+      "size": 3246,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/daec5a47b2413324225c4984af98bcbece8d3bd7"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "83a20b0c2a81806c73635f8d5094b09bd5bb60e9",
+      "size": 632,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/83a20b0c2a81806c73635f8d5094b09bd5bb60e9"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e553981e22f40c9cad98d232f4533ede6a598a8a",
+      "size": 2884,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e553981e22f40c9cad98d232f4533ede6a598a8a"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "95392bfc7b4989876c0db7d8c6db2aec0f25fc66",
+      "size": 911,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/95392bfc7b4989876c0db7d8c6db2aec0f25fc66"
+    },
+    {
+      "path": "algoveri_data/llrbt_rotateright/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "974b4f7b5f4016cb85e30dcbe840cfd430a0a2e9",
+      "size": 3913,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/974b4f7b5f4016cb85e30dcbe840cfd430a0a2e9"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "46fa267170e8a7887c2a160df4de6bec5bdf36b7",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/46fa267170e8a7887c2a160df4de6bec5bdf36b7"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "946635c124b0e46cac15755da63384cf5b87bbb1",
+      "size": 613,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/946635c124b0e46cac15755da63384cf5b87bbb1"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3dd74354cf7c6cdd364c8d5fa29c30fd7d972ea8",
+      "size": 1234,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3dd74354cf7c6cdd364c8d5fa29c30fd7d972ea8"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5070cf0896f707e7b00a0832403b3f2784609cc2",
+      "size": 310,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5070cf0896f707e7b00a0832403b3f2784609cc2"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "201b3b7505b62ac6d558a96fc016d1c7eef63efc",
+      "size": 1396,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/201b3b7505b62ac6d558a96fc016d1c7eef63efc"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e4eef70d6077412a1add71ae4c0c2557cfa5dc59",
+      "size": 613,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e4eef70d6077412a1add71ae4c0c2557cfa5dc59"
+    },
+    {
+      "path": "algoveri_data/longest_common_subsequence/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b4abc527d2aea7cb160af19f4944d9015c9421ac",
+      "size": 1475,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b4abc527d2aea7cb160af19f4944d9015c9421ac"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "efaa93fd4e7406ecea83a7234af7bd301e68e31d",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/efaa93fd4e7406ecea83a7234af7bd301e68e31d"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f2d5082afd707d39ab91ca6d7d19f6ba31d6756",
+      "size": 728,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7f2d5082afd707d39ab91ca6d7d19f6ba31d6756"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7072ba7372e6d0b58bd1189f9bdb5888cac332ea",
+      "size": 1059,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7072ba7372e6d0b58bd1189f9bdb5888cac332ea"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e976862bb8530eaba5d40843d12b82cc4e8aa531",
+      "size": 518,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e976862bb8530eaba5d40843d12b82cc4e8aa531"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2a439bb0d459910631b1c01100d614a80a4552d",
+      "size": 2168,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e2a439bb0d459910631b1c01100d614a80a4552d"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77d1e6fe45c02912624094346e63f60902eaeb5c",
+      "size": 727,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/77d1e6fe45c02912624094346e63f60902eaeb5c"
+    },
+    {
+      "path": "algoveri_data/longest_increasing_subsequence/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "680500a3466119dfa143deb8f8cce471adb26f63",
+      "size": 1332,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/680500a3466119dfa143deb8f8cce471adb26f63"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "78667a108266c09cb9e34fbe4501c32fec94ab4f",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/78667a108266c09cb9e34fbe4501c32fec94ab4f"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3d0e03f0011d34c6a868fb8251823ff9bd0f0d20",
+      "size": 2099,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3d0e03f0011d34c6a868fb8251823ff9bd0f0d20"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0699d1d26162e1d2c6fbbf69d2cbf752209fdabe",
+      "size": 2042,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0699d1d26162e1d2c6fbbf69d2cbf752209fdabe"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d42c4b73eb5b86d58be956a0d58a7e456949dcfd",
+      "size": 2072,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d42c4b73eb5b86d58be956a0d58a7e456949dcfd"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c946a7cf76f4dcc07340fd0326453ce83c9192bc",
+      "size": 1688,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c946a7cf76f4dcc07340fd0326453ce83c9192bc"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "affae35755ccc594533e351900feadd8213580be",
+      "size": 2137,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/affae35755ccc594533e351900feadd8213580be"
+    },
+    {
+      "path": "algoveri_data/longest_palindrome_substring/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2fa193bc8698824551a2cc54fedab7928df72a39",
+      "size": 2214,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2fa193bc8698824551a2cc54fedab7928df72a39"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "7bde473b618e6ebe73e0e707f71ed27df65dc590",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/7bde473b618e6ebe73e0e707f71ed27df65dc590"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "67831488981cd42ae5337fb2083fd1a9fd148d68",
+      "size": 836,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/67831488981cd42ae5337fb2083fd1a9fd148d68"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5765941901835b1a54f379affd02197c5278fa4",
+      "size": 2140,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e5765941901835b1a54f379affd02197c5278fa4"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bebe655187837e3988f64149663cf713cd6eb1b8",
+      "size": 405,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bebe655187837e3988f64149663cf713cd6eb1b8"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e353c093304b929b59abc5d5f0ad6813888b9b90",
+      "size": 2151,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e353c093304b929b59abc5d5f0ad6813888b9b90"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a8af1b4c9904da9d8240547fbd5bcfd9e27069e9",
+      "size": 573,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a8af1b4c9904da9d8240547fbd5bcfd9e27069e9"
+    },
+    {
+      "path": "algoveri_data/matrix_multiplication/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c80814f7533d0702451213f89e2501972f101ae4",
+      "size": 2353,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c80814f7533d0702451213f89e2501972f101ae4"
+    },
+    {
+      "path": "algoveri_data/max_matching",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "5cb3a5b80c7078a31c4e80d7c263d05c1ebee811",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/5cb3a5b80c7078a31c4e80d7c263d05c1ebee811"
+    },
+    {
+      "path": "algoveri_data/max_matching/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e3dc90ed2efcc4c41343967b5e9c61df7e44bb64",
+      "size": 1690,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e3dc90ed2efcc4c41343967b5e9c61df7e44bb64"
+    },
+    {
+      "path": "algoveri_data/max_matching/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b0b432a23f13c3ab28513338e594f7ed74e259dd",
+      "size": 3000,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b0b432a23f13c3ab28513338e594f7ed74e259dd"
+    },
+    {
+      "path": "algoveri_data/max_matching/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0c3b98a2d18dd917187cb7565d57fbb1a424e27c",
+      "size": 1146,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0c3b98a2d18dd917187cb7565d57fbb1a424e27c"
+    },
+    {
+      "path": "algoveri_data/max_matching/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fb1201e82c36e8c5e9c63e8e948aa533b424127",
+      "size": 2284,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9fb1201e82c36e8c5e9c63e8e948aa533b424127"
+    },
+    {
+      "path": "algoveri_data/max_matching/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b12506fe9a91cf14bb3da0c0cbeeec189f6dde34",
+      "size": 1682,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b12506fe9a91cf14bb3da0c0cbeeec189f6dde34"
+    },
+    {
+      "path": "algoveri_data/max_matching/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c34542a8346fdf04fd71aef6b74cff6154e7b05a",
+      "size": 3682,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c34542a8346fdf04fd71aef6b74cff6154e7b05a"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "32cc6b5f9439a8c32fb8c229ce5570de060e64fc",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/32cc6b5f9439a8c32fb8c229ce5570de060e64fc"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0661aa9b69804777dede6af232a52ae7f2044f56",
+      "size": 1501,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0661aa9b69804777dede6af232a52ae7f2044f56"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c4f16ce39512b251d13efbe24ca5069d69d26b6f",
+      "size": 1476,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c4f16ce39512b251d13efbe24ca5069d69d26b6f"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a63631ea390905f0dc8b3f1e20a5a3d795fa7f7e",
+      "size": 336,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a63631ea390905f0dc8b3f1e20a5a3d795fa7f7e"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "47bce64958586907ee7bc526ba5cb86b964f7834",
+      "size": 1606,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/47bce64958586907ee7bc526ba5cb86b964f7834"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e60549dacadd1eb13c63da7c72bb61edddea583",
+      "size": 1498,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9e60549dacadd1eb13c63da7c72bb61edddea583"
+    },
+    {
+      "path": "algoveri_data/maxheap_popmax/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fef9cdcecd9f835b57e86017fd6f2a2719a1a83",
+      "size": 1600,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3fef9cdcecd9f835b57e86017fd6f2a2719a1a83"
+    },
+    {
+      "path": "algoveri_data/maxheap_push",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a04dd70c1df08cdb59c5f03ac2c610168a5e004b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/a04dd70c1df08cdb59c5f03ac2c610168a5e004b"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "53d8ab8391659d6d9b43269813f81e7a6ddf9e8c",
+      "size": 1492,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/53d8ab8391659d6d9b43269813f81e7a6ddf9e8c"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb184b26e64b265a0c42c81c22e810e37152935f",
+      "size": 1374,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cb184b26e64b265a0c42c81c22e810e37152935f"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5f8c4abdf84f0f4f2c63362c0299dce151fb2cf6",
+      "size": 358,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5f8c4abdf84f0f4f2c63362c0299dce151fb2cf6"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1f9514daa32e2323eab66fa8789172eb2ec514f5",
+      "size": 1576,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1f9514daa32e2323eab66fa8789172eb2ec514f5"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c68399be851f47e5abbf6dc4ebe5d7086a0daee1",
+      "size": 1483,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c68399be851f47e5abbf6dc4ebe5d7086a0daee1"
+    },
+    {
+      "path": "algoveri_data/maxheap_push/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fb0f3481c205a0f82bb38c5fcbe6e837b6bcd263",
+      "size": 1592,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fb0f3481c205a0f82bb38c5fcbe6e837b6bcd263"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "30d024d1389dcf587b3457e8fc382a24fdb5ecca",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/30d024d1389dcf587b3457e8fc382a24fdb5ecca"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "42cc61c64413dcee97f02e3b4beffaf55e08f12c",
+      "size": 767,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/42cc61c64413dcee97f02e3b4beffaf55e08f12c"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "776da8ce4c49d82a9b993b66f90dc9f2ecde8845",
+      "size": 997,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/776da8ce4c49d82a9b993b66f90dc9f2ecde8845"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "404eb4f0a587c654f0fb1df2a03f2c2b235bd152",
+      "size": 445,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/404eb4f0a587c654f0fb1df2a03f2c2b235bd152"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "70225bb2669944d41c8e4cd4b677500294244ca5",
+      "size": 1276,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/70225bb2669944d41c8e4cd4b677500294244ca5"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "046d8f0b21979e28eb014cff63d2a72646cf7a8b",
+      "size": 766,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/046d8f0b21979e28eb014cff63d2a72646cf7a8b"
+    },
+    {
+      "path": "algoveri_data/maximum_subarray_sum/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5ca0c91136e1a6ff89907fdb53fd3047a075f81",
+      "size": 1378,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d5ca0c91136e1a6ff89907fdb53fd3047a075f81"
+    },
+    {
+      "path": "algoveri_data/merge_sort",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ee44d771eeaae9b0c2938aa49e501bccb289fd48",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/ee44d771eeaae9b0c2938aa49e501bccb289fd48"
+    },
+    {
+      "path": "algoveri_data/merge_sort/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "51986cfe3165da4b962246b60f73edefea5c5a24",
+      "size": 869,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/51986cfe3165da4b962246b60f73edefea5c5a24"
+    },
+    {
+      "path": "algoveri_data/merge_sort/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9388fc7ec8cda3f58f6a7166d96b955b2aa5f56d",
+      "size": 1107,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9388fc7ec8cda3f58f6a7166d96b955b2aa5f56d"
+    },
+    {
+      "path": "algoveri_data/merge_sort/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4b2da9b1a0280921c2e9049839479b3582bbe09d",
+      "size": 485,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4b2da9b1a0280921c2e9049839479b3582bbe09d"
+    },
+    {
+      "path": "algoveri_data/merge_sort/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4c8132e54c900f9d5bc6b0b31f5f8556f879e6d8",
+      "size": 956,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4c8132e54c900f9d5bc6b0b31f5f8556f879e6d8"
+    },
+    {
+      "path": "algoveri_data/merge_sort/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fe15ca894ed724c4f37e3191cf0f72dddd6b4231",
+      "size": 869,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fe15ca894ed724c4f37e3191cf0f72dddd6b4231"
+    },
+    {
+      "path": "algoveri_data/merge_sort/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e5161388eada2b4c02a58b158069cdee98c1fbf6",
+      "size": 1329,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e5161388eada2b4c02a58b158069cdee98c1fbf6"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1b7086a27f14e577f615fabd3991e4e464f9484b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/1b7086a27f14e577f615fabd3991e4e464f9484b"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "51f81de7fdf1597ab94c9fcf086aa30fd7746331",
+      "size": 1118,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/51f81de7fdf1597ab94c9fcf086aa30fd7746331"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e3389d9265e4e6d2688ff8a335b0feb7cb73ca14",
+      "size": 1800,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e3389d9265e4e6d2688ff8a335b0feb7cb73ca14"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "39c31d49940de68bf84e37b73e886073284a45a7",
+      "size": 1240,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/39c31d49940de68bf84e37b73e886073284a45a7"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05fc1ab2993f23eb2dc67b79c2bdc681f24e1c20",
+      "size": 1641,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/05fc1ab2993f23eb2dc67b79c2bdc681f24e1c20"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96758b65ce381c1c9a073594b6ea2f7f3de43f09",
+      "size": 1465,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/96758b65ce381c1c9a073594b6ea2f7f3de43f09"
+    },
+    {
+      "path": "algoveri_data/polymul_karatsuba/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cddc821ee0e4c73594a5866779870c9ba9e6cbc3",
+      "size": 2414,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cddc821ee0e4c73594a5866779870c9ba9e6cbc3"
+    },
+    {
+      "path": "algoveri_data/polymul_naive",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0a1dd177d62bae50a0d1832c7dc0e83bf166f8b9",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/0a1dd177d62bae50a0d1832c7dc0e83bf166f8b9"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5a14301c38cc4ddcec257d9a15fb25ed8c348cda",
+      "size": 1331,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5a14301c38cc4ddcec257d9a15fb25ed8c348cda"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f41a6d7c9fdae3b08727fb230fc1dc763bfb8df2",
+      "size": 1644,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f41a6d7c9fdae3b08727fb230fc1dc763bfb8df2"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "443851d70f9a4dd6191e51d88e66685d9fdd57b0",
+      "size": 767,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/443851d70f9a4dd6191e51d88e66685d9fdd57b0"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "280dd9594d5ab6faac1aed99837581587b0aae34",
+      "size": 1566,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/280dd9594d5ab6faac1aed99837581587b0aae34"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "993165cd15bbd76a15a11a82ffd718898d9905b9",
+      "size": 1282,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/993165cd15bbd76a15a11a82ffd718898d9905b9"
+    },
+    {
+      "path": "algoveri_data/polymul_naive/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "886a71a87057ca65305b2fcc9925d83b11944772",
+      "size": 2033,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/886a71a87057ca65305b2fcc9925d83b11944772"
+    },
+    {
+      "path": "algoveri_data/prim",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2f3fe0a11cc6c1693a9c7e2880a9634d3bcf7c86",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/2f3fe0a11cc6c1693a9c7e2880a9634d3bcf7c86"
+    },
+    {
+      "path": "algoveri_data/prim/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "860406e90cec72d7d0a666a93d4fca0fa9909ada",
+      "size": 1541,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/860406e90cec72d7d0a666a93d4fca0fa9909ada"
+    },
+    {
+      "path": "algoveri_data/prim/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0160cc520aeb1e64a2150c85d2a0376ebdf6722b",
+      "size": 4673,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0160cc520aeb1e64a2150c85d2a0376ebdf6722b"
+    },
+    {
+      "path": "algoveri_data/prim/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6d2889dd514f626e36f32706ec4e868e15f962da",
+      "size": 1300,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6d2889dd514f626e36f32706ec4e868e15f962da"
+    },
+    {
+      "path": "algoveri_data/prim/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d67e6ab3853be14e4542123051ea6539d372d77e",
+      "size": 3810,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d67e6ab3853be14e4542123051ea6539d372d77e"
+    },
+    {
+      "path": "algoveri_data/prim/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5aee03c907a80189af9fdc7e9108e856a6f2956a",
+      "size": 1521,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5aee03c907a80189af9fdc7e9108e856a6f2956a"
+    },
+    {
+      "path": "algoveri_data/prim/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9fb38f31883f6d5a97c7ec93e9bce009f525bda7",
+      "size": 6045,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9fb38f31883f6d5a97c7ec93e9bce009f525bda7"
+    },
+    {
+      "path": "algoveri_data/push_relabel",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "45e4de3bdf0381011777df4a2e4ff9f732f78990",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/45e4de3bdf0381011777df4a2e4ff9f732f78990"
+    },
+    {
+      "path": "algoveri_data/push_relabel/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d96584ee83bfd06da10035df1707014a2905776c",
+      "size": 1708,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d96584ee83bfd06da10035df1707014a2905776c"
+    },
+    {
+      "path": "algoveri_data/push_relabel/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "424eef25d84ebd1cceb5015b52c44e4a480c1ad1",
+      "size": 4712,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/424eef25d84ebd1cceb5015b52c44e4a480c1ad1"
+    },
+    {
+      "path": "algoveri_data/push_relabel/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "33ac2f07d2783776ae8eff7454211726ef2252ae",
+      "size": 1728,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/33ac2f07d2783776ae8eff7454211726ef2252ae"
+    },
+    {
+      "path": "algoveri_data/push_relabel/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c18abd178495d2c09176a263ee7fe499b054a0cf",
+      "size": 3882,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c18abd178495d2c09176a263ee7fe499b054a0cf"
+    },
+    {
+      "path": "algoveri_data/push_relabel/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05424c90f96fc69fec13eb6f8a6b23686fde40e3",
+      "size": 1708,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/05424c90f96fc69fec13eb6f8a6b23686fde40e3"
+    },
+    {
+      "path": "algoveri_data/push_relabel/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a516ad7c35bad3dc52de0c6db9a178cb7f9cd24d",
+      "size": 5646,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a516ad7c35bad3dc52de0c6db9a178cb7f9cd24d"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "dd6b83ed5fbe215bc4555d8e75848dbfcf22ce59",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/dd6b83ed5fbe215bc4555d8e75848dbfcf22ce59"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4f512ea61a44b052e273d5390f033b1c905eb2a2",
+      "size": 443,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4f512ea61a44b052e273d5390f033b1c905eb2a2"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "85f65b27f336ab3e80238d2bc7f8365211438acc",
+      "size": 1285,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/85f65b27f336ab3e80238d2bc7f8365211438acc"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cc755bbc38bf5adbe9de427c5c6b792bb16b47f0",
+      "size": 526,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cc755bbc38bf5adbe9de427c5c6b792bb16b47f0"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c0983bfe7e22a32097e78b8c884b15ae399b9de",
+      "size": 1442,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2c0983bfe7e22a32097e78b8c884b15ae399b9de"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "63918c261561a5fcdd42f9e098fafc14a6b83589",
+      "size": 434,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/63918c261561a5fcdd42f9e098fafc14a6b83589"
+    },
+    {
+      "path": "algoveri_data/queue_dequeue/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2371c94a1b0d67f60fcb50d86a07bb7e6a1f09ec",
+      "size": 1878,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2371c94a1b0d67f60fcb50d86a07bb7e6a1f09ec"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "366bd9d22012d54b6aa0469887ff253c540da11b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/366bd9d22012d54b6aa0469887ff253c540da11b"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2232a3ab9ebdb080caa59f87f271c21f7984cda9",
+      "size": 364,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2232a3ab9ebdb080caa59f87f271c21f7984cda9"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ccdd2e895a202eb0492f81f4b3ed5edaa5668374",
+      "size": 1016,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ccdd2e895a202eb0492f81f4b3ed5edaa5668374"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f7d23563d59fa2a5fa64f06db5ce8d89781cce9d",
+      "size": 424,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f7d23563d59fa2a5fa64f06db5ce8d89781cce9d"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9d2c6f6fa049cb8e52ee387dbc242290dc6a70b9",
+      "size": 1269,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9d2c6f6fa049cb8e52ee387dbc242290dc6a70b9"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f9b3d8b95b2204c8aa23e39bf50c433bf0f8bce9",
+      "size": 374,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f9b3d8b95b2204c8aa23e39bf50c433bf0f8bce9"
+    },
+    {
+      "path": "algoveri_data/queue_enqueue/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abe7246ccab982d81887ea671d8b693723d5e234",
+      "size": 1596,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/abe7246ccab982d81887ea671d8b693723d5e234"
+    },
+    {
+      "path": "algoveri_data/quick_sort",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "f3d4ce817b97b7070f422cef350f4076a41218a5",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/f3d4ce817b97b7070f422cef350f4076a41218a5"
+    },
+    {
+      "path": "algoveri_data/quick_sort/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "597ab4a240781795838908697a92b379f5025298",
+      "size": 1124,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/597ab4a240781795838908697a92b379f5025298"
+    },
+    {
+      "path": "algoveri_data/quick_sort/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5228e3692d0ebac302cb49b10ac78a672e102210",
+      "size": 1107,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5228e3692d0ebac302cb49b10ac78a672e102210"
+    },
+    {
+      "path": "algoveri_data/quick_sort/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8ad8b8fff45e087409be4b085d6a22952dab6893",
+      "size": 537,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8ad8b8fff45e087409be4b085d6a22952dab6893"
+    },
+    {
+      "path": "algoveri_data/quick_sort/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38f723ac82baad95ee7aec2c960e89eaeba00fd7",
+      "size": 956,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/38f723ac82baad95ee7aec2c960e89eaeba00fd7"
+    },
+    {
+      "path": "algoveri_data/quick_sort/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b177198805dfafebe26a9e1ae5650f4f8f13ef5a",
+      "size": 1124,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b177198805dfafebe26a9e1ae5650f4f8f13ef5a"
+    },
+    {
+      "path": "algoveri_data/quick_sort/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3daea7ddbadd8693ede6b7a9f1e2d80f016f5728",
+      "size": 1329,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3daea7ddbadd8693ede6b7a9f1e2d80f016f5728"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "bd513b75d94bcebe018535c33fe09a5c1711dfa8",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/bd513b75d94bcebe018535c33fe09a5c1711dfa8"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3998babf2dbafa74d94b22b7f9724bc7a23efebe",
+      "size": 936,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3998babf2dbafa74d94b22b7f9724bc7a23efebe"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "112938a5c2b507c34f4506f5ede4d88eb9f1a89e",
+      "size": 2075,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/112938a5c2b507c34f4506f5ede4d88eb9f1a89e"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1865c317f612d84128526787bd4e0e05f9cfa00d",
+      "size": 562,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1865c317f612d84128526787bd4e0e05f9cfa00d"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "350bb8865b4535279ef1b4f2abf027ea2ebc78a6",
+      "size": 1373,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/350bb8865b4535279ef1b4f2abf027ea2ebc78a6"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bf1a68981e90106462ae11e2cb35e93bcce05eb7",
+      "size": 927,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bf1a68981e90106462ae11e2cb35e93bcce05eb7"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_dequeue/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a82a4a7d9a038d26ceb39c2d57cb8b6e0c3730e4",
+      "size": 2251,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a82a4a7d9a038d26ceb39c2d57cb8b6e0c3730e4"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6df9bb2c1cbf2ccdafd5bfe8e68e9fd271226173",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/6df9bb2c1cbf2ccdafd5bfe8e68e9fd271226173"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fb0a6ca5d365ebfd63d76665ea1b7b423fe0719",
+      "size": 843,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3fb0a6ca5d365ebfd63d76665ea1b7b423fe0719"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b1fa3846bea3be3a065ab6180f410fe3b68adea7",
+      "size": 2160,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b1fa3846bea3be3a065ab6180f410fe3b68adea7"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6641d7f42ccdb3da165566f3edb0172ad2edb39f",
+      "size": 454,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6641d7f42ccdb3da165566f3edb0172ad2edb39f"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8a9eb3afc8a58cebec3abfc8bec0f38e7ebbf4bf",
+      "size": 1372,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8a9eb3afc8a58cebec3abfc8bec0f38e7ebbf4bf"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3fb0a6ca5d365ebfd63d76665ea1b7b423fe0719",
+      "size": 843,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3fb0a6ca5d365ebfd63d76665ea1b7b423fe0719"
+    },
+    {
+      "path": "algoveri_data/ringbuffer_enqueue/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a33a841b61d88d9d9cf025206bfa1c8d46d5d920",
+      "size": 2555,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a33a841b61d88d9d9cf025206bfa1c8d46d5d920"
+    },
+    {
+      "path": "algoveri_data/rod_cutting",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "3698e57d21bdc5986ac9ebb2f0578b235ff23b07",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/3698e57d21bdc5986ac9ebb2f0578b235ff23b07"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "158d52b6a69524de2f99eb04a043d0bafd89cc16",
+      "size": 889,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/158d52b6a69524de2f99eb04a043d0bafd89cc16"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "abdb4c7e136d213be43d2ff958a79cf272f4ca46",
+      "size": 2025,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/abdb4c7e136d213be43d2ff958a79cf272f4ca46"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cb129cd0cdb768eb2507edede4bbaf2b6d55c8e6",
+      "size": 448,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cb129cd0cdb768eb2507edede4bbaf2b6d55c8e6"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "89b6e949e4ef22dd4ea94c58b20f12266890e863",
+      "size": 1758,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/89b6e949e4ef22dd4ea94c58b20f12266890e863"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2125d31b74db4624c2931f9ccb4c3d80b92704d2",
+      "size": 888,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2125d31b74db4624c2931f9ccb4c3d80b92704d2"
+    },
+    {
+      "path": "algoveri_data/rod_cutting/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8308667eaf8c8c184a5c738b14a487597f92577c",
+      "size": 2476,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8308667eaf8c8c184a5c738b14a487597f92577c"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "8d05147315f7940fc21f664ac81aaa1bf40a0144",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/8d05147315f7940fc21f664ac81aaa1bf40a0144"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c92abede5e1bd4dd76fba2bc76f92c5d892d63c",
+      "size": 2126,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1c92abede5e1bd4dd76fba2bc76f92c5d892d63c"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3845e25d4b8f5222047adbafd22c4d9b47b456c0",
+      "size": 3644,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3845e25d4b8f5222047adbafd22c4d9b47b456c0"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd1e010f1708c6ae0a681f2db8d7c78de6176a7a",
+      "size": 1525,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cd1e010f1708c6ae0a681f2db8d7c78de6176a7a"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9b0a4fb757eff8bb3da04155fa976e452cb7fa72",
+      "size": 2774,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9b0a4fb757eff8bb3da04155fa976e452cb7fa72"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6aa82f23d758f7dbe8d4aaeae3d6d3d7372b6383",
+      "size": 2121,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6aa82f23d758f7dbe8d4aaeae3d6d3d7372b6383"
+    },
+    {
+      "path": "algoveri_data/scc_tarjan/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "151fd86989584568a55c7c4f227a329738318ffb",
+      "size": 4748,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/151fd86989584568a55c7c4f227a329738318ffb"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a5a599b8d8225af4ed777f65d846ef52563d9f69",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/a5a599b8d8225af4ed777f65d846ef52563d9f69"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "45c202f5a7da509075eacdf29fe92273d5ebdea9",
+      "size": 961,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/45c202f5a7da509075eacdf29fe92273d5ebdea9"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d5d27694a6209eb24d8e200fe8370fae1e4a22af",
+      "size": 3630,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d5d27694a6209eb24d8e200fe8370fae1e4a22af"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5638991ef16abfb36753f05cbdc70cc320cb6650",
+      "size": 350,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5638991ef16abfb36753f05cbdc70cc320cb6650"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f1bc54dd4ac13bfc5148047dabcb39cbcfed66b7",
+      "size": 2452,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f1bc54dd4ac13bfc5148047dabcb39cbcfed66b7"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ceba209e866f6ba48b573e3d4ce769b62ed7ba0d",
+      "size": 1027,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ceba209e866f6ba48b573e3d4ce769b62ed7ba0d"
+    },
+    {
+      "path": "algoveri_data/segmenttree_build/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "94dbfe59348ae73d7077781d5cb5ab858b9ce2f5",
+      "size": 3975,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/94dbfe59348ae73d7077781d5cb5ab858b9ce2f5"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d0d5ff285241eeebdd3bf1f43658488890f0a60a",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/d0d5ff285241eeebdd3bf1f43658488890f0a60a"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a34bbdd98c1b42899535969d645922930120e2bc",
+      "size": 776,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a34bbdd98c1b42899535969d645922930120e2bc"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9c50eb0e79291ef75738f61a75bec52d39c155cf",
+      "size": 3485,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9c50eb0e79291ef75738f61a75bec52d39c155cf"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7e65bb80655bc76f61d6c0b2b6ca1ddf20f58d21",
+      "size": 403,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7e65bb80655bc76f61d6c0b2b6ca1ddf20f58d21"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "027c6bfa9e83640f7c8a95c95527b831d6fb27cd",
+      "size": 2711,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/027c6bfa9e83640f7c8a95c95527b831d6fb27cd"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0334558d91448b035df4097e0b8f2c15c1bf21b7",
+      "size": 1185,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0334558d91448b035df4097e0b8f2c15c1bf21b7"
+    },
+    {
+      "path": "algoveri_data/segmenttree_modify/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28270133586fc4b9f099a44be834b70ebe7ba08c",
+      "size": 4077,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/28270133586fc4b9f099a44be834b70ebe7ba08c"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "ff78b4a1a25e76448e37a9386e2c00661ece2aa4",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/ff78b4a1a25e76448e37a9386e2c00661ece2aa4"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d87ea59d71d25410e2ed6a3cabdff00370d76821",
+      "size": 787,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d87ea59d71d25410e2ed6a3cabdff00370d76821"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c8f8f2ff483d3a5071c71b558d77f95344fb4cf2",
+      "size": 3365,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c8f8f2ff483d3a5071c71b558d77f95344fb4cf2"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2972a0c50ef109707184f9da78f64e0c9a36b09e",
+      "size": 313,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2972a0c50ef109707184f9da78f64e0c9a36b09e"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f7f7a353025aa59305d69b02cf9f0de632043d3a",
+      "size": 2577,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f7f7a353025aa59305d69b02cf9f0de632043d3a"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1e5534f1983d5726f85e7386a3901a3d45d64594",
+      "size": 1002,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1e5534f1983d5726f85e7386a3901a3d45d64594"
+    },
+    {
+      "path": "algoveri_data/segmenttree_query/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "55d9f271701052a2d8fb339858cc1e61b71fee33",
+      "size": 4136,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/55d9f271701052a2d8fb339858cc1e61b71fee33"
+    },
+    {
+      "path": "algoveri_data/sieve_method",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "cf84a356016fb27a066596a495c185142956e695",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/cf84a356016fb27a066596a495c185142956e695"
+    },
+    {
+      "path": "algoveri_data/sieve_method/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2842b20051ca8171863d11e3d040d64745cfb8c6",
+      "size": 1691,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2842b20051ca8171863d11e3d040d64745cfb8c6"
+    },
+    {
+      "path": "algoveri_data/sieve_method/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "693ff88dbff193bc51e6a62aad3791d55d7da6f4",
+      "size": 959,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/693ff88dbff193bc51e6a62aad3791d55d7da6f4"
+    },
+    {
+      "path": "algoveri_data/sieve_method/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2e43569f552b1301132080138049ab195ff4b0cc",
+      "size": 1338,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2e43569f552b1301132080138049ab195ff4b0cc"
+    },
+    {
+      "path": "algoveri_data/sieve_method/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8260cbd36670028c000ceb6f91eccbd3b0ee45cb",
+      "size": 1156,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8260cbd36670028c000ceb6f91eccbd3b0ee45cb"
+    },
+    {
+      "path": "algoveri_data/sieve_method/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1dd5636e12898dd100e6bf5e83efe8f28adc433e",
+      "size": 1665,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1dd5636e12898dd100e6bf5e83efe8f28adc433e"
+    },
+    {
+      "path": "algoveri_data/sieve_method/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f89e1284c10c2bea195dcd9763121aa5aa415003",
+      "size": 1271,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f89e1284c10c2bea195dcd9763121aa5aa415003"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "c3d52976d5a4fb76908db3e2dea6f37c05305df9",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/c3d52976d5a4fb76908db3e2dea6f37c05305df9"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "594fd38d2eb0bf0676ab9e580af8f95eab828588",
+      "size": 1313,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/594fd38d2eb0bf0676ab9e580af8f95eab828588"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d22eb0f0924ae612004c7dc67a9fd0f5d539661",
+      "size": 1520,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1d22eb0f0924ae612004c7dc67a9fd0f5d539661"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad50db292ceb6b16c2667ebcf8ff71ccee567afb",
+      "size": 306,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ad50db292ceb6b16c2667ebcf8ff71ccee567afb"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e3aa83e33b371a9fbfd46c588851cf3361293b4",
+      "size": 1749,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9e3aa83e33b371a9fbfd46c588851cf3361293b4"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ad79715aea0ecad365aa115c1c68e923b5a19437",
+      "size": 1310,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ad79715aea0ecad365aa115c1c68e923b5a19437"
+    },
+    {
+      "path": "algoveri_data/splaytree_splay/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4a809b8c94f2c9f56c6c8d7e4f41b2dfc9587b2d",
+      "size": 2056,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4a809b8c94f2c9f56c6c8d7e4f41b2dfc9587b2d"
+    },
+    {
+      "path": "algoveri_data/stack_pop",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "984573d8ec8fa0a2ac8d5dbfa9a204aa4b45e4f5",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/984573d8ec8fa0a2ac8d5dbfa9a204aa4b45e4f5"
+    },
+    {
+      "path": "algoveri_data/stack_pop/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c5825dc614dbb26991900205d82f9b276f90e4ce",
+      "size": 556,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c5825dc614dbb26991900205d82f9b276f90e4ce"
+    },
+    {
+      "path": "algoveri_data/stack_pop/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "30cfe904e036a34b26ea851d1d1ac36312e2c5a4",
+      "size": 1127,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/30cfe904e036a34b26ea851d1d1ac36312e2c5a4"
+    },
+    {
+      "path": "algoveri_data/stack_pop/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6455a03e2f88b1ccedf3829c2d428e96a1c9f039",
+      "size": 613,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6455a03e2f88b1ccedf3829c2d428e96a1c9f039"
+    },
+    {
+      "path": "algoveri_data/stack_pop/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "cd451428323d5d500d6de80b864446bbaa0cbddf",
+      "size": 1446,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/cd451428323d5d500d6de80b864446bbaa0cbddf"
+    },
+    {
+      "path": "algoveri_data/stack_pop/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "eea210878be519f8bad13cd9099a74896826417a",
+      "size": 547,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/eea210878be519f8bad13cd9099a74896826417a"
+    },
+    {
+      "path": "algoveri_data/stack_pop/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4dcc60c33318d88e7963362797a69896a910896d",
+      "size": 1650,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4dcc60c33318d88e7963362797a69896a910896d"
+    },
+    {
+      "path": "algoveri_data/stack_push",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "fc003947dff122492ed8b2059571c25f89ee472c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/fc003947dff122492ed8b2059571c25f89ee472c"
+    },
+    {
+      "path": "algoveri_data/stack_push/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3265574e2b4e8f0e903f3598299aebdf7457d6ef",
+      "size": 449,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3265574e2b4e8f0e903f3598299aebdf7457d6ef"
+    },
+    {
+      "path": "algoveri_data/stack_push/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a12d2f7f3fe8225364197297d876e69fdc42a9f0",
+      "size": 1025,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a12d2f7f3fe8225364197297d876e69fdc42a9f0"
+    },
+    {
+      "path": "algoveri_data/stack_push/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1c2378dd3dd3578badbbf75d0fbb3dfe72ee2818",
+      "size": 572,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1c2378dd3dd3578badbbf75d0fbb3dfe72ee2818"
+    },
+    {
+      "path": "algoveri_data/stack_push/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c293071bc9716db17c75c407b2a7bc8e65c40712",
+      "size": 1242,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c293071bc9716db17c75c407b2a7bc8e65c40712"
+    },
+    {
+      "path": "algoveri_data/stack_push/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3718cee72c186a77081728d37b78e64b199d05bb",
+      "size": 440,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3718cee72c186a77081728d37b78e64b199d05bb"
+    },
+    {
+      "path": "algoveri_data/stack_push/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "faf9fc24658cdd38b01f4338f1f2c1b338a226fc",
+      "size": 1531,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/faf9fc24658cdd38b01f4338f1f2c1b338a226fc"
+    },
+    {
+      "path": "algoveri_data/string_search_naive",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "012daa6fb0f67e69f388a937d3bb25d2e8d6def1",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/012daa6fb0f67e69f388a937d3bb25d2e8d6def1"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e6d6f6d3d25fb6e734bbf1dafc3201cf7fb73207",
+      "size": 1197,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e6d6f6d3d25fb6e734bbf1dafc3201cf7fb73207"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "80582780a1aea6166418b584554e8c3155dfea6f",
+      "size": 1345,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/80582780a1aea6166418b584554e8c3155dfea6f"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9671a591306dc0b1af51f63361dd065b3d4bc4fe",
+      "size": 1162,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9671a591306dc0b1af51f63361dd065b3d4bc4fe"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dc821ad9c9a17e0825dfd33e0185ad9fd2fe7f72",
+      "size": 1568,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dc821ad9c9a17e0825dfd33e0185ad9fd2fe7f72"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2c7219db30a7e3e085f0c7acb60882a0105e0955",
+      "size": 1180,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2c7219db30a7e3e085f0c7acb60882a0105e0955"
+    },
+    {
+      "path": "algoveri_data/string_search_naive/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "36e5861bd37f4e7a7bf31ba37988b6a7e0ad0170",
+      "size": 1452,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/36e5861bd37f4e7a7bf31ba37988b6a7e0ad0170"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "1dcdaf5612f03cda4d613954d76822e81109104b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/1dcdaf5612f03cda4d613954d76822e81109104b"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2749553e2170aeff9cab5cf84ecb7c498d222049",
+      "size": 795,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2749553e2170aeff9cab5cf84ecb7c498d222049"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "639e6454265c4ca4dee6e79703e952d77b78b772",
+      "size": 4693,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/639e6454265c4ca4dee6e79703e952d77b78b772"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f301deb66d209a22d6b087cd0d3eb153d5f75c2d",
+      "size": 387,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f301deb66d209a22d6b087cd0d3eb153d5f75c2d"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d2a6b67ae13d874202c132a7bb063657c03a2ed0",
+      "size": 3234,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d2a6b67ae13d874202c132a7bb063657c03a2ed0"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e135278e66bf38d06838437bf77beae0b6e512a4",
+      "size": 1481,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e135278e66bf38d06838437bf77beae0b6e512a4"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_delete/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9f6851cec550c2e8e8376259f711e7a476c11f83",
+      "size": 5215,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9f6851cec550c2e8e8376259f711e7a476c11f83"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "9c244488dcf6648ffc07bf0303fc5874dc6d7f7e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/9c244488dcf6648ffc07bf0303fc5874dc6d7f7e"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96f2643bcec424b755ccc2c787d2ed05d44cb641",
+      "size": 1421,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/96f2643bcec424b755ccc2c787d2ed05d44cb641"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "463ca186e6886e0b2a128972c7c4197ec64ac115",
+      "size": 4718,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/463ca186e6886e0b2a128972c7c4197ec64ac115"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "77fa56c2864f5958f1b526b68b46891fa0188357",
+      "size": 367,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/77fa56c2864f5958f1b526b68b46891fa0188357"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0b0e50fe077bc4e309ba7999ecf1d6f772af4018",
+      "size": 3231,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0b0e50fe077bc4e309ba7999ecf1d6f772af4018"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8296174e14eccc3f03534936fe40d7d914f79795",
+      "size": 1421,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8296174e14eccc3f03534936fe40d7d914f79795"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_insert/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "12df1f3a0e7c477f9e9fd6af51e93c4f33f84f69",
+      "size": 5440,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/12df1f3a0e7c477f9e9fd6af51e93c4f33f84f69"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "6ff571c56ce4010cce5a637c9e13cdac26db99e7",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/6ff571c56ce4010cce5a637c9e13cdac26db99e7"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d9ed6f39bc97ac1cc72b985eb544b665ba39cb96",
+      "size": 1335,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d9ed6f39bc97ac1cc72b985eb544b665ba39cb96"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "672ac02a6ec2ec3113f0bc266efc503478252dbb",
+      "size": 4561,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/672ac02a6ec2ec3113f0bc266efc503478252dbb"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6012cc26f8efe65a96382411eba3225f98fcca43",
+      "size": 409,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6012cc26f8efe65a96382411eba3225f98fcca43"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6305e985266336f88c6dc81cf2b37d6927d633fe",
+      "size": 3637,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6305e985266336f88c6dc81cf2b37d6927d633fe"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "728cf7abef087fd4fb3542b01cc855c5fac1d40a",
+      "size": 1335,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/728cf7abef087fd4fb3542b01cc855c5fac1d40a"
+    },
+    {
+      "path": "algoveri_data/ternarysearchtree_search/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9efb1a0ba15fe3b4417f76705d0de1e7cb0e5241",
+      "size": 5067,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9efb1a0ba15fe3b4417f76705d0de1e7cb0e5241"
+    },
+    {
+      "path": "algoveri_data/topological_sort",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "922075c514da4b6cce735a2c60d3c0d7e8bcaf9c",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/922075c514da4b6cce735a2c60d3c0d7e8bcaf9c"
+    },
+    {
+      "path": "algoveri_data/topological_sort/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "670a66e80336486e5e8af3d76a70a1d54837afea",
+      "size": 759,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/670a66e80336486e5e8af3d76a70a1d54837afea"
+    },
+    {
+      "path": "algoveri_data/topological_sort/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "05aa2436ba74c7678355304e5f671063e7f04815",
+      "size": 2661,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/05aa2436ba74c7678355304e5f671063e7f04815"
+    },
+    {
+      "path": "algoveri_data/topological_sort/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "423842898722da00076192548844b68e4527adb8",
+      "size": 716,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/423842898722da00076192548844b68e4527adb8"
+    },
+    {
+      "path": "algoveri_data/topological_sort/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "623efdd6559558835d838bc28632d42874f7a3a6",
+      "size": 2497,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/623efdd6559558835d838bc28632d42874f7a3a6"
+    },
+    {
+      "path": "algoveri_data/topological_sort/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "28db98df561f03c9c4189ef28952c6a96a0e4f86",
+      "size": 767,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/28db98df561f03c9c4189ef28952c6a96a0e4f86"
+    },
+    {
+      "path": "algoveri_data/topological_sort/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0832b7e745160c8e2e40f9fc189591128b9d3688",
+      "size": 3727,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0832b7e745160c8e2e40f9fc189591128b9d3688"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4b59b16d199da36afc8dcf7bac71802c8afc5c40",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/4b59b16d199da36afc8dcf7bac71802c8afc5c40"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2a8202c2c589f8241710b3ceb140808ea7f87954",
+      "size": 879,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2a8202c2c589f8241710b3ceb140808ea7f87954"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "773aaca205a2ad09a21f738cf554fe888f547ec7",
+      "size": 780,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/773aaca205a2ad09a21f738cf554fe888f547ec7"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7ebe473df8b73a7c86da5eaed02f0121635a735",
+      "size": 869,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a7ebe473df8b73a7c86da5eaed02f0121635a735"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6957e0985a7fbf058833aa298646311b69b3a87a",
+      "size": 971,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6957e0985a7fbf058833aa298646311b69b3a87a"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c143bbe3ce31076c4ce3dfa665591fd267720bf0",
+      "size": 836,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c143bbe3ce31076c4ce3dfa665591fd267720bf0"
+    },
+    {
+      "path": "algoveri_data/trial_division_naive/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1915903dfde6abb759d4f784f3f17cf5eadd0f19",
+      "size": 972,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1915903dfde6abb759d4f784f3f17cf5eadd0f19"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "86714e3858efca1fb67fae3b83fe2fb267240a2b",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/86714e3858efca1fb67fae3b83fe2fb267240a2b"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c73dd1abe93c8d3b2995a4f0f7d85d667f762b59",
+      "size": 1068,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c73dd1abe93c8d3b2995a4f0f7d85d667f762b59"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "86067feaaac30dc6c262e9ef7bb86aa61cd7ad9f",
+      "size": 743,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/86067feaaac30dc6c262e9ef7bb86aa61cd7ad9f"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3ca0c8834449597609331fbbe734f709ff31f350",
+      "size": 681,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3ca0c8834449597609331fbbe734f709ff31f350"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6957e0985a7fbf058833aa298646311b69b3a87a",
+      "size": 971,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6957e0985a7fbf058833aa298646311b69b3a87a"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "15d2131ffc133ff91ebdbf9d62c0928a60994cac",
+      "size": 1035,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/15d2131ffc133ff91ebdbf9d62c0928a60994cac"
+    },
+    {
+      "path": "algoveri_data/trial_division_optimized/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6807e40d16d71d5530cd86c8d317130eb148aa2d",
+      "size": 978,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6807e40d16d71d5530cd86c8d317130eb148aa2d"
+    },
+    {
+      "path": "algoveri_data/trie_delete",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "a7de44b8dbc8a1587eb109ebcaa9d7142f7bca64",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/a7de44b8dbc8a1587eb109ebcaa9d7142f7bca64"
+    },
+    {
+      "path": "algoveri_data/trie_delete/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "22eea69d3214c2b062807e5412330c7e708d832b",
+      "size": 1078,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/22eea69d3214c2b062807e5412330c7e708d832b"
+    },
+    {
+      "path": "algoveri_data/trie_delete/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "96835a25c8a60c6e534012b2a9967428ea009bf4",
+      "size": 3306,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/96835a25c8a60c6e534012b2a9967428ea009bf4"
+    },
+    {
+      "path": "algoveri_data/trie_delete/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1fa195b1121585945f0613bceadfdc425eda2b99",
+      "size": 414,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1fa195b1121585945f0613bceadfdc425eda2b99"
+    },
+    {
+      "path": "algoveri_data/trie_delete/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f4d1ff0aff1bbce961f871135d77bc0c86c4cc01",
+      "size": 3156,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f4d1ff0aff1bbce961f871135d77bc0c86c4cc01"
+    },
+    {
+      "path": "algoveri_data/trie_delete/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3e4b1b1507967215e1c9bf74150df6bed7161b43",
+      "size": 1057,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3e4b1b1507967215e1c9bf74150df6bed7161b43"
+    },
+    {
+      "path": "algoveri_data/trie_delete/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a7656b1f5be9301fec2217ba92d461987afaf6bc",
+      "size": 3514,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a7656b1f5be9301fec2217ba92d461987afaf6bc"
+    },
+    {
+      "path": "algoveri_data/trie_insert",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "47d5e8788aac3cbe21f19ccdab7fcc3111aacac2",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/47d5e8788aac3cbe21f19ccdab7fcc3111aacac2"
+    },
+    {
+      "path": "algoveri_data/trie_insert/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "dfe986f28dc7dc479b2b2b669efe8cdd9ed3d51b",
+      "size": 1050,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/dfe986f28dc7dc479b2b2b669efe8cdd9ed3d51b"
+    },
+    {
+      "path": "algoveri_data/trie_insert/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e10604e822072927906bcdee74258ed6f2a4a10e",
+      "size": 3083,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e10604e822072927906bcdee74258ed6f2a4a10e"
+    },
+    {
+      "path": "algoveri_data/trie_insert/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38e98ad701e75692616bcf994247d98c7a5c84d1",
+      "size": 458,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/38e98ad701e75692616bcf994247d98c7a5c84d1"
+    },
+    {
+      "path": "algoveri_data/trie_insert/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6ca0bc0ef39e36cfb9912f41341fc05f53103edb",
+      "size": 3085,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6ca0bc0ef39e36cfb9912f41341fc05f53103edb"
+    },
+    {
+      "path": "algoveri_data/trie_insert/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e1cf71086aa63723d81bb59d3620b561caf2ed0",
+      "size": 1025,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8e1cf71086aa63723d81bb59d3620b561caf2ed0"
+    },
+    {
+      "path": "algoveri_data/trie_insert/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1d544fa11425fc21a1ab0abfd7ae62d62776e04a",
+      "size": 3553,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1d544fa11425fc21a1ab0abfd7ae62d62776e04a"
+    },
+    {
+      "path": "algoveri_data/trie_search",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "0aea55822a870c2d6837206842eb30e8cfbea1e8",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/0aea55822a870c2d6837206842eb30e8cfbea1e8"
+    },
+    {
+      "path": "algoveri_data/trie_search/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6fa423da4a59fd01e62a9de92cf5c66aeb038092",
+      "size": 864,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6fa423da4a59fd01e62a9de92cf5c66aeb038092"
+    },
+    {
+      "path": "algoveri_data/trie_search/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e401cef3dd7ced7a305db9a1292216a732bd418f",
+      "size": 3172,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e401cef3dd7ced7a305db9a1292216a732bd418f"
+    },
+    {
+      "path": "algoveri_data/trie_search/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "2fa1bfe8ffb667497a35ba8ce1faab4a26d7dc91",
+      "size": 414,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/2fa1bfe8ffb667497a35ba8ce1faab4a26d7dc91"
+    },
+    {
+      "path": "algoveri_data/trie_search/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4f8233399105a648a70353e34cf91d94d666784d",
+      "size": 3349,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4f8233399105a648a70353e34cf91d94d666784d"
+    },
+    {
+      "path": "algoveri_data/trie_search/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a64fafd8a5dfa9b34d37d64c879ab18e03eb2c5f",
+      "size": 846,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a64fafd8a5dfa9b34d37d64c879ab18e03eb2c5f"
+    },
+    {
+      "path": "algoveri_data/trie_search/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7f725a2455d5c0e164236c750e511f84a69c172a",
+      "size": 3378,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7f725a2455d5c0e164236c750e511f84a69c172a"
+    },
+    {
+      "path": "algoveri_data/unionfind_find",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "439a0dc985fa4aa83d36a39fd2c8c42f47daee42",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/439a0dc985fa4aa83d36a39fd2c8c42f47daee42"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "128f9facf44e2b29497c05bbba95bced346a5b8e",
+      "size": 1314,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/128f9facf44e2b29497c05bbba95bced346a5b8e"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "74e433a042e8a7596eb7e499aa1efa2454ad1028",
+      "size": 1938,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/74e433a042e8a7596eb7e499aa1efa2454ad1028"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "38925e6fd38ddb5151be9016805b6df0d53655cd",
+      "size": 408,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/38925e6fd38ddb5151be9016805b6df0d53655cd"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d1ce2ca8b33795668066068ca974af0f5ec56733",
+      "size": 2537,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d1ce2ca8b33795668066068ca974af0f5ec56733"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b8c9e8dcb5ebd562e8273686ee3eee0461c38d63",
+      "size": 1313,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b8c9e8dcb5ebd562e8273686ee3eee0461c38d63"
+    },
+    {
+      "path": "algoveri_data/unionfind_find/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "01a852e9ad28c2cad1cf1d80a08d58961bc6a1df",
+      "size": 2562,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/01a852e9ad28c2cad1cf1d80a08d58961bc6a1df"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "7ee4959fdd84deff5b20b2d5654446a6d59b9391",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/7ee4959fdd84deff5b20b2d5654446a6d59b9391"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/dafny_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f080891728660f647a286d13f3ac97f98b8133cb",
+      "size": 1373,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f080891728660f647a286d13f3ac97f98b8133cb"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/dafny_spec.dfy",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bcd7ebc356be0c7697ff4f48128e90eeb4b85281",
+      "size": 2212,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bcd7ebc356be0c7697ff4f48128e90eeb4b85281"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/lean_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e2eede8384fe74fb9edd6396bf2f6060e299e450",
+      "size": 323,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e2eede8384fe74fb9edd6396bf2f6060e299e450"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/lean_spec.lean",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "c1b621bb49c07b3c12bb262e16345b0ed4d591e1",
+      "size": 2883,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/c1b621bb49c07b3c12bb262e16345b0ed4d591e1"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/verus_nl.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "af933bdf46bedbd0d262ff60257e9af35845537f",
+      "size": 1371,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/af933bdf46bedbd0d262ff60257e9af35845537f"
+    },
+    {
+      "path": "algoveri_data/unionfind_linkroots/verus_spec.rs",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ddd0dd48a5b373e5efb53d41248d13f1808699f8",
+      "size": 2987,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ddd0dd48a5b373e5efb53d41248d13f1808699f8"
+    },
+    {
+      "path": "assets",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "18930b53e4af1fb238e935f81604fae08f78c774",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/18930b53e4af1fb238e935f81604fae08f78c774"
+    },
+    {
+      "path": "assets/algoveri-teaser-img.png",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "6d0a7a6d77a1d0a03466bb22840e1cc0ebac00f9",
+      "size": 110049,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/6d0a7a6d77a1d0a03466bb22840e1cc0ebac00f9"
+    },
+    {
+      "path": "config",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "d41eb72e5c84fc08bee43b956564678016735707",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/d41eb72e5c84fc08bee43b956564678016735707"
+    },
+    {
+      "path": "config/config.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8c3585d1e9ab1b12e01fa5bbcd2ac2d7718dda2b",
+      "size": 1293,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8c3585d1e9ab1b12e01fa5bbcd2ac2d7718dda2b"
+    },
+    {
+      "path": "requirements.txt",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "10bf768238b87d1d7543317952b8f610ddbf5caa",
+      "size": 159,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/10bf768238b87d1d7543317952b8f610ddbf5caa"
+    },
+    {
+      "path": "scripts",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "771ea1ff6759a4b51957252bd108530ec24370fc",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/771ea1ff6759a4b51957252bd108530ec24370fc"
+    },
+    {
+      "path": "scripts/apptainer_setup",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "88823a95059910e1a8b956f30c8097c66c6cff8a",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/88823a95059910e1a8b956f30c8097c66c6cff8a"
+    },
+    {
+      "path": "scripts/apptainer_setup/dafny.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ca8ba946debded037d1551a483b8fe2efe1bbb3d",
+      "size": 82,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ca8ba946debded037d1551a483b8fe2efe1bbb3d"
+    },
+    {
+      "path": "scripts/apptainer_setup/lean.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "66efed1853846e64d2267e0df871a193c8bb2344",
+      "size": 1644,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/66efed1853846e64d2267e0df871a193c8bb2344"
+    },
+    {
+      "path": "scripts/apptainer_setup/verus.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "4d86dd9cae67d08e3e58b58bac9b41d77a7028b4",
+      "size": 551,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/4d86dd9cae67d08e3e58b58bac9b41d77a7028b4"
+    },
+    {
+      "path": "scripts/runs_example_scripts",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "484d3499b4c2412d52e89ae6e98965206ea55061",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/484d3499b4c2412d52e89ae6e98965206ea55061"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_semantic.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1db60703bf88c86799d4ba554c3bbf4c920e3d23",
+      "size": 8938,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1db60703bf88c86799d4ba554c3bbf4c920e3d23"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_devstral_123b_instruct_with_server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d84e26c16ad95af90fdc62502828d66349f431b1",
+      "size": 8345,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d84e26c16ad95af90fdc62502828d66349f431b1"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_gemini.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "b5187281c69da52fa1fd1e602aedc1fbb2c00073",
+      "size": 5638,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/b5187281c69da52fa1fd1e602aedc1fbb2c00073"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_gpt-5-3-codex.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a3c1ddd121bd66e6c2c0629a5d54eefacc0c0ce3",
+      "size": 5706,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a3c1ddd121bd66e6c2c0629a5d54eefacc0c0ce3"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_gpt-5-mini.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8e3ad477eb11f1ea4dd3cc8cf4c07620ae6af9aa",
+      "size": 5674,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8e3ad477eb11f1ea4dd3cc8cf4c07620ae6af9aa"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_gpt_oss_120b_with_server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "13c3e4356abe419d76fbdfa802b5cf385dc714c4",
+      "size": 8623,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/13c3e4356abe419d76fbdfa802b5cf385dc714c4"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_qwen3_235b_instruct_with_server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d0555b4af9453880784e4cb5a383fc71d5b6debc",
+      "size": 8415,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d0555b4af9453880784e4cb5a383fc71d5b6debc"
+    },
+    {
+      "path": "scripts/runs_example_scripts/run_task_qwen3_next_80b_a3b_thinking_with_server.sh",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d9fc6f5d2888d7c6a03a3c30a1c74a3773ece0ce",
+      "size": 8453,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d9fc6f5d2888d7c6a03a3c30a1c74a3773ece0ce"
+    },
+    {
+      "path": "src",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "40e290fe647b5b1b322f35e31dbbaa531487cb08",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/40e290fe647b5b1b322f35e31dbbaa531487cb08"
+    },
+    {
+      "path": "src/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "src/eval",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "2107b6c61724a62b33531e4c26e610a5e0281d5e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/2107b6c61724a62b33531e4c26e610a5e0281d5e"
+    },
+    {
+      "path": "src/eval/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "src/eval/base_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "0f5f2cf0f9cec9dbb47fe12d7ec6f52ebc76d319",
+      "size": 5092,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/0f5f2cf0f9cec9dbb47fe12d7ec6f52ebc76d319"
+    },
+    {
+      "path": "src/eval/dafny_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "19b54da09a4a3e90c49f7c5ea263f2d7184a3b4d",
+      "size": 6603,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/19b54da09a4a3e90c49f7c5ea263f2d7184a3b4d"
+    },
+    {
+      "path": "src/eval/lean_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "a166ae81756b9a60b3cfee4db42b2f545355df9a",
+      "size": 6660,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/a166ae81756b9a60b3cfee4db42b2f545355df9a"
+    },
+    {
+      "path": "src/eval/prompt",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "b2378752faf8a5f0a91e6c0a54475e48f8df9eae",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/b2378752faf8a5f0a91e6c0a54475e48f8df9eae"
+    },
+    {
+      "path": "src/eval/prompt/dafny_prompt.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "ef44d85cc788a67ceec62066621fbec39983efe2",
+      "size": 3716,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/ef44d85cc788a67ceec62066621fbec39983efe2"
+    },
+    {
+      "path": "src/eval/prompt/lean_prompt.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5639057dada180fd5fabc2695006d6244f260070",
+      "size": 3964,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5639057dada180fd5fabc2695006d6244f260070"
+    },
+    {
+      "path": "src/eval/prompt/semantic_check_prompt.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "32ecdfd63c2efcd3f8cc3333ddcb9a98f347db3f",
+      "size": 4177,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/32ecdfd63c2efcd3f8cc3333ddcb9a98f347db3f"
+    },
+    {
+      "path": "src/eval/prompt/verus_prompt.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "34d8312fe1abccca1dc5c122aa68ecaa573ccf44",
+      "size": 3722,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/34d8312fe1abccca1dc5c122aa68ecaa573ccf44"
+    },
+    {
+      "path": "src/eval/runner.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "58b632131549ec25dc9bd3b7a22390e64a6dfbf3",
+      "size": 9445,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/58b632131549ec25dc9bd3b7a22390e64a6dfbf3"
+    },
+    {
+      "path": "src/eval/semantic_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "bfb76bf90bafb46cb9fe7c749aef836865e71cb0",
+      "size": 5863,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/bfb76bf90bafb46cb9fe7c749aef836865e71cb0"
+    },
+    {
+      "path": "src/eval/verus_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7161d9813059706733038a42d83d0bfc8aa168fc",
+      "size": 6424,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7161d9813059706733038a42d83d0bfc8aa168fc"
+    },
+    {
+      "path": "src/llm",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4e0c0125dce7ed6ffd46ce48a7a485477774a27e",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/4e0c0125dce7ed6ffd46ce48a7a485477774a27e"
+    },
+    {
+      "path": "src/llm/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc",
+      "size": 1,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/8b137891791fe96927ad78e64b0aad7bded08bdc"
+    },
+    {
+      "path": "src/llm/providers.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "7bfa692207d109d8077448308a0ffc4535fd0558",
+      "size": 11798,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/7bfa692207d109d8077448308a0ffc4535fd0558"
+    },
+    {
+      "path": "src/run_semantic_check.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "f0d7b04b17a10f8ec01f415ea53407298c1c5d60",
+      "size": 4882,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/f0d7b04b17a10f8ec01f415ea53407298c1c5d60"
+    },
+    {
+      "path": "src/run_task.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "514314a45a92dc71e7e57f0d9f42e78db7abeb0f",
+      "size": 4923,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/514314a45a92dc71e7e57f0d9f42e78db7abeb0f"
+    },
+    {
+      "path": "src/verifiers",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "474c963056483fc6153dd8bd3c7738d508782984",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/474c963056483fc6153dd8bd3c7738d508782984"
+    },
+    {
+      "path": "src/verifiers/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "fbf0109b4224e43ba90c457bb89f2664da74f2c0",
+      "size": 291,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/fbf0109b4224e43ba90c457bb89f2664da74f2c0"
+    },
+    {
+      "path": "src/verifiers/base.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "75a75a7bbbbea8a162aac039a14a439ac80798b1",
+      "size": 517,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/75a75a7bbbbea8a162aac039a14a439ac80798b1"
+    },
+    {
+      "path": "src/verifiers/dafny_verifier.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "d8a0404174a2fa80d446b70809393164b4896dff",
+      "size": 6754,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/d8a0404174a2fa80d446b70809393164b4896dff"
+    },
+    {
+      "path": "src/verifiers/lean_verifier.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "5b1e274e708c8d02649a6a5d7be8fd6460f87f17",
+      "size": 6012,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/5b1e274e708c8d02649a6a5d7be8fd6460f87f17"
+    },
+    {
+      "path": "src/verifiers/verus_verifier.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "770dd2dd551ad9943bdace5d08bbe9b408ad5f8b",
+      "size": 6469,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/770dd2dd551ad9943bdace5d08bbe9b408ad5f8b"
+    },
+    {
+      "path": "test",
+      "mode": "040000",
+      "type": "tree",
+      "sha": "4d4df99e52a119b7edf01bd3c140d8a4b33f375a",
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/trees/4d4df99e52a119b7edf01bd3c140d8a4b33f375a"
+    },
+    {
+      "path": "test/__init__.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "size": 0,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "test/config_test.yaml",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "9e25ac72094aec0418445a981416df5aca6b3383",
+      "size": 1160,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/9e25ac72094aec0418445a981416df5aca6b3383"
+    },
+    {
+      "path": "test/test_dafny_verify.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "03bfa427b1232faa6ad92b43f1357e9bc5455813",
+      "size": 1983,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/03bfa427b1232faa6ad92b43f1357e9bc5455813"
+    },
+    {
+      "path": "test/test_lean_verify.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "3418e922adfd367c641d84508ddca327016908b6",
+      "size": 3923,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/3418e922adfd367c641d84508ddca327016908b6"
+    },
+    {
+      "path": "test/test_semantic_eval.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "1197f9bc5b2af08ff323d0a393209d667162dfd3",
+      "size": 5185,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/1197f9bc5b2af08ff323d0a393209d667162dfd3"
+    },
+    {
+      "path": "test/test_verus_verify.py",
+      "mode": "100644",
+      "type": "blob",
+      "sha": "40f55121ba0cc571dedba271b6db8232c836e4ca",
+      "size": 4097,
+      "url": "https://api.github.com/repos/haoyuzhao123/algoveri/git/blobs/40f55121ba0cc571dedba271b6db8232c836e4ca"
+    }
+  ],
+  "truncated": false
+}

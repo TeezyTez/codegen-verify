@@ -47,7 +47,8 @@ class Oracle:
             command = [self.verifier.path,'run','--no-verify','--target','py','--allow-warnings',str(path)]
             # Pure Dafny profile, no FFI/imports/I/O/allocation. Do not provide
             # model API keys or the surrounding repository to generated code.
-            env = {k:os.environ[k] for k in ('PATH','TMPDIR','SYSTEMROOT') if k in os.environ}
+            env = {k:os.environ[k] for k in ('PATH','TMPDIR','SYSTEMROOT','USERPROFILE',
+                   'LOCALAPPDATA','APPDATA','TEMP','TMP') if k in os.environ}
             env['PATH'] = str(Path(sys.executable).parent) + os.pathsep + env.get('PATH','')
             try:
                 # Kill the compiler/runtime process group on POSIX, not just

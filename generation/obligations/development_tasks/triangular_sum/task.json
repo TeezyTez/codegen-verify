@@ -1,0 +1,190 @@
+{
+  "id": "triangular_sum",
+  "task_id": "triangular_sum",
+  "source_project": "original-obligation-dev-triangular_sum",
+  "family": "algebraic_accumulation",
+  "task_family": "algebraic_accumulation",
+  "split": "dev",
+  "origin": "original_synthetic_development",
+  "description": "Original exploratory development task; not held-out benchmark evidence.",
+  "source": "Original synthetic task authored in this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "TriangularSum",
+      "signature": "method TriangularSum(n: int) returns (s: int)",
+      "header": "method TriangularSum(n: int) returns (s: int)\n  requires n >= 0\n  ensures s >= 0\n  ensures 2 * s == n * (n + 1)"
+    }
+  ],
+  "reference": {
+    "TriangularSum": "s := 0;\nvar i := 0;\nwhile i < n\n  invariant 0 <= i <= n\n  invariant s >= 0\n  invariant 2 * s == i * (i + 1)\n  decreases n - i\n{\n  i := i + 1;\n  s := s + i;\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Uses the sum through n-1 instead of n and independently sets s=-1 at n=0.",
+      "bodies": {
+        "TriangularSum": "s := n * (n - 1) / 2;\nif n == 0 {\n  s := -1;\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        1
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        2
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        5
+      ],
+      "outputs": [
+        15
+      ]
+    },
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        10
+      ],
+      "outputs": [
+        55
+      ]
+    },
+    {
+      "method": "TriangularSum",
+      "inputs": [
+        100
+      ],
+      "outputs": [
+        5050
+      ]
+    }
+  ],
+  "rule": {
+    "name": "triangular_sum",
+    "version": 1
+  },
+  "shared_definitions": "",
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "development_limitations": {
+    "shortcut": "The contract allows the closed-form implementation n * (n + 1) / 2; a loop is not required.",
+    "seed_violation": "Uses the sum through n-1 instead of n and independently sets s=-1 at n=0."
+  },
+  "representations": {
+    "natural": "[R1] The input n is nonnegative. [R2] The result s is nonnegative. [R3] Twice s equals n times n plus one, fixing the sum of integers one through n.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input n is nonnegative."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result s is nonnegative."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "Twice s equals n times n plus one, fixing the sum of integers one through n."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "n",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "s",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "2 * s",
+          "relation": "equal",
+          "value": "n * (n + 1)"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input n is nonnegative.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "TriangularSum",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result s is nonnegative.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "TriangularSum",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] Twice s equals n times n plus one, fixing the sum of integers one through n.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "TriangularSum",
+        "header_line": 4
+      }
+    }
+  ],
+  "template": "method TriangularSum(n: int) returns (s: int)\n  requires n >= 0\n  ensures s >= 0\n  ensures 2 * s == n * (n + 1)\n{\n  <generate body: TriangularSum>\n}\n",
+  "asset_hashes": {
+    "natural": "9f37ffd4fc7f422a56d4734161e4df68114b3620a25aff547bf7923464522816",
+    "checklist": "77144baacef198c84d835d13673f1c7cbb38fbc12902778cf8df07d062c35324",
+    "structured": "532fd420fbcaf5d9fc3131fa8852fb34bf2fdf96f59c05a80b165447ef6706df",
+    "spec": "5c581fb78c35d488a8c944ada5afbfd53a8b822914cd124430d395b70419f02d",
+    "template": "32a6fe39d8d0e2b89feb46627b9637e91364016002051ac99f10e311bbbbcbbd",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "b08df45d469324aaae26a49ae7ad7f831678e23b929d5c2167ae64f4f67d51fc"
+  }
+}

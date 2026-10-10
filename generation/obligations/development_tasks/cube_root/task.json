@@ -1,0 +1,230 @@
+{
+  "id": "cube_root",
+  "task_id": "cube_root",
+  "source_project": "original-obligation-dev-cube_root",
+  "family": "nonlinear_root_loop",
+  "task_family": "nonlinear_root_loop",
+  "split": "dev",
+  "origin": "original_synthetic_development",
+  "description": "Original exploratory development task; not held-out benchmark evidence.",
+  "source": "Original synthetic task authored in this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "CubeRoot",
+      "signature": "method CubeRoot(n: int) returns (r: int)",
+      "header": "method CubeRoot(n: int) returns (r: int)\n  requires n >= 0\n  ensures r >= 0\n  ensures r * r * r <= n\n  ensures n < (r + 1) * (r + 1) * (r + 1)"
+    }
+  ],
+  "reference": {
+    "CubeRoot": "r := 0;\nwhile (r + 1) * (r + 1) * (r + 1) <= n\n  invariant 0 <= r <= n\n  invariant r * r * r <= n\n  decreases n - r\n{\n  r := r + 1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Returns n instead of floor cube root for n=2, and independently returns negative r for n=0.",
+      "bodies": {
+        "CubeRoot": "r := n;\nif n == 0 {\n  r := -1;\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        0
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        1
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        2
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        7
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        8
+      ],
+      "outputs": [
+        2
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        26
+      ],
+      "outputs": [
+        2
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        27
+      ],
+      "outputs": [
+        3
+      ]
+    },
+    {
+      "method": "CubeRoot",
+      "inputs": [
+        64
+      ],
+      "outputs": [
+        4
+      ]
+    }
+  ],
+  "rule": {
+    "name": "cube_root",
+    "version": 1
+  },
+  "shared_definitions": "",
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "development_limitations": {
+    "related_prior_task": "integer_sqrt",
+    "shortcut": "Related to the earlier floor-root task; nonlinear degree changes but is not an independent algorithm family.",
+    "seed_violation": "Returns n instead of floor cube root for n=2, and independently returns negative r for n=0."
+  },
+  "representations": {
+    "natural": "[R1] The input n is nonnegative. [R2] The result r is nonnegative. [R3] The cube of r is at most n. [R4] The cube of r plus one is strictly greater than n.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input n is nonnegative."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result r is nonnegative."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The cube of r is at most n."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "The cube of r plus one is strictly greater than n."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "n",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "r * r * r",
+          "relation": "less_or_equal",
+          "value": "n"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "n",
+          "relation": "less_than",
+          "value": "(r + 1) * (r + 1) * (r + 1)"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input n is nonnegative.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "CubeRoot",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result r is nonnegative.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "CubeRoot",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The cube of r is at most n.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "CubeRoot",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] The cube of r plus one is strictly greater than n.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "CubeRoot",
+        "header_line": 5
+      }
+    }
+  ],
+  "template": "method CubeRoot(n: int) returns (r: int)\n  requires n >= 0\n  ensures r >= 0\n  ensures r * r * r <= n\n  ensures n < (r + 1) * (r + 1) * (r + 1)\n{\n  <generate body: CubeRoot>\n}\n",
+  "asset_hashes": {
+    "natural": "747ca59db811404266e80a266d4665c448e60c83363390e99d7172ed4e06ba9b",
+    "checklist": "aa4971796d1e0af82aabd5a834904d764de29d41acb7c0abb4b6a45bdf3f614a",
+    "structured": "0e8c28bd9781c801325f34ca0bcabad7cf775fa720f641cc4913ff8ea86f16ab",
+    "spec": "b50753aa1a7d89254a10a9454b012e87f10789f12036118710f74c672e068dd1",
+    "template": "a7b2c281af3c9976614bb54a4be1520676e617fe9ad23180026252d3ca40a4bf",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "487283d190d791b702503516e1dc0c8c2c7a5138ff7c5efdd4deb94796808d45"
+  }
+}

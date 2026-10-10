@@ -1,0 +1,247 @@
+{
+  "id": "first_argmax",
+  "task_id": "first_argmax",
+  "source_project": "codegen-verify-obligation-development-20261006",
+  "family": "sequence_loop",
+  "task_family": "sequence_loop",
+  "split": "dev",
+  "origin": "synthetic_development",
+  "description": "Task-authoring development asset for the specification-obligation experiment; not held-out evaluation data.",
+  "source": "Original synthetic CC0 task authored for this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "FirstArgmax",
+      "signature": "method FirstArgmax(s: seq<int>) returns (p: int)",
+      "header": "method FirstArgmax(s: seq<int>) returns (p: int)\n  requires |s| > 0\n  ensures 0 <= p < |s|\n  ensures forall k :: 0 <= k < |s| ==> s[k] <= s[p]\n  ensures forall k :: 0 <= k < p ==> s[k] < s[p]"
+    }
+  ],
+  "reference": {
+    "FirstArgmax": "p := 0;\nvar i := 1;\nwhile i < |s|\n  invariant 1 <= i <= |s|\n  invariant 0 <= p < i\n  invariant forall k :: 0 <= k < i ==> s[k] <= s[p]\n  invariant forall k :: 0 <= k < p ==> s[k] < s[p]\n  decreases |s| - i\n{\n  if s[i] > s[p] {\n    p := i;\n  }\n  i := i + 1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Two distinct semantic defects: loop guard skips the final input element; greater-or-equal update replaces the earliest maximum on ties",
+      "defects": [
+        {
+          "description": "loop guard skips the final input element",
+          "witness_inputs": [
+            [
+              1,
+              2
+            ]
+          ],
+          "seed_output": 0,
+          "violated_requirements": [
+            "R3"
+          ]
+        },
+        {
+          "description": "greater-or-equal update replaces the earliest maximum on ties",
+          "witness_inputs": [
+            [
+              5,
+              5,
+              0
+            ]
+          ],
+          "seed_output": 1,
+          "violated_requirements": [
+            "R4"
+          ]
+        }
+      ],
+      "bodies": {
+        "FirstArgmax": "p := 0;\nvar i := 1;\nwhile i < |s| - 1\n  invariant 1 <= i <= |s|\n  invariant 0 <= p < |s|\n  decreases |s| - i\n{\n  if s[i] >= s[p] {\n    p := i;\n  }\n  i := i + 1;\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "FirstArgmax",
+      "inputs": [
+        [
+          5
+        ]
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "FirstArgmax",
+      "inputs": [
+        [
+          2,
+          7,
+          7,
+          1
+        ]
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "FirstArgmax",
+      "inputs": [
+        [
+          -3,
+          -1,
+          -1,
+          -5
+        ]
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "FirstArgmax",
+      "inputs": [
+        [
+          1,
+          2
+        ]
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "FirstArgmax",
+      "inputs": [
+        [
+          5,
+          5,
+          0
+        ]
+      ],
+      "outputs": [
+        0
+      ]
+    }
+  ],
+  "rule": {
+    "name": "first_argmax",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The input s is nonempty. [R2] The result p is a valid index of s. [R3] The element at p is at least every element of s. [R4] Every element before p is strictly smaller than s[p], so p is the first maximum index.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The input s is nonempty."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The result p is a valid index of s."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The element at p is at least every element of s."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "Every element before p is strictly smaller than s[p], so p is the first maximum index."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "length(s)",
+          "relation": "greater_than",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "p",
+          "relation": "in_range",
+          "value": "[0, length(s))"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "s[p]",
+          "relation": "at_least_every",
+          "value": "s[k] for every valid k"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "s[k] for 0 <= k < p",
+          "relation": "less_than",
+          "value": "s[p]"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The input s is nonempty.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "FirstArgmax",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The result p is a valid index of s.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "FirstArgmax",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The element at p is at least every element of s.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "FirstArgmax",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] Every element before p is strictly smaller than s[p], so p is the first maximum index.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "FirstArgmax",
+        "header_line": 5
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "shared_definitions": "",
+  "algorithm_cluster": "first_argmax",
+  "template": "method FirstArgmax(s: seq<int>) returns (p: int)\n  requires |s| > 0\n  ensures 0 <= p < |s|\n  ensures forall k :: 0 <= k < |s| ==> s[k] <= s[p]\n  ensures forall k :: 0 <= k < p ==> s[k] < s[p]\n{\n  <generate body: FirstArgmax>\n}\n",
+  "asset_hashes": {
+    "natural": "6df4e59393fa5ca60886a2ab58f234bd6400ddd2eee0d6723c9c9204bdc3a7e0",
+    "checklist": "592ca082094a1b6e5fc924fadb5ceb41ac786e803f34515c6eb098b487147ee0",
+    "structured": "93426bd01d989b6634772ea3994d4aaacc5662e31358fe0afb2c18da2d222bab",
+    "spec": "a36ed2f867ab58b0e68927d975954e068a611fe0123a8a41cb30d5520b417805",
+    "template": "ecb839f8b576f685363788dfe49852363df1134fc2163261600bdd3b559e55ce",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "31c8bb3084f5ee70e0022b3baa56c785e3aa7780b22936ca982cf81c89ab5fda"
+  }
+}

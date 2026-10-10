@@ -1,0 +1,41 @@
+--- a/generation/public_benchmark/structure_bridge.ps1
++++ b/generation/public_benchmark/structure_bridge.ps1
+@@ -1,7 +1,33 @@
+ param([Parameter(Mandatory=$true)][string]$DafnyHome,
+-      [Parameter(Mandatory=$true)][string]$SourceFile)
++      [Parameter(Mandatory=$true)][string]$SourceFile,
++      [Parameter(Mandatory=$true)][string]$BuildManifest)
+ $ErrorActionPreference = 'Stop'
+-# Compile only our fixed reflection bridge, never source supplied by a candidate.
+-# Reflection avoids the non-CLS casing collisions in Dafny AST's public members.
+-Add-Type -Path (Join-Path $PSScriptRoot 'structure_bridge.cs')
+-[Console]::Out.WriteLine([PublicDafnyStructure]::Inspect($DafnyHome, [IO.File]::ReadAllText($SourceFile)))
++function FileHash([string]$path) { (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
++function TextHash([string]$value) { [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($value))).ToLowerInvariant() }
++$identity = [ordered]@{
++    schema = 'public_dafny_bridge_v2'
++    cs_sha256 = FileHash (Join-Path $PSScriptRoot 'structure_bridge.cs')
++    wrapper_sha256 = FileHash $PSCommandPath
++    builder_sha256 = FileHash (Join-Path $PSScriptRoot 'build_structure_bridge.ps1')
++    dafny_core_sha256 = FileHash (Join-Path $DafnyHome 'DafnyCore.dll')
++    powershell = $PSVersionTable.PSVersion.ToString()
++    dotnet = [Runtime.InteropServices.RuntimeInformation]::FrameworkDescription
++    architecture = [Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString()
++}
++$key = TextHash ($identity | ConvertTo-Json -Compress)
++$receipt = Get-Content -Raw -LiteralPath $BuildManifest | ConvertFrom-Json -AsHashtable
++$dllPath = Join-Path (Split-Path ([IO.Path]::GetFullPath($BuildManifest)) -Parent) ('cache/' + $key + '/bridge.dll')
++if ($receipt.schema_version -ne 1 -or $receipt.key -ne $key -or $receipt.dll_path -ne $dllPath) {
++    throw 'Bridge build identity differs from current source or runtime.'
++}
++foreach ($name in $identity.Keys) {
++    if ($receipt.identity[$name] -ne $identity[$name]) { throw ('Bridge identity mismatch: ' + $name) }
++}
++if ((FileHash $dllPath) -ne $receipt.dll_sha256) { throw 'Bridge DLL integrity check failed.' }
++# A fresh process loads one verified, explicitly prebuilt bridge. Never compile
++# or repair a cache during candidate inspection.
++Add-Type -Path $dllPath
++$source = [Text.UTF8Encoding]::new($false, $true).GetString([IO.File]::ReadAllBytes($SourceFile))
++$report = [PublicDafnyStructure]::Inspect($DafnyHome, $source) | ConvertFrom-Json -AsHashtable
++$report.bridge_cache = @{key=$key;dll_sha256=$receipt.dll_sha256;receipt_sha256=(FileHash $BuildManifest);identity=$identity}
++[Console]::Out.WriteLine(($report | ConvertTo-Json -Compress -Depth 100))

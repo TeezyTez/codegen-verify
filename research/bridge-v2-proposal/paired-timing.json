@@ -1,0 +1,50 @@
+[
+  {
+    "mode": "Source",
+    "status": "ok",
+    "load_seconds": 2.7303258,
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "inspect_seconds": 2.99269,
+    "total_seconds": 10.844000000040978
+  },
+  {
+    "mode": "Dll",
+    "load_seconds": 0.3165601,
+    "status": "ok",
+    "inspect_seconds": 1.0472259,
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "total_seconds": 6.202999999979511
+  },
+  {
+    "mode": "Dll",
+    "load_seconds": 0.321174,
+    "inspect_seconds": 1.0516592,
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "status": "ok",
+    "total_seconds": 2.1880000000237487
+  },
+  {
+    "load_seconds": 1.5933749,
+    "inspect_seconds": 1.2535766,
+    "mode": "Source",
+    "status": "ok",
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "total_seconds": 3.780999999959022
+  },
+  {
+    "mode": "Source",
+    "inspect_seconds": 1.0770431,
+    "load_seconds": 1.6083239,
+    "status": "ok",
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "total_seconds": 3.594000000040978
+  },
+  {
+    "mode": "Dll",
+    "inspect_seconds": 1.165547,
+    "load_seconds": 0.3776325,
+    "result_sha256": "E842A57AA9A462AD35D02358C2AD71F021C38E3AD92F68C806DE3026B17AD7DA",
+    "status": "ok",
+    "total_seconds": 2.3119999999762513
+  }
+]

@@ -16,6 +16,47 @@ import time
 from repair.verifier import Dafny as ExistingDafny, LegacyParser, classify
 
 
+def _stop_and_drain(process, initial_stdout=None, initial_stderr=None):
+    """Terminate only this invocation's process tree, then drain for at most 5s.
+
+    A failed tree kill must not turn a verifier deadline into an unbounded pipe
+    wait. Cleanup can add at most 5s for taskkill plus 5s for communicate.
+    """
+    incomplete = False
+    try:
+        if os.name == 'posix':
+            try:
+                os.killpg(process.pid,signal.SIGKILL)
+            except ProcessLookupError:
+                pass
+        elif os.name == 'nt':
+            killed = subprocess.run(['taskkill','/PID',str(process.pid),'/T','/F'],
+                                    capture_output=True,timeout=5)
+            if killed.returncode:
+                raise OSError('process tree termination failed')
+        else:
+            process.kill()
+    except (OSError,subprocess.TimeoutExpired):
+        incomplete = True
+        try:
+            process.kill()
+        except OSError:
+            pass
+    def text(value):
+        return value.decode('utf-8',errors='replace') if isinstance(value,bytes) else value or ''
+    try:
+        stdout,stderr = process.communicate(timeout=5)
+    except subprocess.TimeoutExpired as exc:
+        incomplete = True
+        stdout,stderr = text(exc.output or initial_stdout),text(exc.stderr or initial_stderr)
+    except (OSError,UnicodeError):
+        incomplete = True
+        stdout,stderr = text(initial_stdout),text(initial_stderr)
+    if incomplete:
+        stderr += '\nverifier_cleanup_incomplete: process tree termination or bounded output drain failed'
+    return stdout,stderr
+
+
 @dataclass
 class Verification:
     status: str
@@ -36,54 +77,46 @@ class Verification:
 
 class Dafny(ExistingDafny):
     def identity(self):
-        return {**super().identity(),'adapter':'representation_formal_only_v1',
-                'process_group_timeout':os.name == 'posix','real_verifier':True}
+        return {**super().identity(),'adapter':'representation_formal_only_v3',
+                'source_encoding':'utf-8','source_newline_translation':False,
+                'process_group_timeout':os.name in {'posix','nt'},'real_verifier':True,
+                'timeout_cleanup_limit_seconds':10 if os.name=='nt' else 5,
+                'timeout_cleanup_method':'taskkill_process_tree' if os.name=='nt' else 'process_group'}
 
     def verify(self, source, *, names=(), timeout=None):
         started = time.monotonic()
         limit = min(self.timeout, self.timeout if timeout is None else timeout)
         if limit <= 0:
             return Verification('timeout')
-        with tempfile.TemporaryDirectory(prefix='representation-verify-') as directory:
+        with tempfile.TemporaryDirectory(prefix='representation-verify-',ignore_cleanup_errors=True) as directory:
             root = Path(directory)
             program, report = root/'program.dfy', root/'results.csv'
-            program.write_text(source)
+            program.write_bytes(source.encode('utf-8'))
             command = [self.path,'verify',str(program),'--cores','1',
                        '--verification-time-limit',str(max(1,math.ceil(limit))),
                        '--log-format',f'csv;LogFileName={report}']
             if self.solver:
                 command += ['--solver-path', self.solver]
             result = Verification('tool_error',command=command)
-            env = {k:os.environ[k] for k in ('PATH','TMPDIR','SYSTEMROOT','DOTNET_ROOT') if k in os.environ}
+            # .NET uses the Windows profile for its command-line sentinel/cache.
+            # Keep the allowlist: model API credentials must not reach generated-code tools.
+            env = {k:os.environ[k] for k in ('PATH','TMPDIR','SYSTEMROOT','DOTNET_ROOT',
+                   'USERPROFILE','LOCALAPPDATA','APPDATA','TEMP','TMP') if k in os.environ}
             try:
                 process = subprocess.Popen(command,cwd=root,env=env,stdout=subprocess.PIPE,
-                                           stderr=subprocess.PIPE,text=True,start_new_session=os.name=='posix')
+                                           stderr=subprocess.PIPE,text=True,encoding='utf-8',errors='replace',start_new_session=os.name=='posix')
                 result.executed = result.real_verifier = True
                 try:
                     result.stdout,result.stderr = process.communicate(timeout=limit)
-                except subprocess.TimeoutExpired:
-                    if os.name == 'posix':
-                        try:
-                            os.killpg(process.pid,signal.SIGKILL)
-                        except ProcessLookupError:
-                            pass
-                    else:
-                        process.kill()
-                    result.stdout,result.stderr = process.communicate()
+                except subprocess.TimeoutExpired as exc:
                     result.status = 'timeout'
+                    result.stdout,result.stderr = _stop_and_drain(process,exc.output,exc.stderr)
                 except BaseException:
-                    if os.name == 'posix':
-                        try:
-                            os.killpg(process.pid,signal.SIGKILL)
-                        except ProcessLookupError:
-                            pass
-                    else:
-                        process.kill()
-                    process.communicate()
+                    _stop_and_drain(process)
                     raise
                 result.returncode = process.returncode
                 if report.exists():
-                    result.csv_log = report.read_text()
+                    result.csv_log = report.read_text(encoding='utf-8-sig')
                     for row in csv.DictReader(result.csv_log.splitlines()):
                         name = row.get('TestResult.DisplayName','')
                         if name:
@@ -98,7 +131,8 @@ class Dafny(ExistingDafny):
                     if result.status == 'verified' and (not expected or not expected <= set(result.obligations)):
                         result.status = 'unknown'
             except (OSError,UnicodeError,csv.Error) as exc:
-                result.status = 'tool_error'
+                if result.status != 'timeout':
+                    result.status = 'tool_error'
                 result.stderr += '\n'+type(exc).__name__
             result.seconds = time.monotonic()-started
             return result

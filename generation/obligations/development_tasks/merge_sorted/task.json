@@ -1,0 +1,304 @@
+{
+  "id": "merge_sorted",
+  "task_id": "merge_sorted",
+  "source_project": "codegen-verify-obligation-development-20261006",
+  "family": "sequence_loop",
+  "task_family": "sequence_loop",
+  "split": "dev",
+  "origin": "synthetic_development",
+  "description": "Task-authoring development asset for the specification-obligation experiment; not held-out evaluation data.",
+  "source": "Original synthetic CC0 task authored for this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "MergeSorted",
+      "signature": "method MergeSorted(a: seq<int>, b: seq<int>) returns (r: seq<int>)",
+      "header": "method MergeSorted(a: seq<int>, b: seq<int>) returns (r: seq<int>)\n  requires forall i, j :: 0 <= i < j < |a| ==> a[i] <= a[j]\n  requires forall i, j :: 0 <= i < j < |b| ==> b[i] <= b[j]\n  ensures |r| == |a| + |b|\n  ensures multiset(r) == multiset(a) + multiset(b)\n  ensures forall i, j :: 0 <= i < j < |r| ==> r[i] <= r[j]"
+    }
+  ],
+  "reference": {
+    "MergeSorted": "r := [];\nvar i := 0;\nvar j := 0;\nvar pa: seq<int> := [];\nvar pb: seq<int> := [];\nwhile i < |a| || j < |b|\n  invariant 0 <= i <= |a| && 0 <= j <= |b|\n  invariant |pa| == i && |pb| == j\n  invariant forall k :: 0 <= k < i ==> pa[k] == a[k]\n  invariant forall k :: 0 <= k < j ==> pb[k] == b[k]\n  invariant |r| == i + j\n  invariant multiset(r) == multiset(pa) + multiset(pb)\n  invariant forall k, l :: 0 <= k < l < |r| ==> r[k] <= r[l]\n  invariant forall k :: 0 <= k < |r| && i < |a| ==> r[k] <= a[i]\n  invariant forall k :: 0 <= k < |r| && j < |b| ==> r[k] <= b[j]\n  decreases |a| + |b| - i - j\n{\n  if j == |b| || (i < |a| && a[i] <= b[j]) {\n    r := r + [a[i]];\n    pa := pa + [a[i]];\n    i := i + 1;\n  } else {\n    r := r + [b[j]];\n    pb := pb + [b[j]];\n    j := j + 1;\n  }\n}\nassert pa == a;\nassert pb == b;"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Two distinct semantic defects: reversed head comparator selects the larger head first; off-by-one loop guard omits the final unconsumed input element",
+      "defects": [
+        {
+          "description": "reversed head comparator selects the larger head first",
+          "witness_inputs": [
+            [
+              1,
+              4
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "seed_output": [
+            2,
+            3,
+            1
+          ],
+          "violated_requirements": [
+            "R5"
+          ],
+          "independent_repair_note": "Even when the last-element omission is repaired, the reversed comparator gives [2,3,1,4], violating R5."
+        },
+        {
+          "description": "off-by-one loop guard omits the final unconsumed input element",
+          "witness_inputs": [
+            [],
+            [
+              1,
+              4
+            ]
+          ],
+          "seed_output": [
+            1
+          ],
+          "violated_requirements": [
+            "R3",
+            "R4"
+          ]
+        }
+      ],
+      "bodies": {
+        "MergeSorted": "r := [];\nvar i := 0;\nvar j := 0;\nwhile i + j < |a| + |b| - 1\n  invariant 0 <= i <= |a| && 0 <= j <= |b|\n  decreases |a| + |b| - i - j\n{\n  if j == |b| || (i < |a| && a[i] >= b[j]) {\n    r := r + [a[i]];\n    i := i + 1;\n  } else {\n    r := r + [b[j]];\n    j := j + 1;\n  }\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "MergeSorted",
+      "inputs": [
+        [],
+        []
+      ],
+      "outputs": [
+        []
+      ]
+    },
+    {
+      "method": "MergeSorted",
+      "inputs": [
+        [
+          -3,
+          2,
+          2
+        ],
+        [
+          -2,
+          2,
+          9
+        ]
+      ],
+      "outputs": [
+        [
+          -3,
+          -2,
+          2,
+          2,
+          2,
+          9
+        ]
+      ]
+    },
+    {
+      "method": "MergeSorted",
+      "inputs": [
+        [],
+        [
+          1,
+          4
+        ]
+      ],
+      "outputs": [
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "method": "MergeSorted",
+      "inputs": [
+        [
+          1,
+          4
+        ],
+        []
+      ],
+      "outputs": [
+        [
+          1,
+          4
+        ]
+      ]
+    },
+    {
+      "method": "MergeSorted",
+      "inputs": [
+        [
+          1,
+          4
+        ],
+        [
+          2,
+          3
+        ]
+      ],
+      "outputs": [
+        [
+          1,
+          2,
+          3,
+          4
+        ]
+      ]
+    }
+  ],
+  "rule": {
+    "name": "merge_sorted",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] Input a is nondecreasing: every earlier element is at most every later element. [R2] Input b is nondecreasing: every earlier element is at most every later element. [R3] The result length is the sum of the two input lengths. [R4] The result contains each integer exactly as many times as the two inputs combined. [R5] The result is nondecreasing: every earlier element is at most every later element.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "Input a is nondecreasing: every earlier element is at most every later element."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "Input b is nondecreasing: every earlier element is at most every later element."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The result length is the sum of the two input lengths."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "The result contains each integer exactly as many times as the two inputs combined."
+      },
+      {
+        "requirement_id": "R5",
+        "text": "The result is nondecreasing: every earlier element is at most every later element."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "a",
+          "relation": "ordered_by",
+          "value": "nondecreasing"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "precondition",
+          "subject": "b",
+          "relation": "ordered_by",
+          "value": "nondecreasing"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "length(r)",
+          "relation": "equals",
+          "value": "length(a) + length(b)"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "multiset(r)",
+          "relation": "equals",
+          "value": "multiset(a) + multiset(b)"
+        },
+        {
+          "requirement_id": "R5",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "ordered_by",
+          "value": "nondecreasing"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] Input a is nondecreasing: every earlier element is at most every later element.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "MergeSorted",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] Input b is nondecreasing: every earlier element is at most every later element.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "MergeSorted",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The result length is the sum of the two input lengths.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "MergeSorted",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] The result contains each integer exactly as many times as the two inputs combined.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "MergeSorted",
+        "header_line": 5
+      }
+    },
+    {
+      "requirement_id": "R5",
+      "natural_quote": "[R5] The result is nondecreasing: every earlier element is at most every later element.",
+      "checklist_index": 4,
+      "structured_index": 4,
+      "acceptance": {
+        "method": "MergeSorted",
+        "header_line": 6
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "shared_definitions": "",
+  "algorithm_cluster": "merge_sorted",
+  "template": "method MergeSorted(a: seq<int>, b: seq<int>) returns (r: seq<int>)\n  requires forall i, j :: 0 <= i < j < |a| ==> a[i] <= a[j]\n  requires forall i, j :: 0 <= i < j < |b| ==> b[i] <= b[j]\n  ensures |r| == |a| + |b|\n  ensures multiset(r) == multiset(a) + multiset(b)\n  ensures forall i, j :: 0 <= i < j < |r| ==> r[i] <= r[j]\n{\n  <generate body: MergeSorted>\n}\n",
+  "asset_hashes": {
+    "natural": "f73efb4ae2b3f791ddacaf74f9599771541edbf91e39b9558cbd70540fdf568f",
+    "checklist": "b706755a6af800c50dd047b5cf62fe2e5496d734e21a821230eb25bd69d589c9",
+    "structured": "b3ee792fb1443b2e56b0737766fc80f3ad9c470f6aafcd7af28f7c1bdd0d67db",
+    "spec": "ecd49057cedeb3e63acbfa26abc7573c375f27cd376d75c21bef52e3948f9447",
+    "template": "de27959eb9c8ff74bf9613db69db8afc69d91476fa96bc2f3008b3ee79f84b2d",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "fefc4a41c547fa93aebc7a2b2f5f64f97b5306745bc10e4ea7d27d01543d61b9"
+  }
+}

@@ -1,0 +1,37 @@
+--- a/generation/public_benchmark/structure.py
++++ b/generation/public_benchmark/structure.py
+@@ -17,6 +17,7 @@
+ ROOT = Path(__file__).resolve().parents[2]
+ DAFNY_HOME = ROOT / ".tools/dafny/4.11.0"
+ BRIDGE = Path(__file__).with_name("structure_bridge.ps1")
++BUILD_MANIFEST = ROOT / ".tools/public-structure-bridge/build.json"
+ LIMITATIONS = [
+     "Only default-module top-level functions, predicates, methods and lemmas are supported.",
+     "All source attributes, imports, includes, higher-order calls and bodyless constructs are rejected.",
+@@ -98,13 +99,16 @@
+     pwsh = shutil.which("pwsh")
+     if not pwsh or not (DAFNY_HOME / "DafnyCore.dll").is_file():
+         return _failure("tool_error", "bridge_unavailable", "PowerShell Core and bundled Dafny 4.11.0 are required.")
++    if not BUILD_MANIFEST.is_file():
++        return _failure("tool_error", "bridge_unavailable", "Explicit bridge prebuild is required before inspection.")
+     try:
+         with tempfile.TemporaryDirectory(prefix="dafny-structure-") as scratch:
+             source_file = Path(scratch) / "candidate.dfy"
+-            source_file.write_text(source, encoding="utf-8")
++            source_file.write_bytes(source.encode("utf-8"))
+             completed = subprocess.run(
+                 [pwsh, "-NoProfile", "-NonInteractive", "-File", str(BRIDGE),
+-                 "-DafnyHome", str(DAFNY_HOME), "-SourceFile", str(source_file)],
++                 "-DafnyHome", str(DAFNY_HOME), "-SourceFile", str(source_file),
++                 "-BuildManifest", str(BUILD_MANIFEST)],
+                 capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45,
+             )
+         if completed.returncode:
+@@ -123,6 +127,7 @@
+                 Path(__file__).read_bytes() + BRIDGE.read_bytes() + BRIDGE.with_suffix(".cs").read_bytes()
+             ).hexdigest(),
+             "host_runtime": report.pop("bridge_runtime", "unknown"),
++            "precompiled_bridge": report.pop("bridge_cache", None),
+         }
+         return report
+     except (OSError, subprocess.TimeoutExpired, ValueError) as error:

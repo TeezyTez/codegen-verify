@@ -1,0 +1,67 @@
+{
+  "protocol": "spec_evidence_codegen_large_scale_v1_design",
+  "status": "design_not_implemented",
+  "run_enabled": false,
+  "model_calls_started": 0,
+  "task_type": "from_scratch_fixed_spec_implementation_and_proof_generation",
+  "main_dataset": "audited_BAF_native_problem_families",
+  "target_test_families": 1000,
+  "final_test_families": null,
+  "development_families": 64,
+  "arms": [
+    "A_autonomous",
+    "B_evidence_state",
+    "C_fixed_scheduler",
+    "D_evidence_scheduler_v1"
+  ],
+  "replicates": 3,
+  "model_roles": [
+    "user_requested_current_Codex_channel",
+    "independent_replication_model"
+  ],
+  "resolved_model_identities": [],
+  "matrix_sessions_per_test_family": 24,
+  "planned_sessions_if_1000_families_and_two_models": 24000,
+  "budgets": {
+    "model_actions": 12,
+    "candidate_verifications": 12,
+    "verifier_seconds": 120,
+    "verifier_cores": 1,
+    "output_tokens_per_action": 16384,
+    "total_session_tokens": 240000,
+    "model_request_seconds": 900,
+    "session_seconds": 10800
+  },
+  "budget_curve_actions": [
+    1,
+    2,
+    4,
+    8,
+    12
+  ],
+  "primary_contrast": "D-C",
+  "key_practical_contrast": "D-A",
+  "secondary_contrasts": [
+    "B-A",
+    "C-B"
+  ],
+  "minimum_practical_gain_percentage_points": 5,
+  "analysis_unit": "audited_problem_family",
+  "cluster_bootstrap_replicates": 10000,
+  "randomization_seed": 20261009,
+  "final_job_roster_created": false,
+  "launch_gates": [
+    "audited_contracts_and_references",
+    "semantic_family_deduplication_and_split",
+    "full_Dafny_AST_guard_and_coverage",
+    "implemented_frozen_controller_v1",
+    "isolated_batch_model_workers_and_identity",
+    "64_development_session_protocol_audit",
+    "frozen_prompts_toolchain_power_analysis_and_roster"
+  ],
+  "never_count_as_model_experiment": [
+    "reference_preflight",
+    "lexical_screening",
+    "scripted_replay"
+  ]
+}

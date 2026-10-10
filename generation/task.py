@@ -31,7 +31,7 @@ class Task:
     @classmethod
     def load(cls, path):
         path = Path(path).resolve()
-        meta = json.loads(path.read_text())
+        meta = json.loads(path.read_text(encoding='utf-8'))
         required = {'id','source_project','family','split','origin','description','methods',
                     'reference','mutants','tests','rule','trusted_assumptions','profile'}
         if not required <= meta.keys() or meta['profile'] != 'pure_dafny_methods_v1':

@@ -17,6 +17,10 @@ from .task import canonical, load_tasks
 from .verifier import Dafny
 
 HERE = Path(__file__).resolve().parent
+TASKS = HERE/'tasks'
+CONFIG = HERE/'configs'/'demo.json'
+DEFAULT_STRATEGY = 'iterative_repair'
+DEFAULT_REPRESENTATION = 'natural'
 
 
 def print_progress(event):
@@ -35,7 +39,7 @@ def print_progress(event):
         print(f"  stopped: {event['stop_reason']}; model calls={event['model_calls']}, verify calls={event['verifier_calls']}",flush=True)
 
 
-def admit(tasks, verifier, output):
+def admit(tasks, verifier, output, *, protocol=PROTOCOL, hashes=source_hashes):
     output = Path(output)
     output.mkdir(parents=True,exist_ok=False)
     rows = []
@@ -48,7 +52,7 @@ def admit(tasks, verifier, output):
         for index,(name,bodies) in enumerate(cases):
             source = task.assemble(bodies)
             prefix = folder/f'{index:02}'
-            prefix.with_suffix('.dfy').write_text(source)
+            prefix.with_suffix('.dfy').write_text(source,encoding='utf-8')
             evidence = verifier.verify(source,names=task.names)
             task.check_frozen()
             write_json(prefix.with_suffix('.verification.json'),evidence.to_dict())
@@ -59,22 +63,25 @@ def admit(tasks, verifier, output):
         rows.append({'task_id':task.meta['id'],'task_sha256':task.file_hash,'asset_hashes':task.meta['asset_hashes'],
                      'audit':task.meta['equivalence_audit'],'admitted':ok,'cases':results})
         print(task.meta['id'],[r['status'] for r in results], 'admitted=',ok,flush=True)
-    result = {'protocol':PROTOCOL,'all_admitted':all(r['admitted'] for r in rows),'tasks':rows,
-              'toolchain':verifier.identity(),'source_hashes':source_hashes(),
+    result = {'protocol':protocol,'all_admitted':all(r['admitted'] for r in rows),'tasks':rows,
+              'toolchain':verifier.identity(),'source_hashes':hashes(),
               'note':'Admission is not a human equivalence audit. Verification failure is not necessarily a semantic counterexample.'}
     write_json(output/'admission.json',result)
     return result
 
 
-def main(argv=None):
+def main(argv=None, *, profile=None):
+    profile = profile or sys.modules[__name__]
+    load_config, write_summary = profile.load_config, profile.write_summary
+    inspect_run, run, admit = profile.inspect_run, profile.run, profile.admit
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command',choices=['doctor','preflight','validate','run','matrix','summarize'])
-    parser.add_argument('--tasks',type=Path,default=HERE/'tasks')
-    parser.add_argument('--config',type=Path,default=HERE/'configs'/'demo.json')
+    parser.add_argument('--tasks',type=Path,default=profile.TASKS)
+    parser.add_argument('--config',type=Path,default=profile.CONFIG)
     parser.add_argument('--output',type=Path)
     parser.add_argument('--task-id')
-    parser.add_argument('--strategy',choices=STRATEGIES,default='iterative_repair')
-    parser.add_argument('--representation',choices=REPRESENTATIONS,default='natural')
+    parser.add_argument('--strategy',choices=profile.STRATEGIES,default=profile.DEFAULT_STRATEGY)
+    parser.add_argument('--representation',choices=profile.REPRESENTATIONS,default=profile.DEFAULT_REPRESENTATION)
     parser.add_argument('--replicate',type=int,default=0)
     parser.add_argument('--dafny')
     parser.add_argument('--allow-paid',action='store_true')

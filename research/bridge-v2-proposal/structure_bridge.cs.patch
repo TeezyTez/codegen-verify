@@ -1,0 +1,66 @@
+--- a/generation/public_benchmark/structure_bridge.cs
++++ b/generation/public_benchmark/structure_bridge.cs
+@@ -5,6 +5,7 @@
+ using System.Linq;
+ using System.Reflection;
+ using System.Text.Json;
++using System.Text;
+ using System.Threading.Tasks;
+ 
+ // Actual Dafny AST inspection, hosted by PowerShell Core. No candidate text is
+@@ -41,7 +42,24 @@
+   }
+   static int Pos(object token) { return Convert.ToInt32(Get(token, "pos")); }
+   static int Start(object node) { return Pos(Get(node, "StartToken")); }
+-  static int End(object node) { var tok = Get(node, "EndToken"); return Pos(tok) + Text(Get(tok, "val")).Length; }
++  static int End(object node) { var tok = Get(node, "EndToken"); return Pos(tok) + Encoding.UTF8.GetByteCount(Text(Get(tok, "val"))); }
++  static int[] Utf8ToUtf16Map(string source) {
++    var positions = new int[Encoding.UTF8.GetByteCount(source) + 1];
++    Array.Fill(positions, -1);
++    int bytes = 0, chars = 0;
++    foreach (var rune in source.EnumerateRunes()) {
++      positions[bytes] = chars;
++      bytes += rune.Utf8SequenceLength;
++      chars += rune.Utf16SequenceLength;
++    }
++    positions[bytes] = chars;
++    return positions;
++  }
++  static int Utf16Offset(int[] positions, int byteOffset) {
++    if (byteOffset < 0 || byteOffset >= positions.Length || positions[byteOffset] < 0)
++      throw new InvalidOperationException("Compiler token is not on a UTF-8 boundary");
++    return positions[byteOffset];
++  }
+   static string Id(object node) { return Text(Get(node, "FullDafnyName")); }
+   static string[] Tokens(object node, int before = int.MaxValue) {
+     return Items(Get(node, "CoveredTokens")).Where(t => Pos(t) < before).Select(t => Text(Get(t, "val"))).ToArray();
+@@ -87,6 +105,7 @@
+         result["status"] = "parse_error"; diagnostics(); return JsonSerializer.Serialize(result);
+       }
+       result["trusted_ast"] = true;
++      var positions = Utf8ToUtf16Map(source);
+       var module = Get(program, "DefaultModuleDef");
+       var members = new List<object>();
+       var sourceContracts = new List<Dictionary<string, object[]>>();
+@@ -120,8 +139,10 @@
+       foreach (var member in members) {
+         var body = Get(member, "Body");
+         var bodyToken = Get(member, "BodyStartTok");
+-        int start = Start(member), end = End(member);
+-        int bodyStart = bodyToken == null ? end : Pos(bodyToken);
++        int rawStart = Start(member), rawEnd = End(member);
++        int rawBodyStart = bodyToken == null ? rawEnd : Pos(bodyToken);
++        int start = Utf16Offset(positions, rawStart), end = Utf16Offset(positions, rawEnd);
++        int bodyStart = Utf16Offset(positions, rawBodyStart);
+         if (start < 0 || bodyStart < start || end < bodyStart || end > source.Length)
+           throw new InvalidOperationException("Invalid AST source region");
+         var contracts = new Dictionary<string, object[]>();
+@@ -137,7 +158,7 @@
+           ["header"] = source.Substring(start, bodyStart-start),
+           ["body"] = body == null ? null : source.Substring(bodyStart, end-bodyStart),
+           ["source_region"] = new int[] {start, end}, ["body_region"] = new int[] {bodyStart, end},
+-          ["tokens"] = Tokens(member), ["header_tokens"] = Tokens(member, bodyStart),
++          ["tokens"] = Tokens(member), ["header_tokens"] = Tokens(member, rawBodyStart),
+           ["depends_on"] = Array.Empty<string>(), ["unresolved_dependencies"] = Array.Empty<string>(),
+           ["verifier_names"] = new string[] {Text(Get(member, "Name"))},
+           ["signature"] = type("Printer").GetMethod(signatureMethod).Invoke(null, new object[] {options, member}),

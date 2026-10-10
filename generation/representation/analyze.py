@@ -11,15 +11,15 @@ from . import PROTOCOL
 from .task import canonical
 
 
-def summarize(root):
+def summarize(root, *, protocol=PROTOCOL, check_row=None):
     root = Path(root)
-    jobs = json.loads((root/'jobs.json').read_text()) if (root/'jobs.json').exists() else None
+    jobs = json.loads((root/'jobs.json').read_text(encoding='utf-8')) if (root/'jobs.json').exists() else None
     paths = [root/'result.json'] if (root/'result.json').exists() else sorted(root.glob('*/result.json'))
     groups, seen, versions = defaultdict(list), set(), set()
     for path in paths:
-        row = json.loads(path.read_text())
-        manifest = json.loads((path.parent/'manifest.json').read_text())
-        if row.get('protocol') != PROTOCOL or manifest.get('protocol') != PROTOCOL:
+        row = json.loads(path.read_text(encoding='utf-8'))
+        manifest = json.loads((path.parent/'manifest.json').read_text(encoding='utf-8'))
+        if row.get('protocol') != protocol or manifest.get('protocol') != protocol:
             raise ValueError('foreign protocol; legacy runs cannot be pooled')
         for key in ('run_id','task_id','strategy','representation','replicate'):
             if row[key] != manifest[key]:
@@ -39,25 +39,27 @@ def summarize(root):
             if planned is None or any(row[k] != planned[k] for k in ('task_id','strategy','representation','replicate')):
                 raise ValueError('unplanned or mismatched result')
         if row['success']:
-            if not row['completed'] or row['final_verification']['status'] != 'verified' or not row['final_verification']['real_verifier']:
+            if not row['completed'] or row['final_verification']['status'] != 'verified' or not row['final_verification']['real_verifier'] or not row['final_verification']['executed']:
                 raise ValueError('success without complete real verification')
-            if digest((path.parent/'final.dfy').read_text()) != row['final_sha256']:
+            if digest((path.parent/'final.dfy').read_text(encoding='utf-8')) != row['final_sha256']:
                 raise ValueError('final artifact hash mismatch')
-            final = json.loads((path.parent/'final.verification.json').read_text())
+            final = json.loads((path.parent/'final.verification.json').read_text(encoding='utf-8'))
             if final != row['final_verification']:
                 raise ValueError('final evidence mismatch')
         # Also check exact persisted prompts, not just a claimed hash.
         for p in path.parent.glob('round_*.messages.json'):
-            packet = json.loads(p.read_text())
+            packet = json.loads(p.read_text(encoding='utf-8'))
             if digest(canonical(packet['messages'])) != packet['sha256']:
                 raise ValueError('prompt hash mismatch')
+        if check_row is not None:
+            check_row(path.parent, row, manifest)
         group = (row['is_mock'],row['audit_status'],row['strategy'],row['representation'],
                  manifest['config_sha256'])
         groups[group].append(row)
     if len(versions) > 1:
         raise ValueError('mixed framework versions; summarize in separate output directories')
     missing = [j for j in jobs or [] if not (root/j['directory']/'result.json').exists()]
-    result = {'protocol':PROTOCOL,'planned_runs':len(jobs) if jobs is not None else len(paths),
+    result = {'protocol':protocol,'planned_runs':len(jobs) if jobs is not None else len(paths),
               'recorded_runs':len(paths),'missing_runs':missing,'conditions':[],
               'interpretation':'Descriptive only; task repeats are correlated. Mock outcomes are fixture diagnostics, not model evidence.'}
     for (mock,audit,strategy,representation,config_hash),rows in sorted(groups.items()):
@@ -88,26 +90,33 @@ def summarize(root):
             summary[key] = sum(r['usage'][key] for r in rows)
         for key in ('input_tokens','output_tokens'):
             summary[key] = None if mock or summary['unknown_usage_calls'] else sum(r['usage'][key] for r in rows)
+        if all('evidence_metrics' in r for r in rows):
+            metric_keys = sorted({key for r in rows for key in r['evidence_metrics']})
+            summary['evidence_metrics'] = {key: sum(r['evidence_metrics'].get(key, 0) for r in rows)
+                                           for key in metric_keys}
+            failed_first = [r for r in rows if r.get('first_attempt_failed')]
+            summary['first_attempt_failures'] = len(failed_first)
+            summary['repair_success_rate'] = mean(r['success'] for r in failed_first) if failed_first else None
         result['conditions'].append(summary)
     result['incomplete_runs'] = sum(s['recorded_runs']-s['completed_runs'] for s in result['conditions'])
     result['complete_matrix'] = not missing and result['incomplete_runs'] == 0
     return result
 
 
-def write_summary(root):
+def write_summary(root, *, protocol=PROTOCOL, check_row=None):
     root = Path(root)
-    summary = summarize(root)
+    summary = summarize(root, protocol=protocol, check_row=check_row)
     write_json(root/'summary.json',summary)
     fields = ['is_mock','audit_status','strategy','representation','unique_tasks','recorded_runs',
               'completed_runs','replicate_ids','first_candidate_rate','budget_success_rate_recorded',
               'model_calls','model_retry_calls','verifier_calls','real_verifier_runs','seconds',
               'input_tokens','output_tokens','cost_usd','failure_events','stop_reasons']
-    with (root/'summary.csv').open('w',newline='') as handle:
+    with (root/'summary.csv').open('w',newline='',encoding='utf-8') as handle:
         writer = csv.DictWriter(handle,fieldnames=fields)
         writer.writeheader()
         for row in summary['conditions']:
             writer.writerow({k:canonical(row[k]) if isinstance(row[k],(dict,list)) else row[k] for k in fields})
-    lines = ['# Representation experiment results','',
+    lines = [f'# Experiment results: {protocol}','',
              'Descriptive statistics only. Mock repair success is not model capability evidence.',
              'Pending equivalence audits do not establish semantic equivalence. Repeats are not independent tasks.',
              f"Planned: {summary['planned_runs']}; recorded: {summary['recorded_runs']}; missing: {len(summary['missing_runs'])}; incomplete: {summary['incomplete_runs']}.",'',
@@ -117,5 +126,5 @@ def write_summary(root):
         lines.append(f"| {s['is_mock']} | {s['audit_status']} | {s['strategy']} | {s['representation']} | {s['unique_tasks']} | {s['recorded_runs']} | {s['first_candidate_rate']:.1%} | {s['budget_success_rate_recorded']:.1%} | {s['model_calls']} | {s['verifier_calls']} |")
     lines += ['', 'Rates use recorded runs only; missing runs are exposed above, not silently dropped. Do not infer effects from an incomplete matrix.',
               'See summary.json for per-task repeat counts, failure event types, tool executions, tokens, costs and time.']
-    (root/'summary.md').write_text('\n'.join(lines)+'\n')
+    (root/'summary.md').write_text('\n'.join(lines)+'\n',encoding='utf-8')
     return summary

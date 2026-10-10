@@ -1,0 +1,255 @@
+{
+  "id": "division_pair",
+  "task_id": "division_pair",
+  "source_project": "original-obligation-dev-division_pair",
+  "family": "euclidean_division",
+  "task_family": "euclidean_division",
+  "split": "dev",
+  "origin": "original_synthetic_development",
+  "description": "Original exploratory development task; not held-out benchmark evidence.",
+  "source": "Original synthetic task authored in this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "DivisionPair",
+      "signature": "method DivisionPair(a: int, b: int) returns (q: int, r: int)",
+      "header": "method DivisionPair(a: int, b: int) returns (q: int, r: int)\n  requires a >= 0\n  requires b > 0\n  ensures q >= 0\n  ensures 0 <= r < b\n  ensures a == b * q + r"
+    }
+  ],
+  "reference": {
+    "DivisionPair": "q := 0;\nr := a;\nwhile r >= b\n  invariant q >= 0\n  invariant r >= 0\n  invariant a == b * q + r\n  decreases r\n{\n  r := r - b;\n  q := q + 1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Independently increments the quotient and shifts the remainder by b, violating reconstruction and remainder range.",
+      "bodies": {
+        "DivisionPair": "q := a / b + 1;\nr := a % b + b;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        0,
+        1
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        0,
+        7
+      ],
+      "outputs": [
+        0,
+        0
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        1,
+        2
+      ],
+      "outputs": [
+        0,
+        1
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        9,
+        3
+      ],
+      "outputs": [
+        3,
+        0
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        10,
+        3
+      ],
+      "outputs": [
+        3,
+        1
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        17,
+        5
+      ],
+      "outputs": [
+        3,
+        2
+      ]
+    },
+    {
+      "method": "DivisionPair",
+      "inputs": [
+        42,
+        1
+      ],
+      "outputs": [
+        42,
+        0
+      ]
+    }
+  ],
+  "rule": {
+    "name": "division_pair",
+    "version": 1
+  },
+  "shared_definitions": "",
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "development_limitations": {
+    "shortcut": "The contract permits direct division and modulo; repeated subtraction is only the supplied reference.",
+    "seed_violation": "Independently increments the quotient and shifts the remainder by b, violating reconstruction and remainder range."
+  },
+  "representations": {
+    "natural": "[R1] The dividend a is nonnegative. [R2] The divisor b is positive. [R3] The quotient q is nonnegative. [R4] The remainder r is at least zero and strictly less than b. [R5] The dividend equals b times q plus r.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The dividend a is nonnegative."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "The divisor b is positive."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "The quotient q is nonnegative."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "The remainder r is at least zero and strictly less than b."
+      },
+      {
+        "requirement_id": "R5",
+        "text": "The dividend equals b times q plus r."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "a",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "precondition",
+          "subject": "b",
+          "relation": "greater_than",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "q",
+          "relation": "greater_or_equal",
+          "value": "0"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "r",
+          "relation": "range",
+          "value": "0 <= r < b"
+        },
+        {
+          "requirement_id": "R5",
+          "kind": "postcondition",
+          "subject": "a",
+          "relation": "equal",
+          "value": "b * q + r"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The dividend a is nonnegative.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "DivisionPair",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] The divisor b is positive.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "DivisionPair",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] The quotient q is nonnegative.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "DivisionPair",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] The remainder r is at least zero and strictly less than b.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "DivisionPair",
+        "header_line": 5
+      }
+    },
+    {
+      "requirement_id": "R5",
+      "natural_quote": "[R5] The dividend equals b times q plus r.",
+      "checklist_index": 4,
+      "structured_index": 4,
+      "acceptance": {
+        "method": "DivisionPair",
+        "header_line": 6
+      }
+    }
+  ],
+  "template": "method DivisionPair(a: int, b: int) returns (q: int, r: int)\n  requires a >= 0\n  requires b > 0\n  ensures q >= 0\n  ensures 0 <= r < b\n  ensures a == b * q + r\n{\n  <generate body: DivisionPair>\n}\n",
+  "asset_hashes": {
+    "natural": "3c7484de01a81fe7fc3855375f95f039f12411a59773c0ab64449518027e5d46",
+    "checklist": "1096709934a58fa4ac31f83b09d2e97a87908a2585d9b5edc437a03708938d37",
+    "structured": "501a879bf107420cecd61bde4a6034127e25ff29d6afabb75cf23fe0ac9d13c1",
+    "spec": "2b02ac0841ebcbf2ce1c557d3e71a7cc096aeaa5a9344ba740c545ff56465736",
+    "template": "14ff438c9517d788706fd810b4f8517809cb8235c2167ff8c6f46201619c1aeb",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "fe55544d29d2af654f01fc8c9a14ad11b7f74b22102d1cb1c925b99f8bde5e26"
+  }
+}

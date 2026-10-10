@@ -1,0 +1,204 @@
+{
+  "id": "reverse_copy",
+  "task_id": "reverse_copy",
+  "source_project": "codegen-verify-obligation-development-20261006",
+  "family": "sequence_loop",
+  "task_family": "sequence_loop",
+  "split": "dev",
+  "origin": "derived_synthetic_development",
+  "description": "Task-authoring development asset for the specification-obligation experiment; not held-out evaluation data.",
+  "source": "Derived from generation/representation/challenge_tasks/sequence_reverse/task.json (existing repository synthetic task); contract and verified reference semantics reused, development namespace and multi-defect seed are new. This is not an independent new algorithm.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "Reverse",
+      "signature": "method Reverse(s: seq<int>) returns (r: seq<int>)",
+      "header": "method Reverse(s: seq<int>) returns (r: seq<int>)\n  ensures |r| == |s|\n  ensures forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k]"
+    }
+  ],
+  "reference": {
+    "Reverse": "r := [];\nvar i := |s|;\nwhile i > 0\n  invariant 0 <= i <= |s|\n  invariant |r| == |s| - i\n  invariant forall k :: 0 <= k < |r| ==> r[k] == s[|s| - 1 - k]\n  decreases i\n{\n  i := i - 1;\n  r := r + [s[i]];\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Two distinct semantic defects: forward traversal copies input order instead of reversing it; starting at index one omits the first input element",
+      "defects": [
+        {
+          "description": "forward traversal copies input order instead of reversing it",
+          "witness_inputs": [
+            [
+              1,
+              2,
+              3
+            ]
+          ],
+          "seed_output": [
+            2,
+            3
+          ],
+          "violated_requirements": [
+            "R2"
+          ],
+          "independent_repair_note": "Repairing the start index alone yields [1,2,3], still violating R2."
+        },
+        {
+          "description": "starting at index one omits the first input element",
+          "witness_inputs": [
+            [
+              5
+            ]
+          ],
+          "seed_output": [],
+          "violated_requirements": [
+            "R1",
+            "R2"
+          ]
+        }
+      ],
+      "bodies": {
+        "Reverse": "r := [];\nvar i := 1;\nwhile i < |s|\n  invariant 1 <= i\n  decreases |s| - i\n{\n  r := r + [s[i]];\n  i := i + 1;\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "Reverse",
+      "inputs": [
+        []
+      ],
+      "outputs": [
+        []
+      ]
+    },
+    {
+      "method": "Reverse",
+      "inputs": [
+        [
+          1,
+          2,
+          3
+        ]
+      ],
+      "outputs": [
+        [
+          3,
+          2,
+          1
+        ]
+      ]
+    },
+    {
+      "method": "Reverse",
+      "inputs": [
+        [
+          5
+        ]
+      ],
+      "outputs": [
+        [
+          5
+        ]
+      ]
+    },
+    {
+      "method": "Reverse",
+      "inputs": [
+        [
+          -2,
+          7,
+          -2,
+          4
+        ]
+      ],
+      "outputs": [
+        [
+          4,
+          -2,
+          7,
+          -2
+        ]
+      ]
+    }
+  ],
+  "rule": {
+    "name": "reverse_copy",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The result sequence r has the same length as s, including when s is empty. [R2] For every valid input index k, r[k] equals s[length(s) - 1 - k].",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The result sequence r has the same length as s, including when s is empty."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "For every valid input index k, r[k] equals s[length(s) - 1 - k]."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "postcondition",
+          "subject": "length(r)",
+          "relation": "equals",
+          "value": "length(s)"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "r[k] for every valid input index k",
+          "relation": "equals",
+          "value": "s[length(s) - 1 - k]"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The result sequence r has the same length as s, including when s is empty.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "Reverse",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] For every valid input index k, r[k] equals s[length(s) - 1 - k].",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "Reverse",
+        "header_line": 3
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "shared_definitions": "",
+  "algorithm_cluster": "sequence_reverse",
+  "derived_from": "generation/representation/challenge_tasks/sequence_reverse/task.json",
+  "template": "method Reverse(s: seq<int>) returns (r: seq<int>)\n  ensures |r| == |s|\n  ensures forall k :: 0 <= k < |s| ==> r[k] == s[|s| - 1 - k]\n{\n  <generate body: Reverse>\n}\n",
+  "asset_hashes": {
+    "natural": "f400676c01abfff0c3ca01c4fdbfb3251b09ca5389b3716a40e646b32619b0f7",
+    "checklist": "0b32d8b9395b1f049babe92dda9b54a8f3610ac46e80934bd393f8a92a98a8f2",
+    "structured": "823d9c16166d10d538eedcf53a1819bb7cef1a32e73d222fe3884486acf919f6",
+    "spec": "ab6b57802f0c2417fceff405b27ca6b0eadf121496968eb957c3995fec98bb28",
+    "template": "3b7d349e58cd41d5cbc9a25540f47872e8c30a2724140e5edfb3f186e9a6cef5",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "8d25f151f3d4a3e892fdf86f698f8aad4fe52dda8d99b557f796042423f9c381"
+  }
+}

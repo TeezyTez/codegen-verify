@@ -1,0 +1,200 @@
+--- a/generation/public_benchmark/structure.py
++++ b/generation/public_benchmark/structure.py
+@@ -17,6 +17,7 @@
+ ROOT = Path(__file__).resolve().parents[2]
+ DAFNY_HOME = ROOT / ".tools/dafny/4.11.0"
+ BRIDGE = Path(__file__).with_name("structure_bridge.ps1")
++BUILD_MANIFEST = ROOT / ".tools/public-structure-bridge/build.json"
+ LIMITATIONS = [
+     "Only default-module top-level functions, predicates, methods and lemmas are supported.",
+     "All source attributes, imports, includes, higher-order calls and bodyless constructs are rejected.",
+@@ -98,13 +99,16 @@
+     pwsh = shutil.which("pwsh")
+     if not pwsh or not (DAFNY_HOME / "DafnyCore.dll").is_file():
+         return _failure("tool_error", "bridge_unavailable", "PowerShell Core and bundled Dafny 4.11.0 are required.")
++    if not BUILD_MANIFEST.is_file():
++        return _failure("tool_error", "bridge_unavailable", "Explicit bridge prebuild is required before inspection.")
+     try:
+         with tempfile.TemporaryDirectory(prefix="dafny-structure-") as scratch:
+             source_file = Path(scratch) / "candidate.dfy"
+-            source_file.write_text(source, encoding="utf-8")
++            source_file.write_bytes(source.encode("utf-8"))
+             completed = subprocess.run(
+                 [pwsh, "-NoProfile", "-NonInteractive", "-File", str(BRIDGE),
+-                 "-DafnyHome", str(DAFNY_HOME), "-SourceFile", str(source_file)],
++                 "-DafnyHome", str(DAFNY_HOME), "-SourceFile", str(source_file),
++                 "-BuildManifest", str(BUILD_MANIFEST)],
+                 capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=45,
+             )
+         if completed.returncode:
+@@ -123,6 +127,7 @@
+                 Path(__file__).read_bytes() + BRIDGE.read_bytes() + BRIDGE.with_suffix(".cs").read_bytes()
+             ).hexdigest(),
+             "host_runtime": report.pop("bridge_runtime", "unknown"),
++            "precompiled_bridge": report.pop("bridge_cache", None),
+         }
+         return report
+     except (OSError, subprocess.TimeoutExpired, ValueError) as error:
+--- a/generation/public_benchmark/structure_bridge.cs
++++ b/generation/public_benchmark/structure_bridge.cs
+@@ -5,6 +5,7 @@
+ using System.Linq;
+ using System.Reflection;
+ using System.Text.Json;
++using System.Text;
+ using System.Threading.Tasks;
+ 
+ // Actual Dafny AST inspection, hosted by PowerShell Core. No candidate text is
+@@ -41,7 +42,24 @@
+   }
+   static int Pos(object token) { return Convert.ToInt32(Get(token, "pos")); }
+   static int Start(object node) { return Pos(Get(node, "StartToken")); }
+-  static int End(object node) { var tok = Get(node, "EndToken"); return Pos(tok) + Text(Get(tok, "val")).Length; }
++  static int End(object node) { var tok = Get(node, "EndToken"); return Pos(tok) + Encoding.UTF8.GetByteCount(Text(Get(tok, "val"))); }
++  static int[] Utf8ToUtf16Map(string source) {
++    var positions = new int[Encoding.UTF8.GetByteCount(source) + 1];
++    Array.Fill(positions, -1);
++    int bytes = 0, chars = 0;
++    foreach (var rune in source.EnumerateRunes()) {
++      positions[bytes] = chars;
++      bytes += rune.Utf8SequenceLength;
++      chars += rune.Utf16SequenceLength;
++    }
++    positions[bytes] = chars;
++    return positions;
++  }
++  static int Utf16Offset(int[] positions, int byteOffset) {
++    if (byteOffset < 0 || byteOffset >= positions.Length || positions[byteOffset] < 0)
++      throw new InvalidOperationException("Compiler token is not on a UTF-8 boundary");
++    return positions[byteOffset];
++  }
+   static string Id(object node) { return Text(Get(node, "FullDafnyName")); }
+   static string[] Tokens(object node, int before = int.MaxValue) {
+     return Items(Get(node, "CoveredTokens")).Where(t => Pos(t) < before).Select(t => Text(Get(t, "val"))).ToArray();
+@@ -87,6 +105,7 @@
+         result["status"] = "parse_error"; diagnostics(); return JsonSerializer.Serialize(result);
+       }
+       result["trusted_ast"] = true;
++      var positions = Utf8ToUtf16Map(source);
+       var module = Get(program, "DefaultModuleDef");
+       var members = new List<object>();
+       var sourceContracts = new List<Dictionary<string, object[]>>();
+@@ -120,8 +139,10 @@
+       foreach (var member in members) {
+         var body = Get(member, "Body");
+         var bodyToken = Get(member, "BodyStartTok");
+-        int start = Start(member), end = End(member);
+-        int bodyStart = bodyToken == null ? end : Pos(bodyToken);
++        int rawStart = Start(member), rawEnd = End(member);
++        int rawBodyStart = bodyToken == null ? rawEnd : Pos(bodyToken);
++        int start = Utf16Offset(positions, rawStart), end = Utf16Offset(positions, rawEnd);
++        int bodyStart = Utf16Offset(positions, rawBodyStart);
+         if (start < 0 || bodyStart < start || end < bodyStart || end > source.Length)
+           throw new InvalidOperationException("Invalid AST source region");
+         var contracts = new Dictionary<string, object[]>();
+@@ -137,7 +158,7 @@
+           ["header"] = source.Substring(start, bodyStart-start),
+           ["body"] = body == null ? null : source.Substring(bodyStart, end-bodyStart),
+           ["source_region"] = new int[] {start, end}, ["body_region"] = new int[] {bodyStart, end},
+-          ["tokens"] = Tokens(member), ["header_tokens"] = Tokens(member, bodyStart),
++          ["tokens"] = Tokens(member), ["header_tokens"] = Tokens(member, rawBodyStart),
+           ["depends_on"] = Array.Empty<string>(), ["unresolved_dependencies"] = Array.Empty<string>(),
+           ["verifier_names"] = new string[] {Text(Get(member, "Name"))},
+           ["signature"] = type("Printer").GetMethod(signatureMethod).Invoke(null, new object[] {options, member}),
+--- a/generation/public_benchmark/structure_bridge.ps1
++++ b/generation/public_benchmark/structure_bridge.ps1
+@@ -1,7 +1,33 @@
+ param([Parameter(Mandatory=$true)][string]$DafnyHome,
+-      [Parameter(Mandatory=$true)][string]$SourceFile)
++      [Parameter(Mandatory=$true)][string]$SourceFile,
++      [Parameter(Mandatory=$true)][string]$BuildManifest)
+ $ErrorActionPreference = 'Stop'
+-# Compile only our fixed reflection bridge, never source supplied by a candidate.
+-# Reflection avoids the non-CLS casing collisions in Dafny AST's public members.
+-Add-Type -Path (Join-Path $PSScriptRoot 'structure_bridge.cs')
+-[Console]::Out.WriteLine([PublicDafnyStructure]::Inspect($DafnyHome, [IO.File]::ReadAllText($SourceFile)))
++function FileHash([string]$path) { (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
++function TextHash([string]$value) { [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($value))).ToLowerInvariant() }
++$identity = [ordered]@{
++    schema = 'public_dafny_bridge_v2'
++    cs_sha256 = FileHash (Join-Path $PSScriptRoot 'structure_bridge.cs')
++    wrapper_sha256 = FileHash $PSCommandPath
++    builder_sha256 = FileHash (Join-Path $PSScriptRoot 'build_structure_bridge.ps1')
++    dafny_core_sha256 = FileHash (Join-Path $DafnyHome 'DafnyCore.dll')
++    powershell = $PSVersionTable.PSVersion.ToString()
++    dotnet = [Runtime.InteropServices.RuntimeInformation]::FrameworkDescription
++    architecture = [Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString()
++}
++$key = TextHash ($identity | ConvertTo-Json -Compress)
++$receipt = Get-Content -Raw -LiteralPath $BuildManifest | ConvertFrom-Json -AsHashtable
++$dllPath = Join-Path (Split-Path ([IO.Path]::GetFullPath($BuildManifest)) -Parent) ('cache/' + $key + '/bridge.dll')
++if ($receipt.schema_version -ne 1 -or $receipt.key -ne $key -or $receipt.dll_path -ne $dllPath) {
++    throw 'Bridge build identity differs from current source or runtime.'
++}
++foreach ($name in $identity.Keys) {
++    if ($receipt.identity[$name] -ne $identity[$name]) { throw ('Bridge identity mismatch: ' + $name) }
++}
++if ((FileHash $dllPath) -ne $receipt.dll_sha256) { throw 'Bridge DLL integrity check failed.' }
++# A fresh process loads one verified, explicitly prebuilt bridge. Never compile
++# or repair a cache during candidate inspection.
++Add-Type -Path $dllPath
++$source = [Text.UTF8Encoding]::new($false, $true).GetString([IO.File]::ReadAllBytes($SourceFile))
++$report = [PublicDafnyStructure]::Inspect($DafnyHome, $source) | ConvertFrom-Json -AsHashtable
++$report.bridge_cache = @{key=$key;dll_sha256=$receipt.dll_sha256;receipt_sha256=(FileHash $BuildManifest);identity=$identity}
++[Console]::Out.WriteLine(($report | ConvertTo-Json -Compress -Depth 100))
+--- /dev/null
++++ b/generation/public_benchmark/build_structure_bridge.ps1
+@@ -0,0 +1,53 @@
++param([string]$DafnyHome, [string]$CacheRoot)
++$ErrorActionPreference = 'Stop'
++$projectRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
++if (-not $DafnyHome) { $DafnyHome = Join-Path $projectRoot '.tools/dafny/4.11.0' }
++if (-not $CacheRoot) { $CacheRoot = Join-Path $projectRoot '.tools/public-structure-bridge' }
++$CacheRoot = [IO.Path]::GetFullPath($CacheRoot)
++function FileHash([string]$path) { (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() }
++function TextHash([string]$value) { [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($value))).ToLowerInvariant() }
++$identity = [ordered]@{
++    schema = 'public_dafny_bridge_v2'
++    cs_sha256 = FileHash (Join-Path $PSScriptRoot 'structure_bridge.cs')
++    wrapper_sha256 = FileHash (Join-Path $PSScriptRoot 'structure_bridge.ps1')
++    builder_sha256 = FileHash $PSCommandPath
++    dafny_core_sha256 = FileHash (Join-Path $DafnyHome 'DafnyCore.dll')
++    powershell = $PSVersionTable.PSVersion.ToString()
++    dotnet = [Runtime.InteropServices.RuntimeInformation]::FrameworkDescription
++    architecture = [Runtime.InteropServices.RuntimeInformation]::ProcessArchitecture.ToString()
++}
++$key = TextHash ($identity | ConvertTo-Json -Compress)
++$receiptPath = Join-Path $CacheRoot 'build.json'
++$cacheDirectory = Join-Path $CacheRoot ('cache/' + $key)
++$dllPath = Join-Path $cacheDirectory 'bridge.dll'
++# The fixed receipt is frozen with an experiment. A changed source needs an
++# explicitly selected fresh cache root or an externally archived old receipt.
++if (Test-Path -LiteralPath $receiptPath) {
++    $existing = Get-Content -Raw -LiteralPath $receiptPath | ConvertFrom-Json -AsHashtable
++    if ($existing.key -ne $key -or $existing.dll_path -ne $dllPath -or
++        -not (Test-Path -LiteralPath $dllPath) -or (FileHash $dllPath) -ne $existing.dll_sha256) {
++        throw 'Existing build receipt is stale or corrupt; refusing overwrite.'
++    }
++    [Console]::Out.WriteLine($receiptPath)
++    exit 0
++}
++[void][IO.Directory]::CreateDirectory($CacheRoot)
++$mutex = [Threading.Mutex]::new($false, 'PublicDafnyBridge_' + (TextHash $CacheRoot))
++if (-not $mutex.WaitOne(120000)) { throw 'Timed out waiting for the bridge build lock.' }
++try {
++    if (Test-Path -LiteralPath $receiptPath) { throw 'Another build published the receipt; rerun to validate it.' }
++    [void][IO.Directory]::CreateDirectory($cacheDirectory)
++    if (Test-Path -LiteralPath $dllPath) { throw 'Unreceipted DLL exists; refusing to trust or replace it.' }
++    $temporaryDll = Join-Path $cacheDirectory ('building-' + [Guid]::NewGuid().ToString('N') + '.dll')
++    Add-Type -Path (Join-Path $PSScriptRoot 'structure_bridge.cs') -OutputAssembly $temporaryDll
++    $dllHash = FileHash $temporaryDll
++    [IO.File]::Move($temporaryDll, $dllPath, $false)
++    $receipt = [ordered]@{schema_version=1;key=$key;identity=$identity;dll_path=$dllPath;dll_sha256=$dllHash}
++    $temporaryReceipt = Join-Path $CacheRoot ('building-' + [Guid]::NewGuid().ToString('N') + '.json')
++    [IO.File]::WriteAllText($temporaryReceipt, ($receipt | ConvertTo-Json -Depth 8), [Text.UTF8Encoding]::new($false))
++    [IO.File]::Move($temporaryReceipt, $receiptPath, $false)
++    [Console]::Out.WriteLine($receiptPath)
++} finally {
++    $mutex.ReleaseMutex()
++    $mutex.Dispose()
++}

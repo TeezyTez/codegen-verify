@@ -1,0 +1,419 @@
+{
+  "id": "search_pipeline",
+  "task_id": "search_pipeline",
+  "source_project": "original-obligation-dev-search_pipeline",
+  "family": "contract_call_search",
+  "task_family": "contract_call_search",
+  "split": "dev",
+  "origin": "original_synthetic_development",
+  "description": "Original exploratory development task; not held-out benchmark evidence.",
+  "source": "Original synthetic task authored in this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "LowerBound",
+      "signature": "method LowerBound(a: seq<int>, x: int) returns (p: int)",
+      "header": "method LowerBound(a: seq<int>, x: int) returns (p: int)\n  requires forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]\n  ensures 0 <= p <= |a|\n  ensures forall i :: 0 <= i < p ==> a[i] < x\n  ensures forall i :: p <= i < |a| ==> x <= a[i]"
+    },
+    {
+      "name": "Locate",
+      "signature": "method Locate(a: seq<int>, x: int) returns (found: bool, index: int)",
+      "header": "method Locate(a: seq<int>, x: int) returns (found: bool, index: int)\n  requires forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]\n  ensures found <==> (exists i :: 0 <= i < |a| && a[i] == x)\n  ensures !found ==> index == -1\n  ensures found ==> 0 <= index < |a| && a[index] == x\n  ensures found ==> (forall i :: 0 <= i < index ==> a[i] != x)"
+    }
+  ],
+  "reference": {
+    "LowerBound": "p := 0;\nwhile p < |a| && a[p] < x\n  invariant 0 <= p <= |a|\n  invariant forall i :: 0 <= i < p ==> a[i] < x\n  decreases |a| - p\n{\n  p := p + 1;\n}\nif p < |a| {\n  assert forall i :: p <= i < |a| ==> a[p] <= a[i];\n}",
+    "Locate": "var p := LowerBound(a, x);\nif p < |a| && a[p] == x {\n  found := true;\n  index := p;\n} else {\n  found := false;\n  index := -1;\n}"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "LowerBound always returns length regardless of insertion point; Locate independently reports every query found and returns that unchecked index.",
+      "bodies": {
+        "LowerBound": "p := |a|;",
+        "Locate": "var p := LowerBound(a, x);\nfound := true;\nindex := p;"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [],
+        3
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          1,
+          2,
+          2,
+          4
+        ],
+        2
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          1,
+          3
+        ],
+        2
+      ],
+      "outputs": [
+        1
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          1,
+          3
+        ],
+        4
+      ],
+      "outputs": [
+        2
+      ]
+    },
+    {
+      "method": "LowerBound",
+      "inputs": [
+        [
+          -3,
+          -1,
+          0
+        ],
+        -4
+      ],
+      "outputs": [
+        0
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [],
+        3
+      ],
+      "outputs": [
+        false,
+        -1
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [
+          1,
+          2,
+          2,
+          4
+        ],
+        2
+      ],
+      "outputs": [
+        true,
+        1
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [
+          1,
+          3
+        ],
+        2
+      ],
+      "outputs": [
+        false,
+        -1
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [
+          1,
+          3
+        ],
+        4
+      ],
+      "outputs": [
+        false,
+        -1
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [
+          -3,
+          -1,
+          0
+        ],
+        -1
+      ],
+      "outputs": [
+        true,
+        1
+      ]
+    },
+    {
+      "method": "Locate",
+      "inputs": [
+        [
+          2,
+          2,
+          2
+        ],
+        2
+      ],
+      "outputs": [
+        true,
+        0
+      ]
+    }
+  ],
+  "rule": {
+    "name": "search_pipeline",
+    "version": 1
+  },
+  "shared_definitions": "",
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "development_limitations": {
+    "shortcut": "Contracts require results, not binary search or even the LowerBound call; the reference uses a modular call and linear scan. Sortedness is a meaningful precondition of that call.",
+    "seed_violation": "LowerBound always returns length regardless of insertion point; Locate independently reports every query found and returns that unchecked index."
+  },
+  "representations": {
+    "natural": "[R1] LowerBound accepts a sequence sorted in nondecreasing order. [R2] LowerBound returns p between zero and the sequence length inclusive. [R3] Every element at an index before p is strictly less than x. [R4] Every element at an index at least p is at least x. [R5] Locate accepts a sequence sorted in nondecreasing order. [R6] Locate returns found exactly when x occurs in the sequence. [R7] When x is absent, Locate returns index minus one. [R8] When found is true, index is in bounds and its element equals x. [R9] When found is true, no earlier index contains x, so index is the first occurrence.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "LowerBound accepts a sequence sorted in nondecreasing order."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "LowerBound returns p between zero and the sequence length inclusive."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "Every element at an index before p is strictly less than x."
+      },
+      {
+        "requirement_id": "R4",
+        "text": "Every element at an index at least p is at least x."
+      },
+      {
+        "requirement_id": "R5",
+        "text": "Locate accepts a sequence sorted in nondecreasing order."
+      },
+      {
+        "requirement_id": "R6",
+        "text": "Locate returns found exactly when x occurs in the sequence."
+      },
+      {
+        "requirement_id": "R7",
+        "text": "When x is absent, Locate returns index minus one."
+      },
+      {
+        "requirement_id": "R8",
+        "text": "When found is true, index is in bounds and its element equals x."
+      },
+      {
+        "requirement_id": "R9",
+        "text": "When found is true, no earlier index contains x, so index is the first occurrence."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "precondition",
+          "subject": "a",
+          "relation": "sorted_nondecreasing",
+          "value": "forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "p",
+          "relation": "range",
+          "value": "0 <= p <= |a|"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "a[0..p]",
+          "relation": "all_less_than",
+          "value": "x"
+        },
+        {
+          "requirement_id": "R4",
+          "kind": "postcondition",
+          "subject": "a[p..|a|]",
+          "relation": "all_greater_or_equal",
+          "value": "x"
+        },
+        {
+          "requirement_id": "R5",
+          "kind": "precondition",
+          "subject": "a",
+          "relation": "sorted_nondecreasing",
+          "value": "forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]"
+        },
+        {
+          "requirement_id": "R6",
+          "kind": "postcondition",
+          "subject": "found",
+          "relation": "equivalent",
+          "value": "exists i :: 0 <= i < |a| && a[i] == x"
+        },
+        {
+          "requirement_id": "R7",
+          "kind": "postcondition",
+          "subject": "!found",
+          "relation": "implies",
+          "value": "index == -1"
+        },
+        {
+          "requirement_id": "R8",
+          "kind": "postcondition",
+          "subject": "found",
+          "relation": "implies",
+          "value": "0 <= index < |a| && a[index] == x"
+        },
+        {
+          "requirement_id": "R9",
+          "kind": "postcondition",
+          "subject": "found",
+          "relation": "implies",
+          "value": "forall i :: 0 <= i < index ==> a[i] != x"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] LowerBound accepts a sequence sorted in nondecreasing order.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] LowerBound returns p between zero and the sequence length inclusive.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] Every element at an index before p is strictly less than x.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R4",
+      "natural_quote": "[R4] Every element at an index at least p is at least x.",
+      "checklist_index": 3,
+      "structured_index": 3,
+      "acceptance": {
+        "method": "LowerBound",
+        "header_line": 5
+      }
+    },
+    {
+      "requirement_id": "R5",
+      "natural_quote": "[R5] Locate accepts a sequence sorted in nondecreasing order.",
+      "checklist_index": 4,
+      "structured_index": 4,
+      "acceptance": {
+        "method": "Locate",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R6",
+      "natural_quote": "[R6] Locate returns found exactly when x occurs in the sequence.",
+      "checklist_index": 5,
+      "structured_index": 5,
+      "acceptance": {
+        "method": "Locate",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R7",
+      "natural_quote": "[R7] When x is absent, Locate returns index minus one.",
+      "checklist_index": 6,
+      "structured_index": 6,
+      "acceptance": {
+        "method": "Locate",
+        "header_line": 4
+      }
+    },
+    {
+      "requirement_id": "R8",
+      "natural_quote": "[R8] When found is true, index is in bounds and its element equals x.",
+      "checklist_index": 7,
+      "structured_index": 7,
+      "acceptance": {
+        "method": "Locate",
+        "header_line": 5
+      }
+    },
+    {
+      "requirement_id": "R9",
+      "natural_quote": "[R9] When found is true, no earlier index contains x, so index is the first occurrence.",
+      "checklist_index": 8,
+      "structured_index": 8,
+      "acceptance": {
+        "method": "Locate",
+        "header_line": 6
+      }
+    }
+  ],
+  "template": "method LowerBound(a: seq<int>, x: int) returns (p: int)\n  requires forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]\n  ensures 0 <= p <= |a|\n  ensures forall i :: 0 <= i < p ==> a[i] < x\n  ensures forall i :: p <= i < |a| ==> x <= a[i]\n{\n  <generate body: LowerBound>\n}\n\nmethod Locate(a: seq<int>, x: int) returns (found: bool, index: int)\n  requires forall i, j :: 0 <= i <= j < |a| ==> a[i] <= a[j]\n  ensures found <==> (exists i :: 0 <= i < |a| && a[i] == x)\n  ensures !found ==> index == -1\n  ensures found ==> 0 <= index < |a| && a[index] == x\n  ensures found ==> (forall i :: 0 <= i < index ==> a[i] != x)\n{\n  <generate body: Locate>\n}\n",
+  "asset_hashes": {
+    "natural": "1306605d7dcd6dc57f15bf18a17b4961c68da41f646ac74bf5dead958da7ec81",
+    "checklist": "324b91a7a88c730db3d0f06ef236fdee043f1f76b53cae231bef3d6bb1a7655b",
+    "structured": "0bcd6aa342505ae2d9f50af7db034601ce189adf7155f6a6f0b5f92adb1c997e",
+    "spec": "42e2fc8978654090d7ad2d118e4c885d4802ebd83b20ed484d46a40e4becc6c6",
+    "template": "6f768575f120456e63323e9a4e5fcd7eebe2ed817f6c52ee9468f2109f8405a6",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "e9865c1af4ab3b493e1f72398f6ade3d218d319f85650d22455bb72ae9bbd637"
+  }
+}

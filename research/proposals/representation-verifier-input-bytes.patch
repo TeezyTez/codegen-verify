@@ -1,0 +1,11 @@
+--- a/generation/representation/verifier.py
++++ b/generation/representation/verifier.py
+@@ -90,7 +90,7 @@
+         with tempfile.TemporaryDirectory(prefix='representation-verify-',ignore_cleanup_errors=True) as directory:
+             root = Path(directory)
+             program, report = root/'program.dfy', root/'results.csv'
+-            program.write_text(source,encoding='utf-8')
++            program.write_bytes(source.encode('utf-8'))
+             command = [self.path,'verify',str(program),'--cores','1',
+                        '--verification-time-limit',str(max(1,math.ceil(limit))),
+                        '--log-format',f'csv;LogFileName={report}']

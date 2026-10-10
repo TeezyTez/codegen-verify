@@ -1,0 +1,228 @@
+{
+  "id": "prefix_maxima",
+  "task_id": "prefix_maxima",
+  "source_project": "codegen-verify-obligation-development-20261006",
+  "family": "sequence_loop",
+  "task_family": "sequence_loop",
+  "split": "dev",
+  "origin": "synthetic_development",
+  "description": "Task-authoring development asset for the specification-obligation experiment; not held-out evaluation data.",
+  "source": "Original synthetic CC0 task authored for this repository on 2026-10-06; no external code copied.",
+  "license": "CC0-1.0",
+  "version": "1",
+  "profile": "pure_dafny_methods_v1",
+  "trusted_assumptions": [],
+  "methods": [
+    {
+      "name": "PrefixMaxima",
+      "signature": "method PrefixMaxima(s: seq<int>) returns (p: seq<int>)",
+      "header": "method PrefixMaxima(s: seq<int>) returns (p: seq<int>)\n  ensures |p| == |s|\n  ensures forall k, j :: 0 <= j <= k < |s| ==> s[j] <= p[k]\n  ensures forall k :: 0 <= k < |s| ==> exists j :: 0 <= j <= k && p[k] == s[j]"
+    }
+  ],
+  "reference": {
+    "PrefixMaxima": "p := [];\nvar w: seq<int> := [];\nvar i := 0;\nwhile i < |s|\n  invariant 0 <= i <= |s|\n  invariant |p| == i\n  invariant |w| == i\n  invariant forall k :: 0 <= k < i ==> 0 <= w[k] <= k && p[k] == s[w[k]]\n  invariant forall k, j :: 0 <= j <= k < i ==> s[j] <= p[k]\n  invariant forall k :: 0 <= k < i ==> exists j :: 0 <= j <= k && p[k] == s[j]\n  decreases |s| - i\n{\n  var m := s[i];\n  var q := i;\n  if i > 0 && p[i-1] > m {\n    m := p[i-1];\n    q := w[i-1];\n  }\n  assert forall j :: 0 <= j <= i ==> s[j] <= m;\n  assert exists j :: 0 <= j <= i && m == s[j];\n  p := p + [m];\n  w := w + [q];\n  i := i + 1;\n}\nassert forall k :: 0 <= k < |s| ==> exists j :: j == w[k] && 0 <= j <= k && p[k] == s[j];"
+  },
+  "mutants": [
+    {
+      "id": "multi_defect_seed",
+      "violation": "Two distinct semantic defects: zero initialization invents a value absent from positive prefixes; less-than update computes a running minimum instead of maximum",
+      "defects": [
+        {
+          "description": "zero initialization invents a value absent from positive prefixes",
+          "witness_inputs": [
+            [
+              5
+            ]
+          ],
+          "seed_output": [
+            0
+          ],
+          "violated_requirements": [
+            "R2",
+            "R3"
+          ]
+        },
+        {
+          "description": "less-than update computes a running minimum instead of maximum",
+          "witness_inputs": [
+            [
+              -5,
+              -2
+            ]
+          ],
+          "seed_output": [
+            -5,
+            -5
+          ],
+          "violated_requirements": [
+            "R2"
+          ]
+        }
+      ],
+      "bodies": {
+        "PrefixMaxima": "p := [];\nvar i := 0;\nvar m := 0;\nwhile i < |s|\n  invariant 0 <= i <= |s|\n  decreases |s| - i\n{\n  if s[i] < m {\n    m := s[i];\n  }\n  p := p + [m];\n  i := i + 1;\n}"
+      }
+    }
+  ],
+  "tests": [
+    {
+      "method": "PrefixMaxima",
+      "inputs": [
+        []
+      ],
+      "outputs": [
+        []
+      ]
+    },
+    {
+      "method": "PrefixMaxima",
+      "inputs": [
+        [
+          -5,
+          -2,
+          -7,
+          -1
+        ]
+      ],
+      "outputs": [
+        [
+          -5,
+          -2,
+          -2,
+          -1
+        ]
+      ]
+    },
+    {
+      "method": "PrefixMaxima",
+      "inputs": [
+        [
+          3,
+          1,
+          4,
+          4,
+          2
+        ]
+      ],
+      "outputs": [
+        [
+          3,
+          3,
+          4,
+          4,
+          4
+        ]
+      ]
+    },
+    {
+      "method": "PrefixMaxima",
+      "inputs": [
+        [
+          5
+        ]
+      ],
+      "outputs": [
+        [
+          5
+        ]
+      ]
+    }
+  ],
+  "rule": {
+    "name": "prefix_maxima",
+    "version": 1
+  },
+  "representations": {
+    "natural": "[R1] The result p has the same length as s, including empty input. [R2] At each valid index k, p[k] is at least every input element from index zero through k inclusive. [R3] At each valid index k, p[k] equals an input element at some index j between zero and k inclusive.",
+    "checklist": [
+      {
+        "requirement_id": "R1",
+        "text": "The result p has the same length as s, including empty input."
+      },
+      {
+        "requirement_id": "R2",
+        "text": "At each valid index k, p[k] is at least every input element from index zero through k inclusive."
+      },
+      {
+        "requirement_id": "R3",
+        "text": "At each valid index k, p[k] equals an input element at some index j between zero and k inclusive."
+      }
+    ],
+    "structured": {
+      "schema_version": "constraints_v1",
+      "constraints": [
+        {
+          "requirement_id": "R1",
+          "kind": "postcondition",
+          "subject": "length(p)",
+          "relation": "equals",
+          "value": "length(s)"
+        },
+        {
+          "requirement_id": "R2",
+          "kind": "postcondition",
+          "subject": "p[k] for each valid k",
+          "relation": "at_least_every",
+          "value": "s[j] for 0 <= j <= k"
+        },
+        {
+          "requirement_id": "R3",
+          "kind": "postcondition",
+          "subject": "p[k] for each valid k",
+          "relation": "equals_some",
+          "value": "s[j] with 0 <= j <= k"
+        }
+      ]
+    }
+  },
+  "requirements": [
+    {
+      "requirement_id": "R1",
+      "natural_quote": "[R1] The result p has the same length as s, including empty input.",
+      "checklist_index": 0,
+      "structured_index": 0,
+      "acceptance": {
+        "method": "PrefixMaxima",
+        "header_line": 2
+      }
+    },
+    {
+      "requirement_id": "R2",
+      "natural_quote": "[R2] At each valid index k, p[k] is at least every input element from index zero through k inclusive.",
+      "checklist_index": 1,
+      "structured_index": 1,
+      "acceptance": {
+        "method": "PrefixMaxima",
+        "header_line": 3
+      }
+    },
+    {
+      "requirement_id": "R3",
+      "natural_quote": "[R3] At each valid index k, p[k] equals an input element at some index j between zero and k inclusive.",
+      "checklist_index": 2,
+      "structured_index": 2,
+      "acceptance": {
+        "method": "PrefixMaxima",
+        "header_line": 4
+      }
+    }
+  ],
+  "equivalence_audit": {
+    "status": "pending",
+    "reviewer": null,
+    "date": null,
+    "evidence": null
+  },
+  "shared_definitions": "",
+  "algorithm_cluster": "prefix_maxima",
+  "template": "method PrefixMaxima(s: seq<int>) returns (p: seq<int>)\n  ensures |p| == |s|\n  ensures forall k, j :: 0 <= j <= k < |s| ==> s[j] <= p[k]\n  ensures forall k :: 0 <= k < |s| ==> exists j :: 0 <= j <= k && p[k] == s[j]\n{\n  <generate body: PrefixMaxima>\n}\n",
+  "asset_hashes": {
+    "natural": "f90e2ae670a360f892fb38e45927840af30394a4c24e7858d786400a1002ee8b",
+    "checklist": "9c3add59e7792af6ab2f586fa3492d314344eaf9d781acc91036e467a996f130",
+    "structured": "0b8bc414b8fb170574b523c85ede9f3082f3059af59f3467035e9fcbf2d009cc",
+    "spec": "f8447246f2a1770edfb547512172391d5434fcf83b62ff3af1bb82fc9db4d754",
+    "template": "eb5f522447c5a2ec711513a227b7c5a5e1fe8e832446d506fc998e685ebbc7b3",
+    "shared_definitions": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "mapping": "385b95732e88b718d0933f0366b9aa7ab4b46a925386dbe7725673656e2db05e"
+  }
+}
