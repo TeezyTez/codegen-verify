@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "guideline_id": "computational-draft-local-coverage",
+  "disclaimer": "Local non-scoring coverage map, not a venue checklist or compliance certificate; venue remains unset.",
+  "items": [
+    {
+      "topic": "task boundaries and acceptance",
+      "location": "C015–C029",
+      "status": "reported"
+    },
+    {
+      "topic": "planned and completed sample sizes",
+      "location": "C024–C036",
+      "status": "reported"
+    },
+    {
+      "topic": "selection and missingness",
+      "location": "C030,C036,C055",
+      "status": "reported"
+    },
+    {
+      "topic": "intervention activation",
+      "location": "C040,C073",
+      "status": "reported"
+    },
+    {
+      "topic": "negative and historical findings",
+      "location": "C047,C074",
+      "status": "reported"
+    },
+    {
+      "topic": "statistical efficacy",
+      "location": "C025,C036",
+      "status": "not_estimated_in_incomplete_cohort"
+    },
+    {
+      "topic": "model identity and resources",
+      "location": "C026,C027,C058",
+      "status": "limitations_reported"
+    },
+    {
+      "topic": "human review and authorship",
+      "location": "C063",
+      "status": "pending"
+    }
+  ]
+}

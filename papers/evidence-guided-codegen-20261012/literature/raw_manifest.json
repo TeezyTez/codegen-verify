@@ -1,0 +1,62 @@
+[
+  {
+    "path": "raw/additional_locators_web.txt",
+    "sha256": "fa889362b0358f66f40d1a05618b2f9a2a26ce389c4f0bc189f19ec93c5ce194",
+    "bytes": 25818
+  },
+  {
+    "path": "raw/arxiv_abs_web.txt",
+    "sha256": "197cfaf75da02f19e84a76b89a6d86aa43356af65f5dc7adaa29fc7cf290a7b4",
+    "bytes": 29881
+  },
+  {
+    "path": "raw/arxiv_api_error.txt",
+    "sha256": "de0b6ff1649cbcbcb8835aabe42514be5d1670e7f7cd0eb4d63857438750879a",
+    "bytes": 67
+  },
+  {
+    "path": "raw/arxiv_bibtex_web_response.json",
+    "sha256": "ef630fa90a28da1d8e2d496feeddf75ac0a3789776d5f5988ce412d4fca9f64b",
+    "bytes": 5352
+  },
+  {
+    "path": "raw/clover_sources_web.txt",
+    "sha256": "ab4ca0c54009f73455dd00ceccac0722c13b258c9d6519b820d836def1d7612f",
+    "bytes": 26218
+  },
+  {
+    "path": "raw/dafnybench_publisher_web.txt",
+    "sha256": "5d55d58748483a5111bac071601d0c0971806eab703e83b326bcde42304046cc",
+    "bytes": 1732
+  },
+  {
+    "path": "raw/fulltext_locators_web.txt",
+    "sha256": "e38eb2fa41ee51698504fd431029e7c633c56f9a6f1ea06c3840f8f70f3533ba",
+    "bytes": 32690
+  },
+  {
+    "path": "raw/locator_more_web.txt",
+    "sha256": "7dc40516e7ded4d48750401d49cf92708fa9450556b3792fdae54e9d48b40d50",
+    "bytes": 29612
+  },
+  {
+    "path": "raw/metadata_fallback_web.txt",
+    "sha256": "efe3dedc9a6cc7ee4939fe2fde0153c8873bf8b1b566b3d018b59b35a6013faa",
+    "bytes": 18726
+  },
+  {
+    "path": "raw/methods_crosschecks_web.txt",
+    "sha256": "e2b267d788fe9ef952886884ae9143242864b2ff40627714b850152ed8533da9",
+    "bytes": 34558
+  },
+  {
+    "path": "raw/publication_search_web.txt",
+    "sha256": "10f759900cb0bf44ebe52aef3860a1cf1ed0caba31be1bb7b5092546c25fa203",
+    "bytes": 30815
+  },
+  {
+    "path": "raw/version_supplement_web.txt",
+    "sha256": "6d469f39564e54934ce774300f2aeca934347077acadaadfc09298723fab321c",
+    "bytes": 16344
+  }
+]

@@ -1,0 +1,631 @@
+ (https://arxiv.org/pdf/2310.17807)
+citeturn88view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 59; Source: find({"ref_id":"turn86view0","pattern":"3.2 Clover Verification"}); Total lines: 2669
+L105@P2: verified, accurately documented, and internally consistent.
+L106@P2: In this paper, we focus on the verification
+L107@P2: phase, though we also include some demonstrations of the generation phase in our evaluation. Our contributions include:2
+L108@P2: – the Clover paradigm with a solution for the verification phase (Section 3.2);
+L109@P2: – the CloverBench dataset, featuring manually annotated Dafny programs with
+L110@P2: docstrings, which contains both ground-truth examples and adversarial incorrect examples (Section 4.1);
+L116@P2: of ways while maintaining the strong ability to reject incorrect code. Beyond
+L117@P2: 2
+L118@P2: In addition, a theoretical framework which argues for the trustworthiness of the
+L119@P2-3: Clover approach is available in [61, Appendix A.1].4 Chuyue Sun, Ying Sheng, Oded Padon, Clark Barrett
+L120@P3: CloverBench, Clover also correctly detects 6 incorrect programs and accepts
+L121@P3: 89% of the correct programs in the external dataset MBPP-DFY-50 [44]. 3
+L122@P3: 2 Preliminaries: Deductive Program Verification
+L187@P4: from a precise natural language description. This use case aligns with our proposed vision that LLMs should include specifications when generating code from
+L188@P4: natural language.
+L189@P4: Our goal with these evaluations is not necessarily to chart new research
+L190@P4: directions, as all of these directions are worthy of a much more targeted research
+L191@P4: effort (and indeed, there are many such efforts underway [6, 44, 75]). Rather,
+L192@P4: our goal here is simply to demonstrate the feasibility of different instances of
+L193@P4: the generation phase in order to lend credibility to the overall Clover vision. We
+L194@P4: report on an evaluation of each of these use cases in Section 4.
+L195@P4: 3.2 Clover Verification Phase
+L196@P4: As mentioned in Section 1, Clover expects the input of the verification phase
+L197@P4: to contain three components: code, annotations, and docstrings. Additionally,
+L198@P4-5: we expect that each of the three components provides sufficient detail to unambiguously determine a unique result of running the code on any given input. The6 Chuyue Sun, Ying Sheng, Oded Padon, Clark Barrett
+L199@P5: verification phase checks the consistency of every pair of components, as shown
+L200@P5: in Figure 1, and succeeds only if all checks pass. Docstrings and annotations
+L201@P5: are consistent if they contain the same information, i.e., they imply each other
+L202@P5: semantically. The notion of consistency between a docstring and code is similar.
+L203@P5: On the other hand, to assess the consistency between code and annotations, we
+L204@P5: can leverage deductive verification tools.
+L205@P5: One key idea used to check consistency between components in Figure 1 is reconstruction testing. Given the three components (code, docstring, annotations)
+L495@P11: independent tries and test whether GPT-4 succeeds on any of these tries, the
+L496@P11: number improves to 41. This naturally raises the question: how can we leverage
+L497@P11: multiple LLM tries without having to check each one by hand? This is exactly
+L498@P11: what the verification phase is for! The last column in the figure shows that
+L499@P11: if we run the Clover verification phase, it accepts at least one correct answer
+L500@P11: for 39 of 41 examples for which GPT-4 generates a correct answer. Further
+L501@P11: more the Clover verification check never accepts an incorrect answer. Full results
+L502@P11: are reported in [61, Appendix A.10]. Thus, we can fully automatically generate
+L503@P11: 39 of 60 programs from natural language alone, with the guarantee that the
+L504@P11: generated programs pass all Clover consistency checks. While these numbers
+L505@P11: must be improved and more complicated examples must be tried, these early
+L506@P11: results are promising and suggest that these ideas should be explored further.
+L507@P11: 4.3 Verification Phase: Results on Ground-Truth Examples
+L508@P11: Our main experiment evaluates the capabilities of the Clover consistency checking algorithm. During consistency checking, we consider everything that appears
+L546@P12: (b) Annotation generation
+L547@P12: one try 20 tries clover 0
+L548@P12: 20
+L549@P12: 40
+L550@P12: 60
+L551@P12: 24
+L552@P12: 41 39
+L553@P12: 36
+L554@P12: 19 21
+L555@P12: Number of passed test cases
+L556@P12: pass fail
+L557@P12: (c) Code and Annotation
+L558@P12: Generation
+L559@P12: Fig. 2: Generation phase feasibility study
+L560@P12: moreover, the pre- and post-conditiosn contain all the information necessary to
+L561@P12: reconstruct the code. Thus, this division makes the most sense for Clover.
+L562@P12: For each example in CloverBench, we run all 6 checks described in Section 3.2.
+L977@P25: A.1 An Analytical Model for Clover Reconstruction Tests
+L978@P25: As described in Section 3.2, all but one of the six Clover consistency checks relies
+L979@P25: on reconstructing one of the components (see Figure 1). These reconstructions
+L980@P25: rely on assumptions about the LLM model used for reconstruction that have,
+L981@P25: until now, been implicit. In this section, we make these assumptions explicit and
+L982@P25: provide a theoretical model and analysis for those assumptions. For the purpose
+L993@P25: Section 3.2. We assume the consistency relation satisfies the following properties
+L994@P25: that link it to the equivalence relation: For any x, x′ ∈ A and y, y′ ∈ B, (x ≡
+L995@P25: x
+L996@P25: ′ ∧y ≡ y′
+L997@P25: ) → ((x, y) ∈ G ↔ (x
+L998@P25: ′
+L999@P25: , y′) ∈ G) and ((x, y) ∈ G∧(x
+L1000@P25: ′
+L1001@P25: , y′) ∈ G) → (x ≡
+L1002@P25: x
+L1003@P25: ′ ↔ y ≡ y′
+L1004@P25: ). That is, consistency is preserved when substituting equivalent
+L1005@P25: objects, and any object may be consistent with at most one equivalence class
+L1006@P25: from the other domain.
+L1185@P29: main paper. To date, we have not detected this issue in our experiments. To
+L1186@P29: achieve our eventual vision for Clover, we expect that additional breakthroughs,
+L1187@P29: or additional human-in-the-loop steps, or both, may be needed.
+L1188@P29: A.4.2 Clover Variants Clover checks three components for consistency. However, other variants are possible. Currently, most attempts at code generation
+L1189@P29: produce only the code and docstring. We expect that a Clover-like approach with
+--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/html/2601.05385v1)
+citeturn88view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: find({"ref_id":"turn82view1","pattern":"### 3.2."}); Total lines: 1026
+L15:   1. cite5†Abstract. L16:   2. cite6†1 Introduction L17:   3. cite7†2 Related Work L18:     1. cite8†Inference-time methods L19:     2. cite9†Model fine-tuning L20:   4. cite10†3 Technical Contribution L21:     1. cite11†3.1 Preventing Code Modifications L22:     2. cite12†3.2 Removing Unnecessary Clauses L23:     3. cite13†3.3 Incorporating Domain Knowledge L24:   5. cite14†4 DafnyPro L25:     1. cite15†4.1 Algorithm L26:     2. cite16†4.2 Evaluation L27:       1. cite17†Dataset Quality L28:       2. cite18†Setup L29:       3. cite19†Results L30:   6. cite20†5 Fine-Tuned Models for Efficient Deployment L119: ### 3.2. Removing Unnecessary Clauses
+L120: 
+L121: ⬇
+L122: 
+L123: method onlineMax(a: array<int>, x: int) returns (ghost m: int, p: int)
+L124: 
+L125: requires 1 <= x < a.Length
+L126: 
+L127: requires a.Length != 0
+L128: 
+L129: ensures x <= p < a.Length
+L130: 
+L131: ensures forall i :: 0 <= i < x ==> a[i] <= m
+L132: 
+L133: ensures exists i :: 0 <= i < x && a[i] == m
+L134: 
+L135: ensures x <= p < a.Length-1 ==> (forall i :: 0 <= i < p ==> a[i] < a[p])
+L136: 
+L137: ensures (forall i :: x <= i < a.Length && a[i] <= m) ==> p == a.Length - 1
+L138: 
+L139: {
+L140: 
+L141: p := 0; var best := a[0]; var i := 1; i := x;
+L142: 
+L143: // ... Code Block
+L339:   * Leino (2010) K. R. M. Leino Dafny: an automatic program verifier for functional correctness. In Proceedings of the 16th International Conference on Logic for Programming, Artificial Intelligence, and Reasoning, LPAR’10, Berlin, Heidelberg, pp. 348–370. External Links: ISBN 3642175104 Cited by: cite75†§1 .
+L340:   * Loughridge et al. (2024) C. R. Loughridge, Q. Sun, S. Ahrenbach, F. Cassano, C. Sun, Y. Sheng, A. Mudide, M. R. H. Misu, N. Amin, and M. Tegmark DafnyBench: a benchmark for formal software verification. In The 4th Workshop on Mathematical Reasoning and AI at NeurIPS’24, External Links: cite76†Link†openreview.net Cited by: cite77†§1 , cite78†§2 , cite79†§3.1 , cite80†§3.1 , cite81†§3.2 , cite82†§4.2 , cite70†§4.2 .
+L341:   * Misu et al. (2024) M. R. H. Misu, C. V. Lopes, I. Ma, and J. Noble Towards ai-assisted synthesis of verified dafny methods. Proc. ACM Softw. Eng. 1 (FSE). External Links: cite83†Link†doi.org , cite84†Document†dx.doi.org Cited by: cite77†§1 , cite78†§2 , cite70†§4.2 .
+L342:   * Mugnier et al. (2025) E. Mugnier, E. A. Gonzalez, N. Polikarpova, R. Jhala, and Z. Yuanyuan Laurel: unblocking automated verification with large language models. Proc. ACM Program. Lang. 9 (OOPSLA1). External Links: cite85†Link†doi.org , cite86†Document†dx.doi.org Cited by: cite78†§2 .
+L343:   * Poesia et al. (2024) G. Poesia, C. Loughridge, and N. Amin Dafny-annotator: ai-assisted verification of dafny programs. External Links: 2411.15143, cite87†Link Cited by: cite73†§2 , cite88†§5.2 .
+L344:   * Rafailov et al. (2024) R. Rafailov, Y. Chittepu, R. Park, H. Sikchi, J. Hejna, W. B. Knox, C. Finn, and S. Niekum Scaling laws for reward model overoptimization in direct alignment algorithms. In NeurIPS, External Links: cite89†Link†papers.nips.cc Cited by: cite79†§3.1 .
+L345:   * Sun et al. (2024) C. Sun, Y. Sheng, O. Padon, and C. Barrett Clover: closed-loop verifiable code generation. In AI Verification: First International Symposium, SAIV 2024, Montreal, QC, Canada, July 22–23, 2024, Proceedings, Berlin, Heidelberg, pp. 134–155. External Links: ISBN 978-3-031-65111-3, cite90†Link†doi.org , cite91†Document†dx.doi.org Cited by: cite77†§1 , cite78†§2 , cite79†§3.1 , cite81†§3.2 , cite82†§4.2 , cite70†§4.2 .
+L346:   * Taylor et al. (2025) M. Taylor, J. Chua, J. Betley, J. Treutlein, and O. Evans School of reward hacks: hacking harmless tasks generalizes to misaligned behavior in llms. External Links: 2508.17511, cite92†Link Cited by: cite79†§3.1 .
+L347: ## Appendix A Appendix
+L348: ### A.1. Diff-Checker Details
+L349: 
+L350: ⬇
+L351: 
+L352: b := a+1;
+L353: 
+L354: while ( b < n )
+L355: 
+L356: // FILL IN INVARIANTS.
+L357: 
+L358: {
+L359: 
+L360: if ( X[b] <= p ) {
+L361: 
+L362: var t := X[b];
+L363: 
+L364: X[b] := X[a];
+L365: 
+L366: X[a] := t;
+L367: 
+L368: a := a + 1;
+L369: 
+L370: }
+L371: 
+L372: b := b + 1;
+L373: 
+L374: }
+L375: 
+L376: (a) Base code without annotations.
+L377: 
+L378: ⬇
+L379: 
+L380: b := a; // Base code altered (was: b := a+1)
+L381: 
+L382: while ( b < n )
+L383: 
+L384: invariant a <= b <= n
+L385: 
+L386: {
+L387: 
+L388: if ( X[b] <= p ) {
+L389: 
+L390: var t := X[b];
+L391: 
+L392: X[b] := X[a];
+L393: 
+L394: X[a] := t;
+L395: 
+L396: a := a + 1;
+L397: 
+L398: }
+L399: 
+L400: b := b + 1;
+L401: 
+L402: }
+L403: 
+L404: (b) LLM modifies base code instead of only adding annotations, compromising soundness.
+L405: 
+L406: ⬇
+L407: 
+L408: b := a+1;
+L409: while ( b < n )
+L410: 
+L411: invariant 0 <= a < b <= n+1
+L412: 
+L413: invariant (b == n+1) ==> (a == n)
+L414: 
+L415: {
+L416: 
+L417: if ( X[b] <= p ) {
+L418: 
+L419: var t := X[b];
+L420: 
+L421: X[b] := X[a];
+L422: 
+L423: X[a] := t;
+L424: 
+L425: a := a + 1;
+L426: 
+L427: }
+L428: 
+L429: b := b + 1;
+L430: 
+L431: }
+L432: 
+L433: (c) Ground truth solution.
+L434: 
+L435: Figure 8. Examples of LLM-induced modifications in base code for cheating.
+--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/html/2601.05385v1)
+citeturn88view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: find({"ref_id":"turn82view1","pattern":"### 3.3."}); Total lines: 1026
+L15:   1. cite5†Abstract. L16:   2. cite6†1 Introduction L17:   3. cite7†2 Related Work L18:     1. cite8†Inference-time methods L19:     2. cite9†Model fine-tuning L20:   4. cite10†3 Technical Contribution L21:     1. cite11†3.1 Preventing Code Modifications L22:     2. cite12†3.2 Removing Unnecessary Clauses L23:     3. cite13†3.3 Incorporating Domain Knowledge L24:   5. cite14†4 DafnyPro L25:     1. cite15†4.1 Algorithm L26:     2. cite16†4.2 Evaluation L27:       1. cite17†Dataset Quality L28:       2. cite18†Setup L29:       3. cite19†Results L30:   6. cite20†5 Fine-Tuned Models for Efficient Deployment L182: ### 3.3. Incorporating Domain Knowledge
+L183: 
+L184: ⬇
+L185: 
+L186: method <T(==)>(a: array<T>, key: T) returns (b: bool)
+L187: 
+L188: ensures (multiset(a[..])[key] == 1) <==> b
+L189: 
+L190: {
+L191: 
+L192: var i := 0; b := false; var keyCount := 0;
+L193: 
+L194: while i < a.Length
+L195: 
+L196: invariant 0 <= i <= a.Length
+L197: 
+L198: invariant keyCount == multiset(a[..i])[key]
+L199: 
+L200: invariant b <==> keyCount == 1
+L201: 
+L202: {
+L203: 
+L204: if (a[i] == key){
+L205: 
+L206: keyCount := keyCount + 1;
+L207: 
+L208: }
+L209: 
+L210: if (keyCount == 1){ b := true; }
+L211: 
+L212: else { b := false; }
+L213: 
+L214: i := i + 1;
+L215: 
+L216: }
+L217: 
+L218: // Retrieved problem-independent proof strategy hint
+L514: This pattern applies to any array verification problem where:
+L515: 
+L516:   1. (1)
+L517: 
+L518: Loop invariants track properties over a[..i]
+L519: 
+L520:   2. (2)
+L521: 
+L522: Postconditions reference properties over a[..]
+L523: 
+L524:   3. (3)
+L525: 
+L526: The connection between these two slice representations needs to be made explicit for the verifier
+L527: ### Tactic: Connecting Loop-Local Sequences to Final Arrays
+L528: 
+L529: When loop invariants track properties over partial array slices but postconditions reference complete arrays, add explicit assertions to bridge the semantic gap between loop-local reasoning and method-level guarantees.
+L530: 
+L531: Specifically:
+L532: 
+L533:   * •
+L534: 
+L535: If your loop invariant uses arr[..i] and your postcondition uses arr[..]
+L536: 
+L537:   * •
+L538: 
+L539: If your loop builds a sequence that becomes an array in the postcondition
+L540: 
+L541:   * •
+L542: Add assertions after the loop to connect the sequence representation with the final array representation
+L543: 
+L544:   * •
+L545: 
+L546: This establishes the equivalence between the loop’s accumulated result and the method’s return value
+L547: 
+L548: This pattern applies to any array construction verification problem where:
+L549: 
+L550:   1. (1)
+L551: 
+L552: Loop invariants track properties over partial input and build intermediate collections
+L553: 
+L554:   2. (2)
+L555: 
+L556: Postconditions reference properties over complete input and final output arrays
+L557: 
+L558:   3. (3)
+L559: The verifier needs an explicit connection between intermediate sequences and final arrays
+L560: 
+L561:   4. (4)
+L562: 
+L563: The semantic relationship between loop-accumulated data and method postconditions requires bridging
+L564: 
+L565: Key insight: Dafny may not automatically recognize that a sequence used in loop reasoning corresponds to an array slice in the postcondition, even when they contain identical elements. Explicit assertions make this relationship visible to the verifier.
+L566: ### Tactic: Assisting Recursive Reasoning over Growing Array Slices
+L567: 
+L568: When loop invariants involve recursive function calls on array slices, add explicit assertions to help the verifier understand the relationship between consecutive slice states and the final postcondition.
+L569: 
+L570: Specifically:
+L571: 
+L572:   * •
+L573: 
+L574: If your invariant uses a recursive function on arr[..i] and the postcondition uses the same function on arr[..]
+L575: 
+L576:   * •
+L577: 
+L578: Add assert arr[..i+1] == arr[..i] + [arr[i]]; inside the loop
+L579: 
+L580:   * •
+L581: Add assert arr[..] == arr[..i]; after the loop
+L582: 
+L583:   * •
+L584: 
+L585: These assertions expose how recursive functions behave on incrementally growing slices
+L586: 
+L587: This pattern applies when:
+L588: 
+L589:   1. (1)
+L590: 
+L591: Loop invariants track recursive properties over arr[..i]
+L592: 
+L593:   2. (2)
+L594: 
+L595: Postconditions reference the recursive function over arr[..]
+L596: 
+L597:   3. (3)
+L598: 
+L599: The function’s behavior under slice concatenation must be made explicit
+L600: 
+L601:   4. (4)
+L602: 
+L603: Incremental progress must align with the recursive definition
+L604: Key insight: While relationships like Sum(arr[..i+1]) = Sum(arr[..i]) + arr[i] are obvious to humans, Dafny benefits from explicit assertions that decompose slice growth into verifier-friendly steps.
+L605: ### Tactic: Simplifying Overly Complex Loop Invariants
+L606: 
+L607: When loop invariants become overly complex due to slice-based membership reasoning, simplify them by strengthening invariants to use global properties.
+L608: 
+L609: Specifically:
+L610: 
+L611:   * •
+L612: 
+L613: Replace complex conditions tracking membership in values[..idx] with a stronger global invariant
+L614: 
+L615:   * •
+L616: 
+L617: Remove redundant bounds like 0 <= idx when implied elsewhere
+L618: 
+L619:   * •
+L620: 
+L621: Retain essential invariants that directly support the postcondition
+L622: 
+L623: This applies when:
+L624: 
+L625:   1. (1)
+L626: Invariants track membership in growing slices
+L627: 
+L628:   2. (2)
+L629: 
+L630: Edge cases require complex conditional logic
+L631: 
+L632:   3. (3)
+L633: 
+L634: Postconditions depend on global properties
+L635: 
+L636:   4. (4)
+L637: 
+L638: Over-specification increases verification difficulty without improving correctness
+L639: 
+L640: Key insight: Stronger global invariants are often easier to verify than weaker, slice-local invariants that require extensive case analysis.
+L641: ### Tactic: Lexicographic Decreases for Mixed-Sign Recursion
+L642: 
+L643: When recursive methods handle both positive and negative cases, use lexicographic decreases clauses to establish proper termination.
+L644: 
+L645: Specifically:
+L646: 
+L647:   * •
+L648: 
+L649: Replace absolute-value decreases with lexicographic clauses like decreases x < 0, x
+L650: 
+L651:   * •
+L652: 
+L653: Prioritize negative cases before positive ones
+L654: 
+L655:   * •
+L656: 
+L657: Ensure progress both in sign normalization and magnitude reduction
+L658: 
+L659: This pattern applies when:
+L660: 
+L661:   1. (1)
+L662: Recursion treats positive and negative inputs differently
+L663: 
+L664:   2. (2)
+L665: 
+L666: Negative inputs are converted to positive ones
+L667: 
+L668:   3. (3)
+L669: 
+L670: Simple decreases clauses fail to capture termination structure
+L671: 
+L672: Key insight: Lexicographic decreases communicate that sign normalization is progress, followed by numeric descent toward termination.
+L673: ### Tactic: Verifying Loop Invariant Initialization
+L674: 
+L675: When loop invariants fail, check that they hold at loop entry by validating variable initialization.
+L676: 
+L677: Specifically:
+L678: 
+L679:   * •
+L680: 
+L681: Ensure initialized variables satisfy invariants before the first iteration
+L682: 
+L683:   * •
+L684: 
+L685: Watch for off-by-one errors in index-based invariants
+L686: 
+L687:   * •
+L688: 
+L689: Align initial values with function-based invariant definitions
+L690: Key insight: Invariants must hold before, during, and after the loop. Many failures arise from invariants that are correct mid-loop but false at entry.
+L691: ### Tactic: Making Set Comprehension Updates Explicit
+L692: 
+L693: When loops modify sets and track cardinalities via set comprehensions, add assertions that explain how comprehensions change.
+L694: 
+L695: This applies when:
+L696: 
+L697:   1. (1)
+L698: 
+L699: Invariants track sizes of filtered sets
+L700: 
+L701:   2. (2)
+L702: 
+L703: Elements move between sets
+L704: 
+L705:   3. (3)
+L706: 
+L707: Counters depend on element properties
+L708: 
+L709:   4. (4)
+L710: 
+L711: Dafny needs guidance on comprehension semantics
+L712: Key insight: Explicit assertions show whether adding an element expands a filtered set or leaves it unchanged, making cardinality updates verifiable.
+L713: ### Tactic: Conditional Invariants for Boundary Cases
+L714: 
+L715: When strict range invariants fail in edge cases, replace them with conditional invariants.
+L716: 
+L717: This pattern applies when:
+L718: 
+L719:   1. (1)
+L720: 
+L721: Loops may not execute due to initial conditions
+L722: 
+L723:   2. (2)
+L724: 
+L725: Variables are uninitialized in boundary cases
+L726: 
+L727:   3. (3)
+L728: 
+L729: Strict bounds fail for inputs like n = 0 or n = 1
+L730: Key insight: Conditional invariants of the form edge_case || normal_case ensure correctness at loop entry while preserving strong guarantees during normal execution.
+L731: ### A.4. Benchmark Details
+L732: 
+L733: Table 2. Benchmark Statistics
+L734: Benchmark  | # Samples with loops  | # Samples  | Avg. LoC  | Max LoC  | Remarks
+L735: --- | --- | --- | --- | --- | ---
+L736: Clover  | 39  | 63  | 18.62  | 745  | Textbook Problems
+L737: MBPP-Dafny  | 79  | 164  | 19.47  | 1558  | Converted from MBPP
+L738: HumanEval-Dafny  | 107  | 132  | 50.45  | 5449  | Converted from HumanEval
+L739: DafnyBench  | 600  | 782  | 52.77  | 41375  | Scraped from the internet
+L740: ### A.5. LLM Usage for Hint Generation
+L741: 
+L742: ⬇
+L743: 
+L744: method only_once<T(==)>(a: array<T>, key: T) returns (b:bool)
+L745: 
+L746: ensures (multiset(a[..])[key] ==1 ) <==> b
+L747: 
+L748: {
+L749: 
+L750: var i := 0; b := false; var keyCount := 0;
+L751: 
+L752: while i < a.Length
+L753: 
+L754: invariant 0 <= i <= a.Length
+L755: 
+L756: invariant keyCount == multiset(a[..i])[key]
+L757: 
+L758: invariant b <==> keyCount == 1
+L759: 
+L760: {
+L761: 
+L762: if (a[i] == key){
+L763: 
+L764: keyCount := keyCount + 1;
+L765: 
+L766: }
+L767: 
+L768: if (keyCount == 1) { b := true; }
+L769: 
+L770: else { b := false; }
+L771: 
+L772: i := i + 1;
+L773: 
+L774: }
+L775: 
+L776: }
+L777: 
+L778: Figure 10. The failed attempt that could not be verified.
+L779: ⬇
+L780: 
+L781: method only_once<T(==)>(a: array<T>, key: T) returns (b:bool)
+L782: 
+L783: ensures (multiset(a[..])[key] ==1 ) <==> b
+L784: 
+L785: {
+L786: 
+L787: var i := 0; b := false; var keyCount := 0;
+L788: 
+L789: while i < a.Length
+L790: 
+L791: invariant 0 <= i <= a.Length
+L792: 
+L793: invariant keyCount == multiset(a[..i])[key]
+L794: 
+L795: invariant b <==> keyCount == 1
+L796: 
+L797: {
+L798: 
+L799: if (a[i] == key){
+L800: 
+L801: keyCount := keyCount + 1;
+L802: 
+L803: }
+L804: 
+L805: if (keyCount == 1) { b := true; }
+L806: 
+L807: else { b := false; }
+L808: 
+L809: i := i + 1;
+L810: 
+L811: }
+L812: 
+L813: assert a[..] == a[..a.Length];
+L814: 
+L815: }
+L816: 
+L817: Figure 11. The verified ground truth annotated code.
+L818: ### LLM Generated Hint Based on Examples From Fig. cite93†10 and Fig. cite94†11 L819: ### Tactic: Bridging Partial and Full Array Slices
+L820: 
+L821: When working with array slices in loop invariants, add explicit assertions to connect the final loop state with the postcondition’s array representation.
+L822: 
+L823: Specifically:
+L824: 
+L825:   * •
+L826: 
+L827: For an array a, if your loop invariant uses a[..i] and your postcondition uses a[..]
+L828: 
+L829:   * •
+L830: 
+L831: Add assert a[..a.Length] == a[..]; after the loop
+L832: 
+L833:   * •
+L834: 
+L835: This bridges the gap between the loop’s final state (i == a.Length) and the postcondition’s requirements
+L836: This pattern applies to any array verification problem where:
+L837: 
+L838:   1. (1)
+L839: 
+L840: Loop invariants track properties over a[..i]
+L841: 
+L842:   2. (2)
+L843: 
+L844: Postconditions reference properties over a[..]
+L845: 
+L846:   3. (3)
+L847: 
+L848: The connection between these two slice representations needs to be made explicit for the verifier
+L849: ### A.6. Dataset Correction
+L850: 
+L851: ⬇
+L852: 
+L853: method GetEven(s: array<nat>) modifies s
+L854: 
+L855: ensures forall i :: 0 <= i < s.Length ==>
+L856: 
+L857: if old(s[i]) % 2 == 1 then s[i] == old(s[i]) + 1
+L858: 
+L859: else s[i] == old(s[i])
+L860: 
+L861: {
+L862: 
+L863: var i := 0;
+L864: 
+L865: while i < s.Length
+L866: 
+L867: invariant 0 <= i <= s.Length
+L868: 
+L869: invariant forall j :: 0 <= j < i ==>
+L870: 
+L871: if old(s[j]) % 2 == 1 then s[j] == old(s[j]) + 1
+L872: 
+L873: else s[j] == old(s[j])
+L874: 
+L875: invariant forall j :: i <= j < s.Length ==> s[j] == old(s[j])
+L876: 
+L877: {
+L878: 
+L879: if s[i] % 2 == 1 {
+L880: 
+L881: s[i] := s[i] + 1;
+L882: 
+L883: }
+L884: 
+L885: i := i + 1;
+L886: 
+L887: }
+L888: 
+L889: }
+

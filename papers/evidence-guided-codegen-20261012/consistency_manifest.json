@@ -1,0 +1,424 @@
+{
+  "schema_version": "1.0",
+  "numeric_facts": [
+    {
+      "fact_id": "N001",
+      "concept": "planned_sessions",
+      "section": "摘要",
+      "value": 1392,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "frozen_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N002",
+      "concept": "completed_sessions",
+      "section": "摘要",
+      "value": 416,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N003",
+      "concept": "successes",
+      "section": "摘要",
+      "value": 412,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N004",
+      "concept": "first_action_successes",
+      "section": "摘要",
+      "value": 374,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N005",
+      "concept": "repair_successes",
+      "section": "摘要",
+      "value": 38,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N006",
+      "concept": "model_calls",
+      "section": "摘要",
+      "value": 460,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N007",
+      "concept": "verifier_calls",
+      "section": "摘要",
+      "value": 438,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N008",
+      "concept": "task_families",
+      "section": "摘要",
+      "value": 75,
+      "unit": "families",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N009",
+      "concept": "complete_families",
+      "section": "摘要",
+      "value": 4,
+      "unit": "families",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N010",
+      "concept": "opportunity_rounds",
+      "section": "摘要",
+      "value": 8,
+      "unit": "rounds",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N011",
+      "concept": "recommendation_disagreements",
+      "section": "摘要",
+      "value": 4,
+      "unit": "rounds",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N012",
+      "concept": "probe_checks",
+      "section": "摘要",
+      "value": 66,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "authored_probe",
+      "evidence_ids": [
+        "E007"
+      ]
+    },
+    {
+      "fact_id": "N013",
+      "concept": "planned_sessions",
+      "section": "阶段性结果",
+      "value": 1392,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "frozen_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N014",
+      "concept": "completed_sessions",
+      "section": "阶段性结果",
+      "value": 416,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N015",
+      "concept": "successes",
+      "section": "阶段性结果",
+      "value": 412,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N016",
+      "concept": "first_action_successes",
+      "section": "阶段性结果",
+      "value": 374,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N017",
+      "concept": "repair_successes",
+      "section": "阶段性结果",
+      "value": 38,
+      "unit": "sessions",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N018",
+      "concept": "model_calls",
+      "section": "阶段性结果",
+      "value": 460,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N019",
+      "concept": "verifier_calls",
+      "section": "阶段性结果",
+      "value": 438,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N020",
+      "concept": "task_families",
+      "section": "阶段性结果",
+      "value": 75,
+      "unit": "families",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N021",
+      "concept": "complete_families",
+      "section": "阶段性结果",
+      "value": 4,
+      "unit": "families",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N022",
+      "concept": "opportunity_rounds",
+      "section": "阶段性结果",
+      "value": 8,
+      "unit": "rounds",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N023",
+      "concept": "recommendation_disagreements",
+      "section": "阶段性结果",
+      "value": 4,
+      "unit": "rounds",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "completed_main",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N024",
+      "concept": "probe_checks",
+      "section": "阶段性结果",
+      "value": 66,
+      "unit": "calls",
+      "numerator": null,
+      "denominator": null,
+      "sample_size": null,
+      "analysis_set": "authored_probe",
+      "evidence_ids": [
+        "E007"
+      ]
+    },
+    {
+      "fact_id": "N025",
+      "concept": "verified_success_rate",
+      "section": "阶段性结果",
+      "value": 99.04,
+      "unit": "percent",
+      "numerator": 103,
+      "denominator": 104,
+      "sample_size": 104,
+      "analysis_set": "completed_main_A",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N026",
+      "concept": "verified_success_rate",
+      "section": "阶段性结果",
+      "value": 99.04,
+      "unit": "percent",
+      "numerator": 103,
+      "denominator": 104,
+      "sample_size": 104,
+      "analysis_set": "completed_main_B",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N027",
+      "concept": "verified_success_rate",
+      "section": "阶段性结果",
+      "value": 99.04,
+      "unit": "percent",
+      "numerator": 103,
+      "denominator": 104,
+      "sample_size": 104,
+      "analysis_set": "completed_main_C",
+      "evidence_ids": [
+        "E001"
+      ]
+    },
+    {
+      "fact_id": "N028",
+      "concept": "verified_success_rate",
+      "section": "阶段性结果",
+      "value": 99.04,
+      "unit": "percent",
+      "numerator": 103,
+      "denominator": 104,
+      "sample_size": 104,
+      "analysis_set": "completed_main_D",
+      "evidence_ids": [
+        "E001"
+      ]
+    }
+  ],
+  "methods": [
+    {
+      "method_id": "M001",
+      "name": "Completed subset descriptive artifact audit",
+      "analysis_intent": "descriptive",
+      "protocol_status": "post_hoc",
+      "outcome_ids": [
+        "O001"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "result_id": "R001",
+      "method_id": "M001",
+      "outcome_id": "O001",
+      "analysis_intent": "descriptive",
+      "sample_size": 416,
+      "evidence_ids": [
+        "E001"
+      ],
+      "reported_sections": [
+        "摘要",
+        "阶段性结果"
+      ]
+    }
+  ]
+}

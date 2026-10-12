@@ -1,0 +1,47 @@
+{
+  "accountability": {
+    "all_authors_approved": false,
+    "guarantor_author_ids": []
+  },
+  "ai_use": {
+    "disclosed_in": [
+      "manuscript.audit.md C062"
+    ],
+    "human_verification_complete": false,
+    "journal_policy_checked": false,
+    "tools": [
+      "Codex; installed research skills"
+    ],
+    "used": true
+  },
+  "authors": [],
+  "contributors": [],
+  "corresponding_author_id": "",
+  "declarations": {
+    "ai_use": {
+      "content_sha256": "7e25dcc93f26bb84f8cd7449e921b45710b367acc77af6cd6863d0d46c35f51f",
+      "status": "draft",
+      "verified_by": "",
+      "verified_on": ""
+    },
+    "author_contributions": {
+      "content_sha256": "",
+      "status": "missing",
+      "verified_by": "",
+      "verified_on": ""
+    },
+    "conflicts": {
+      "content_sha256": "",
+      "status": "missing",
+      "verified_by": "",
+      "verified_on": ""
+    },
+    "funding": {
+      "content_sha256": "",
+      "status": "missing",
+      "verified_by": "",
+      "verified_on": ""
+    }
+  },
+  "schema_version": "1.0"
+}

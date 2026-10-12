@@ -1,0 +1,11 @@
+{
+  "issues": [],
+  "status": "pass",
+  "summary": {
+    "errors": 0,
+    "kind": "manuscript",
+    "records": 1,
+    "warnings": 0
+  },
+  "tool": "validate_manifest"
+}

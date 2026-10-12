@@ -1,0 +1,222 @@
+Internal Error ()
+citeturn77view0 [wordlim: 200] Source: open({"ref_id":"https://export.arxiv.org/api/query?id_list=2608.09277,2608.29841","lineno":null}); Total lines: 1
+L0: URL https://export.arxiv.org/api/query?id_list=2608.09277%2C2608.29841 is not accessible via this tool.
+--------------------------------------------------------------------------------
+Internal Error ()
+citeturn77view1 [wordlim: 200] Source: open({"ref_id":"https://api.crossref.org/works/10.1007/978-3-031-65112-0_7","lineno":null}); Total lines: 1
+L0: URL https://api.crossref.org/works/10.1007/978-3-031-65112-0_7 is not accessible via this tool.
+--------------------------------------------------------------------------------
+Clover: Closed-Loop Verifiable Code Generation | Springer Nature Link (https://link.springer.com/chapter/10.1007/978-3-031-65112-0_7)
+citeturn77view2 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"https://link.springer.com/chapter/10.1007/978-3-031-65112-0_7","lineno":null}); Total lines: 473
+L0: Account
+L1: 
+L2: cite0†Menu L3: 
+L4: cite1†Find a journal cite2†Publish with us†www.springernature.com cite3†Track your research†link.springernature.com L5: 
+L6: cite4†Search L7: 
+L8: cite5†Saved research L9: 
+L10: cite6†Cart†order.springer.com L11: # Clover: Closed-Loop Verifiable Code Generation
+L12: 
+L13:   * Conference paper
+L14:   * First Online: 17 July 2024
+L15: 
+L16:   * pp 134–155
+L17:   * cite7†Cite this conference paper L18: 
+L19: cite8†Save conference paper L20: 
+L21: cite5†View saved research L22: 
+L23: cite9†AI Verification (SAIV 2024)
+L24:   * cite10†Chuyue Sun cite11†ORCID: orcid.org/0009-0005-9226-3688†orcid.org ^{cite12†14 },
+L25:   * cite13†Ying Sheng cite14†ORCID: orcid.org/0000-0002-1883-2126†orcid.org ^{cite12†14 },
+L26:   * cite15†Oded Padon cite16†ORCID: orcid.org/0009-0006-4209-1635†orcid.org ^{cite17†15 } &
+L27:   * …
+L28:   * cite18†Clark Barrett cite19†ORCID: orcid.org/0000-0002-9522-3084†orcid.org ^{cite12†14 }
+L29: Show authors
+L30: 
+L31: Part of the book series: cite20†Lecture Notes in Computer Science ((LNCS,volume 14846))
+L32: 
+L33: Included in the following conference series:
+L34:   * cite21†International Symposium on AI Verification L35: 
+L36:   * 1179 Accesses
+L37: 
+L38:   * 63 Citations
+L39: ## Abstract
+L40: The use of large language models for code generation is a rapidly growing trend in software development. However, without effective methods for ensuring the correctness of generated code, this trend could lead to undesirable outcomes. In this paper, we introduce a new approach for addressing this challenge: the Clover paradigm, short for Closed-Loop Verifiable Code Generation, which uses consistency checking to provide a strong filter for incorrect code.
+L41: Clover performs consistency checks among code, docstrings, and formal annotations. The checker is implemented using a novel integration of formal verification tools and large language models. We provide a theoretical analysis to support our thesis that Clover should be effective at consistency checking. We also empirically investigate its performance on a hand-designed dataset (CloverBench) featuring annotated Dafny programs at a textbook level of difficulty.
+L42: Experimental results show that for this dataset: (i) LLMs are reasonably successful at automatically generating formal specifications; and (ii) our consistency checker achieves a promising acceptance rate (up to \(87\%\)) for correct instances while maintaining zero tolerance for adversarial incorrect ones (no false positives). Clover also discovered 6 incorrect programs in the existing human-written dataset MBPP-DFY-50.
+L43: C. Sun and Y. Sheng—Equal Contribution.
+L44: 
+L45: This is a preview of subscription content, to check access.
+L46: ## Access this chapter
+L47: 
+L48: Log in via an institution
+L49: 
+L50: ## Subscribe and save
+L51: 
+L52: Springer+
+L53: 
+L54: from €37.37 /Month
+L55: 
+L56:   * Starting from 10 chapters or articles per month
+L57:   * Access and download chapters and articles from more than 300k books and 2,500 journals
+L58:   * Cancel anytime
+L59: cite22†View plans L60: ## Buy Now
+L61: 
+L62: Chapter
+L63: 
+L64: 
+L65: EUR 29.95
+L66: 
+L67:     Price includes VAT (Belgium)
+L68: 
+L69: [Input] [Input] [Input] [Input] [Input] [Input] [Input] [Input] [Input]
+L70: 
+L71:   * Available as PDF
+L72:   * Read on any device
+L73:   * Instant download
+L74:   * Own it forever
+L75: Buy Chapter
+L76: 
+L77: eBook
+L78:     EUR 106.99
+L79:     Price includes VAT (Belgium)
+L80: 
+L81: [Input] [Input] [Input] [Input] [Input]
+L82: 
+L83:   * Available as EPUB and PDF
+L84:   * Read on any device
+L85:   * Instant download
+L86:   * Own it forever
+L87: Buy eBook
+L88: 
+L89: Softcover Book
+L90:     EUR 137.79
+L91:     Price includes VAT (Belgium)
+L92: [Input] [Input] [Input] [Input] [Input]
+L93: 
+L94:   * Compact, lightweight edition
+L95:   * Free shipping worldwide - cite23†view details†support.springernature.com L96: Buy Softcover Book
+L97: 
+L98: Tax calculation will be finalised at checkout
+L99: 
+L100: Purchases are for personal use only
+L101: 
+L102: cite24†Institutional subscriptions†www.springernature.com L103: ### Similar content being viewed by others
+L104: 
+L105: cite25†Image†media.springernature.com L106: 
+L107: ### cite26†Automatic Generation of Loop Invariants in Dafny with Large Language Models L108: 
+L109: Chapter © 2025
+L110: 
+L111: cite27†Image†media.springernature.com L112: 
+L113: ### cite28†Code generation with large language models: a survey from neural program synthesis to autonomous software development L114: 
+L115: Article Open access 10 April 2026
+L116: 
+L117: cite29†Image†media.springernature.com L118: ### cite30†RECODE: Leveraging Reliable Self-generated Tests and Fine-Grained Execution Feedback to Enhance LLM-Based Code Generation L119: 
+L120: Chapter © 2025
+L121: ## Notes
+L122: 
+L123:   1. 1.
+L124: 
+L125: Such tools have plenty of room for improvement and must be extended to more mainstream languages, but separate research efforts are addressing this.
+L126: 
+L127:   2. 2.
+L128: 
+L129: In addition, a theoretical framework which argues for the trustworthiness of the Clover approach is available in [cite31†61 , Appendix A.1].
+L130: 
+L131:   3. 3.
+L132: 
+L133: cite32†https://github.com/ChuyueSun/Clover†github.com .
+L134: 
+L135:   4. 4.
+L136: 
+L137: For more discussion about limitations and variants of, and future directions for Clover, see [cite31†61 , Appendix A.4].
+L138:   5. 5.
+L139: 
+L140: An analytical model of reconstruction tests is provided in [cite31†61 , A.1].
+L141: 
+L142:   6. 6.
+L143: 
+L144: Example code for this check is shown in [cite31†61 , Appendix A.8].
+L145: 
+L146:   7. 7.
+L147: 
+L148: Since we wanted to concentrate on the most basic scenario initially, our initial dataset only features examples containing exactly one method and no helper functions.
+L149: 
+L150:   8. 8.
+L151: 
+L152: Details and an example are shown in [cite31†61 , Appendix A.7].
+L153: 
+L154:   9. 9.
+L155: 
+L156: The 6 incorrect samples are shown in [cite31†61 , Appendix A.9].
+L157: 
+L158:   10. 10.
+L159: Detailed results of the Clover checks for the 27 correct benchmarks are in [cite31†61 , Appendix A.10]).
+L160: 
+L161:   11. 11.
+L162: 
+L163: For complete results, see Tables in [cite31†61 , Appendix A.10].
+L164: ## References
+L165: 
+L166:   1. Alur, R., et al.: Syntax-guided synthesis. In: Formal Methods in Computer-Aided Design, FMCAD 2013, Portland, OR, USA, October 20–23, 2013, pp. 1–8. IEEE (2013). cite33†https://ieeexplore.ieee.org/document/6679385/†ieeexplore.ieee.org L167: 
+L168:   2. Austin, J., et al.: Program synthesis with large language models. CoRR abs/2108.07732 (2021). cite34†arXiv: 2108.07732†arxiv.org . cite35†https://arxiv.org/abs/2108.07732†arxiv.org L169:   3. Barnes, J.: SPARK: The Proven Approach to High Integrity Software. Altran Praxis (2012)
+L170: 
+L171:   4. Biere, A., Heule, M., van Maaren, H.: Handbook of Satisfiability, vol. 185. IOS Press (2009)
+L172: 
+L173:   5. Bowers, M., et al.: Top-down synthesis for library learning. In: Proceedings of the ACM Program. Lang. 7(POPL), 1182–1213 (2023). cite36†https://doi.org/10.1145/3571234†doi.org L174:   6. Brandfonbrener, D., et al.: Verified multi-step synthesis using large language models and monte Carlo tree search. arXiv preprint cite37†arXiv:2402.08147†arxiv.org (2024)
+L175: 
+L176:   7. Bubeck, S., et al.: Sparks of artificial general intelligence: early experiments with GPT-4. arXiv preprint cite38†arXiv:2303.12712†arxiv.org (2023)
+L177:   8. Cadar, C., Dunbar, D., Engler, D.R.: KLEE: unassisted and automatic generation of high-coverage tests for complex systems programs. In: Draves, R., van Renesse, R. (eds.) 8th USENIX Symposium on Operating Systems Design and Implementation, OSDI 2008, December 8–10, 2008, San Diego, California, USA, Proceedings, pp. 209–224. USENIX Association (2008). cite39†http://www.usenix.org/events/osdi08/tech/full%5C_papers/cadar/cadar.pdf†www.usenix.org L178:   9. Cadar, C., Sen, K.: Symbolic execution for software testing: three decades later. Commun. ACM 56(2), 82–90 (2013). cite40†https://doi.org/10.1145/2408776.2408795†doi.org L179: 
+L180:   10. Charalambous, Y., et al.: A new era in software security: towards self-healing software via large language models and formal verification. CoRR abs/2305.14752 (2023). cite41†https://doi.org/10.48550/arXiv.2305.14752†doi.org . cite42†arXiv: 2305.14752†arxiv.org L181:   11. Chaudhuri, S., et al.: Neurosymbolic programming. Found. Trends Program. Lang. 7(3), 158–243 (2021). cite43†https://doi.org/10.1561/2500000049†doi.org L182: 
+L183:   12. Chen, B., et al.: CodeT: code generation with generated tests. In: The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May 1–5, 2023. OpenReview.net (2023). cite44†https://openreview.net/pdf?id=ktrw68Cmu9c†openreview.net L184:   13. Chen, B., et al.: Codet: code generation with generated tests. arXiv preprint cite45†arXiv:2207.10397†arxiv.org (2022)
+L185: 
+L186:   14. Chen, M., et al.: Evaluating large language models trained on code. CoRR abs/2107.03374 (2021). cite46†arXiv: 2107.03374†arxiv.org . cite47†https://arxiv.org/abs/2107.03374†arxiv.org L187: 
+L188:   15. Chen, X., et al.: Teaching large language models to self-debug. arXiv preprint cite48†arXiv:2304.05128†arxiv.org (2023)
+L189:   16. Cheng, Z., et al.: Binding language models in symbolic languages. In: The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May 1–5, 2023. OpenReview.net (2023). cite49†https://openreview.net/pdf?id=lH1PV42cbF†openreview.net L190:   17. Chowdhery, A., et al.: PaLM: scaling language modeling with pathways. CoRR abs/2204.02311 (2022). cite50†https://doi.org/10.48550/arXiv.2204.02311†doi.org . cite51†arXiv: 2204.02311†arxiv.org . cite50†https://doi.org/10.48550/arXiv.2204.02311†doi.org L191:   18. Churchill, B.R., et al.: Semantic program alignment for equivalence checking. In: McKinley, K.S., Fisher, K. (eds.) Proceedings of the 40th ACM SIGPLAN Conference on Programming Language Design and Implementation, PLDI 2019, Phoenix, AZ, USA, June 22–26, 2019, pp. 1027–1040. ACM (2019). cite52†https://doi.org/10.1145/3314221.3314596†doi.org L192:   19. Cobbe, K., et al.: Training verifiers to solve math word problems. CoRR abs/2110.14168 (2021). cite53†arXiv: 2110.14168†arxiv.org . cite54†https://arxiv.org/abs/2110.14168†arxiv.org L193: 
+L194:   20. Cotroneo, D., et al.: Vulnerabilities in AI code generators: exploring targeted data poisoning attacks. CoRR abs/2308.04451 (2023). cite55†https://doi.org/10.48550/arXiv.2308.04451†doi.org . cite56†arXiv: 2308.04451†arxiv.org L195:   21. Ding, Y., et al.: TRACED: execution-aware pre-training for source code. arXiv preprint cite57†arXiv:2306.07487†arxiv.org (2023)
+L196: 
+L197:   22. Ellis, K., et al.: DreamCoder: bootstrapping inductive program synthesis with wake-sleep library learning. In: Freund, S.N., Yahav, E. (eds.) PLDI ’21: 42nd ACM SIGPLAN International Conference on Programming Language Design and Implementation, Virtual Event, Canada, June 20–25, 2021, pp. 835–850. ACM (2021). cite58†https://doi.org/10.1145/3453483.3454080†doi.org L198:   23. Floyd, R.W.: Assigning meanings to programs. In: Mathematical Aspects of Computer Science, Proceedings of Symposia in Applied Mathematics, pp. 19–32. American Mathematical Society (1967)
+L199:   24. Ghosh, S., et al.: SpecNFS: a challenge dataset towards extracting formal models from natural language specifications. In: Calzolari, N., et al. (eds.) Proceedings of the Thirteenth Language Resources and Evaluation Conference, LREC 2022, Marseille, France, 20–25 June 2022, pp. 2166–2176. European Language Resources Association (2022). cite59†https://aclanthology.org/2022.lrec-1.233†aclanthology.org L200:   25. Github Copilot. Github Copilot: Your AI Pair Programmer. cite60†https://github.com/features/copilot†github.com L201: 
+L202:   26. Gulwani, S., Polozov, O., Singh, R.: Program synthesis. Found. Trends Program. Lang. 4(1–2), 1–119 (2017). cite61†https://doi.org/10.1561/2500000010†doi.org L203: 
+L204:   27. Hahn, C., et al.: Formal specifications from natural language. CoRR abs/2206.01962 (2022). cite62†https://doi.org/10.48550/arXiv.2206.01962†doi.org . cite63†arXiv: 2206.01962†arxiv.org L205:   28. Hendler, J.: Understanding the limits of AI coding. Science 379(6632), 548–548 (2023)
+L206:   29. Hendrycks, D., et al.: Measuring coding challenge competence with APPS. In: Vanschoren, J., Yeung, S.-K. (eds.) Proceedings of the Neural Information Processing Systems Track on Datasets and Benchmarks 1, NeurIPS Datasets and Benchmarks 2021, December 2021, virtual (2021). cite64†https://datasets-benchmarks-proceedings.neurips.cc/paper/2021/hash/c24cd76e1ce41366a4bbe8a49b02a028-Abstractround2.html†datasets-benchmarks-proceedings.neurips.cc L207:   30. Hoare, C.A.R.: An axiomatic basis for computer programming. Commun. ACM 12(10), 576–580 (1969). cite65†https://doi.org/10.1145/363235.363259†doi.org . cite66†http://doi.acm.org/10.1145/363235.363259†doi.acm.org L208: 
+L209:   31. Inala, J.P., et al.: Fault-aware neural code rankers. In: NeurIPS. 2022 (2022). cite67†http://papers.nips.cc/paper%5C_files/paper/2022/hash/5762c579d09811b7639be2389b3d07be-Abstract-Conference.html†papers.nips.cc L210:   32. Key, D., Li, W.-D., Ellis, K.: I speak, you verify: toward trustworthy neural program synthesis. CoRR abs/2210.00848 (2022). cite68†https://doi.org/10.48550/arXiv.2210.00848†doi.org . cite69†arXiv: 2210.00848†arxiv.org L211: 
+L212:   33. King, J.C.: Symbolic execution and program testing. Commun. ACM 19(7), 385–394 (1976). cite70†https://doi.org/10.1145/360248.360252†doi.org L213:   34. Lai, Y., et al.: DS-1000: a natural and reliable benchmark for data science code generation. In: Krause, A., et al. (eds.) International Conference on Machine Learning, ICML 2023, 23-29 July 2023, Honolulu, Hawaii, USA, vol. 202. Proceedings of Machine Learning Research. PMLR, 2023, pp. 18319–18345 (2023). cite71†https://proceedings.mlr.press/v202/lai23b.html†proceedings.mlr.press L214:   35. Lattuada, A., et al.: Verus: verifying rust programs using linear ghost types (extended version) (2023). cite72†arXiv: 2303.05491†arxiv.org [cs.LO]
+L215: 
+L216:   36. Leino, K.R.M.: Dafny: an automatic program verifier for functional correctness. In: Clarke, E.M., Voronkov, A. (eds.) LPAR 2010. LNCS (LNAI), vol. 6355, pp. 348–370. Springer, Heidelberg (2010). cite73†https://doi.org/10.1007/978-3-642-17511-4_20†doi.org L217:   37. Li, Y., et al.: On the advance of making language models better reasoners. CoRR abs/2206.02336 (2022). cite74†https://doi.org/10.48550/arXiv.2206.02336†doi.org . cite75†arXiv: 2206.02336†arxiv.org L218: 
+L219:   38. Li, Y., et al.: Competition-level code generation with Alphacode. Science 378(6624), 1092–1097 (2022)
+L220: 
+L221:   39. Liu, C., et al.: Towards general loop invariant generation via coordinating symbolic execution and large language models. arXiv preprint cite76†arXiv:2311.10483†arxiv.org (2023)
+L222:   40. Liu, J., et al.: Is your code generated by ChatGPT really correct? Rigorous evaluation of large language models for code generation. CoRR abs/2305.01210 (2023). cite77†https://doi.org/10.48550/arXiv.2305.01210†doi.org . cite78†arXiv: 2305.01210†arxiv.org L223: 
+L224:   41. Madaan, A., et al.: Self-refine: iterative refinement with self-feedback. In: Advances in Neural Information Processing Systems, vol. 36 (2024)
+L225:   42. Manna, Z., Waldinger, R.: Knowledge and reasoning in program synthesis. Artif. Intell. 6(2), 175–208 (1975)
+L226: 
+L227:   43. Manna, Z., Waldinger, R.J.: Toward automatic program synthesis. Commun. ACM 14(3), 151–165 (1971)
+L228: 
+L229:   44. Misu, Md.R.H., et al.: Towards AI-Assisted synthesis of verified Dafny methods. In: arXiv preprint cite79†arXiv:2402.00247†arxiv.org (2024)
+L230: 
+L231:   45. Mohammed, N., et al.: Enabling memory safety of C programs using LLMs. arXiv preprint cite80†arXiv:2404.01096†arxiv.org (2024)
+L232:   46. Mondal, R., et al.: What do LLMs need to synthesize correct router configurations? In: Proceedings of the 22nd ACM Workshop on Hot Topics in Networks, pp. 189–195 (2023)
+L233: 
+L234:   47. Olausson, T.X., et al.: Is self-repair a silver bullet for code generation? In: The Twelfth International Conference on Learning Representations (2023)
+L235: 
+L236:   48. OpenAI. GPT-4 Technical Report. CoRR abs/2303.08774 (2023). cite81†https://doi.org/10.48550/arXiv.2303.08774†doi.org . cite82†arXiv: 2303.08774†arxiv.org L237:   49. Pan, L., et al.: Automatically correcting large language models: surveying the landscape of diverse self-correction strategies. arXiv preprint cite83†arXiv:2308.03188†arxiv.org (2023)
+L238: 
+L239:   50. Pearce, H., et al.: Asleep at the Keyboard? Assessing the security of github copilot’s code contributions. In: 43rd IEEE Symposium on Security and Privacy, SP 2022, San Francisco, CA, USA, May 22–26, 2022, pp. 754–768. IEEE (2022). cite84†https://doi.org/10.1109/SP46214.2022.9833571†doi.org L240:   51. Pei, K., et al.: Can large language models reason about program invariants? In: Krause, A., et al. (eds.) International Conference on Machine Learning, ICML 2023, 23–29 July 2023, Honolulu, Hawaii, USA, vol. 202. Proceedings of Machine Learning Research. PMLR, 2023, pp. 27496–27520 (2023). cite85†https://proceedings.mlr.press/v202/pei23a.html†proceedings.mlr.press L241:   52. Perry, N., et al.: Do UsersWrite more insecure code with AI assistants?” CoRR abs/2211.03622 (2022). cite86†https://doi.org/10.48550/arXiv.2211.03622†doi.org L242:   53. Polikarpova, N., Kuraj, I., Solar-Lezama, A.: Program synthesis from polymorphic refinement types. In: Krintz, C., Berger, E.D. (eds.) Proceedings of the 37th ACM SIGPLAN Conference on Programming Language Design and Implementation, PLDI 2016, Santa Barbara, CA, USA, June 13–17, 2016, pp. 522–538. ACM (2016). cite87†https://doi.org/10.1145/2908080.2908093†doi.org L243:   54. Ryan, G., et al.: Code-aware prompting: a study of coverage guided test generation in regression setting using LLM. arXiv preprint cite88†arXiv:2402.00097†arxiv.org (2024)
+L244:   55. Sandoval, G., et al.: Lost at C: a user study on the security implications of large language model code assistants. In: Joseph, A. (eds.) 32nd USENIX Security Symposium, USENIX Security 2023, Anaheim, CA, USA, August 9–11, 2023. Calandrino and Carmela Troncoso. USENIX Association (2023). cite89†https://www.usenix.org/conference/usenixsecurity23/presentation/sandoval†www.usenix.org L245:   56. Saunders. W., et al.: Self-critiquing models for assisting human evaluators. arXiv preprint cite90†arXiv:2206.05802†arxiv.org (2022)
+L246:   57. Shi, F., et al.: Natural language to code translation with execution. In: Goldberg, Y., Kozareva, Z., Zhang, Y. (eds.) Proceedings of the 2022 Conference on Empirical Methods in Natural Language Processing, EMNLP 2022, Abu Dhabi, United Arab Emirates, December 7–11, 2022, pp. 3533–3546. Association for Computational Linguistics (2022). cite91†https://doi.org/10.18653/v1/2022.emnlp-main.231†doi.org . url: cite91†https://doi.org/10.18653/v1/2022.emnlp-main.231†doi.org L247:   58. Shi, K., et al.: CrossBeam: learning to search in bottom-up program synthesis. In: The Tenth International Conference on Learning Representations, ICLR 2022, Virtual Event, April 25–29, 2022. OpenReview.net (2022). cite92†https://openreview.net/forum?id=qhC8mr2LEKq†openreview.net L248: 
+L249:   59. Solar-Lezama, A.: Program Synthesis by Sketching. University of California, Berkeley (2008)
+L250:   60. Sun, C., Hahn, C., Trippel, C.: Towards improving verification productivity with circuit-aware translation of natural language to SystemVerilog assertions. In: First International Workshop on Deep Learning-aided Verification (2023)
+L251: 
+L252:   61. Sun, C., et al.: Clover: closed-loop verifiable code generation (2024). cite93†arXiv: 2310.17807†arxiv.org [cs.AI]
+L253:   62. Tabachnyk, M., Nikolov, S.: ML-enhanced code completion improves developer productivity. Blog (2022). cite94†https://blog.research.google/2022/07/ml-enhanced-code-completion-improves.html†blog.research.google . Accessed 26 July 2022
+L254:   63. Udupa, A., et al.: TRANSIT: specifying protocols with concolic snippets. In: Boehm, H.-J., Flanagan, C. (eds.) ACM SIGPLAN Conference on Programming Language Design and Implementation, PLDI ’13, Seattle, WA, USA, June 16–19, 2013, pp. 287–296. ACM (2013). cite95†https://doi.org/10.1145/2491956.2462174†doi.org L255:   64. Vaithilingam, P., Zhang, T., Glassman, E.L.: Expectation vs. experience: evaluating the usability of code generation tools powered by large language models. In: Barbosa, D.J.S., et al. (eds.) CHI ’22: CHI Conference on Human Factors in Computing Systems, New Orleans, LA, USA, 29 April 2022–5 May 2022, pp. 332:1–332:7, Extended Abstracts. ACM (2022). cite96†https://doi.org/10.1145/3491101.3519665†doi.org L256:   65. Waldinger, R.J., Lee, R.C.T.: PROW: a step toward automatic program writing. In: Proceedings of the 1st International Joint Conference on Artificial Intelligence, pp. 241–252 (1969)
+L257: 
+L258:   66. Wang, X., et al.: Self-consistency improves chain of thought reasoning in language models. arXiv preprint cite97†arXiv:2203.11171†arxiv.org (2022)
+L259:   67. Wei, J., et al.: Chain-of-thought prompting elicits reasoning in large language models. In: NeurIPS (2022). cite98†http://papers.nips.cc/paper%5C_files/paper/2022/hash/9d5609613524ecf4f15af0f7b31abca4-Abstract-Conference.html†papers.nips.cc L260: 
+L261:   68. Wen, C., et al.: Enchanting program specification synthesis by large language models using static analysis and program verification. arXiv preprint cite99†arXiv:2404.00762†arxiv.org (2024)
+L262:   69. Wu, H., Barrett, C., Narodytska, N.: Lemur: integrating large language models in automated program verification (2023). cite100†arXiv: 2310.04870†arxiv.org [cs.FL]
+L263: 
+L264:   70. Xu, F.F., Vasilescu, B., Neubig, G.: In-IDE code generation from natural language: promise and challenges. ACM Trans. Softw. Eng. Methodol. 31(2), 29:1-29:47 (2022). cite101†https://doi.org/10.1145/3487569†doi.org L265:   71. Yin, P., Neubig, G.: A syntactic neural model for general-purpose code generation. In: Barzilay, R., Kan, M.-Y. (eds.) Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics, ACL 2017, Vancouver, Canada, July 30 - August 4, Volume 1: Long Papers, pp. 440–450. Association for Computational Linguistics (2017). cite102†https://doi.org/10.18653/v1/P17-1041†doi.org L266:   72. Yin, P., et al.: Natural language to code generation in interactive data science notebooks. In: Rogers, A., Boyd-Graber, J.L., Okazaki, N. (eds.) Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2023, Toronto, Canada, July 9-14, 2023, pp. 126–173. Association for Computational Linguistics (2023). cite103†https://doi.org/10.18653/v1/2023.acl-long.9†doi.org L267:   73. Zelikman, E., et al.: Parsel: A (de-) compositional framework for algorithmic reasoning with language models. arXiv preprint cite104†arXiv:2212.10561†arxiv.org (2023)
+--------------------------------------------------------------------------------
+web.stanford.edu (https://web.stanford.edu/~chuyues/files/clover.html)
+citeturn77view3 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"https://web.stanford.edu/~chuyues/files/clover.html","lineno":null}); Total lines: 17
+

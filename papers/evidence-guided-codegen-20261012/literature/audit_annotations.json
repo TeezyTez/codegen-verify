@@ -1,0 +1,83 @@
+[
+  {
+    "publication_state": "Cited arXiv preprint (2024); potential TMLR 2025 version discovered but access-gated and not upgraded",
+    "supported_claim": "DafnyBench evaluates restoration of assert/invariant proof hints and retries with Dafny error feedback.",
+    "locator": "https://arxiv.org/html/2406.08467v1 §3.2 Task Design: Fill Hints, lines 114–122; §4.1, lines 161–165 (saved locator_more_web.txt).",
+    "does_not_support": "Does not establish that declaration-level dependency scheduling is new or effective; its fill-hints result is not directly comparable to joint implementation/proof generation.",
+    "opened_extent": "arXiv abstract, BibTeX export, targeted HTML full-text sections; author repository README.",
+    "crosscheck": "arXiv authors/title match author repository https://github.com/sun-wendy/DafnyBench. Search exposed OpenReview yBgTVWccIx TMLR 01/2025; direct record/PDF access showed browser verification challenge, API inaccessible.",
+    "caveats": "Use 2024 only for the cited arXiv version. TMLR version/year/metadata upgrade remains unresolved. No published-version numbers copied into this record."
+  },
+  {
+    "publication_state": "Published conference paper, SAIV 2024; Springer LNCS 14846, pp.134–155",
+    "supported_claim": "Clover checks consistency among program code, docstrings, and formal annotations.",
+    "locator": "https://arxiv.org/pdf/2310.17807 §3.2 Clover Verification Phase, printed pp.5–6 (PDF indices 4–5), lines 195–205; Springer abstract.",
+    "does_not_support": "Does not prove this project's fixed-specification scheduler improves effectiveness; consistency among descriptions is a different decision variable from proved dependency status.",
+    "opened_extent": "arXiv abstract/BibTeX, targeted PDF extracted text, Springer chapter metadata, author BibTeX and Stanford blog; arXiv HTML and Weizmann PDF attempts failed.",
+    "crosscheck": "Publisher https://link.springer.com/chapter/10.1007/978-3-031-65112-0_7 matches https://web.stanford.edu/~chuyues/files/clover.html and arXiv authors/title.",
+    "caveats": "Use the 2024 published reference. Earlier shorthand 'Code Verification via LLMs' was incorrect. Author BibTeX date/page mojibake normalized to -- using publisher-supported page range; abstract omitted. Crossref API inaccessible; no DOI metadata invented."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v2 (2026); first submitted 2025; no publisher version established",
+    "supported_claim": "VeruSAGE studies hands-off general coding agents and hands-on verification-specific guidance and control for Rust/Verus proof tasks.",
+    "locator": "https://arxiv.org/html/2512.18436v2 §4 Agentic System Designs, §4.1 Hands-Off Approach, §4.2 Hands-On Approach, lines 160–175 and following; original abstract.",
+    "does_not_support": "No cross-benchmark comparison with this project's Dafny tasks; does not establish a universal advantage for more prescriptive control.",
+    "opened_extent": "arXiv abstract/BibTeX and selected HTML introduction/methods; not an exhaustive paper/implementation review.",
+    "crosscheck": "arXiv version history and export agree on current citation year 2026; targeted USENIX search yielded no confirmed publisher record in this session.",
+    "caveats": "Record first-submission year 2025 separately from v2/export year 2026. Publication search was targeted, not exhaustive."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v1 (2026); formal publication not established",
+    "supported_claim": "DafnyPro combines a parser-based diff checker protecting base code with pruning and problem-independent proof-hint augmentation.",
+    "locator": "https://arxiv.org/html/2601.05385v1 §3.1, especially lines 115–117; §3.2 Removing Unnecessary Clauses; §3.3 Incorporating Domain Knowledge; abstract confirms three components.",
+    "does_not_support": "Protecting a base implementation in annotation completion does not show the same task as generating implementation bodies under fixed specifications; reported gains cannot be transferred.",
+    "opened_extent": "arXiv abstract/BibTeX and selected HTML §§3.1–3.3 and appendix; not replication.",
+    "crosscheck": "arXiv abstract and full text agree on method components. Publisher search found no primary published record.",
+    "caveats": "HTML contains placeholder DOI XXXXXXX.XXXXXXX and template year 2018; these were rejected as bibliographic facts. Citation uses arXiv record's 2026 and arXiv-issued DOI only."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v1 (2026); formal publication not established",
+    "supported_claim": "P3 first makes a joint program-and-proof plan and then elaborates implementation and proof using that plan.",
+    "locator": "https://arxiv.org/html/2608.09277v1 §3 Methodology, §3.1 Joint Program-and-Proof Planning, §3.2 Plan-Guided Elaboration; lines 103–107 and following. Appendix C (lines 310–315) limits transfer claims.",
+    "does_not_support": "Does not empirically establish the approach in Dafny or Verus; no implication that current dependency-status scheduling is new or better.",
+    "opened_extent": "arXiv abstract and targeted HTML methods/limitations; BibTeX endpoint returned cache miss, API inaccessible.",
+    "crosscheck": "Original arXiv abstract metadata parsed programmatically and compared with full-text author/title block.",
+    "caveats": "Current empirical setting is Lean; transfer to Dafny/Verus is described as plausible but not empirically established. No publication outlet inferred."
+  },
+  {
+    "publication_state": "arXiv v1; authors report accepted by EMNLP 2026; publisher acceptance/proceedings record not independently confirmed",
+    "supported_claim": "SkillForge uses structured verification-error categories to deterministically route to reusable repair skills.",
+    "locator": "https://arxiv.org/html/2608.29841v1 §3.2 (Table 1; SYNTHBODY and STRENGTHENSPEC), §3.3 Error-Conditioned Routing, lines 179–232; arXiv abstract/comments.",
+    "does_not_support": "Does not establish that fixed-specification declaration scheduling is new or effective; do not characterize all SkillForge steps as freely changing specifications.",
+    "opened_extent": "arXiv abstract and selected HTML §§3.2–3.3; BibTeX export cache miss; metadata fallback used original arXiv abstract.",
+    "crosscheck": "Full-text title/authors match abstract; targeted ACL Anthology search did not establish a publisher record.",
+    "caveats": "SYNTHBODY anchors specifications, while STRENGTHENSPEC may add inferred domain constraints; scope differs from globally frozen specification. EMNLP acceptance is author-reported only."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v2 (2026); formal publication not established",
+    "supported_claim": "ExVerus uses generated and validated counterexamples to guide iterative proof repair.",
+    "locator": "https://arxiv.org/html/2603.25810v2 §3 ExVerus Framework, §3.1 Counterexample Generation with Validation, §3.2 mutation-based repair; lines 169–176 and following.",
+    "does_not_support": "Behavioral counterexamples do not establish the efficacy or novelty of a ledger of proved declaration dependencies; no cross-benchmark success-rate comparison.",
+    "opened_extent": "arXiv abstract/BibTeX and selected HTML problem formulation/methods.",
+    "crosscheck": "arXiv abstract and full-text author/title/method descriptions agree; no separate publisher metadata established.",
+    "caveats": "Counterexample validation has a stated special role for invariant-related failures. No claim that all generated examples are executable witnesses of original program bugs."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v2 (2026); software/procedural-workflow reference",
+    "supported_claim": "Scientific Agent Skills describes an on-demand procedural knowledge library; it does not report a task-level evaluation of scientific-work improvement.",
+    "locator": "https://arxiv.org/html/2609.00065v2 §2 What an agent skill is, lines 95–98; §6 Limitations, No task-level evaluation, lines 140–142; abstract.",
+    "does_not_support": "Does not validate this study's science, source truth, reproducibility, or effectiveness; library automation is not human scientific verification.",
+    "opened_extent": "arXiv abstract/BibTeX, selected HTML §2/§6, official repository README.",
+    "crosscheck": "Official arXiv link points to https://github.com/K-Dense-AI/scientific-agent-skills; repository names the same paper.",
+    "caveats": "Added because scientific skills materially contributed and skill instructions request citation; this is software/procedural credit, not evidence for scheduler performance. Current citation URL and DOI are unversioned; opened version v2 retained only in audit."
+  },
+  {
+    "publication_state": "Cited arXiv preprint v1 (2026); formal publication not established",
+    "supported_claim": "AxDafny uses a proposer, review system, and memory module in a verification loop; its evaluation treats specifications as fixed.",
+    "locator": "https://arxiv.org/html/2606.32007v1 §3.1 Agent Architecture, lines 111–128; Appendix A LCB-Pro-Dafny Construction, lines 219–224.",
+    "does_not_support": "Fixed specifications, memory and verifier-guided repair alone are not novel contributions of the current project; no direct effectiveness ranking without matched tasks/budgets.",
+    "opened_extent": "arXiv abstract/BibTeX and selected HTML §3.1/Appendix A.",
+    "crosscheck": "Original arXiv metadata/export and full-text title/authors match.",
+    "caveats": "Direct near neighbour. Allows helper definitions/proof artifacts while protecting original signatures/definitions/specifications; model, dataset and acceptance protocol differ from current partial matrix."
+  }
+]

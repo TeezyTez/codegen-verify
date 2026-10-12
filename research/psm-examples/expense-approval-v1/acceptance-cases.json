@@ -1,0 +1,151 @@
+{
+  "format": "expense-acceptance-scenarios/1.0",
+  "status": "expected_results_only_not_executed",
+  "conventions": "各case及其variants独立创建申请。除另行说明，申请为tenant-a、申请人applicant，版本1且PENDING。事件由step字段表达预期接口行为，不是可运行的测试代码；顺序执行用分号分隔。并发只接受列出的串行化结果。",
+  "actors": {
+    "applicant": {"tenant": "tenant-a", "roles": ["employee", "manager", "admin", "finance"]},
+    "m1": {"tenant": "tenant-a", "roles": ["manager"]},
+    "m2": {"tenant": "tenant-a", "roles": ["manager"]},
+    "m3": {"tenant": "tenant-a", "roles": ["manager"]},
+    "finance": {"tenant": "tenant-a", "roles": ["finance"]},
+    "outsider": {"tenant": "tenant-b", "roles": ["manager", "finance"]},
+    "employee": {"tenant": "tenant-a", "roles": ["employee"]}
+  },
+  "cases": [
+    {
+      "id": "C01", "rules": ["R01"], "title": "金额输入与平台整数边界",
+      "variants": [
+        {"amountYuan": "0.01", "expect": "创建成功，amountFen=1，PENDING"},
+        {"amountYuan": "0", "expect": "拒绝，未创建申请"},
+        {"amountYuan": "-0.01", "expect": "拒绝，未创建申请"},
+        {"amountYuan": "1.001", "expect": "拒绝，禁止四舍五入"},
+        {"amountYuan": "92233720368547758.07", "expect": "创建成功，amountFen=9223372036854775807，PENDING"},
+        {"amountYuan": "92233720368547758.08", "expect": "拒绝，超出int64正数范围"},
+        {"amountYuan": "1.00", "currency": "USD", "expect": "拒绝，不自动换汇"}
+      ]
+    },
+    {
+      "id": "C02", "rules": ["R02"], "title": "等于阈值属于低额分段", "amountFen": 10000000,
+      "steps": [{"do": "m1 approve v1", "expect": "APPROVED，1名同意者，关闭投票"}]
+    },
+    {
+      "id": "C03", "rules": ["R03"], "title": "阈值多一分要求两人", "amountFen": 10000001,
+      "steps": [
+        {"do": "m1 approve v1", "expect": "PENDING，1名同意者"},
+        {"do": "m2 approve v1", "expect": "APPROVED，2名不同同意者"}
+      ]
+    },
+    {
+      "id": "C04", "rules": ["R03", "R07"], "title": "经理不足不能降低门槛", "amountFen": 10000001,
+      "override": "tenant-a中只有m1符合经理资格；applicant虽为经理但被排除；m2/m3不在本场景目录中",
+      "steps": [
+        {"do": "m1 approve v1", "expect": "PENDING，1名同意者"},
+        {"do": "等待；m1用新requestId重复approve", "expect": "仍PENDING，NOOP，仍1名同意者"}
+      ]
+    },
+    {
+      "id": "C05", "rules": ["R04"], "title": "经理或管理员身份不能自批", "amountFen": 10000001,
+      "steps": [
+        {"do": "applicant approve v1", "expect": "拒绝，PENDING，0票"},
+        {"do": "applicant reject v1", "expect": "拒绝，PENDING，0票"}
+      ]
+    },
+    {
+      "id": "C06", "rules": ["R04"], "title": "身份与租户校验", "amountFen": 10000001,
+      "variants": [
+        {"do": "outsider approve v1", "expect": "拒绝，0票"},
+        {"do": "employee reject v1", "expect": "拒绝，仍PENDING，0票"},
+        {"do": "认证主体employee在载荷指定actorSubject=m1", "expect": "拒绝不允许的身份覆盖字段，0票"},
+        {"do": "任意客户端直接写state=APPROVED", "expect": "入口拒绝，仍PENDING"}
+      ]
+    },
+    {
+      "id": "C07", "rules": ["R05"], "title": "投票去重与成功请求回放", "amountFen": 10000001,
+      "steps": [
+        {"do": "m1以requestId=q1 approve v1", "expect": "PENDING，1名同意者"},
+        {"do": "m1以q2再次approve v1", "expect": "NOOP，仍1名同意者"},
+        {"do": "m1以q3 reject v1", "expect": "E_DECISION_IMMUTABLE，仍PENDING"},
+        {"do": "m1以q1及原载荷重试", "expect": "REPLAY，无新票"},
+        {"do": "m1以q1但载荷改为reject", "expect": "E_IDEMPOTENCY_CONFLICT，无改变"},
+        {"do": "m2以q1及同样approve载荷请求", "expect": "E_IDEMPOTENCY_CONFLICT，键原属m1，无新票"},
+        {"do": "m1复用q1改为releasePayment操作，即使其余业务参数相同", "expect": "E_IDEMPOTENCY_CONFLICT，操作类型不同，不能回放为原approve结果"}
+      ]
+    },
+    {
+      "id": "C08", "rules": ["R06"], "title": "有效拒绝立即关闭投票", "amountFen": 10000001,
+      "steps": [
+        {"do": "m1 approve v1", "expect": "PENDING"},
+        {"do": "m2 reject v1", "expect": "REJECTED"},
+        {"do": "m3以新requestId approve v1", "expect": "E_VOTING_CLOSED，仍REJECTED"}
+      ]
+    },
+    {
+      "id": "C09", "rules": ["R06"], "title": "通过后新拒绝与旧请求回放不同", "amountFen": 10000000,
+      "steps": [
+        {"do": "m1以q1 approve v1", "expect": "APPROVED"},
+        {"do": "m2以q2 reject v1", "expect": "E_VOTING_CLOSED，仍APPROVED"},
+        {"do": "m1以q1及原载荷重试", "expect": "REPLAY，仍APPROVED，无新票"},
+        {"do": "m1以q3再次approve v1", "expect": "E_VOTING_CLOSED，不把新请求视为旧请求回放"}
+      ]
+    },
+    {
+      "id": "C10", "rules": ["R04", "R07"], "title": "资格以投票时为准", "amountFen": 10000001,
+      "variants": [
+        {"do": "m1在投票前失去manager角色；m1 approve", "expect": "拒绝，0票，PENDING"},
+        {"do": "m1 approve成功；m1失去manager角色；m2 approve", "expect": "历史m1票继续有效，2名同意者，APPROVED"}
+      ]
+    },
+    {
+      "id": "C11", "rules": ["R05", "R06"], "title": "并发投票符合串行语义", "amountFen": 10000001,
+      "variants": [
+        {"do": "m1使用两个不同requestId并发approve", "expect": "一次有效同意，一次NOOP；PENDING，1名同意者"},
+        {"do": "先m1 approve；m2 approve与m3 reject并发", "allowedOutcomes": ["m2先完成：APPROVED，m3返回E_VOTING_CLOSED", "m3先完成：REJECTED，m2返回E_VOTING_CLOSED"], "forbidden": "两个相反终态事件同时成功"}
+      ]
+    },
+    {
+      "id": "C12", "rules": ["R09", "R10"], "title": "修订重置票且保留旧结果",
+      "variants": [
+        {"do": "v1高额，m1 approve后PENDING；内部服务修订为更高金额", "expect": "v1关闭但保留PENDING及一张票；v2 PENDING、0票；v2仅m2 approve后仍PENDING"},
+        {"do": "v1低额，m1 approve后APPROVED；修订为高额", "expect": "v1保留APPROVED但关闭；v2 PENDING、0票；v1新放行请求E_STALE_VERSION；v2仅m2 approve仍PENDING"},
+        {"do": "v1高额，m1 reject后REJECTED；修订金额", "expect": "v1保留REJECTED但关闭；v2 PENDING、0票"},
+        {"do": "尝试修订applicantSubject或tenantId", "expect": "拒绝，版本号、身份及所有票保持原样"}
+      ]
+    },
+    {
+      "id": "C13", "rules": ["R08"], "title": "付款放行门槛与财务身份",
+      "variants": [
+        {"do": "finance对当前PENDING版本releasePayment", "expect": "拒绝，0条放行记录"},
+        {"do": "finance对当前REJECTED版本releasePayment", "expect": "拒绝，0条放行记录"},
+        {"do": "outsider对当前APPROVED版本releasePayment", "expect": "拒绝，0条放行记录"},
+        {"do": "m1对当前APPROVED版本releasePayment", "expect": "拒绝，m1无finance角色"},
+        {"do": "applicant以finance角色对当前APPROVED版本releasePayment", "expect": "RELEASED，1条放行记录，无银行调用"}
+      ]
+    },
+    {
+      "id": "C14", "rules": ["R08", "R09"], "title": "放行唯一且放行后不得修订",
+      "setup": "当前版本APPROVED",
+      "steps": [
+        {"do": "finance以q1 releasePayment", "expect": "RELEASED，1条记录"},
+        {"do": "finance以q1及原载荷重试", "expect": "REPLAY，仍1条记录"},
+        {"do": "finance以新q2再次releasePayment", "expect": "拒绝，仍1条记录"},
+        {"do": "内部服务修订金额", "expect": "拒绝，版本不变"}
+      ],
+      "concurrentVariant": {"do": "在独立APPROVED初态下，finance以两个不同requestId并发放行", "expect": "恰好一个成功，另一个拒绝，恰好1条记录"}
+    },
+    {
+      "id": "C15", "rules": ["R08", "R09"], "title": "修订与放行跨版本竞争",
+      "setup": "v1为当前APPROVED版本",
+      "do": "修订v1金额与放行v1并发",
+      "allowedOutcomes": ["修订先完成：v2 PENDING且0票；v1关闭；v1放行E_STALE_VERSION；无放行记录", "放行先完成：v1 RELEASED且1条记录；修订拒绝；不存在v2"],
+      "forbidden": "v1成功放行且同时成功创建v2"
+    },
+    {
+      "id": "C16", "rules": ["R10"], "title": "旧版本不能重新生效",
+      "setup": "v1曾以q1由m1成功投票，之后修订形成当前v2",
+      "steps": [
+        {"do": "对v1使用新requestId进行approve、reject、revise或releasePayment", "expect": "每种操作均E_STALE_VERSION，不影响v2"},
+        {"do": "m1向v1用q1及原载荷回放", "expect": "REPLAY，只返回v1历史结果，v2无新票且状态不变"}
+      ]
+    }
+  ]
+}

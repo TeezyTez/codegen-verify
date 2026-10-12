@@ -1,0 +1,1109 @@
+{
+  "scope": "Mechanical binding, arithmetic and local consistency only; not scientific truth or accountable human review",
+  "machine_checks": 196,
+  "machine_passed": 196,
+  "checks": [
+    {
+      "check": "claim registry and manuscript IDs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C001",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C001",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C002",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C002",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C003",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C003",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C004",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C004",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C005",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C005",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C006",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C006",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C007",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C007",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C008",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C008",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C009",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C009",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C010",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C010",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C011",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C011",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C012",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C012",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C013",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C013",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C014",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C014",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C015",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C015",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C016",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C016",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C017",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C017",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C018",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C018",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C019",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C019",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C020",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C020",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C021",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C021",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C022",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C022",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C023",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C023",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C075",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C075",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C024",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C024",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C025",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C025",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C026",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C026",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C027",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C027",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C028",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C028",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C029",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C029",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C030",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C030",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C031",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C031",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C032",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C032",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C033",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C033",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C034",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C034",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C035",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C035",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C036",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C036",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C037",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C037",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C038",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C038",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C039",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C039",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C040",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C040",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C073",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C073",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C041",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C041",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C042",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C042",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C043",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C043",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C044",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C044",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C045",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C045",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C046",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C046",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C047",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C047",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C048",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C048",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C049",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C049",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C050",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C050",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C051",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C051",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C052",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C052",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C053",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C053",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C054",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C054",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C055",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C055",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C056",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C056",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C057",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C057",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C058",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C058",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C074",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C074",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C059",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C059",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C060",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C060",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C061",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C061",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C062",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C062",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C063",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C063",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C064",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C064",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C065",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C065",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C066",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C066",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C067",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C067",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C068",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C068",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C069",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C069",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C070",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C070",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C071",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C071",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim hash C072",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "evidence binding C072",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E001",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E002",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E003",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E004",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E005",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E006",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E007",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E008",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E009",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E010",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E011",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E012",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bound source bytes E013",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "manuscript numeric row A",
+      "passed": true,
+      "detail": {
+        "expected": [
+          104,
+          103,
+          95,
+          8,
+          1
+        ],
+        "observed": [
+          104,
+          103,
+          95,
+          8,
+          1
+        ]
+      }
+    },
+    {
+      "check": "manuscript numeric row B",
+      "passed": true,
+      "detail": {
+        "expected": [
+          104,
+          103,
+          90,
+          13,
+          1
+        ],
+        "observed": [
+          104,
+          103,
+          90,
+          13,
+          1
+        ]
+      }
+    },
+    {
+      "check": "manuscript numeric row C",
+      "passed": true,
+      "detail": {
+        "expected": [
+          104,
+          103,
+          96,
+          7,
+          1
+        ],
+        "observed": [
+          104,
+          103,
+          96,
+          7,
+          1
+        ]
+      }
+    },
+    {
+      "check": "manuscript numeric row D",
+      "passed": true,
+      "detail": {
+        "expected": [
+          104,
+          103,
+          93,
+          10,
+          1
+        ],
+        "observed": [
+          104,
+          103,
+          93,
+          10,
+          1
+        ]
+      }
+    },
+    {
+      "check": "success partition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "completion partition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "action partition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "completed block pairing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "family repetition completeness",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "scheduler opportunity/disagreement",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "D following denominator",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "historical probe partition",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "only disclosed historical source drift",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C003",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C030",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C035",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C036",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C039",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C042",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C043",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C073",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "key numeric claim tokens C074",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "nine unique bibliography keys",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "bibliography keys match checked metadata",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "human verification not fabricated",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "submission ready remains false",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "reader draft has no audit markers",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "skill validator source_schema",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "check": "skill validator manuscript_schema",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "check": "skill validator reference_syntax",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "check": "skill validator numeric_consistency",
+      "passed": true,
+      "detail": {}
+    },
+    {
+      "check": "claim audit has only disclosed human-review failures",
+      "passed": true,
+      "detail": {
+        "CLAIM_NOT_VERIFIED": 75,
+        "UNVERIFIED_CITATION_MARKER": 185,
+        "UNVERIFIED_CLAIM_EVIDENCE": 185
+      }
+    }
+  ],
+  "skill_tool_reports": [
+    {
+      "tool": "source_schema",
+      "exit_code": 0,
+      "error_codes": {},
+      "report": "validation/source_schema.json"
+    },
+    {
+      "tool": "manuscript_schema",
+      "exit_code": 0,
+      "error_codes": {},
+      "report": "validation/manuscript_schema.json"
+    },
+    {
+      "tool": "reference_syntax",
+      "exit_code": 0,
+      "error_codes": {},
+      "report": "validation/reference_syntax.json"
+    },
+    {
+      "tool": "numeric_consistency",
+      "exit_code": 0,
+      "error_codes": {},
+      "report": "validation/numeric_consistency.json"
+    },
+    {
+      "tool": "claim_human_gate",
+      "exit_code": 1,
+      "error_codes": {
+        "CLAIM_NOT_VERIFIED": 75,
+        "UNVERIFIED_CITATION_MARKER": 185,
+        "UNVERIFIED_CLAIM_EVIDENCE": 185
+      },
+      "report": "validation/claim_human_gate.json"
+    }
+  ],
+  "human_verification": "pending",
+  "submission_ready": false,
+  "historical_source_mismatch": [
+    {
+      "check": "probe/current_source/generation\\representation\\verifier.py",
+      "passed": false,
+      "actual": "04a0b2554c5be822236856e4c7dfadbd882a66363694b326b642922e1c27520e",
+      "expected": "a77ed580d6aac20dcf1eb342f74e3e1f230f98f5294a386e0754ea8d659b84d6"
+    }
+  ],
+  "source_audit": {
+    "checks": 1163,
+    "passed": 1162,
+    "mismatches": [
+      {
+        "check": "probe/current_source/generation\\representation\\verifier.py",
+        "passed": false,
+        "actual": "04a0b2554c5be822236856e4c7dfadbd882a66363694b326b642922e1c27520e",
+        "expected": "a77ed580d6aac20dcf1eb342f74e3e1f230f98f5294a386e0754ea8d659b84d6"
+      }
+    ]
+  }
+}

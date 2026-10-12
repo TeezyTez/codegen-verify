@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExpenseFlow v1 PSM structural schema",
+  "description": "示例结构约束；执行语义与跨字段不变量见 README.md。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["modelId", "platform", "money", "bands", "approval", "workflow", "revision", "release", "execution"],
+  "properties": {
+    "modelId": {"type": "string", "minLength": 1},
+    "platform": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {"name": {"const": "ExpenseFlow"}, "version": {"const": "1.0"}}
+    },
+    "money": {
+      "type": "object", "additionalProperties": false,
+      "required": ["currency", "unit", "storage", "minimum", "maximum", "inputScalePolicy"],
+      "properties": {
+        "currency": {"const": "CNY"}, "unit": {"const": "fen"}, "storage": {"const": "int64"},
+        "minimum": {"type": "integer", "minimum": 1},
+        "maximum": {"type": "integer", "minimum": 1, "maximum": 9223372036854775807},
+        "inputScalePolicy": {"enum": ["rejectMoreThanTwoDecimals", "roundHalfUp"]}
+      }
+    },
+    "bands": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "lowerExclusive", "upperInclusive", "requiredApprovals"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "lowerExclusive": {"type": "integer", "minimum": 0},
+          "upperInclusive": {"type": ["integer", "null"], "minimum": 1},
+          "requiredApprovals": {"type": "integer", "minimum": 1}
+        }
+      }
+    },
+    "approval": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "sameTenant", "excludeApplicant", "countBy", "eligibilityAt", "duplicateDecision", "changeDecision", "insufficientApprovers"],
+      "properties": {
+        "role": {"enum": ["manager", "finance", "employee"]},
+        "sameTenant": {"type": "boolean"}, "excludeApplicant": {"type": "boolean"},
+        "countBy": {"const": "distinctSubject"}, "eligibilityAt": {"const": "voteTime"},
+        "duplicateDecision": {"const": "sameDecisionNoop"}, "changeDecision": {"const": "reject"},
+        "insufficientApprovers": {"const": "remainPending"}
+      }
+    },
+    "workflow": {
+      "type": "object", "additionalProperties": false,
+      "required": ["initialState", "rejectPolicy", "closeOnThreshold"],
+      "properties": {
+        "initialState": {"const": "PENDING"},
+        "rejectPolicy": {"const": "anyAcceptedRejectWhilePending"},
+        "closeOnThreshold": {"const": true}
+      }
+    },
+    "revision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowedFrom", "editableFields", "resetVotes", "closePrevious", "preserveHistory"],
+      "properties": {
+        "allowedFrom": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"enum": ["PENDING", "APPROVED", "REJECTED"]}},
+        "editableFields": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"const": "amountFen"}},
+        "resetVotes": {"type": "boolean"}, "closePrevious": {"const": true}, "preserveHistory": {"const": true}
+      }
+    },
+    "release": {
+      "type": "object", "additionalProperties": false,
+      "required": ["role", "sameTenant", "requiredState", "oncePerVersion", "effect"],
+      "properties": {
+        "role": {"enum": ["finance", "manager", "employee"]}, "sameTenant": {"type": "boolean"},
+        "requiredState": {"enum": ["PENDING", "APPROVED", "REJECTED"]},
+        "oncePerVersion": {"const": true}, "effect": {"const": "recordReleaseOnly"}
+      }
+    },
+    "execution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["actorSource", "atomicScope", "requestReplay", "clientStateWritable"],
+      "properties": {
+        "actorSource": {"const": "serverAuthenticationContext"}, "atomicScope": {"const": "expenseIdAcrossVersions"},
+        "requestReplay": {"const": "sameActorAndPayloadOnly"}, "clientStateWritable": {"const": false}
+      }
+    }
+  }
+}

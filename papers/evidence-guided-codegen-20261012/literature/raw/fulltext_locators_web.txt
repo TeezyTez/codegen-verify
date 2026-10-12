@@ -1,0 +1,229 @@
+ (https://arxiv.org/pdf/2310.17807)
+citeturn86view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 59; Source: open({"ref_id":"https://arxiv.org/pdf/2310.17807","lineno":null}); Total lines: 2669
+--------------------------------------------------------------------------------
+DafnyBench: A Benchmark for Formal Software Verification (https://arxiv.org/html/2406.08467v1)
+citeturn86view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn84view0","lineno":248}); Total lines: 895
+L241: Early results indicate that an LLM that is able to converse with a human when producing a program can reduce the error rate against a simple programming benchmark by half [cite61†20 ]. If instead of receiving feedback from a human, the LLM were to interact with a suite of formal verification tools, we expect further improvements.
+L242: We could avoid hallucination problems by relying on the LLM to generate the code and formal specification, but relying on an established verification tool to perform the model checking or proof verification itself. The LLM’s translation process need not itself be verified, because it can try multiple times to produce a verifiable output.
+L243: The LLM must be capable of generating code that is appropriately annotated for theorem proving, which is exactly the skill assessed by test benches like that described here. The more theorem proving tools and programming languages that LLMs are trained and assessed on, the more auto-verifying program synthesis options become available.
+L244: To return to the previous example, a LLM proficient at ReWire, Caisson, and myriad other software verification techniques, might be given a ReWire specification as input and told to produce correct Verilog as output. The ReWire specification contains the high level correctness properties that must be satisfied. The task is to synthesize Verilog code that satisfies those same correctness properties specified in Caisson.
+L245: A strong ability to reason about code properties and to express them in multiple languages is exactly what is called for here, and what diverse LLM test benches help to enable.
+L246: In summary, there are good reasons for optimism that automated formal verification will soon be greatly improved.
+L247: 
+L248: Acknowledgements: The authors wish to thank Clark Barrett, Rustan Leino, Daniel Windham, David Brandfonbrener, William Byrd, Josh Engels, and Anastasiya Kravchuk for helpful discussions.
+L249: ## References
+L250:   * [1] Sébastien Bubeck, Varun Chandrasekaran, Ronen Eldan, Johannes Gehrke, Eric Horvitz, Ece Kamar, Peter Lee, Yin Tat Lee, Yuanzhi Li, Scott Lundberg, et al. Sparks of artificial general intelligence: Early experiments with gpt-4. arXiv preprint arXiv:2303.12712, 2023.
+L251:   * [2] Anthropic. The claude 3 model family: Opus, sonnet, haiku. Technical report, Anthropic, 2024.
+L252:   * [3] Gemini Team, Rohan Anil, Sebastian Borgeaud, Yonghui Wu, Jean-Baptiste Alayrac, Jiahui Yu, Radu Soricut, Johan Schalkwyk, Andrew M Dai, Anja Hauth, et al. Gemini: a family of highly capable multimodal models. arXiv preprint arXiv:2312.11805, 2023.
+L253:   * [4] European Space Agency. Flight 501 failure, 1996. URL cite88†https://esamultimedia.esa.int/docs/esa-x-1819eng.pdf†esamultimedia.esa.int . Accessed: 2024-06-04.
+L254:   * [5] Heartbleed. The heartbleed bug. cite89†https://heartbleed.com/†heartbleed.com , 2024. Accessed: 2024-06-04.
+L255:   * [6] Wikipedia contributors. Shellshock (software bug). cite90†https://en.wikipedia.org/wiki/Shellshock_(software_bug)†en.wikipedia.org , 2024a. Accessed: 2024-06-04.
+L256:   * [7] Stanislas Polu and Ilya Sutskever. Generative Language Modeling for Automated Theorem Proving. arXiv, September 2020. doi: 10.48550/arXiv.2009.03393.
+L257:   * [8] Guillaume Lample, Marie-Anne Lachaux, Thibaut Lavril, Xavier Martinet, Amaury Hayat, Gabriel Ebner, Aurélien Rodriguez, and Timothée Lacroix. HyperTree Proof Search for Neural Theorem Proving. arXiv, May 2022. doi: 10.48550/arXiv.2205.11491.
+L258:   * [9] Chuyue Sun, Ying Sheng, Oded Padon, and Clark Barrett. Clover: Closed-loop verifiable code generation. In ICLR 2024 Conference, 2024. URL cite91†https://openreview.net/forum?id=oSuVEv4X7w†openreview.net .
+L259:   * [10] Md Rakib Hossain Misu, Cristina V. Lopes, Iris Ma, and James Noble. Towards ai-assisted synthesis of verified dafny methods. Proc. ACM Softw. Eng., 1(FSE), 2024. doi: 10.1145/3643763. URL cite92†https://doi.org/10.1145/3643763†doi.org .
+L260:   * [11] K Rustan M Leino. Program Proofs. MIT Press, 2023.
+L261:   * [12] Kaiyu Yang and Jia Deng. Learning to prove theorems via interacting with proof assistants, 2019.
+L262:   * [13] Kaiyu Yang, Aidan M. Swope, Alex Gu, Rahul Chalamala, Peiyang Song, Shixing Yu, Saad Godil, Ryan Prenger, and Anima Anandkumar. Leandojo: Theorem proving with retrieval-augmented language models, 2023.
+L263:   * [14] Pisa: Isabelle proofs dataset. cite93†https://aitp-conference.org/2021/abstract/paper_17.pdf†aitp-conference.org , 2021.
+L264:   * [15] Sean Welleck, Jiacheng Liu, Ronan Le Bras, Hannaneh Hajishirzi, Yejin Choi, and Kyunghyun Cho. Naturalproofs: Mathematical theorem proving in natural language. In Thirty-fifth Conference on Neural Information Processing Systems Datasets and Benchmarks Track (Round 1), 2021. URL cite94†https://openreview.net/forum?id=Jvxa8adr3iY†openreview.net .
+L265:   * [16] Jasmin Christian Blanchette, Maximilian Haslbeck, Daniel Matichuk, and Tobias Nipkow. Mining the archive of formal proofs. In Manfred Kerber, Jacques Carette, Cezary Kaliszyk, Florian Rabe, and Volker Sorge, editors, Intelligent Computer Mathematics, pages 3–17, Cham, 2015. Springer International Publishing. ISBN 978-3-319-20615-8.
+L266:   * [17] Dan Hendrycks, Steven Basart, Saurav Kadavath, Mantas Mazeika, Akul Arora, Ethan Guo, Collin Burns, Samir Puranik, Horace He, Dawn Song, and Jacob Steinhardt. Measuring coding challenge competence with apps. arXiv preprint arXiv:2105.09938, 2021.
+L267:   * [18] Qinkai Zheng, Xiao Xia, Xu Zou, Yuxiao Dong, Shan Wang, Yufei Xue, Zihan Wang, Lei Shen, Andi Wang, Yang Li, Teng Su, Zhilin Yang, and Jie Tang. Codegeex: A pre-trained model for code generation with multilingual evaluations on humaneval-x, 2023a.
+--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/html/2601.05385v1)
+citeturn86view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn82view1","lineno":92}); Total lines: 1026
+L77: Several works (cite38†Loughridge et al., 2024 ; cite39†Sun et al., 2024 ; cite40†Misu et al., 2024 ; cite45†Mugnier et al., 2025 ) improve formal verification performance through inference-time strategies without model retraining. DafnyBench (cite38†Loughridge et al., 2024 ) provides a comprehensive benchmark and standardized setup for evaluating LLM verification capabilities.
+L78: Both Clover (cite39†Sun et al., 2024 ) and DafnyBench (cite38†Loughridge et al., 2024 ) introduce multi-turn procedures that iteratively generate annotations, invoke the Dafny verifier, and use feedback from failed attempts to guide refinement. Laurel (cite45†Mugnier et al., 2025 ) extends this approach by automatically generating missing assertions using LLMs.
+L79: However, these methods do not prevent models from altering base code logic or systematically leverage known proof strategies—limitations that DafnyPro addresses.
+L80: #### Model fine-tuning
+L81: 
+L82: Complementary work focuses on adapting model weights to improve annotation generation. Dafny-Annotator (cite46†Poesia et al., 2024 ) performs supervised fine-tuning on DafnySynth, a synthetic dataset derived from DafnyBench. PREFACE (cite47†Jha et al., 2025 ) applies preference-based reinforcement learning with reward signals from the formal verifier to iteratively improve verification success. Our fine-tuned models build on these insights while maintaining resource efficiency.
+L83: ## 3. Technical Contribution
+L84: 
+L85: DafnyPro takes an unannotated base program with its specifications and uses an LLM to generate annotations that prove correctness with respect to those specifications. We identify three key limitations in existing approaches and propose targeted solutions that yield significant improvements across multiple datasets. Below, we describe each solution in detail.
+L86: ### 3.1. Preventing Code Modifications
+L87: 
+L88: ⬇
+L89: 
+L90: b := a; // Base code altered (was: b := a+1)
+L91: 
+L92: while ( b < n )
+L93: 
+L94: invariant a <= b <= n
+L95: 
+L96: {
+L97: 
+L98: if ( X[b] <= p ) {
+L99: 
+L100: var t := X[b];
+L101: 
+L102: X[b] := X[a];
+L103: 
+L104: X[a] := t;
+L105: 
+L106: a := a + 1;
+L107: 
+L108: }
+L109: 
+L110: b := b + 1;
+L111: 
+L112: }
+L113: 
+L114: Figure 2. LLM modifies base code instead of only adding annotations, compromising soundness.
+L115: Existing works (cite38†Loughridge et al., 2024 ; cite39†Sun et al., 2024 ) regenerate the entire Dafny program with annotations rather than generating annotations separately, since the latter is difficult when loops appear in multiple locations, are nested, or contain assertions at various points. However, regenerating the entire program risks altering its logic—for example, by changing variable initialization as shown in Fig. cite41†2 (base code in Appendix cite28†A.1 ).
+L116: Such modifications, often called "cheating," are not reliably detected by the ad hoc checkers used in (cite38†Loughridge et al., 2024 ), which miss corner cases and compromise soundness. Similar behavior has been observed in coding and theorem-proving tasks, termed "reward hacking" or "reward tampering" (cite48†Taylor et al., 2025 ; cite49†Rafailov et al., 2024 ).
+L117: Our diff-checker takes a principled approach: it uses the Dafny parser to extract added annotations (e.g., invariants, assertions) and verifies that the regenerated code, once stripped of annotations, is identical to the original base code. This guarantees soundness and provides a systematic method for parsing annotations, useful for data collection.
+L118: For instance, existing datasets such as DafnyBench (cite38†Loughridge et al., 2024 ) could leverage it to more accurately remove annotations and correct erroneous base codes (see Section cite16†4.2 ).
+L119: ### 3.2. Removing Unnecessary Clauses
+L120: 
+L121: ⬇
+L122: 
+L123: method onlineMax(a: array<int>, x: int) returns (ghost m: int, p: int)
+L124: 
+L125: requires 1 <= x < a.Length
+L126: 
+L127: requires a.Length != 0
+L128: 
+L129: ensures x <= p < a.Length
+L130: 
+L131: ensures forall i :: 0 <= i < x ==> a[i] <= m
+L132: 
+L133: ensures exists i :: 0 <= i < x && a[i] == m
+L134: 
+L135: ensures x <= p < a.Length-1 ==> (forall i :: 0 <= i < p ==> a[i] < a[p])
+L136: 
+L137: ensures (forall i :: x <= i < a.Length && a[i] <= m) ==> p == a.Length - 1
+L138: 
+L139: {
+L140: 
+L141: p := 0; var best := a[0]; var i := 1; i := x;
+L142: 
+L143: // ... Code Block
+L144: while i < a.Length
+L145: 
+L146: invariant x <= i <= a.Length
+L147: 
+L148: invariant forall j :: 0 <= j < x ==> a[j] <= m
+L149: 
+L150: invariant exists j :: 0 <= j < x && a[j] == m
+L151: 
+L152: invariant forall j :: x <= j < i ==> a[j] <= m
+L153: 
+L154: invariant i < a.Length ==> p == 0
+L155: 
+L156: // Pruned: non-inductive and unnecessary
+L157: 
+L158: // invariant i == a.Length ==> p == a.Length - 1
+L159: 
+L160: {
+L161: 
+L162: if a[i] > best {
+L163: 
+L164: p := i;
+L165: 
+L166: return;
+L167: 
+L168: }
+L169: 
+L170: i := i + 1;
+L171: 
+L172: }
+L173: 
+L174: p := a.Length - 1;
+L175: 
+L176: }
+L177: 
+L178: Figure 3. Pruning unnecessary invariants enables verification, avoiding wasted feedback iterations.
+L179: Fig. cite50†3 illustrates a second limitation: LLMs may introduce unnecessary invariant clauses that are not required to prove the post-condition (details in Appendix cite29†A.2 ). When these unnecessary invariants cannot be proven inductively, the feedback-based iterative generation used in prior work (cite39†Sun et al., 2024 ; cite38†Loughridge et al., 2024 ) wastes attempts fixing such clauses. To address this, we introduce a greedy invariant clause pruning strategy.
+L180: For each LLM-generated annotated program, the pruner uses the Dafny verifier to identify all non-inductive invariant clauses and removes them. It then attempts to verify the post-condition with the remaining clauses. This process continues until either (i) the post-condition is proved, or (ii) the verifier reports that the post-condition cannot be proved with the current clauses. If pruning fails, the pruner restores the original annotated version and proceeds to the next generation attempt.
+L181: This approach removes unnecessary clauses while preserving the possibility of correcting non-inductive but essential clauses in subsequent iterations.
+--------------------------------------------------------------------------------
+Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents (https://arxiv.org/html/2609.00065v2)
+citeturn86view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn84view2","lineno":89}); Total lines: 496
+L83: This paper describes Scientific Agent Skills [cite65†11 ], an openly licensed library of 163 skills that we build and maintain, covering research workflows in biology, chemistry, medicine, the physical sciences and scientific communication.
+L84: Each mistake in the opening paragraph is answered by a rule in one of these skills: statistical-analysis requires the agent to “say which correction was used”; experimental-design states that “3 mice with 100 cells each is n = 3 (mice), not n = 300 (cells)”; bulk-rnaseq warns that when treated and control samples were processed on different days “the effect is unrecoverable”; and pysam fixes that “Numeric coordinates accepted by pysam APIs are 0-based, half-open”.
+L85: We wrote most of them ourselves (Appendix cite30†B ), so this is a description of our own artifact rather than an independent audit. Sections cite8†2 and cite10†3 describe what a skill is and what the library contains, so readers can judge whether it is relevant to their work.
+L86: We then measure two properties of the documentation files: how well the short descriptions that remain in context are separated lexically (Section cite11†4 ), and whether the skills named by the library’s example workflows fit in a context window (Section cite12†5 ). We recompute every quantity from the repository tree at a pinned release instead of taking it from our own documentation. Section cite13†6 states what has and has not been measured.
+L87: The appendices contain the full descriptive census, the measurement conventions, and the validation and scope ledgers.
+L88: This is a resource paper: its purpose is to introduce the library, not to validate the effect of installing any individual skill. We have published our own benchmarks of several skills at cite66†https://www.k-dense.ai/benchmarks†www.k-dense.ai , but those studies do not validate the collection. Each skill needs evaluation on tasks and outcomes appropriate to its domain, and broader independent work by the communities represented here remains necessary.
+L89: ### 1.1 Related work
+L90: Recent systems write and run scientific code for autonomous chemistry [cite67†12 ], hierarchical multi-agent bioinformatics analysis [cite68†13 ], and end-to-end research automation [cite69†14 ]; others package biomedical research workflows over a shared tool layer [cite70†15 ]. Coding agents are also evaluated on repository-scale tasks [cite71†16 ] and scientific programming [cite72†17 ].
+L91: Error analysis of a data-driven discovery benchmark finds that most failures are programs that execute but are semantically incorrect, often because they misuse discipline-specific tools, rather than programs that fail to run [cite73†18 ].
+L92: Prior approaches put knowledge into a model’s context through corpus retrieval [cite74†19 ], tool interfaces [cite75†20 , cite76†21 ], or routines accumulated by the agent itself [cite77†22 ]. Skills differ from retrieval because each skill is an authored procedure rather than a passage. They differ from tools because a skill provides no runtime to call. Retrieval can degrade in long contexts [cite78†23 ], so the tiered design in Section cite8†2 affects how the library operates, not just how it is presented.
+L93: Recent work examines how skill libraries are built, catalogued and evaluated [cite79†24 , cite80†25 , cite81†26 ], how they behave as they grow [cite82†27 ], and what happens when an agent must retrieve its own skills from a large uncurated collection [cite83†28 ], and what happens when its tool layer already returns strict, schema-validated observations [cite84†29 ]. The retrieval study and the re-analysis both report benefits shrinking toward the no-skill score, the former once the agent must select the skill itself.
+L94: Section cite11†4 therefore measures how distinct the short descriptions that stay in context are. Other work treats agent-loadable instruction files as an attack surface [cite85†30 , cite86†31 , cite87†32 , cite88†33 , cite89†34 , cite90†35 ]. Appendix cite45†E places the library’s security material in this context. Appendix cite26†A relates skills to workflow engines and data standards, which address the same procedural problem for pipelines.
+L95: ## 2 What an agent skill is
+L96: A skill is a directory. At minimum it contains SKILL.md: a YAML header followed by Markdown instructions written for an agent rather than a human reader. The header is constrained to six fields: name, description, license, compatibility, allowed-tools and metadata. Any other top-level key is a specification error.
+L97: The specification recommends three conventional subdirectories: references/ for additional documentation, scripts/ for code, and assets/ for templates and static resources, while permitting other files and directories. We adopt a stricter layout and allow only SKILL.md and those three subdirectories inside each skill (Appendix cite40†D ). Appendix cite30†B describes the directory structure and instruction-file contents, and shows a skill in its shipped form.
+L98: For the skills we write ourselves, our authoring workflow usually begins with a language-model draft. We then review the text manually and test the documented workflow for basic functionality when that workflow’s environment is available. We revise each skill as we learn when it works and when it does not, drawing on our own use, community feedback and outside contributions. These steps are authoring and maintenance, not domain validation; Appendix cite45†E states what the automated checks cover.
+L99: ### 2.1 Progressive disclosure
+L100: The design keeps almost all library content out of standing context. Under the specification’s disclosure model, an agent host reads the name and description of every installed skill into its system prompt at startup. What a host adds around those entries is host-specific, as discussed in Section cite13†6 . The instruction body is read when the agent judges the skill relevant; a reference document is read only if the instruction body points at it.
+--------------------------------------------------------------------------------
+VeruSAGE: A Study of Agent-Based Verification for Rust Systems (https://arxiv.org/html/2512.18436v2)
+citeturn86view4 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn82view0","lineno":173}); Total lines: 508
+L169: You should KEEP editing your proof annotations until Verus shows there is no error. You should NOT change existing functions’ pre-conditions or post-conditions; you should NOT change any executable Rust code; and you should NEVER use admit(...) or assume(...) in your code. You are also NOT allowed to create unimplemented, external-body lemma functions --- for any new lemma functions you add, you should provide complete proof.
+L170: You are NOT allowed to create new axiom functions or change the pre/post conditions of existing axiom functions, and you should NEVER add external_body tag to any existing non-external-body functions. I have installed Verus locally; you can just run Verus. Before you are done, MAKE SURE to run verus-checker X_verified.rs to double check whether you have made any illegal changes to X.rs (fix those if you did).
+L171: Setup  To run this hands-off approach, we use GitHub Copilot Command-Line Interface (CLI) [cite46†12 ] for all the models that it supports (GPT-5, Sonnet 4, Sonnet 4.5), and OpenAI Codex CLI [cite54†27 ] for o4-mini. We use Copilot’s allow-all-tools and Codex’s all-auto option, so that the agent can run Verus or any command-line tools without prompting human users for confirmation. In the remainder of the paper, we refer to all these agent systems as hands-off and/or as CLI agents.
+L172: To make sure that the LLM does not find “answers” somewhere in the file system, we run all experiments in containers. When we evaluate tasks from a project $P$, we ensure that no proof bodies from $P$ exist in that container. Each run of a CLI agent produces two files: its standard output log and the verified file. As we will see later in Figure cite55†5 , the CLI log is very informative, indicating which files the agent reads, what commands, including Verus, it executes, etc.
+L173: ### 4.2 Hands-On Approach
+L174: 
+L175: A hands-on approach, in contrast, prompts the LLM with detailed and comprehensive domain knowledge about Verus syntax, verification-error debugging strategies, and various other support. It also guides and enforces a proof development methodology, rather than relying on the LLM to drive the development process through self-driven tool invocations.
+L176: We do not use the state-of-the-art hands-on approach AutoVerus [cite34†40 ] directly, as it performs poorly on system tasks. As shown in Table cite56†4 , it has only 20% success rate on VeruSAGE-Bench, matching the findings in RagVerus [cite36†48 ].
+L177: To improve AutoVerus for system tasks, we did a deep dive on two projects, Memory Allocator (MA) and Storage (ST). We interviewed their authors and examined their human-written proof to learn how human experts developed the proofs therein and what parts of this methodology are missing from the AutoVerus agent system. This understanding then led to the following design of VeruSAGE. (Note that the design of VeruSAGE is not influenced by the benchmark study presented in §cite9†3.2 .
+L178: MA and ST were the first two system projects that we looked into and extracted proof tasks from; most studies and benchmark extraction presented in §cite9†3.2 were conducted after the design of VeruSAGE.)
+L179: As illustrated in Figure cite57†3 , for every task, the proof-development of VeruSAGE goes through steps. Each step starts with Verus reporting verification errors, if any, of the Rust program with the most up-to-date proof candidate; the candidate selector then decides whether to take this proof candidate or revert to an earlier one; then, the planning agent examines the errors and the context history to select an action agent, which then proposes an updated proof candidate.
+L180: VeruSAGE differs from AutoVerus with (1) many more action agents; (2) a two-phase plan-then-act LLM procedure; (3) more sophisticated candidate selector; and (4) more context management.
+L181: Figure 3: Architecture of VeruSAGE
+L182: AL  | AC  | IR  | MA  | NO  | NR  | OS  | ST  | VE  | Tot.
+L183: 30%  | 6%  | 24%  | 32%  | 34%  | 15%  | 13%  | 19%  | 23%  | 20%
+L184: Table 4: Success rate of AutoVerus on VeruSAGE-Bench
+L185: What action agents are missing in AutoVerus?  AutoVerus contains a network of action agents, each designed to refine loop invariants in a particular way or to fix one type of verification errors, such as pre-/post-condition errors and loop-invariant errors.
+L186: However, our analysis reveals that AutoVerus’ error-driven agents lack the knowledge about high-level proof strategies (e.g., divide-and-conquer, induction), specialized solvers (e.g., bit-vector solver, nonlinear solvers), and other verification techniques beyond those for loops.
+L187: To support this, VeruSAGE is equipped with many more action agents, including: Logical Reasoning agents (e.g., case-analysis, induction), Arithmetic & Solvers agents (e.g., nonlinear-arithmetic, bit-vector, integer-ring), Proof Context agents (e.g., reveal-opaque, use-lemma), Quantifier agents (e.g., instantiate-forall, instantiate-exists), etc.
+L188: Why do LLMs need to plan before act?  AutoVerus does not have a planning phase, as it simply dispatches an action agent based on the verification error type. In more complicated proof tasks, one type of error might be fixed by different strategies/techniques. For example, VeruSAGE has 16 specialized action agents to help fix assertion errors. One needs to analyze the code context and failure history to select the most promising strategy or technique, rather than blindly trying one.
+L189: To support this, VeruSAGE has a dedicated planning agent that is equipped with the high-level description of every action agent, as well as a when-to-use-what tutorial.
+--------------------------------------------------------------------------------
+ExVerus: Verus Proof Repair via Counterexample Reasoning (https://arxiv.org/html/2603.25810v2)
+citeturn86view5 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn82view2","lineno":169}); Total lines: 779
+L152: We formally define the problem of counterexample-guided proof generation as an iterative optimization process. Given a program $\mathcal{P}$ with a specification $\Phi=(P_{pre},Q_{post})$, i.e., pre-conditions and post-conditions, the task is to synthesize a proof $\Pi$ with a set of proof annotations (invariants, assertions, etc.) such that the program is provably correct.
+L153: If, at step $t$, the proof has a single target verification error $e_{t}$, the goal of this step is to 1) generate a set of counterexamples that reveals $e_{t}$, and 2) mutate the proof to block the counterexamples to resolve $e_{t}$.
+L154: ###### Definition 2.1 (Counterexample).
+L155: 
+L156: A counterexample $\sigma\in\Sigma_{t}$ is a concrete program state that witnesses a verification failure in the current proof $\Pi_{t}$. For a failing verification constraint $A_{t}(\sigma)\implies C_{t}(\sigma)$ derived from $\Pi_{t}$, a valid counterexample satisfies:
+L157: 
+L158:  | $$\sigma\models A_{t}(\sigma)\land\neg C_{t}(\sigma)$$  |  | (1)
+L159: 
+L160: where $A_{t}$ represents the antecedent (pre-state) and $C_{t}$ represents the consequent (post-state) at step $t$.
+L161: At each step $t$, there exists a set of counterexamples $\Sigma_{t}=\{\sigma_{1},\dots,\sigma_{k}\}$ that witness the failures of the current buggy proof $\Pi_{t}$. The objective is to generate an updated proof $\Pi_{t+1}$ that eliminates the counterexamples $\Sigma_{t}$, thus resolving the current verification failure.
+L162: ###### Definition 2.2 (Iterative Blocking).
+L163: 
+L164: An updated proof $\Pi_{t+1}$ is a valid refinement relative to $\Sigma_{t}$ if it blocks all identified counterexamples. Formally, for every $\sigma\in\Sigma_{t}$, the updated verification constraint is no longer violated:
+L165: 
+L166:  | $$\forall\sigma\in\Sigma_{t}.\quad\sigma\not\models A_{t+1}(\sigma)\land\neg C_{t+1}(\sigma)$$  |  | (2)
+L167: 
+L168: The process terminates when all verification failures are resolved (i.e., no counterexamples exist).
+L169: ## 3 ExVerus Framework
+L170: Figure cite85†2 shows the high-level workflow of ExVerus. It starts by taking as input a Rust program $\mathcal{P}$ and its specifications $\Phi=(P_{pre},Q_{post})$, and prompts the LLM to generate an initial proof $\Pi_{0}$. For initial proof generation, we directly reuse the prompt of the first phase of AutoVerus (cite55†Yang et al., 2025a ).
+L171: ExVerus then iteratively fixes proof errors via counterexample generation (Section cite12†3.1 ) and mutation-based counterexample-guided repair (Section cite13†3.2 ), until the proof passes the Verus verification, or until it reaches the max attempts.
+L172: ### 3.1 Counterexample Generation with Validation
+L173: 
+L174: Given a target verification error $e_{t}$, ExVerus first tries to synthesize a source-level SMT query (in Z3Py) $Q_{t}$ that produces multiple counterexamples $\Sigma_{t}$. Moreover, if $e_{t}$ is an error related to invariants, ExVerus will invoke a validation module to filter out invalid counterexamples, enabling more grounded repair guided by validated counterexamples.
+L175: Counterexample generation. ExVerus prompts the LLM with the buggy proof $\Pi_{t}$ and the invariant error $e_{t}$, instructing it to translate the Verus proof annotations into an SMT query (in Z3Py) $Q_{t}=QuerySyn(\texttt{LLM},\Pi_{t},e_{t})$. Specifically, ExVerus first constructs a comprehensive source-level SMT query generation prompt template.
+L176: The prompt instructs the LLM to 1) faithfully translate the proof annotations into Z3Py constraints, 2) encode semantic information such as types in the naming convention (for reconstruction), 3) simplify constraints by only focusing on the failing assertion/invariant and the relevant proof annotations, 4) adaptively concretize some variables and avoid quantifiers, and 5) store the concrete variable assignment in a serializable list. The prompt can be found in Appendix cite40†I.1 .
+L177: Note that counterexample generation is not guaranteed to succeed due to the LLM’s inherent unreliability. Therefore, when ExVerus fails to produce enough counterexamples, ExVerus iteratively regenerates SMT queries by reflecting on the prior failures and query execution results to obtain a set of high-quality counterexamples $\Sigma_{t}=Solve(Q_{t})$.
+L178: After obtaining enough SMT-generated counterexamples, ExVerus optionally invokes the validation module to check whether they are truly counterexamples that reveal the verification failure (for invariant errors).
+L179: Counterexample validation. Due to the non-determinism of LLMs and potential threat of hallucination, the generated counterexamples are not guaranteed to be real counterexamples w.r.t. the verification errors. ExVerus leverages a non-LLM verifier-based validation module to validate counterexamples for invariant errors due to the ease of task formulation, while leave the validation for other types of errors as future work.
+L180: That being said, the unchecked counterexamples can still serve as approximate, structured reasoning steps to guide the proof repair. We develop the validation module for invariant errors since invariant generation is a long-standing central challenge in verification, and is recognized as a major bottleneck by prior works (cite77†Flanagan and Leino, 2001 ; cite78†Garg et al., 2014 ; cite79†Kamath et al., 2023 ).
+L181: Specifically, the validation module consists of three steps:
+L182: 
+L183:   1. 1.
+L184: 
+L185: Loop extraction: it isolates and extracts the loop body of the loop containing invariant into a standalone function, denoted as loop_func.
+L186: 
+L187:   2. 2.
+L188: 
+L189: Invariant translation: it then translates the loop invariants into assertions both before the loop body and after the loop body, mimicking one loop execution with invariant checking. We denote the assertions as loop-start assertions and loop-end assertions, respectively.
+L190: 
+L191:   3. 3.
+

@@ -1,0 +1,195 @@
+{
+  "note": "source_manifest.verification is reserved for accountable human checking; machine access is recorded here separately.",
+  "sources": [
+    {
+      "evidence_id": "E001",
+      "path": "papers/evidence-guided-codegen-20261012/evidence/evidence_audit.json",
+      "sha256_bytes": "5bf5aa6d65dcf54585625c8fd237cf7711e751eca5631ba570f4b93af8d4d886",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E002",
+      "path": "logs/public-codegen-20261009/main-v3/manifest.json",
+      "sha256_bytes": "7b03142791a975ac62a4b72b932383fb21760173ac5c0fea80b0ee2ccdf28f45",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E003",
+      "path": "generation/public_benchmark/policy.py",
+      "sha256_bytes": "bb0f93dc5b0f8286f19fa58e202d388c140ea0b752ba89d988c73ec0d2e67f09",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E004",
+      "path": "generation/public_benchmark/runner.py",
+      "sha256_bytes": "607a6ba3fc40f69758f7b2ada1391fb3b470abeaa9856620184a7d1f9cd73e66",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E005",
+      "path": "generation/public_benchmark/task.py",
+      "sha256_bytes": "16de86e245fd245fdeb31fcdbe1a643d27d0df2a650787f155182cc6973e9596",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E006",
+      "path": "papers/evidence-guided-codegen-20261012/evidence/evidence_audit.json",
+      "sha256_bytes": "5bf5aa6d65dcf54585625c8fd237cf7711e751eca5631ba570f4b93af8d4d886",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E007",
+      "path": "logs/evidence-semantics-probe-20261009/plan.json",
+      "sha256_bytes": "96cc60b1006ce4b05f91e0b4ad028cd186b3766d32e888d11559cf5a51132596",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E008",
+      "path": "logs/public-codegen-20261009/families-final/manifest.json",
+      "sha256_bytes": "418ffb45880c655169c326b8918dbb820a7b42dd803f5fd513f288578c548ad7",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E009",
+      "path": "logs/public-codegen-20261009/main-v3/protocol-frozen.md",
+      "sha256_bytes": "59e7dc9729fd226f860be85818cd09eff1cc5f47a466ef80b5b169d113298e67",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E010",
+      "path": "research/analyze_main_public_20261009.py",
+      "sha256_bytes": "ed774b7d05b1c92249bdd8d8123411cc56873acb75a779074b364c50449c65e3",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E011",
+      "path": "README.md",
+      "sha256_bytes": "867c5f307ce95b06e73f06440027d4a1825169c432cf54708d58308c285078c7",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E012",
+      "path": "papers/evidence-guided-codegen-20261012/drafting_record.json",
+      "sha256_bytes": "e4001067baa26c1dae9af82d1e2490099144084e1726e9a3785dd7cfc49d18ca",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E013",
+      "path": "research/data/large-scale-20261009/vericoding-snapshot.json",
+      "sha256_bytes": "f11fada2148ed348bb4cf9505375828ee5cec89e9377990a5b1bc835651d2e4c",
+      "machine_status": "local_source_read",
+      "human_status": "pending"
+    },
+    {
+      "evidence_id": "E101",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E102",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E103",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E104",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E105",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E106",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E107",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E108",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    },
+    {
+      "evidence_id": "E109",
+      "machine_status": {
+        "state": "metadata_and_targeted_source_locators_checked",
+        "by": "Codex citation subagent",
+        "date": "2026-10-12",
+        "scope": "Original metadata and selected claim-support passages; no replication or exhaustive full-paper review"
+      },
+      "human_status": "pending",
+      "detail": "literature/citation_audit.json"
+    }
+  ]
+}

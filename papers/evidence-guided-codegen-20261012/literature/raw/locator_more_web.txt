@@ -1,0 +1,261 @@
+DafnyBench: A Benchmark for Formal Software Verification (https://arxiv.org/html/2406.08467v1)
+citeturn87view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: find({"ref_id":"turn84view0","pattern":"## 3"}); Total lines: 895
+L15:   1. cite5†Abstract L16:   2. cite6†1 Introduction L17:   3. cite7†2 Related Work L18:   4. cite8†3 DafnyBench Dataset Construction L19:     1. cite9†3.1 Sourcing Ground Truth Programs L20:     2. cite10†3.2 Task Design: Fill Hints L21:       1. cite11†Evaluation Metric L22:   5. cite12†4 Experiments L23:     1. cite13†4.1 Prompts & Hyperparameters L24:     2. cite14†4.2 Basic Results L25:     3. cite15†4.3 Difficulty Utilizing Dafny Error Messages L26:     4. cite16†4.4 Difficulty Grows with Program Size L27:     5. cite17†4.5 Difficulty Grows with Hint Quantity L28:   6. cite18†5 Discussion and Conclusions L29:     1. cite19†5.1 Opportunities for Larger Benchmarks L30:     2. cite20†5.2 Benchmark Evaluation Limitations L31:     3. cite21†5.3 Opportunities for Improved LLM Results L32:     4. cite22†5.4 The Promise of Better LLM-Powered Verifiers L33:     5. cite23†5.5 The Promise of Auto-Verifying Program Synthesis L34:   7. cite24†References L35:   8. cite25†A The Minhash Deduplication Algorithm L36:   9. cite26†B Prompt Engineering for Hint Reconstruction L37:     1. cite27†B.1 GPT Model Famly L38:     2. cite28†B.2 Claude 3 Opus L39:     3. cite29†B.3 CodeLlama-7b-Instruct-hf L40:   10. cite30†C Proposals for Evaluating Strength of Generated Specifications L41:   11. cite31†D Repositories of Scraped Dafny Code L42:   12. cite32†E Dafny Verification Examples L43:     1. cite33†E.1 Successful Example L44:     2. cite34†E.2 Failed Example L45:     3. cite35†E.3 Cheat Example L46:     4. cite36†E.4 Another Cheat Example L47:   13. cite37†F Overdetailed Specification L48:   14. cite38†G Ethics Statement L49:   15. cite39†H Reproducibility Statement L87: Clover proposes the most sophisticated benchmark evaluation strategy to date for formally verifiable software: the authors suggest a six-way consistency check between code, docstrings, and hints. Their checker achieves an 87% acceptance rate of correct implementations on the Clover benchmark while rejecting all incorrect implementations [cite49†9 ]. The authors note that equivalence checking with natural language is currently weak, but can hopefully be improved upon [cite49†9 ].
+L88: We do not yet implement the full Clover evaluation scheme in DafnyBench, and instead deem a benchmark program "solved" if a model can make it pass the Dafny verifier without modifying the requires and ensures statements in the program and without using {:verify false} or assume false (see Appendix cite32†E for further details).
+L89: ## 3 DafnyBench Dataset Construction
+L90: ### 3.1 Sourcing Ground Truth Programs
+L91: 
+L92: In total, our DafnyBench benchmark contains 782 `ground_truth` stand-alone Dafny programs that compile. These problems come from the following sources:
+L93: 
+L94:   * •
+L95: GitHub Scrape: We scraped all publicly available Dafny files on GitHub published on the before the end of 2023. The relevant files were returned from the GitHub API using the language:Dafny search command. We then de-duplicated these files using a minhash de-duplication script written by Chenghao Mou (described in Appendix cite25†A ). The de-duplication process reduced the number of .dfy files from $\sim$15,000 to $\sim$5,000.
+L96: We then attempted to verify each of these remaining files using the dafny verify command with a local installation of Dafny 4.3.0, and removed any files that did not verify. At this stage, we removed all of the files from the Clover repository [cite49†9 ], which had already been formatted as benchmark files. This left 1,112 files. We found that 374 of these files lacked ensures statements, and 459 of lacked `assert` and `invariant` clauses.
+L97: We removed the union of these sets, which left us with 556 `ground_truth` files. Out of these files, 113 verify without any compiler hints. To mitigate data contamination, models run on our benchmark should ideally not be trained on data from the repositories listed in Appendix cite31†D .
+L98:   * •
+L99: 
+L100: Clover: We added 62 ground truth textbook Dafny programs provided by the Clover dataset [cite49†9 ]. We formatted these to fit our benchmark style and removed their compiler hints. Out of these files, 23 verify without any compiler hints.
+L101: 
+L102:   * •
+L103: 
+L104: Dafny-synthesis: Finally, we included 164 Dafny programs provided by the dafny-synthesis benchmark. These problems have been translated from the MBPP benchmark [cite50†10 ]. Out of these files, 72 verify without any compiler hints.
+L105: The `ground_truth` programs in our dataset have on average 2.12 methods, 1.03 functions, and 1.40 lemmas. This places the mean complexity of our examples at a level higher than Clover alone, which has only one stand-alone method per example.
+L106: Table 2: Mean and maximum values that describe attributes of a DafnyBench test program.
+L107:  | Mean  | Max
+L108: --- | --- | ---
+L109: # Methods  | $2.12$  | $42$
+L110: # Functions  | $1.03$  | $42$
+L111: # Lemmas  | $1.40$  | $35$
+L112: # Characters  | $1916.47$  | $28736$
+L113: # Hint characters  | $261.23$  | $6019$
+L114: ### 3.2 Task Design: Fill Hints
+L115: 
+L116: We have fully implemented the `fill_hints` task. For this task, we took a `ground_truth` program, removed all of its hints (i.e., all of the `assert` and `invariant` statements in the body of the code), and asked LLM to fill hints back in so that the resulting program could be verified with Dafny.
+L117: 
+L118: cite64†Image: Refer to caption Figure 1: Overview of evaluating LLM on a DafnyBench test program.
+L120: #### Evaluation Metric
+L121: 
+L122: An LLM’s attempt to fill hints back in for a test program is counted as a success if all following conditions are satisfied: 1) The reconstructed program is verified with Dafny; 2) LLM preserves all preconditions (`requires` statements) and postconditions (`ensures` statements); and 3) LLM does not use `{:verify false}` or `{assume false}` to "cheat."
+L123: 
+L124: ⬇
+L125: 
+L126: method LinearSearch<T>(a: array<T>, P: T -> bool) returns (n: int)
+L127: 
+L128: ensures 0 <= n <= a.Length
+L129: 
+L130: ensures n == a.Length || P(a[n])
+L161: ### 4.1 Prompts & Hyperparameters
+L162: 
+L163: We tried to keep prompts and hyperparameters mostly the same across models in order to reduce the difference between model performances that is caused by hyperparameters. However, the prompts are not fully identical. For example, when we ask LLM to simply return the hints-filled program without any explanation, Claude 3 tends to add explanations that interfere with Dafny compilation. Thus, we had to adjust some prompts slightly to fit each model’s peculiarities.
+L164: For hyperparameters, we set `max_tokens` $=4096$, which corresponds to the lowest max output token limit among all the evaluated models, and we set `temperature` $=0.3$. We gave each model up to $n=10$ attempts at a given file. If it succeeded on an attempt before the $n^{\rm th}$, it would be early stopped. If the model failed on any of the intermediate attempts, it received the Dafny error message and was asked to filled in the hints again with the error message taken into consideration.
+L165: If it failed on all $n$ attempts, it was considered to fail on that specific test program.
+L166: ### 4.2 Basic Results
+L167: 
+L168: We tested GPT-4o, GPT-4 Turbo [cite65†23 ], GPT-3.5 Turbo [cite66†24 ], Claude 3 Opus [cite42†2 ], and CodeLlama-7b-Instruct-hf [cite67†25 ] on the $782$-program benchmark. Table cite68†3 shows that Claude 3 Opus performed best, achieving a success rate $\sim 68\%$.
+L169: ### 4.3 Difficulty Utilizing Dafny Error Messages
+L170: 
+L171: Figure cite69†3 shows how the cumulative success rate improved with more attempts $n$. We see that the best models succeeded on the first try about 54%, with rapidly diminishing returns after that, approaching a plateau about 65% for $n\sim 5$. This suggests that the LLMs are not great at taking Dafny error messages into consideration, or struggle to cope with the underlying task.
+L172: Model  | % Success
+L173: --- | ---
+L174: No LLM  | $26.9$
+L175: GPT-3.5 Turbo  | $44.0\pm 1.8$
+L176: GPT-4 Turbo  | $59.8\pm 1.8$
+L177: GPT-4o  | $59.3\pm 1.8$
+L178: Claude 3 Opus  | 67.8 $\pm 1.7$
+L179: CodeLlama-7b-Instruct-hf  | $28.0\pm 1.6$
+L180: 
+L181: Table 3: Models’ success rates at writing formally verifiable hints for DafnyBench, with $n=10$ attempts given. Dafny succeeds in auto-verifying some programs even without hints, corresponding to the “No LLM" $26.9\%$ success rate baseline.
+L182: 
+L183: cite70†Image: [Uncaptioned image] L184: Figure 3: Success rate vs. number of
+L185: attempts given.
+L186: ### 4.4 Difficulty Grows with Program Size
+L187: 
+L188: Figure cite71†4a show that the success rate drops with program size. An obvious explanation could be that there is more to verify and more hints needed. Also, as a program gets longer, there may be more dependencies among variables, functions, methods, and classes, increasing the overall verification difficulty level.
+L189: ### 4.5 Difficulty Grows with Hint Quantity
+L190: 
+L191: Figure cite72†4b shows that the success rate drops with the hint quantity, defined as the number of characters in the lines of compiler hints. In other words, the success rate drops with the amount of work that the LLM needs to do (the amount of text that it needs to insert in the right places).
+L192: 
+L193: cite73†Image: Refer to caption L194: 
+L195: (a)
+L196: 
+L197: cite74†Image: Refer to caption L198: 
+L199: (b)
+L200: Figure 4: Mean success rate of each bin vs. program length (a), and mean success rate of each bin vs. hint quantity (b). The vertical lines indicate the bin boundaries used, where the bins have an almost uniform distribution of the programs. Note that the bins are different for the two metrics. For better visual clarity, the scales are adjusted for both plots and their $x$-axes do not start at $0$ character.
+L201: ## 5 Discussion and Conclusions
+L202: 
+L203: We have assembled the largest machine-learning benchmark to date for formal software verification and made it publicly available on GitHub at cite75†https://github.com/sun-wendy/DafnyBench†github.com . We also tested five large language models on this benchmark, including one open source model.
+L204: We found that Claude 3 Opus achieved $\sim 68\%$ accuracy on our benchmark, with even better success on programs that were shorter or involved less hint text than the benchmark average. GPT-4 Turbo came second with $\sim 60\%$ accuracy. Meanwhile, CodeLlama-7b-Instruct-hf only achieved a marginal improvement in accuracy compared to our "No LLM" baseline.
+--------------------------------------------------------------------------------
+ (https://arxiv.org/pdf/2310.17807)
+citeturn87view1 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 59; Source: find({"ref_id":"turn86view0","pattern":"3.1"}); Total lines: 2669
+L160@P3-4: made available after the anonymous review period.Clover: Closed-Loop Verifiable Code Generation 5
+L161@P4: Listing 1.2: Example of generated docstring.
+L162@P4: " This method returns the maximum value , m , in the integer array a , ensuring
+L163@P4: that m is greater than or equal to all elements in a and that m is indeed
+L164@P4: an element of a"
+L165@P4: Listing 1.3: Example of generated annotations.
+L166@P4: requires a. Length > 0;
+L167@P4: ensures forall k ::0 <= k <a. Length == > a[ k ] <= m
+L168@P4: ensures exists k ::0 <= k <a. Length && a[k ]== m
+L169@P4: Listing 1.4: Example of generated code (loop invariant omitted).
+L170@P4: var i := 0;
+L171@P4: m := a [0];
+L172@P4: while i < a. Length {
+L173@P4: if ( a[i] > m) { m := a[ i ]; }
+L174@P4: i := i +1;
+L175@P4: }
+L176@P4: 3 Clover
+L177@P4: 3.1 Clover Generation Phase
+L178@P4: As mentioned in Section 1, Clover expects the output of the generation phase
+L179@P4: to consist of code, annotations, and docstrings. These could be generated in a
+L180@P4: variety of ways. In this paper, we include a feasibility study for three possible
+L181@P4: instances of the generation phase.
+L182@P4: First, we consider the case where the annotations (i.e. the formal specifications) are provided, and an LLM is asked to generate the code. This is
+L183@P4: analogous to the standard synthesis problem that is well-studied in PL research [26][42][43][65].
+L184@P4: Second, we explore the opposite: generating annotations given the code. This
+L185@P4: use case could be relevant for someone trying to verify legacy code.
+L186@P4: Finally, we explore the possibility of generating both code and annotations
+L187@P4: from a precise natural language description. This use case aligns with our proposed vision that LLMs should include specifications when generating code from
+L188@P4: natural language.
+L189@P4: Our goal with these evaluations is not necessarily to chart new research
+L190@P4: directions, as all of these directions are worthy of a much more targeted research
+L191@P4: effort (and indeed, there are many such efforts underway [6, 44, 75]). Rather,
+L192@P4: our goal here is simply to demonstrate the feasibility of different instances of
+L460@P10: code. If the generated code has the same output as the original code for all five
+L461@P10: tests, then the code is considered to be equivalent (See [61, Appendix A.8]).
+L462@P10: Annotation Equivalence Checking Template Each template can be
+L463@P10: used to formally verify the consistency of two sets of annotations with Dafny.
+L464@P10: For two sets of annotations a and b to be equivalent, the preconditions and
+L465@P10: postconditions of a and b must be verified to be equivalent separately. We use a
+L466@P10: script to automatically create annotation templates.8
+L467@P10: 4.2 Generation Phase
+L468@P10: As mentioned in Section 3.1, we explored three use cases for the generation
+L469@P10: phase. In all cases, we use GPT-4 as the generating LLM.
+L470@P10: First, we ask GPT-4 to generate the code from specifications for each of
+L471@P10: the 60 examples in CloverBench under various conditions. We manually checked
+L472@P10: 7 Since we wanted to concentrate on the most basic scenario initially, our initial dataset
+L473@P10: only features examples containing exactly one method and no helper functions.
+L474@P10-11: 8 Details and an example are shown in [61, Appendix A.7].12 Chuyue Sun, Ying Sheng, Oded Padon, Clark Barrett
+L475@P11: the generated code for correctness. Figure 2a shows the results. The first bar
+L476@P11: (“one try”) shows the result when asking GPT-4 to produce the code, given the
+L477@P11: annotations, in a single try. The next bar allows GPT-4 to try three times, each
+L478@P11: time providing the output of the Dafny compiler and verifier as feedback (See
+L479@P11: [61, Appendix A.6] for an example of using Dafny feedback). The next is similar
+L480@P11: but uses the output of only the Dafny compiler. In the last bar, we allow three
+L481@P11: tries, with feedback from the Dafny compiler and verifier, and we also provide
+L482@P11: the docstring. We see that, at its best, GPT-4 can correctly provide the code
+L483@P11: for 53 out of 60 examples, and it does best when it gets the most feedback from
+L484@P11: Dafny. This suggests that GPT-4 is already performing reasonably well as a code
+L1137@P28: product of the entire column is 0.59). This is because, in practice, they are not
+L1138@P28: independent: easier examples that pass the tests on one edge tend to also pass
+L1139@P28: the tests on other edges. In C2 and C6, doc2anno has a zero acceptance rate,
+L1140@P28: and the overall acceptance is zero. In C1 and C3, none of the edges are zero,
+L1141@P28: but the overall acceptance is still zero. Note that the anno2doc and code2doc
+L1142@P28: acceptance rate is high for C1, C2, and C6. This is because our current docstring
+L1143@P28: equivalence checker is good at detecting contradictory information but not the
+L1144@P28: addition or omission of information due to a slightly strengthened or weakened
+L1145@P28: annotation.
+L1146@P28: A.3 Proof of Theorem 3
+L1147@P28: 1. Let (x, y) be sampled from D with the condition (x, y) ∈ G. From Assumption 1, with probability ≥ c1, we have y ∈ fM(x). Then, according to
+L1148@P28: Assumption 2 and the perfect equivalence oracle, with probability pc, the
+L1149@P28: reconstruction from x to y will succeed with probability ≥ l. Therefore, the
+L1150@P28: accept probability is ≥ l · pc · c1, denoted as A.
+L1151@P28: 2. Let (x, y) be sampled from D with the condition (x, y) ∈/ G. There are 3
+L1152@P28: cases:
+L1153@P28: • From Assumption 1, with probability c0, there is y ∈ fM(x), and it is
+L1154@P28: trivial that the accept probability ≤ 1.
+L1155@P28: • With probability 1 − c0, there is y /∈ fM(x). Then from Assumption 2,
+L1156@P28: with probability pc, the reconstruction from x to y will succeed with
+L1157@P28: probability ≤ u.
+L1158@P28: • Finally, the last case is that the bounds in Assumption 2 do not hold,
+L1159@P28: which will happen with probability (1 −c0)(1−pc). Clearly, in this case,
+L1160@P28: the accept probability ≤ 1.
+L1161@P28: By aggregating all the cases, the accept probability is ≤ c0 + (1 − c0) · pc ·
+L1162@P28: u + (1 − c0)(1 − pc).
+L1163@P28: 13 Note that our incorrect examples are constructed with the aim of making them hard
+L1164@P28: to reject, i.e., by considering only the cases that can pass Dafny verification. The
+L1165@P28: measured values for R are thus likely to be higher than the value for a more natural
+--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/html/2601.05385v1)
+citeturn87view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: find({"ref_id":"turn82view1","pattern":"Preventing Code Modifications"}); Total lines: 1026
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: cite0†Back to arXiv L13: 
+L14: cite1†Why HTML?†info.arxiv.org cite2†Report Issue cite3†Back to Abstract cite4†Download PDF L15:   1. cite5†Abstract. L16:   2. cite6†1 Introduction L17:   3. cite7†2 Related Work L18:     1. cite8†Inference-time methods L19:     2. cite9†Model fine-tuning L20:   4. cite10†3 Technical Contribution L21:     1. cite11†3.1 Preventing Code Modifications L22:     2. cite12†3.2 Removing Unnecessary Clauses L23:     3. cite13†3.3 Incorporating Domain Knowledge L24:   5. cite14†4 DafnyPro L25:     1. cite15†4.1 Algorithm L26:     2. cite16†4.2 Evaluation L27:       1. cite17†Dataset Quality L28:       2. cite18†Setup L29:       3. cite19†Results L30:   6. cite20†5 Fine-Tuned Models for Efficient Deployment L31:     1. cite21†5.1 Data Curation L32:     2. cite22†5.2 Evaluation L33:       1. cite23†Setup L34:       2. cite24†Results L35:   7. cite25†6 Conclusion and Future Work L36:   8. cite26†References L37:   9. cite27†A Appendix L38:     1. cite28†A.1 Diff-Checker Details L39:     2. cite29†A.2 Pruning Details L40:     3. cite30†A.3 Hint Augmentation Details L41:     4. cite31†A.4 Benchmark Details L42:     5. cite32†A.5 LLM Usage for Hint Generation L43:     6. cite33†A.6 Dataset Correction L44:     7. cite34†A.7 Finetuning Hyperparameters L45: cite35†License: arXiv.org perpetual non-exclusive license†info.arxiv.org L46: 
+L47: arXiv:2601.05385v1 [cs.SE] 08 Jan 2026
+L48: # DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+L49: 
+L50: DOI: cite36†XXXXXXX.XXXXXXX†doi.org Conference: ; 11th January, 2026; Rennes, France
+L51: Debangshu Banerjee^{2}^{2} 2 The author worked on this project during their internship at Amazon Web Services in Boston, MA, US. Affiliation: UIUC, Champaign, IL, USA email: db21@illinois.edu , Olivier Bouissou Affiliation: Amazon Web Services, Boston, MA, US email: obouisso@amazon.com and Stefan Zetzsche Affiliation: Amazon Web Services, London, UK email: stefanze@amazon.co.uk
+L52: 
+L53: 2018
+L80: #### Model fine-tuning
+L81: 
+L82: Complementary work focuses on adapting model weights to improve annotation generation. Dafny-Annotator (cite46†Poesia et al., 2024 ) performs supervised fine-tuning on DafnySynth, a synthetic dataset derived from DafnyBench. PREFACE (cite47†Jha et al., 2025 ) applies preference-based reinforcement learning with reward signals from the formal verifier to iteratively improve verification success. Our fine-tuned models build on these insights while maintaining resource efficiency.
+L83: ## 3. Technical Contribution
+L84: 
+L85: DafnyPro takes an unannotated base program with its specifications and uses an LLM to generate annotations that prove correctness with respect to those specifications. We identify three key limitations in existing approaches and propose targeted solutions that yield significant improvements across multiple datasets. Below, we describe each solution in detail.
+L86: ### 3.1. Preventing Code Modifications
+L87: 
+L88: ⬇
+L89: 
+L90: b := a; // Base code altered (was: b := a+1)
+L91: 
+L92: while ( b < n )
+L93: 
+L94: invariant a <= b <= n
+L95: 
+L96: {
+L97: 
+L98: if ( X[b] <= p ) {
+L99: 
+L100: var t := X[b];
+L101: 
+L102: X[b] := X[a];
+L103: 
+L104: X[a] := t;
+L105: 
+L106: a := a + 1;
+L107: 
+L108: }
+L109: 
+L110: b := b + 1;
+L111: 
+L112: }
+L113: 
+L114: Figure 2. LLM modifies base code instead of only adding annotations, compromising soundness.
+L115: Existing works (cite38†Loughridge et al., 2024 ; cite39†Sun et al., 2024 ) regenerate the entire Dafny program with annotations rather than generating annotations separately, since the latter is difficult when loops appear in multiple locations, are nested, or contain assertions at various points. However, regenerating the entire program risks altering its logic—for example, by changing variable initialization as shown in Fig. cite41†2 (base code in Appendix cite28†A.1 ).
+L116: Such modifications, often called "cheating," are not reliably detected by the ad hoc checkers used in (cite38†Loughridge et al., 2024 ), which miss corner cases and compromise soundness. Similar behavior has been observed in coding and theorem-proving tasks, termed "reward hacking" or "reward tampering" (cite48†Taylor et al., 2025 ; cite49†Rafailov et al., 2024 ).
+L117: Our diff-checker takes a principled approach: it uses the Dafny parser to extract added annotations (e.g., invariants, assertions) and verifies that the regenerated code, once stripped of annotations, is identical to the original base code. This guarantees soundness and provides a systematic method for parsing annotations, useful for data collection.
+--------------------------------------------------------------------------------
+Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents (https://arxiv.org/html/2609.00065v2)
+citeturn87view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: find({"ref_id":"turn84view2","pattern":"## 2 What"}); Total lines: 496
+L0: ##### Report GitHub Issue
+L1: 
+L2: [Button: ×]
+L3: 
+L4: Title: [Input: Enter title]
+L5: 
+L6: Content selection saved. Describe the issue below:
+L7: 
+L8: Description:
+L9: 
+L10: [Button: Submit without GitHub] [Button: Submit in GitHub]
+L11: 
+L12: cite0†Back to arXiv L13: 
+L14: cite1†Why HTML?†info.arxiv.org cite2†Report Issue cite3†Back to Abstract cite4†Download PDF L15:   1. cite5†Abstract L16:   2. cite6†1 Introduction L17:     1. cite7†1.1 Related work L18:   3. cite8†2 What an agent skill is L19:     1. cite9†2.1 Progressive disclosure L20:   4. cite10†3 What the library covers L21:   5. cite11†4 Can descriptions distinguish among skills? L22:   6. cite12†5 Do the skills a workflow needs fit in context? L23:   7. cite13†6 Limitations L24:     1. cite14†No task-level evaluation. L25:     2. cite15†Selection is measured on the corpus, not in an agent. L26:     3. cite16†A selected skill can still fail scientifically. L27:     4. cite17†Reach is not use. L28:     5. cite18†Host portability is intended, not tested. L29:     6. cite19†Uneven review and incomplete CI coverage. L30:     7. cite20†Our measurements depend on stated conventions. L31:     8. cite21†A fixed snapshot of a changing library. L32:   8. cite22†7 Availability and citation L33:     1. cite23†Acknowledgements. L34:     2. cite24†Competing interests. L35:   9. cite25†References L36:   10. cite26†A Measurement conventions and the token ledger L37:     1. cite27†Tokenizer and corpus. L38:     2. cite28†Reproducible practice in computational science. L39:     3. cite29†A.1 The full token ledger L40:   11. cite30†B What a skill contains L41:     1. cite31†B.1 The instruction file as a document L42:     2. cite32†B.2 Declared capability and provenance L43:     3. cite33†B.3 Portability L44:     4. cite34†B.4 The skill directory, and a skill as it ships L45:   12. cite35†C What the library covers, in detail L46:     1. cite36†Package workflows. L47:     2. cite37†Data retrieval. L48:     3. cite38†Research platforms and laboratory automation. L49:     4. cite39†Method and judgment. L50:   13. cite40†D Design rules, and what they cost L93: Recent work examines how skill libraries are built, catalogued and evaluated [cite79†24 , cite80†25 , cite81†26 ], how they behave as they grow [cite82†27 ], and what happens when an agent must retrieve its own skills from a large uncurated collection [cite83†28 ], and what happens when its tool layer already returns strict, schema-validated observations [cite84†29 ]. The retrieval study and the re-analysis both report benefits shrinking toward the no-skill score, the former once the agent must select the skill itself.
+L94: Section cite11†4 therefore measures how distinct the short descriptions that stay in context are. Other work treats agent-loadable instruction files as an attack surface [cite85†30 , cite86†31 , cite87†32 , cite88†33 , cite89†34 , cite90†35 ]. Appendix cite45†E places the library’s security material in this context. Appendix cite26†A relates skills to workflow engines and data standards, which address the same procedural problem for pipelines.
+L95: ## 2 What an agent skill is
+L96: A skill is a directory. At minimum it contains SKILL.md: a YAML header followed by Markdown instructions written for an agent rather than a human reader. The header is constrained to six fields: name, description, license, compatibility, allowed-tools and metadata. Any other top-level key is a specification error.
+L97: The specification recommends three conventional subdirectories: references/ for additional documentation, scripts/ for code, and assets/ for templates and static resources, while permitting other files and directories. We adopt a stricter layout and allow only SKILL.md and those three subdirectories inside each skill (Appendix cite40†D ). Appendix cite30†B describes the directory structure and instruction-file contents, and shows a skill in its shipped form.
+L98: For the skills we write ourselves, our authoring workflow usually begins with a language-model draft. We then review the text manually and test the documented workflow for basic functionality when that workflow’s environment is available. We revise each skill as we learn when it works and when it does not, drawing on our own use, community feedback and outside contributions. These steps are authoring and maintenance, not domain validation; Appendix cite45†E states what the automated checks cover.
+

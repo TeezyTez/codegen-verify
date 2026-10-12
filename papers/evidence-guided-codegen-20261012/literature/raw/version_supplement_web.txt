@@ -1,0 +1,298 @@
+[2608.09277] P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation (https://arxiv.org/abs/2608.09277)
+citeturn91view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2608.09277","lineno":19}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Artificial Intelligence
+L7: 
+L8: [Submitted on 10 Aug 2026]
+L9: # Title:P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation
+L10: 
+L11: Authors:cite5†Zenan Li , cite6†Ziran Yang , cite7†Peiyang Song , cite5†Zhaoyu Li , cite8†Kaiyu Yang L12: 
+L13: View a PDF of the paper titled P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation, by Zenan Li and 4 other authors
+L14: 
+L15: cite9†View PDF cite10†HTML (experimental) L16: > Abstract:Verified code generation asks a large language model (LLM) to generate both an executable program and a machine-checkable proof that the program meets a formal specification, promising software that is correct by construction. The de facto workflow decouples the two halves of the problem: first synthesize a program, then attempt to prove it correct. We observe that this sequential pipeline can be both ineffective and inefficient in practice.
+L17: A program generated without anticipating its proof can be subtly incorrect or structurally difficult to verify, forcing the LLM into brittle repair loops that alternate between patching the code and patching the proof.
+L18: Inspired by Dijkstra's view that a program and its correctness argument should be developed hand in hand, we propose $P^3$, an LLM-based agentic workflow that first derives a unified program-and-proof plan from the specification, then elaborates the implementation and proof scaffold under this shared plan.
+L19: To evaluate verified code generation in realistic settings, we further introduce Lean4Commit0, a repository-derived, library-level benchmark built by extracting core APIs from real-world software repositories and translating their requirements, including relational specifications across APIs, into Lean tasks. Using four frontier LLM backends, we evaluate $P^3$ on Verina, AlgoVeri, and our Lean4Commit0 benchmark, where it achieves the highest solve rate in every benchmark--model setting.
+L20: Compared with the stronger baseline, it improves solve rates by 4.6--11.2 percentage points and reduces per-task API cost by up to roughly 40\% and wall-clock time by up to roughly 37\% on the difficult subset of each benchmark. A targeted ablation further shows gains of 3.3--8.3 points over implementation-only planning, isolating the benefit of planning the program and proof jointly.
+L21: Subjects:  | Artificial Intelligence (cs.AI); Programming Languages (cs.PL)
+L22: Cite as:  | cite11†arXiv:2608.09277 [cs.AI]
+L23:    | (or cite12†arXiv:2608.09277v1 [cs.AI] for this version)
+L24:    | cite13†https://doi.org/10.48550/arXiv.2608.09277†doi.org arXiv-issued DOI via DataCite
+L25: ## Submission history
+L26: 
+L27: From: Zenan Li [cite14†view email ]
+L28: [v1] Mon, 10 Aug 2026 08:33:18 UTC (43 KB)
+L29: 
+L30: Full-text links:
+L31: 
+L32: ## Access Paper:
+L33: 
+L34: View a PDF of the paper titled P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation, by Zenan Li and 4 other authors
+L35: 
+L36:   * cite9†View PDF L37:   * cite10†HTML (experimental) L38:   * cite15†TeX Source L39: 
+L40: cite16†view license†creativecommons.org L41: ### Current browse context:
+L42: 
+L43: cs.AI
+L44: 
+L45: cite17†< prev |   cite18†next > L46: 
+L47: cite19†new | cite20†recent | cite21†2026-08 L48: 
+L49: Change to browse by:
+L50: 
+L51: cite22†cs L52: cite23†cs.PL L53: 
+L54: ### References & Citations
+L55: 
+L56:   * cite24†NASA ADS†ui.adsabs.harvard.edu L57:   * cite25†Google Scholar†scholar.google.com L58:   * cite26†Semantic Scholar†api.semanticscholar.org L59: 
+L60: [Button: export BibTeX citation] Loading...
+L61: 
+L62: ## BibTeX formatted citation
+L63: 
+L64: [Button: ×]
+L65: 
+L66: loading...
+L67: 
+L68: Data provided by:
+L69: 
+L70: ### Bookmark
+L71: 
+L72: [Input] Bibliographic Tools
+L73: # Bibliographic and Citation Tools
+L74: 
+L75: [Input] Bibliographic Explorer Toggle
+L76: 
+L77: Bibliographic Explorer (cite27†What is the Explorer?†info.arxiv.org )
+L78: 
+L79: [Input] Connected Papers Toggle
+L80: 
+L81: Connected Papers (cite28†What is Connected Papers?†www.connectedpapers.com )
+L82: 
+L83: [Input] Litmaps Toggle
+L84: 
+L85: Litmaps (cite29†What is Litmaps?†www.litmaps.co )
+L86: 
+L87: [Input] scite.ai Toggle
+L88: 
+L89: scite Smart Citations (cite30†What are Smart Citations?†www.scite.ai )
+L90: 
+L91: [Input] Code, Data, Media
+L92: # Code, Data and Media Associated with this Article
+L93: 
+L94: [Input] alphaXiv Toggle
+L95: 
+L96: alphaXiv (cite31†What is alphaXiv?†alphaxiv.org )
+L97: 
+L98: [Input] Links to Code Toggle
+L99: 
+L100: CatalyzeX Code Finder for Papers (cite32†What is CatalyzeX?†www.catalyzex.com )
+L101: 
+L102: [Input] DagsHub Toggle
+L103: 
+L104: DagsHub (cite33†What is DagsHub?†dagshub.com )
+L105: 
+L106: [Input] GotitPub Toggle
+L107: 
+L108: Gotit.pub (cite34†What is GotitPub?†gotit.pub )
+L109: 
+L110: [Input] Huggingface Toggle
+L111: 
+L112: Hugging Face (cite35†What is Huggingface?†huggingface.co )
+L113: 
+L114: [Input] ScienceCast Toggle
+L115: ScienceCast (cite36†What is ScienceCast?†sciencecast.org )
+L116: 
+L117: [Input] Demos
+L118: # Demos
+L119: 
+L120: [Input] Replicate Toggle
+L121: 
+L122: Replicate (cite37†What is Replicate?†replicate.com )
+L123: 
+L124: [Input] Spaces Toggle
+L125: 
+L126: Hugging Face Spaces (cite38†What is Spaces?†huggingface.co )
+L127: 
+L128: [Input] Spaces Toggle
+L129: 
+L130: TXYZ.AI (cite39†What is TXYZ.AI?†txyz.ai )
+L131: 
+L132: [Input] Related Papers
+L133: # Recommenders and Search Tools
+L134: 
+L135: [Input] Link to Influence Flower
+L136: 
+L137: Influence Flower (cite40†What are Influence Flowers?†influencemap.cmlab.dev )
+L138: 
+L139: [Input] Core recommender toggle
+L140: 
+L141: CORE Recommender (cite41†What is CORE?†core.ac.uk )
+L142: 
+L143:   * Author
+L144:   * Venue
+L145:   * Institution
+L146:   * Topic
+L147: 
+L148: [Input] About arXivLabs
+L149: # arXivLabs: experimental projects with community collaborators
+L150: 
+L151: arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+L152: 
+L153: Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+L154: Have an idea for a project that will add value for arXiv's community? cite42†Learn more about arXivLabs†info.arxiv.org .
+L155: 
+L156: cite43†Which authors of this paper are endorsers? | Disable MathJax (cite44†What is MathJax?†info.arxiv.org )
+L157: 
+L158: We gratefully acknowledge support from our major funders, cite45†member institutions†info.arxiv.org , , and all contributors.
+L159: cite46†About†info.arxiv.org · cite47†Help†info.arxiv.org · cite48†Contact†info.arxiv.org · cite49†Subscribe†info.arxiv.org · cite50†Copyright†info.arxiv.org · cite51†Privacy†info.arxiv.org · cite52†Accessibility†info.arxiv.org · cite53†Operational Status (opens in new tab)†status.arxiv.org L160: 
+L161: Major funding support from
+--------------------------------------------------------------------------------
+[2609.00065] Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents (https://arxiv.org/abs/2609.00065)
+citeturn91view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2609.00065","lineno":19}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Computation and Language
+L7: 
+L8: [Submitted on 30 Aug 2026 (cite5†v1 ), last revised 2 Sep 2026 (this version, v2)]
+L9: # Title:Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents
+L10: 
+L11: Authors:cite6†Timothy Kassis , cite7†Vinayak Agarwal , cite8†Yuhuan He , cite9†Darshil Patel , cite10†Aubrey M. Brueckner L12: 
+L13: View a PDF of the paper titled Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents, by Timothy Kassis and 4 other authors
+L14: 
+L15: cite11†View PDF cite12†HTML (experimental) L16: > Abstract:A language-model agent asked to analyse an experiment will usually return working code. Whether the analysis is defensible is a different question. A defensible analysis depends on procedural choices: which test the field accepts, which identifier namespace is authoritative, and which caveats must accompany a result.
+L17: We present Scientific Agent Skills, an open library of 163 such procedures in 16 areas of practice, including genomics, cheminformatics, medical imaging, study design and scientific communication. Each skill is a directory built around a versioned, human-readable instruction file. An agent loads the file only when a task calls for it; the directory often also contains reference material and runnable scripts. We report no task-level evaluation and no host selection rate.
+L18: We measure two properties of the documentation corpus: the always-resident descriptions of all 163 skills cost 7.1% of a 200,000-token window, and the median documented workflow fits within 23.9% of it, although 29 of 46 would overflow if every reference file were loaded. Openly licensed and available at cite13†this https URL†github.com .
+L19: Comments:  | 31 pages, 16 figures, 2 tables, 1 listing. v2: adds a figure of how the documented workflows compose skills, quotes the skill clauses behind the introduction's examples, replaces the appendix listing with a procedural skill, names supported hosts and the pinned install path, and reports the two corpus findings in the abstract
+L20: Subjects:  | Computation and Language (cs.CL); Artificial Intelligence (cs.AI)
+L21: Cite as:  | cite14†arXiv:2609.00065 [cs.CL]
+L22:    | (or cite15†arXiv:2609.00065v2 [cs.CL] for this version)
+L23:    | cite16†https://doi.org/10.48550/arXiv.2609.00065†doi.org arXiv-issued DOI via DataCite
+L24: ## Submission history
+L25: 
+L26: From: Timothy Kassis [cite17†view email ]
+L27: cite5†[v1] Sun, 30 Aug 2026 15:40:35 UTC (2,386 KB)
+L28: [v2] Wed, 2 Sep 2026 21:50:40 UTC (2,995 KB)
+L29: 
+L30: Full-text links:
+L31: 
+L32: ## Access Paper:
+L33: 
+L34: View a PDF of the paper titled Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents, by Timothy Kassis and 4 other authors
+L35: 
+L36:   * cite11†View PDF L37:   * cite12†HTML (experimental) L38:   * cite18†TeX Source L39: 
+L40: cite19†view license†creativecommons.org L41: ### Current browse context:
+L42: 
+L43: cs.CL
+L44: 
+L45: cite20†< prev |   cite21†next > L46: 
+L47: cite22†new | cite23†recent | cite24†2026-09 L48: 
+L49: Change to browse by:
+L50: 
+L51: cite25†cs L52: cite26†cs.AI L53: 
+L54: ### References & Citations
+L55: 
+L56:   * cite27†NASA ADS†ui.adsabs.harvard.edu L57:   * cite28†Google Scholar†scholar.google.com L58:   * cite29†Semantic Scholar†api.semanticscholar.org L59: 
+L60: [Button: export BibTeX citation] Loading...
+L61: 
+L62: ## BibTeX formatted citation
+L63: 
+L64: [Button: ×]
+L65: 
+L66: loading...
+L67: 
+L68: Data provided by:
+L69: 
+L70: ### Bookmark
+L71: 
+L72: [Input] Bibliographic Tools
+L73: # Bibliographic and Citation Tools
+L74: 
+L75: [Input] Bibliographic Explorer Toggle
+L76: 
+L77: Bibliographic Explorer (cite30†What is the Explorer?†info.arxiv.org )
+L78: 
+L79: [Input] Connected Papers Toggle
+L80: 
+L81: Connected Papers (cite31†What is Connected Papers?†www.connectedpapers.com )
+L82: 
+L83: [Input] Litmaps Toggle
+L84: 
+L85: Litmaps (cite32†What is Litmaps?†www.litmaps.co )
+L86: 
+L87: [Input] scite.ai Toggle
+L88: 
+L89: scite Smart Citations (cite33†What are Smart Citations?†www.scite.ai )
+L90: 
+L91: [Input] Code, Data, Media
+L92: # Code, Data and Media Associated with this Article
+L93: 
+L94: [Input] alphaXiv Toggle
+L95: 
+L96: alphaXiv (cite34†What is alphaXiv?†alphaxiv.org )
+L97: 
+L98: [Input] Links to Code Toggle
+L99: 
+L100: CatalyzeX Code Finder for Papers (cite35†What is CatalyzeX?†www.catalyzex.com )
+L101: 
+L102: [Input] DagsHub Toggle
+L103: 
+L104: DagsHub (cite36†What is DagsHub?†dagshub.com )
+L105: 
+L106: [Input] GotitPub Toggle
+L107: 
+L108: Gotit.pub (cite37†What is GotitPub?†gotit.pub )
+L109: 
+L110: [Input] Huggingface Toggle
+L111: 
+L112: Hugging Face (cite38†What is Huggingface?†huggingface.co )
+L113: 
+L114: [Input] ScienceCast Toggle
+L115: ScienceCast (cite39†What is ScienceCast?†sciencecast.org )
+L116: 
+L117: [Input] Demos
+L118: # Demos
+L119: 
+L120: [Input] Replicate Toggle
+L121: 
+L122: Replicate (cite40†What is Replicate?†replicate.com )
+L123: 
+L124: [Input] Spaces Toggle
+L125: 
+L126: Hugging Face Spaces (cite41†What is Spaces?†huggingface.co )
+L127: 
+L128: [Input] Spaces Toggle
+L129: 
+L130: TXYZ.AI (cite42†What is TXYZ.AI?†txyz.ai )
+L131: 
+L132: [Input] Related Papers
+L133: # Recommenders and Search Tools
+L134: 
+L135: [Input] Link to Influence Flower
+L136: 
+L137: Influence Flower (cite43†What are Influence Flowers?†influencemap.cmlab.dev )
+L138: 
+L139: [Input] Core recommender toggle
+L140: 
+L141: CORE Recommender (cite44†What is CORE?†core.ac.uk )
+L142: 
+L143:   * Author
+L144:   * Venue
+L145:   * Institution
+L146:   * Topic
+L147: 
+L148: [Input] About arXivLabs
+L149: # arXivLabs: experimental projects with community collaborators
+L150: 
+L151: arXivLabs is a framework that allows collaborators to develop and share new arXiv features directly on our website.
+L152: 
+L153: Both individuals and organizations that work with arXivLabs have embraced and accepted our values of openness, community, excellence, and user data privacy. arXiv is committed to these values and only works with partners that adhere to them.
+L154: Have an idea for a project that will add value for arXiv's community? cite45†Learn more about arXivLabs†info.arxiv.org .
+L155: 
+L156: cite46†Which authors of this paper are endorsers? | Disable MathJax (cite47†What is MathJax?†info.arxiv.org )
+L157: 
+L158: We gratefully acknowledge support from our major funders, cite48†member institutions†info.arxiv.org , , and all contributors.
+L159: cite49†About†info.arxiv.org · cite50†Help†info.arxiv.org · cite51†Contact†info.arxiv.org · cite52†Subscribe†info.arxiv.org · cite53†Copyright†info.arxiv.org · cite54†Privacy†info.arxiv.org · cite55†Accessibility†info.arxiv.org · cite56†Operational Status (opens in new tab)†status.arxiv.org L160: 
+L161: Major funding support from
+

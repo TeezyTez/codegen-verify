@@ -1,0 +1,685 @@
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/abs/2601.05385)
+citeturn89academia12 [wordlim: 200] Published: 9 months ago; Title: DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+Title: DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+Authors: Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche
+Date: Thu Jan  8 21:16:55 2026
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. We evaluate DafnyPro using Claude Sonnet 3.5 and 3.7 on four benchmarks: Clover, MBPP-Dafny, HumanEval-Dafny, and DafnyBench, achieving consistent performance gains in all cases. Notably, on DafnyBench, the most challenging benchmark, Claude Sonnet 3.5 enhanced with DafnyPro achieves 86% correct proofs, a 16 pp improvement over the base model. We also fine-tune two Qwen models on training data derived from verification attempts by larger models enhanced with DafnyPro. Our 7B and 14B models achieve 68% and 70% correct proofs on DafnyBench, respectively, demonstrating that smaller models can maintain high verification accuracy.--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs | Article Information | J-GLOBAL (https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=202602206906056551)
+citeturn89search0 [wordlim: 200] Published: 9 months ago; Crawled: 2 weeks ago; # DafnyPro: LLM-Assisted Automated Verification for Dafny ProgramsDafnyPro:DafnyプログラムのためのLLM支援型自動検証〖JST機械翻訳〗 ... Publication year： Jan. 08, 2026  update date on preprint server： Jan.
+
+Preprint
+
+J-GLOBAL ID：202602206906056551   Reference number：26P0007810
+
+# DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+DafnyPro:DafnyプログラムのためのLLM支援型自動検証〖JST機械翻訳〗
+
+  * Publisher site Copy service
+  * Access JDreamⅢ for advanced search and analysis.
+
+This is a preprint. See "About preprints" page for more details.
+
+To check the article posted on the arXiv has a history of withdrawal, see the primary information .
+
+Author (3)：
+
+Banerjee Debangshu
+
+About Banerjee Debangshu
+
+  * Search "202650001272006825"
+  * Search "Banerjee Debangshu"
+
+, 
+
+Bouissou Olivier
+
+About Bouissou Olivier
+
+  * Search "202650001279664372"
+  * Search "Bouissou Olivier"
+
+, 
+
+Zetzsche Stefan
+
+About Zetzsche Stefan
+
+  * Search "202650001280555820"
+  * Search "Zetzsche Stefan"
+
+Material：
+
+arXiv
+
+About arXiv
+
+  * Search "O7000B"
+
+Publication year： Jan. 08, 2026  update date on preprint server： Jan. 12, 2026
+JST Material Number： O7000B  Document type： Preprint
+Article type： プレプリント  Language： ENGLISH (EN)
+
+Abstract/Point：
+
+Abstract/Point
+Japanese summary of the article(about several hundred characters).
+All summary is available on JDreamIII(charged).
+On J-GLOBAL, this item will be available after more than half a year after the record posted. In addtion, medical articles require to login to MyJ-GLOBAL.
+
+We present DafnyPro, an infere...
+
+Register(free) or Log In to access 
+
+Please login to MyJ-GLOBAL to see full information. You also need to select "Display abstract, etc. of medical articles" in your MyJ-GLOBAL account page in order to see abstracts, etc. of medical articles.
+
+Thesaurus term：
+
+Thesaurus term/Semi thesaurus term
+Keywords indexed to the article.
+All keywords is available on JDreamIII(charged).
+On J-GLOBAL, this item will be available after more than half a year after the record posted. In addtion, medical articles require to login to MyJ-GLOBAL.
+
+精度
+
+About 精度
+
+  * Search "精度"
+  * Detailed information
+--------------------------------------------------------------------------------
+dblp: Debangshu Banerjee 0001 (https://dblp.org/pid/268/6756-1)
+citeturn89search1 [wordlim: 200] Published: 5 months ago; Crawled: 5 months ago; DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. ...       * plain text
+    * share record
+
+      * Bluesky
+      * Reddit
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/journals/corr/abs-2601-05385
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche:
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. CoRR abs/2601.05385 (2026)
+  * Image: Informal and Other Publications
+
+[i12]
+
+    * view
+
+      * electronic edition via DOI (open access)
+      * details & citations
+
+authority control:
+
+      *  
+
+    * export record
+
+      * BibTeX
+      * RIS
+      * RDF N-Triples
+      * RDF Turtle
+      * RDF/XML
+      * XML
+      * plain text
+
+dblp key:
+
+      * journals/corr/abs-2603-25111
+
+    * ask others
+
+      * Google
+      * Google Scholar
+--------------------------------------------------------------------------------
+DafnyPro:DafnyプログラムのためのLLM支援型自動検証〖JST機械翻訳〗 | 文献情報 | J-GLOBAL 科学技術総合リンクセンター (https://jglobal.jst.go.jp/detail?JGLOBAL_ID=202602206906056551)
+citeturn89search2 [wordlim: 200] Published: 9 months ago; Crawled: 2 weeks ago; # DafnyPro:DafnyプログラムのためのLLM支援型自動検証〖JST機械翻訳〗
+
+プレプリント
+
+J-GLOBAL ID：202602206906056551   整理番号：26P0007810
+
+# DafnyPro:DafnyプログラムのためのLLM支援型自動検証〖JST機械翻訳〗
+
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+この文献はプレプリントです。プレプリントについてはこちらをご確認ください。
+
+arXiv掲載論文の撤回有無については、一次情報をご確認下さい。
+
+著者 (3件)：
+
+Banerjee Debangshu
+
+Bouissou Olivier
+
+
+Zetzsche Stefan
+
+
+資料名：
+
+arXiv
+
+arXiv について
+
+  * JST資料番号 O7000B ですべてを検索
+
+発行年： 2026年01月08日  プレプリントサーバーでの情報更新日： 2026年01月12日
+JST資料番号： O7000B  資料種別： プレプリント
+記事区分： プレプリント  言語： 英語 (EN)
+
+抄録/ポイント：
+
+抄録/ポイント
+文献の概要を数百字程度の日本語でまとめたものです。
+部分表示の続きは、JDreamⅢ(有料)でご覧頂けます。
+J-GLOBALでは書誌(タイトル、著者名等)登載から半年以上経過後に表示されますが、医療系文献の場合はMyJ-GLOBALでのログインが必要です。
+
+Dafnyにおける検証アノテーションを生成するためにLLMを強化する推論時間フレームワークであるDafnyProを提案した。DafnyProは,基本プログラム論理の修正を妨げるディフチェッカー,不必要な不変量を除去するプルーナー,および予め定義された問題非依存証明戦略を検索し,適用するヒントオーギュメンテーションシステムの3つの主要コンポーネントから構成されている。Clover,MBPP-Dafny,HumanEval-Dafny,およびDafnyBenchの4つのベンチマーク上でClaude Sonnet 3.5および3.7を用いてDafnyProを評価し,すべてのケースにおいて一貫した性能向上を達成した。特に,最も挑戦的なベンチマークであるDafnyBench上では,DafnyProにより強化されたClaude Sonnet 3.5は,基本モデルよりも16のpp改良である86%の正しい証明を達成した。--------------------------------------------------------------------------------
+Olivier Bouissou's research works (https://www.researchgate.net/scientific-contributions/Olivier-Bouissou-2333697777)
+citeturn89search3 [wordlim: 200] Crawled: 5 months ago; DafnyPro: LLM-Assisted Automated Verification for Dafny Programs ... ## Publication stats
+
+# Olivier Bouissou’s scientific contributions
+
+## What is this page?
+
+* * *
+
+This page lists works of an author who doesn't have a ResearchGate profile or hasn't added the works to their profile yet. It is automatically generated from public (personal) data to further our legitimate goal of comprehensive and accurate scientific recordkeeping. If you are this author and want this page removed, please let us know.
+
+## Publications (3)
+
+* * *
+
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+  * Preprint
+
+January 2026
+
+Debangshu Banerjee
+
+·
+
+Olivier Bouissou
+
+·
+
+Stefan Zetzsche
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. --------------------------------------------------------------------------------
+dblp: Olivier Bouissou (https://dblp.org/pid/56/6515.html)
+citeturn89search4 [wordlim: 200] Published: 4 months ago; Crawled: 3 months ago;   * What is the meaning of the colors in the publication lists? ... DafnyPro: LLM-Assisted Automated Verification for Dafny Programs.
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/journals/corr/abs-2601-05385
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche:
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. CoRR abs/2601.05385 (2026)
+  * Image: Informal and Other Publications
+
+[i6]
+
+    * view
+
+      * electronic edition via DOI (open access)
+      * details & citations
+
+authority control:
+
+      *  
+
+    * export record
+
+      * BibTeX
+      * RIS
+      * RDF N-Triples
+      * RDF Turtle
+      * RDF/XML
+      * XML
+      * plain text
+
+dblp key:
+
+      * journals/corr/abs-2605-06184
+
+    * ask others
+
+      * Google
+      * Google Scholar
+      * Semantic Scholar
+      * Internet Archive Scholar
+      * CiteSeerX
+      * PubPeer
+
+    * share record
+
+      * Bluesky
+      * Reddit
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/journals/corr/abs-2605-06184
+
+--------------------------------------------------------------------------------
+Published in Transactions on Machine Learning Research (01/2025) (https://openreview.net/pdf?id=yBgTVWccIx)
+citeturn89search13 [wordlim: 200] Published: 1.8 years ago; DafnyBench: A Benchmark for Formal Software Verifi-
+Published in Transactions on Machine Learning Research (01/2025)
+
+DafnyBench: A Benchmark for Formal Software Verifi-
+cation
+
+Chloe Loughridge*  
+Harvard College  
+cloughridge@college.harvard.edu
+
+Qinyi Sun*†  
+Massachusetts Institute of Technology  
+wendysun@mit.edu
+
+Seth Ahrenbach  
+seth.ahrenbach@omnifederal.com
+
+Federico Cassano  
+Northeastern University  
+cassano.f@northeastern.edu
+
+Chuyue Sun  
+Stanford University  
+chuyues@stanford.edu
+
+Ying Sheng  
+Stanford University  
+ying1123@stanford.edu
+
+Anish Mudide  
+Massachusetts Institute of Technology  
+amudide@mit.edu
+
+Md Rakib Hossain Misu  
+University of California Irvine  
+mdrh@uci.edu
+
+Nada Amin  
+Harvard University  
+namin@seas.harvard.edu
+
+Max Tegmark  
+Massachusetts Institute of Technology  
+tegmark@mit.edu
+
+Reviewed on OpenReview: https://openreview.net/forum?id=yBgTVWccIx
+
+Abstract
+
+We introduce DafnyBench, the largest benchmark of its kind for training and evaluating machine learning systems for formal software verification. We test the ability of LLMs such as GPT-4 and Claude 3 to auto-generate enough annotations for the Dafny formal verification engine to successfully verify over 750 programs with about 53,000 lines of code. The best model and prompting scheme achieved 68% success rate, and we quantify how this rate improves when retrying with error message feedback and how it deteriorates with the amount of required code and
+
+1--------------------------------------------------------------------------------
+Paper page - DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://huggingface.co/papers/2601.05385)
+citeturn89search5 [wordlim: 200] Published: 9 months ago; Crawled: 2 weeks ago; # DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+Papers
+
+arxiv:2601.05385
+
+Copy markdown
+
+# DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+Published on Jan 8
+
+Upvote 4
+
+  *   *   *   *   * Authors:
+
+Image Debangshu Banerjee ,
+
+[Button: Olivier Bouissou] ,
+
+[Button: Stefan Zetzsche]
+
+## Abstract
+
+DafnyPro is an inference-time framework that improves LLMs for Dafny verification annotation generation through a diff-checker, pruner, and hint-augmentation system, achieving significant performance gains on challenging benchmarks.
+
+Generated by Qwen/Qwen2.5-Coder-32B-Instruct
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. We evaluate DafnyPro using Claude Sonnet 3.5 and 3.7 on four benchmarks: Clover, MBPP-Dafny, HumanEval-Dafny, and DafnyBench, achieving consistent performance gains in all cases. Notably, on DafnyBench, the most challenging benchmark, Claude Sonnet 3.5 enhanced with DafnyPro achieves 86% correct proofs, a 16 pp improvement over the base model. We also fine-tune two Qwen models on training data derived from verification attempts by larger models enhanced with DafnyPro. Our 7B and 14B models achieve 68% and 70% correct proofs on DafnyBench, respectively, demonstrating that smaller models can maintain high verification accuracy.
+
+View arXiv page View PDF Add to collection--------------------------------------------------------------------------------
+dblp: Stefan Zetzsche (https://dblp.org/pid/277/0976.html)
+citeturn89search6 [wordlim: 200] Published: 3 months ago; Crawled: last month; DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. ... Dafny as Verification-Aware Intermediate Language for Code Generation.
+dblp key:
+
+      * journals/corr/abs-2601-05385
+
+    * ask others
+
+      * Google
+      * Google Scholar
+      * Semantic Scholar
+      * Internet Archive Scholar
+      * CiteSeerX
+      * PubPeer
+
+    * share record
+
+      * Bluesky
+      * Reddit
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/journals/corr/abs-2601-05385
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche:
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. CoRR abs/2601.05385 (2026)
+  * Image: Informal and Other Publications
+
+[i11]
+
+    * view
+
+      * electronic edition via DOI (open access)
+      * details & citations
+--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs | alphaXiv (https://www.alphaxiv.org/abs/2601.05385v1)
+citeturn89search7 [wordlim: 200] Published: 9 months ago; Crawled: last week; This is the foundational paper for the Dafny language and verifier, which is the target of the DafnyPro framework. ... @misc{banerjee2026dafnyprollmassistedautomatedverification, title={DafnyPro: LLM-Assisted Automated Verification for Dafny Programs}, author={Debangshu Banerjee and Olivier Bouissou and Stefan Zetzsche}, year={2026}, eprint={2601.05385}, archivePrefix={arXiv}, primaryClass={cs.SE}, url={https://arxiv.org/abs/2601.05385}, }
+Submitted 08 Jan 2026
+
+en
+
+# DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+Debangshu Banerjee
+
+OB
+
+Olivier Bouissou
+
+SZ
+
+Stefan Zetzsche
+
+## Abstract
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. We evaluate DafnyPro using Claude Sonnet 3.5 and 3.7 on four benchmarks: Clover, MBPP-Dafny, HumanEval-Dafny, and DafnyBench, achieving consistent performance gains in all cases. Notably, on DafnyBench, the most challenging benchmark, Claude Sonnet 3.5 enhanced with DafnyPro achieves 86% correct proofs, a 16 pp improvement over the base model. We also fine-tune two Qwen models on training data derived from verification attempts by larger models enhanced with DafnyPro. 
+DafnyBench: A Benchmark for Formal Software Verification
+
+This paper introduces DafnyBench, which is the largest and most challenging benchmark used to evaluate DafnyPro. The main paper reports its most significant results on this benchmark, achieving a 16 percentage point improvement over the baseline and also fixing errors within the benchmark itself.
+
+Chloe R Loughridge, Qinyi Sun, Seth Ahrenbach, Federico Cassano, Chuyue Sun, Ying Sheng, Anish Mudide, Md Rakib Hossain Misu, Nada Amin, and Max Tegmark. 2024. DafnyBench: A Benchmark for Formal Software Verification. In The 4th Workshop on Mathematical Reasoning and AI at NeurIPS’24. https://openreview.net/forum?id=QalNAKG48c
+
+Clover: Closed-Loop Verifiable Code Generation
+
+Clover is cited as a key example of existing inference-time methods that use verifier feedback to guide LLMs. DafnyPro is explicitly presented as an improvement over such frameworks by addressing their limitations, such as the LLM altering base code logic.
+
+Chuyue Sun, Ying Sheng, Oded Padon, and Clark Barrett. 2024. Clover: Closed-Loop Verifiable Code Generation. In AI Verification: First International Symposium, SAIV 2024, Montreal, QC, Canada, July 22–23, 2024, Proceedings (Montreal, QC, Canada). Springer-Verlag, Berlin, Heidelberg, 134–155. doi:10.1007/978-3-031-65112-0_7
+
+Dafny: an automatic program verifier for functional correctness
+
+This is the foundational paper for the Dafny language and verifier, which is the target of the DafnyPro framework. All the technical contributions of the main paper, such as parsing, verification feedback, and annotation generation, are specific to the Dafny ecosystem introduced in this work.
+
+K. Rustan M. Leino. 2010. Dafny: an automatic program verifier for functional correctness. In Proceedings of the 16th International Conference on Logic for Programming, Artificial Intelligence, and Reasoning (Dakar, Senegal) (LPAR’10). Springer-Verlag, Berlin, Heidelberg, 348–370.
+
+PREFACE - A Reinforcement Learning Framework for Code Verification via LLM Prompt Repair
+
+This paper is cited as a complementary approach to improving annotation generation via model fine-tuning. The authors of DafnyPro contrast their supervised fine-tuning technique with the reinforcement learning approach of PREFACE and identify it as a potential direction for future work.
+
+Manvi Jha, Jiaxin Wan, Huan Zhang, and Deming Chen. 2025. PREFACE - A Reinforcement Learning Framework for Code Verification via LLM Prompt Repair. In Proceedings of the Great Lakes Symposium on VLSI 2025 (GLSVLSI ’25). Association for Computing Machinery, New York, NY, USA, 547–553. doi:10.1145/3716368.3735300
+
+## Citation
+
+Copy
+
+@misc{banerjee2026dafnyprollmassistedautomatedverification, title={DafnyPro: LLM-Assisted Automated Verification for Dafny Programs}, author={Debangshu Banerjee and Olivier Bouissou and Stefan Zetzsche}, year={2026}, eprint={2601.05385}, archivePrefix={arXiv}, primaryClass={cs.SE}, url={https://arxiv.org/abs/2601.05385}, }--------------------------------------------------------------------------------
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://www.researchgate.net/publication/399666581_DafnyPro_LLM-Assisted_Automated_Verification_for_Dafny_Programs)
+citeturn89search8 [wordlim: 200] Crawled: last month; # DafnyPro: LLM-Assisted Automated Verification for Dafny Programs ... ResearchGate has not been able to resolve any citations for this publication. ... In this paper, we demonstrate how to improve two pretrained models’ proficiency in the Dafny verification-aware language.
+Preprint
+
+# DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+  * January 2026
+
+DOI:10.48550/arXiv.2601.05385
+
+Authors:
+
+Debangshu Banerjee
+
+Debangshu Banerjee
+
+  * This person is not on ResearchGate, or hasn't claimed this research yet.
+
+Olivier Bouissou
+
+Olivier Bouissou
+
+  * This person is not on ResearchGate, or hasn't claimed this research yet.
+
+Stefan Zetzsche
+
+Stefan Zetzsche
+
+  * This person is not on ResearchGate, or hasn't claimed this research yet.
+
+Image: Request Full-text Paper PDF
+
+Request file PDF
+
+To read the file of this research, you can request a copy directly from the authors.
+
+Preprints and early-stage research may not have been peer reviewed yet.
+
+## Abstract
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. --------------------------------------------------------------------------------
+Top arXiv papers (https://scirate.com/?date=2026-01-14&page=70&range=3)
+citeturn89search9 [wordlim: 200] Crawled: 3 weeks ago;   * DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+A judicious choice of 1 or 2 cheats yields average scores of 0.71 and 0.82, respectively, compared to 0.51 with no cheats. We also introduce a fast, engine-free simulator that enables hyperparameter optimization without running games, closely matching the engine-based optimum. The goal of this work is not to assist cheaters, but to measure the effectiveness of cheating -- which is crucial as part of the effort to contain and detect it.
+
+  * DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche
+
+Jan 12 2026 cs.SE arXiv:2601.05385v1
+
+[Button: Scited][Button: Scite!]
+
+0
+
+@misc{2601.05385, author = {Debangshu Banerjee and Olivier Bouissou and Stefan Zetzsche}, title = {{D}afny{P}ro: {LLM}-{A}ssisted {A}utomated {V}erification for {D}afny {P}rograms}, year = {2026}, eprint = {2601.05385}, note = {arXiv:2601.05385v1} }[Button: Copy Citation]
+
+PDF
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. --------------------------------------------------------------------------------
+Top arXiv papers (https://scirate.com/?date=2026-01-13&page=50&range=3)
+citeturn89search10 [wordlim: 200] Published: 9 months ago; Crawled: 3 weeks ago;   * DafnyPro: LLM-Assisted Automated Verification for Dafny Programs ... We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny.
+We also introduce a fast, engine-free simulator that enables hyperparameter optimization without running games, closely matching the engine-based optimum. The goal of this work is not to assist cheaters, but to measure the effectiveness of cheating -- which is crucial as part of the effort to contain and detect it.
+
+  * DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche
+
+Jan 12 2026 cs.SE arXiv:2601.05385v1
+
+[Button: Scited][Button: Scite!]
+
+0
+
+@misc{2601.05385, author = {Debangshu Banerjee and Olivier Bouissou and Stefan Zetzsche}, title = {{D}afny{P}ro: {LLM}-{A}ssisted {A}utomated {V}erification for {D}afny {P}rograms}, year = {2026}, eprint = {2601.05385}, note = {arXiv:2601.05385v1} }[Button: Copy Citation]
+
+PDF
+
+We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies. --------------------------------------------------------------------------------
+DafnyBench: A Benchmark for Formal Software Verification (https://openreview.net/pdf?id=QalNAKG48c)
+citeturn89search14 [wordlim: 200] Published: 2.0 years ago; DafnyBench: A Benchmark for Formal Software Verification
+DafnyBench: A Benchmark for Formal Software Verification
+
+Chloe Loughridge*  
+Harvard College  
+cloughridge@college.harvard.edu
+
+Qinyi Sun*†  
+Massachusetts Institute of Technology  
+wendysun@mit.edu
+
+Seth Ahrenbach  
+seth.ahrenbach@omnifederal.com
+
+Federico Cassano  
+Northeastern University  
+cassano.f@northeastern.edu
+
+Chuyue Sun  
+Stanford University  
+chuyues@stanford.edu
+
+Ying Sheng  
+Stanford University  
+ying1123@stanford.edu
+
+Anish Mudide  
+Massachusetts Institute of Technology  
+amudide@mit.edu
+
+Md Rakib Hossain Misu  
+University of California Irvine  
+mdrh@uci.edu
+
+Nada Amin  
+Harvard University  
+namin@seas.harvard.edu
+
+Max Tegmark  
+Massachusetts Institute of Technology  
+tegmark@mit.edu
+
+## Abstract
+
+We introduce DafnyBench, the largest benchmark of its kind for training and evaluating machine learning systems for formal software verification. We test the ability of LLMs such as GPT-4 and Claude 3 to auto-generate enough annotations for the Dafny formal verification engine to successfully verify over 750 programs with about 53,000 lines of code. --------------------------------------------------------------------------------
+dblp: Debangshu Banerjee 0001 (https://dblp.org/pid/268/6756-1.html)
+citeturn89search11 [wordlim: 200] Crawled: last month;       * plain text ... DafnyPro: LLM-Assisted Automated Verification for Dafny Programs.
+authority control:
+
+      *  
+
+    * export record
+
+      * BibTeX
+      * RIS
+      * RDF N-Triples
+      * RDF Turtle
+      * RDF/XML
+      * XML
+      * plain text
+
+dblp key:
+
+      * journals/corr/abs-2601-05385
+
+    * ask others
+
+      * Google
+      * Google Scholar
+      * Semantic Scholar
+      * Internet Archive Scholar
+      * CiteSeerX
+      * PubPeer
+
+    * share record
+
+      * Bluesky
+      * Reddit
+      * BibSonomy
+      * LinkedIn
+
+persistent URL:
+
+      * https://dblp.org/rec/journals/corr/abs-2601-05385
+
+Debangshu Banerjee, Olivier Bouissou, Stefan Zetzsche:
+DafnyPro: LLM-Assisted Automated Verification for Dafny Programs. --------------------------------------------------------------------------------
+Under review as submission to TMLR (https://openreview.net/notes/edits/attachment?id=qwuj2nefFF&name=pdf)
+citeturn89search15 [wordlim: 200] Published: 2.0 years ago; DafnyBench: A Benchmark for Formal Software Verifi-
+Under review as submission to TMLR
+DafnyBench: A Benchmark for Formal Software Verifi-
+cation
+Anonymous authors
+Paper under double-blind review
+Abstract
+We introduce DafnyBench, the largest benchmark of its kind for training and
+evaluating machine learning systems for formal software verification. We test the
+ability of LLMs such as GPT-4 and Claude 3 to auto-generate enough annotations
+for the Dafny formal verification engine to successfully verify over 750 programs
+with about 53,000 lines of code. The best model and prompting scheme achieved
+68% success rate, and we quantify how this rate improves when retrying with error
+message feedback and how it deteriorates with the amount of required code and
+annotations. We hope that DafnyBench will enable rapid improvements from this
+baseline as LLMs and verification techniques grow in quality.
+1
+Introduction
+Rapidly improving Large Language Models (LLMs) Bubeck et al. (2023); Anthropic (2024); Team
+et al. (2023) are helping accelerate software development through co-pilots and other program
+--------------------------------------------------------------------------------
+SEVerA: Verified Self-Evolving Agents (https://openreview.net/pdf/52ae7d484859b2eb7ce35b0998183f70fb0444d0.pdf)
+citeturn89search16 [wordlim: 200] Published: 4 months ago; Dafnypro: Llm- ... Interpretable machine learning for science
+LLM generation. In Forty-second International Con-
+ference on Machine Learning, 2025.
+URL https:
+//openreview.net/forum?id=wKs9fHYxCV.
+Banerjee, D., Bouissou, O., and Zetzsche, S. Dafnypro: Llm-
+assisted automated verification for dafny programs, 2026.
+URL https://arxiv.org/abs/2601.05385.
+Feng, Y., Martins, R., Van Geffen, J., Dillig, I., and Chaud-
+huri, S. Component-based synthesis of table consolida-
+tion and transformation tasks from examples. In Pro-
+ceedings of the 38th ACM SIGPLAN Conference on Pro-
+gramming Language Design and Implementation, PLDI
+2017, pp. 422–436, New York, NY, USA, 2017. Associa-
+tion for Computing Machinery. ISBN 9781450349888.
+doi: 10.1145/3062341.3062351. URL https://doi.
+org/10.1145/3062341.3062351.
+Barres, V., Dong, H., Ray, S., Si, X., and Narasimhan, K.
+τ 2-bench: Evaluating conversational agents in a dual-
+control environment, 2025. URL https://arxiv.
+org/abs/2506.07982.
+Gao, H., Liu, Y., He, Y., Dou, L., Du, C., Deng, Z., Hooi,
+B., Lin, M., and Pang, T. Flowreasoner: Reinforcing
+--------------------------------------------------------------------------------
+ExVerus: Verus Proof Repair via Counterexample Reasoning (https://openreview.net/pdf/650f197fc0f6bac39b051c00c33f9b5a04ddf688.pdf)
+citeturn89search17 [wordlim: 200] Published: 4 months ago; Dafnypro: Llm-
+puting Machinery.
+ISBN 9798400704116.
+doi: 10.
+1145/3625275.3625401. URL https://doi.org/
+10.1145/3625275.3625401.
+Banerjee, D., Bouissou, O., and Zetzsche, S. Dafnypro: Llm-
+assisted automated verification for dafny programs, 2026.
+URL https://arxiv.org/abs/2601.05385.
+Cheng, K., Yang, J., Jiang, H., Wang, Z., Huang, B., Li,
+R., Li, S., Li, Z., Gao, Y., Li, X., et al. Inductive or
+deductive? rethinking the fundamental reasoning abilities
+of llms. arXiv preprint arXiv:2408.00114, 2024.
+Bjørner, N., de Moura, L., Nachmanson, L., and Winter-
+steiger, C. M. Programming z3. In International Summer
+School on Engineering Trustworthy Software Systems, pp.
+148–201. Springer, 2018.
+Clarke, E., Grumberg, O., Jha, S., Lu, Y., and Veith, H.
+Counterexample-guided abstraction refinement. In Inter-
+national Conference on Computer Aided Verification, pp.
+154–169. Springer, 2000.
+Bradley, A. R. SAT-Based Model Checking without Un-
+rolling. In Jhala, R. and Schmidt, D. (eds.), Verification,
+Model Checking, and Abstract Interpretation, pp. 

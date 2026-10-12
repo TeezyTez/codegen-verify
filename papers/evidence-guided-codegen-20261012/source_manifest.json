@@ -1,0 +1,547 @@
+{
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "evidence_id": "E001",
+      "source_type": "report",
+      "title": "Completed-subset artifact audit",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "papers/evidence-guided-codegen-20261012/evidence/evidence_audit.json :: main; check_summary; evidence_files",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E002",
+      "source_type": "registry",
+      "title": "Frozen main campaign and framework snapshot",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "logs/public-codegen-20261009/main-v3/manifest.json :: jobs.json; tasks.json; family_manifest.json; prelaunch-audit.json; framework_snapshot/",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E003",
+      "source_type": "software",
+      "title": "Declaration evidence ledger and C/D scheduling",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "generation/public_benchmark/policy.py :: EvidenceLedger.begin/observe/target; prompt construction; matched to main frozen hashes",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E004",
+      "source_type": "software",
+      "title": "Trusted generation and verification runner",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "generation/public_benchmark/runner.py :: candidate guard; full verifier acceptance; budget; audit fields",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E005",
+      "source_type": "software",
+      "title": "Fixed specification task packaging",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "generation/public_benchmark/task.py :: PublicTask; implementation/helpers JSON; single target; public record",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E006",
+      "source_type": "report",
+      "title": "Development and canary audit",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "papers/evidence-guided-codegen-20261012/evidence/evidence_audit.json :: development_v2; canary_v1; original paths and hashes in evidence_files",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E007",
+      "source_type": "report",
+      "title": "Authored evidence-semantics probes",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "logs/evidence-semantics-probe-20261009/plan.json :: results.json; analysis.json; witnesses/; witness_anchor/; evidence_audit.json mechanism_probe and check_summary",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E008",
+      "source_type": "dataset",
+      "title": "Final admission and task-family manifest",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "logs/public-codegen-20261009/families-final/manifest.json :: tasks; families; evidence_audit.json families_final and frozen prelaunch audits",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E009",
+      "source_type": "registry",
+      "title": "Frozen experiment protocol and execution amendments",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "logs/public-codegen-20261009/main-v3/protocol-frozen.md :: read together with manifest.json and prelaunch-audit.json; final runner overrides earlier prose",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E010",
+      "source_type": "software",
+      "title": "Prespecified complete campaign analysis",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "research/analyze_main_public_20261009.py :: full cohort requirement; family aggregation; primary contrasts and bootstrap",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E011",
+      "source_type": "software",
+      "title": "Code repository availability",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://github.com/TeezyTez/codegen-verify"
+      },
+      "locator": "README.md :: repository URL; does not assert raw logs released",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E012",
+      "source_type": "report",
+      "title": "Drafting provenance and unresolved author declarations",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "papers/evidence-guided-codegen-20261012/drafting_record.json :: all fields; author/human review pending",
+      "confidentiality": "restricted",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E013",
+      "source_type": "dataset",
+      "title": "Pinned vericoding-benchmark source snapshot",
+      "authors": [],
+      "year": 2026,
+      "identifiers": {
+        "doi": "",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": ""
+      },
+      "locator": "research/data/large-scale-20261009/vericoding-snapshot.json :: repository; commit; per-file bytes and hashes; main admitted representatives separately frozen",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E101",
+      "source_type": "preprint",
+      "title": "DafnyBench: A Benchmark for Formal Software Verification",
+      "authors": [
+        "Chloe Loughridge",
+        "Qinyi Sun",
+        "Seth Ahrenbach",
+        "Federico Cassano",
+        "Chuyue Sun",
+        "Ying Sheng",
+        "Anish Mudide",
+        "Md Rakib Hossain Misu",
+        "Nada Amin",
+        "Max Tegmark"
+      ],
+      "year": 2024,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2406.08467",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2406.08467"
+      },
+      "locator": "https://arxiv.org/html/2406.08467v1 §3.2 Task Design: Fill Hints, lines 114–122; §4.1, lines 161–165 (saved locator_more_web.txt).",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E102",
+      "source_type": "conference_paper",
+      "title": "Clover: Closed-Loop Verifiable Code Generation",
+      "authors": [
+        "Chuyue Sun",
+        "Ying Sheng",
+        "Oded Padon",
+        "Clark Barrett"
+      ],
+      "year": 2024,
+      "identifiers": {
+        "doi": "10.1007/978-3-031-65112-0_7",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://doi.org/10.1007/978-3-031-65112-0_7"
+      },
+      "locator": "https://arxiv.org/pdf/2310.17807 §3.2 Clover Verification Phase, printed pp.5–6 (PDF indices 4–5), lines 195–205; Springer abstract.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E103",
+      "source_type": "preprint",
+      "title": "VeruSAGE: A Study of Agent-Based Verification for Rust Systems",
+      "authors": [
+        "Chenyuan Yang",
+        "Natalie Neamtu",
+        "Chris Hawblitzel",
+        "Jacob R. Lorch",
+        "Shan Lu"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2512.18436",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2512.18436"
+      },
+      "locator": "https://arxiv.org/html/2512.18436v2 §4 Agentic System Designs, §4.1 Hands-Off Approach, §4.2 Hands-On Approach, lines 160–175 and following; original abstract.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E104",
+      "source_type": "preprint",
+      "title": "DafnyPro: LLM-Assisted Automated Verification for Dafny Programs",
+      "authors": [
+        "Debangshu Banerjee",
+        "Olivier Bouissou",
+        "Stefan Zetzsche"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2601.05385",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2601.05385"
+      },
+      "locator": "https://arxiv.org/html/2601.05385v1 §3.1, especially lines 115–117; §3.2 Removing Unnecessary Clauses; §3.3 Incorporating Domain Knowledge; abstract confirms three components.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E105",
+      "source_type": "preprint",
+      "title": "P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation",
+      "authors": [
+        "Zenan Li",
+        "Ziran Yang",
+        "Peiyang Song",
+        "Zhaoyu Li",
+        "Kaiyu Yang"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2608.09277",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2608.09277"
+      },
+      "locator": "https://arxiv.org/html/2608.09277v1 §3 Methodology, §3.1 Joint Program-and-Proof Planning, §3.2 Plan-Guided Elaboration; lines 103–107 and following. Appendix C (lines 310–315) limits transfer claims.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E106",
+      "source_type": "preprint",
+      "title": "SkillForge: Compositional Skill Synthesis with Verification-in-the-Loop for Generating Formally Verified Dafny Programs",
+      "authors": [
+        "Yanming Liu",
+        "Xinyue Peng",
+        "Jiannan Cao",
+        "Xinyi Wang",
+        "Jinbo Su"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2608.29841",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2608.29841"
+      },
+      "locator": "https://arxiv.org/html/2608.29841v1 §3.2 (Table 1; SYNTHBODY and STRENGTHENSPEC), §3.3 Error-Conditioned Routing, lines 179–232; arXiv abstract/comments.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E107",
+      "source_type": "preprint",
+      "title": "ExVerus: Verus Proof Repair via Counterexample Reasoning",
+      "authors": [
+        "Jun Yang",
+        "Yuechun Sun",
+        "Yi Wu",
+        "Rodrigo Caridad",
+        "Yongwei Yuan",
+        "Jianan Yao",
+        "Shan Lu",
+        "Kexin Pei"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2603.25810",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2603.25810"
+      },
+      "locator": "https://arxiv.org/html/2603.25810v2 §3 ExVerus Framework, §3.1 Counterexample Generation with Validation, §3.2 mutation-based repair; lines 169–176 and following.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E108",
+      "source_type": "preprint",
+      "title": "Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents",
+      "authors": [
+        "Timothy Kassis",
+        "Vinayak Agarwal",
+        "Yuhuan He",
+        "Darshil Patel",
+        "Aubrey M. Brueckner"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2609.00065",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2609.00065"
+      },
+      "locator": "https://arxiv.org/html/2609.00065v2 §2 What an agent skill is, lines 95–98; §6 Limitations, No task-level evaluation, lines 140–142; abstract.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    },
+    {
+      "evidence_id": "E109",
+      "source_type": "preprint",
+      "title": "AxDafny: Agentic Verified Code Generation in Dafny",
+      "authors": [
+        "Benjamin Breen",
+        "Austin Letson",
+        "Borja Requena Pozo",
+        "Leopoldo Sarra"
+      ],
+      "year": 2026,
+      "identifiers": {
+        "doi": "10.48550/arXiv.2606.32007",
+        "isbn": "",
+        "pmcid": "",
+        "pmid": "",
+        "url": "https://arxiv.org/abs/2606.32007"
+      },
+      "locator": "https://arxiv.org/html/2606.32007v1 §3.1 Agent Architecture, lines 111–128; Appendix A LCB-Pro-Dafny Construction, lines 219–224.",
+      "confidentiality": "public",
+      "verification": {
+        "status": "unverified",
+        "source_opened": false,
+        "verified_by": "",
+        "verified_on": ""
+      }
+    }
+  ]
+}

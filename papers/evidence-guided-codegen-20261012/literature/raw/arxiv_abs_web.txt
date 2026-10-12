@@ -1,0 +1,331 @@
+[2406.08467] DafnyBench: A Benchmark for Formal Software Verification (https://arxiv.org/abs/2406.08467)
+citeturn78view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2406.08467","lineno":8}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Software Engineering
+L7: 
+L8: [Submitted on 12 Jun 2024]
+L9: # Title:DafnyBench: A Benchmark for Formal Software Verification
+L10: 
+L11: Authors:cite5†Chloe Loughridge , cite6†Qinyi Sun , cite7†Seth Ahrenbach , cite8†Federico Cassano , cite9†Chuyue Sun , cite10†Ying Sheng , cite11†Anish Mudide , cite12†Md Rakib Hossain Misu , cite13†Nada Amin , cite14†Max Tegmark L12: 
+L13: View a PDF of the paper titled DafnyBench: A Benchmark for Formal Software Verification, by Chloe Loughridge and 9 other authors
+L14: 
+L15: cite15†View PDF cite16†HTML (experimental) L16: > Abstract:We introduce DafnyBench, the largest benchmark of its kind for training and evaluating machine learning systems for formal software verification. We test the ability of LLMs such as GPT-4 and Claude 3 to auto-generate enough hints for the Dafny formal verification engine to successfully verify over 750 programs with about 53,000 lines of code.
+L17: The best model and prompting scheme achieved 68% success rate, and we quantify how this rate improves when retrying with error message feedback and how it deteriorates with the amount of required code and hints. We hope that DafnyBench will enable rapid improvements from this baseline as LLMs and verification techniques grow in quality.
+L18: Comments:  | Code & dataset available at: cite17†this https URL†github.com L19: Subjects:  | Software Engineering (cs.SE); Artificial Intelligence (cs.AI); Machine Learning (cs.LG); Programming Languages (cs.PL)
+L20: Cite as:  | cite18†arXiv:2406.08467 [cs.SE]
+L21:    | (or cite19†arXiv:2406.08467v1 [cs.SE] for this version)
+L22:    | cite20†https://doi.org/10.48550/arXiv.2406.08467†doi.org arXiv-issued DOI via DataCite
+L23: ## Submission history
+L24: 
+L25: From: Qinyi Sun [cite21†view email ]
+L26: [v1] Wed, 12 Jun 2024 17:53:31 UTC (709 KB)
+L27: 
+L28: Full-text links:
+L29: 
+L30: ## Access Paper:
+L31: 
+L32: View a PDF of the paper titled DafnyBench: A Benchmark for Formal Software Verification, by Chloe Loughridge and 9 other authors
+L33: 
+L34:   * cite15†View PDF L35:   * cite16†HTML (experimental) L36:   * cite22†TeX Source L37: 
+L38: cite23†view license†creativecommons.org L39: ### Current browse context:
+L40: 
+L41: cs.SE
+L42: 
+L43: cite24†< prev |   cite25†next > L44: 
+L45: cite26†new | cite27†recent | cite28†2024-06 L46: 
+L47: Change to browse by:
+L48: 
+L49: cite29†cs L50: cite30†cs.AI L51: cite31†cs.LG L52: cite32†cs.PL L53: 
+L54: ### References & Citations
+L55: 
+L56:   * cite33†NASA ADS†ui.adsabs.harvard.edu L57:   * cite34†Google Scholar†scholar.google.com L58:   * cite35†Semantic Scholar†api.semanticscholar.org L59: 
+L60: [Button: export BibTeX citation] Loading...
+L61: 
+L62: ## BibTeX formatted citation
+L63: 
+L64: [Button: ×]
+L65: 
+L66: loading...
+L67: 
+L68: Data provided by:
+L69: 
+L70: ### Bookmark
+L71: 
+L72: [Input] Bibliographic Tools
+--------------------------------------------------------------------------------
+[2310.17807] Clover: Closed-Loop Verifiable Code Generation (https://arxiv.org/abs/2310.17807)
+citeturn78view1 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2310.17807","lineno":8}); Total lines: 165
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Artificial Intelligence
+L7: 
+L8: [Submitted on 26 Oct 2023 (cite5†v1 ), last revised 16 Nov 2024 (this version, v4)]
+L9: # Title:Clover: Closed-Loop Verifiable Code Generation
+L10: 
+L11: Authors:cite6†Chuyue Sun , cite7†Ying Sheng , cite8†Oded Padon , cite9†Clark Barrett L12: 
+L13: View a PDF of the paper titled Clover: Closed-Loop Verifiable Code Generation, by Chuyue Sun and 3 other authors
+L14: 
+L15: cite10†View PDF cite11†HTML (experimental) L16: > Abstract:The use of large language models for code generation is a rapidly growing trend in software development. However, without effective methods for ensuring the correctness of generated code, this trend could lead to undesirable outcomes. In this paper, we introduce a new approach for addressing this challenge: the Clover paradigm, short for Closed-Loop Verifiable Code Generation, which uses consistency checking to provide a strong filter for incorrect code.
+L17: Clover performs consistency checks among code, docstrings, and formal annotations. The checker is implemented using a novel integration of formal verification tools and large language models. We provide a theoretical analysis to support our thesis that Clover should be effective at consistency checking. We also empirically investigate its performance on a hand-designed dataset (CloverBench) featuring annotated Dafny programs at a textbook level of difficulty.
+L18: Experimental results show that for this dataset: (i) LLMs are reasonably successful at automatically generating formal specifications; and (ii) our consistency checker achieves a promising acceptance rate (up to 87%) for correct instances while maintaining zero tolerance for adversarial incorrect ones (no false positives). Clover also discovered 6 incorrect programs in the existing human-written dataset MBPP-DFY-50.
+L19: Comments:  | add appendix
+L20: Subjects:  | Artificial Intelligence (cs.AI); Machine Learning (cs.LG); Software Engineering (cs.SE)
+L21: Cite as:  | cite12†arXiv:2310.17807 [cs.AI]
+L22:    | (or cite13†arXiv:2310.17807v4 [cs.AI] for this version)
+L23:    | cite14†https://doi.org/10.48550/arXiv.2310.17807†doi.org arXiv-issued DOI via DataCite
+L24: ## Submission history
+L25: 
+L26: From: Chuyue Sun [cite15†view email ]
+L27: cite5†[v1] Thu, 26 Oct 2023 22:58:19 UTC (141 KB)
+L28: cite16†[v2] Tue, 30 Jan 2024 06:52:10 UTC (174 KB)
+L29: cite17†[v3] Mon, 3 Jun 2024 16:59:37 UTC (214 KB)
+L30: [v4] Sat, 16 Nov 2024 21:57:49 UTC (214 KB)
+L31: 
+L32: Full-text links:
+L33: 
+--------------------------------------------------------------------------------
+[2512.18436] VeruSAGE: A Study of Agent-Based Verification for Rust Systems (https://arxiv.org/abs/2512.18436)
+citeturn78view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2512.18436","lineno":8}); Total lines: 163
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Operating Systems
+L7: 
+L8: [Submitted on 20 Dec 2025 (cite5†v1 ), last revised 15 Apr 2026 (this version, v2)]
+L9: # Title:VeruSAGE: A Study of Agent-Based Verification for Rust Systems
+L10: 
+L11: Authors:cite6†Chenyuan Yang , cite7†Natalie Neamtu , cite8†Chris Hawblitzel , cite9†Jacob R. Lorch , cite10†Shan Lu L12: 
+L13: View a PDF of the paper titled VeruSAGE: A Study of Agent-Based Verification for Rust Systems, by Chenyuan Yang and 4 other authors
+L14: 
+L15: cite11†View PDF cite12†HTML (experimental) L16: > Abstract:Large language models (LLMs) have shown impressive capability to understand and develop code. However, their capability to rigorously reason about and prove code correctness remains in question. This paper offers a comprehensive study of LLMs' capability to develop correctness proofs for system software written in Rust. We curate a new system-verification benchmark suite, VeruSAGE-Bench, which consists of 849 proof tasks extracted from eight open-source Verus-verified Rust systems.
+L17: Furthermore, we design different agent systems to match the strengths and weaknesses of different LLMs (o4-mini, GPT-5, Sonnet 4, and Sonnet 4.5). Our study shows that different tools and agent settings are needed to stimulate the system-verification capability of different types of LLMs. The best LLM-agent combination in our study completes over 80% of system-verification tasks in VeruSAGE-Bench.
+L18: It also completes over 90% of a set of system proof tasks not part of VeruSAGE-Bench because they had not yet been finished by human experts. This result shows the great potential for LLM-assisted development of verified system software.
+L19: Subjects:  | Operating Systems (cs.OS); Artificial Intelligence (cs.AI); Formal Languages and Automata Theory (cs.FL); Software Engineering (cs.SE)
+L20: Cite as:  | cite13†arXiv:2512.18436 [cs.OS]
+L21:    | (or cite14†arXiv:2512.18436v2 [cs.OS] for this version)
+L22:    | cite15†https://doi.org/10.48550/arXiv.2512.18436†doi.org arXiv-issued DOI via DataCite
+L23: ## Submission history
+L24: 
+L25: From: Chenyuan Yang [cite16†view email ]
+L26: cite5†[v1] Sat, 20 Dec 2025 17:22:52 UTC (2,808 KB)
+L27: [v2] Wed, 15 Apr 2026 16:44:49 UTC (2,808 KB)
+L28: 
+L29: Full-text links:
+L30: 
+L31: ## Access Paper:
+L32: 
+L33: View a PDF of the paper titled VeruSAGE: A Study of Agent-Based Verification for Rust Systems, by Chenyuan Yang and 4 other authors
+L34: 
+L35:   * cite11†View PDF L36:   * cite12†HTML (experimental) L37:   * cite17†TeX Source L38: 
+L39: cite18†view license†creativecommons.org --------------------------------------------------------------------------------
+[2601.05385] DafnyPro: LLM-Assisted Automated Verification for Dafny Programs (https://arxiv.org/abs/2601.05385)
+citeturn78view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2601.05385","lineno":8}); Total lines: 159
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Software Engineering
+L7: 
+L8: [Submitted on 8 Jan 2026]
+L9: # Title:DafnyPro: LLM-Assisted Automated Verification for Dafny Programs
+L10: 
+L11: Authors:cite5†Debangshu Banerjee , cite6†Olivier Bouissou , cite7†Stefan Zetzsche L12: 
+L13: View a PDF of the paper titled DafnyPro: LLM-Assisted Automated Verification for Dafny Programs, by Debangshu Banerjee and 2 other authors
+L14: 
+L15: cite8†View PDF cite9†HTML (experimental) L16: > Abstract:We present DafnyPro, an inference-time framework that enhances LLMs for generating verification annotations in Dafny. DafnyPro comprises three key components: a diff-checker that prevents modifications to base program logic, a pruner that removes unnecessary invariants, and a hint-augmentation system that retrieves and applies predefined, problem-independent proof strategies.
+L17: We evaluate DafnyPro using Claude Sonnet 3.5 and 3.7 on four benchmarks: Clover, MBPP-Dafny, HumanEval-Dafny, and DafnyBench, achieving consistent performance gains in all cases. Notably, on DafnyBench, the most challenging benchmark, Claude Sonnet 3.5 enhanced with DafnyPro achieves 86% correct proofs, a 16 pp improvement over the base model. We also fine-tune two Qwen models on training data derived from verification attempts by larger models enhanced with DafnyPro.
+L18: Our 7B and 14B models achieve 68% and 70% correct proofs on DafnyBench, respectively, demonstrating that smaller models can maintain high verification accuracy.
+L19: Subjects:  | Software Engineering (cs.SE)
+L20: Cite as:  | cite10†arXiv:2601.05385 [cs.SE]
+L21:    | (or cite11†arXiv:2601.05385v1 [cs.SE] for this version)
+L22:    | cite12†https://doi.org/10.48550/arXiv.2601.05385†doi.org arXiv-issued DOI via DataCite
+L23: ## Submission history
+L24: 
+L25: From: Stefan Zetzsche [cite13†view email ]
+L26: [v1] Thu, 8 Jan 2026 21:16:55 UTC (981 KB)
+L27: 
+L28: Full-text links:
+L29: 
+L30: ## Access Paper:
+L31: 
+L32: View a PDF of the paper titled DafnyPro: LLM-Assisted Automated Verification for Dafny Programs, by Debangshu Banerjee and 2 other authors
+L33: 
+L34:   * cite8†View PDF L35:   * cite9†HTML (experimental) L36:   * cite14†TeX Source L37: 
+L38: cite15†view license L39: 
+L40: ### Current browse context:
+L41: 
+L42: cs.SE
+L43: 
+L44: cite16†< prev |   cite17†next > L45: 
+L46: cite18†new | cite19†recent | cite20†2026-01 L47: 
+L48: Change to browse by:
+L49: 
+L50: cite21†cs --------------------------------------------------------------------------------
+[2608.09277] P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation (https://arxiv.org/abs/2608.09277)
+citeturn78view4 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2608.09277","lineno":8}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Artificial Intelligence
+L7: 
+L8: [Submitted on 10 Aug 2026]
+L9: # Title:P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation
+L10: 
+L11: Authors:cite5†Zenan Li , cite6†Ziran Yang , cite7†Peiyang Song , cite5†Zhaoyu Li , cite8†Kaiyu Yang L12: 
+L13: View a PDF of the paper titled P$^{3}$: Joint Program-and-Proof Planning for Verified Code Generation, by Zenan Li and 4 other authors
+L14: 
+L15: cite9†View PDF cite10†HTML (experimental) L16: > Abstract:Verified code generation asks a large language model (LLM) to generate both an executable program and a machine-checkable proof that the program meets a formal specification, promising software that is correct by construction. The de facto workflow decouples the two halves of the problem: first synthesize a program, then attempt to prove it correct. We observe that this sequential pipeline can be both ineffective and inefficient in practice.
+L17: A program generated without anticipating its proof can be subtly incorrect or structurally difficult to verify, forcing the LLM into brittle repair loops that alternate between patching the code and patching the proof.
+L18: Inspired by Dijkstra's view that a program and its correctness argument should be developed hand in hand, we propose $P^3$, an LLM-based agentic workflow that first derives a unified program-and-proof plan from the specification, then elaborates the implementation and proof scaffold under this shared plan.
+L19: To evaluate verified code generation in realistic settings, we further introduce Lean4Commit0, a repository-derived, library-level benchmark built by extracting core APIs from real-world software repositories and translating their requirements, including relational specifications across APIs, into Lean tasks. Using four frontier LLM backends, we evaluate $P^3$ on Verina, AlgoVeri, and our Lean4Commit0 benchmark, where it achieves the highest solve rate in every benchmark--model setting.
+L20: Compared with the stronger baseline, it improves solve rates by 4.6--11.2 percentage points and reduces per-task API cost by up to roughly 40\% and wall-clock time by up to roughly 37\% on the difficult subset of each benchmark. A targeted ablation further shows gains of 3.3--8.3 points over implementation-only planning, isolating the benefit of planning the program and proof jointly.
+--------------------------------------------------------------------------------
+[2608.29841] SkillForge: Compositional Skill Synthesis with Verification-in-the-Loop for Generating Formally Verified Dafny Programs (https://arxiv.org/abs/2608.29841)
+citeturn78view5 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2608.29841","lineno":8}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Computation and Language
+L7: 
+L8: [Submitted on 30 Aug 2026]
+L9: # Title:SkillForge: Compositional Skill Synthesis with Verification-in-the-Loop for Generating Formally Verified Dafny Programs
+L10: 
+L11: Authors:cite5†Yanming Liu , cite6†Xinyue Peng , cite7†Jiannan Cao , cite8†Xinyi Wang , cite9†Jinbo Su L12: 
+L13: View a PDF of the paper titled SkillForge: Compositional Skill Synthesis with Verification-in-the-Loop for Generating Formally Verified Dafny Programs, by Yanming Liu and 4 other authors
+L14: 
+L15: cite10†View PDF cite11†HTML (experimental) L16: > Abstract:Generating formally verified programs from natural language remains challenging: existing approaches either produce code in a single pass without recourse when verification fails, or rely on open-ended agentic reasoning that is non-deterministic and opaque.
+L17: We introduce SKILLFORGE, a framework that decomposes formal code synthesis into a library of atomic, reusable skills, each targeting a specific subtask such as specification inference, body synthesis, invariant generation, error diagnosis, or targeted repair, and defined by a prompt template, tool binding, and decidable success criterion.
+L18: A verification-driven harness orchestrates these skills: it submits candidates to the Dafny verifier, diagnoses failures into structured categories, deterministically routes to the appropriate repair skill, and iterates until formal correctness is proved or a budget is exhausted.
+L19: On a curated benchmark of natural language to Dafny specification pairs, SKILLFORGE substantially outperforms both state-of-the-art agentic approaches (including ReAct-style agents, MCTS-based repair, and RL-guided verification) and traditional iterative baselines, while requiring fewer tokens and lower latency. Ablation studies confirm that every skill contributes measurably, and the harness converges rapidly with the majority of programs verified on the first attempt.
+L20: Comments:  | Accepted by EMNLP 2026
+L21: Subjects:  | Computation and Language (cs.CL); Programming Languages (cs.PL)
+L22: Cite as:  | cite12†arXiv:2608.29841 [cs.CL]
+L23:    | (or cite13†arXiv:2608.29841v1 [cs.CL] for this version)
+L24:    | cite14†https://doi.org/10.48550/arXiv.2608.29841†doi.org arXiv-issued DOI via DataCite
+--------------------------------------------------------------------------------
+[2603.25810] ExVerus: Verus Proof Repair via Counterexample Reasoning (https://arxiv.org/abs/2603.25810)
+citeturn78view6 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2603.25810","lineno":8}); Total lines: 166
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Programming Languages
+L7: 
+L8: [Submitted on 26 Mar 2026 (cite5†v1 ), last revised 30 Mar 2026 (this version, v2)]
+L9: # Title:ExVerus: Verus Proof Repair via Counterexample Reasoning
+L10: 
+L11: Authors:cite6†Jun Yang , cite7†Yuechun Sun , cite8†Yi Wu , cite9†Rodrigo Caridad , cite10†Yongwei Yuan , cite11†Jianan Yao , cite12†Shan Lu , cite13†Kexin Pei L12: 
+L13: View a PDF of the paper titled ExVerus: Verus Proof Repair via Counterexample Reasoning, by Jun Yang and 7 other authors
+L14: 
+L15: cite14†View PDF cite15†HTML (experimental) L16: > Abstract:Large Language Models (LLMs) have shown promising results in automating formal verification. However, existing approaches treat proof generation as a static, end-to-end prediction over source code, relying on limited verifier feedback and lacking access to concrete program behaviors. We present EXVERUS, a counterexample-guided framework that enables LLMs to reason about proofs using behavioral feedback via counterexamples.
+L17: When a proof fails, EXVERUS automatically generates and validates counterexamples, and then guides the LLM to generalize them into inductive invariants to block these failures. Our evaluation shows that EXVERUS significantly improves proof accuracy, robustness, and token efficiency over the state-of-the-art prompting-based Verus proof generator.
+L18: Comments:  | 31 pages, 8 figures
+L19: Subjects:  | Programming Languages (cs.PL); Machine Learning (cs.LG)
+L20: ACM (Association of Computing Machinery Classification) classes:  | D.2.4
+L21: Cite as:  | cite16†arXiv:2603.25810 [cs.PL]
+L22:    | (or cite17†arXiv:2603.25810v2 [cs.PL] for this version)
+L23:    | cite18†https://doi.org/10.48550/arXiv.2603.25810†doi.org arXiv-issued DOI via DataCite
+L24: ## Submission history
+L25: 
+L26: From: Jun Yang [cite19†view email ]
+L27: cite5†[v1] Thu, 26 Mar 2026 18:14:34 UTC (3,984 KB)
+L28: [v2] Mon, 30 Mar 2026 05:32:19 UTC (3,985 KB)
+L29: 
+L30: Full-text links:
+L31: 
+L32: ## Access Paper:
+L33: 
+L34: View a PDF of the paper titled ExVerus: Verus Proof Repair via Counterexample Reasoning, by Jun Yang and 7 other authors
+L35: 
+L36:   * cite14†View PDF L37:   * cite15†HTML (experimental) L38:   * cite20†TeX Source L39: 
+L40: cite21†view license†creativecommons.org L41: 
+L42: ### Additional Features
+L43: 
+L44:   * cite22†Audio Summary --------------------------------------------------------------------------------
+[2609.00065] Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents (https://arxiv.org/abs/2609.00065)
+citeturn78view7 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2609.00065","lineno":8}); Total lines: 162
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Computation and Language
+L7: 
+L8: [Submitted on 30 Aug 2026 (cite5†v1 ), last revised 2 Sep 2026 (this version, v2)]
+L9: # Title:Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents
+L10: 
+L11: Authors:cite6†Timothy Kassis , cite7†Vinayak Agarwal , cite8†Yuhuan He , cite9†Darshil Patel , cite10†Aubrey M. Brueckner L12: 
+L13: View a PDF of the paper titled Scientific Agent Skills: A Library of Procedural Knowledge for Research Agents, by Timothy Kassis and 4 other authors
+L14: 
+L15: cite11†View PDF cite12†HTML (experimental) L16: > Abstract:A language-model agent asked to analyse an experiment will usually return working code. Whether the analysis is defensible is a different question. A defensible analysis depends on procedural choices: which test the field accepts, which identifier namespace is authoritative, and which caveats must accompany a result.
+L17: We present Scientific Agent Skills, an open library of 163 such procedures in 16 areas of practice, including genomics, cheminformatics, medical imaging, study design and scientific communication. Each skill is a directory built around a versioned, human-readable instruction file. An agent loads the file only when a task calls for it; the directory often also contains reference material and runnable scripts. We report no task-level evaluation and no host selection rate.
+L18: We measure two properties of the documentation corpus: the always-resident descriptions of all 163 skills cost 7.1% of a 200,000-token window, and the median documented workflow fits within 23.9% of it, although 29 of 46 would overflow if every reference file were loaded. Openly licensed and available at cite13†this https URL†github.com .
+L19: Comments:  | 31 pages, 16 figures, 2 tables, 1 listing. v2: adds a figure of how the documented workflows compose skills, quotes the skill clauses behind the introduction's examples, replaces the appendix listing with a procedural skill, names supported hosts and the pinned install path, and reports the two corpus findings in the abstract
+L20: Subjects:  | Computation and Language (cs.CL); Artificial Intelligence (cs.AI)
+L21: Cite as:  | cite14†arXiv:2609.00065 [cs.CL]
+--------------------------------------------------------------------------------
+[2606.32007] AxDafny: Agentic Verified Code Generation in Dafny (https://arxiv.org/abs/2606.32007)
+citeturn78view8 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"https://arxiv.org/abs/2606.32007","lineno":8}); Total lines: 158
+L0: cite0†Search cite1†Submit cite2†Donate†info.arxiv.org cite3†Log in L1: 
+L2: Search arXiv [Input: Search papers by title, author, abstract, or ID...] [Input] [Input]
+L3: 
+L4: Press Enter to search · cite4†Advanced search L5: 
+L6: # Computer Science > Artificial Intelligence
+L7: 
+L8: [Submitted on 30 Jun 2026]
+L9: # Title:AxDafny: Agentic Verified Code Generation in Dafny
+L10: 
+L11: Authors:cite5†Benjamin Breen , cite6†Austin Letson , cite7†Borja Requena Pozo , cite8†Leopoldo Sarra L12: 
+L13: View a PDF of the paper titled AxDafny: Agentic Verified Code Generation in Dafny, by Benjamin Breen and 3 other authors
+L14: 
+L15: cite9†View PDF cite10†HTML (experimental) L16: > Abstract:We study agentic code generation in Dafny, where a model must generate both executable code and the proof artifacts for verification. We present AxDafny, a verifier-guided repair framework that iteratively generates implementations, invariants, assertions, and termination arguments. We also introduce LiveCodeBench-Pro-Dafny (LCB-Pro-Dafny), a benchmark of 250 competition-style programming problems translated into Dafny with formal specifications and a verifier-based evaluation harness.
+L17: On LCB-Pro-Dafny, AxDafny substantially improves verification success over baseline GPT-5.5 performance. On DafnyBench, AxDafny achieves 92.7\% verification success, outperforming the strongest previously reported proof-hint baseline by 6.5 percentage points. Lastly, we show that verification success and runtime test performance measure different aspects of generated code.
+L18: Subjects:  | Artificial Intelligence (cs.AI)
+L19: Cite as:  | cite11†arXiv:2606.32007 [cs.AI]
+L20:    | (or cite12†arXiv:2606.32007v1 [cs.AI] for this version)
+L21:    | cite13†https://doi.org/10.48550/arXiv.2606.32007†doi.org arXiv-issued DOI via DataCite
+L22: ## Submission history
+L23: 
+L24: From: Benjamin Breen [cite14†view email ]
+L25: [v1] Tue, 30 Jun 2026 17:39:43 UTC (166 KB)
+L26: 
+L27: Full-text links:
+L28: 
+L29: ## Access Paper:
+L30: 
+L31: View a PDF of the paper titled AxDafny: Agentic Verified Code Generation in Dafny, by Benjamin Breen and 3 other authors
+L32: 
+L33:   * cite9†View PDF L34:   * cite10†HTML (experimental) L35:   * cite15†TeX Source L36: 
+L37: cite16†view license†creativecommons.org L38: 
+L39: ### Current browse context:
+L40: 
+L41: cs.AI
+L42: 
+L43: cite17†< prev |   cite18†next > L44: 
+L45: cite19†new | cite20†recent | cite21†2026-06 L46: 
+L47: Change to browse by:
+L48: 
+L49: cite22†cs L50: ### References & Citations
+L51: 
+L52:   * cite23†NASA ADS†ui.adsabs.harvard.edu L53:   * cite24†Google Scholar†scholar.google.com L54:   * cite25†Semantic Scholar†api.semanticscholar.org L55: 
+L56: [Button: export BibTeX citation] Loading...
+L57: 
+L58: ## BibTeX formatted citation
+L59: 
+L60: [Button: ×]
+L61: 
+L62: loading...
+L63: 
+L64: Data provided by:
+L65: 
+L66: ### Bookmark
+L67: 
+L68: [Input] Bibliographic Tools
+

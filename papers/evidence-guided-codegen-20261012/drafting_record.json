@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-12",
+  "language": "zh-CN",
+  "requested_output": "Chinese research draft",
+  "user_language_confirmed": true,
+  "new_model_experiments_this_turn": 0,
+  "new_verifier_experiments_this_turn": 0,
+  "external_queries": "Public titles, IDs, metadata and papers only",
+  "private_manuscript_or_logs_uploaded": false,
+  "work_order": [
+    "claim_evidence.md",
+    "outline.md",
+    "manuscript.audit.md",
+    "citation and consistency verification"
+  ],
+  "ai_assistance": [
+    "local artifact extraction",
+    "claim scope audit",
+    "drafting",
+    "public citation lookup",
+    "independent agent review"
+  ],
+  "skills_used": [
+    "scientific-writing",
+    "scientific-critical-thinking",
+    "ml-paper-writing",
+    "citation-management"
+  ],
+  "human_verification": "pending",
+  "submission_ready": false,
+  "unresolved": [
+    "human authors and affiliations",
+    "target venue",
+    "funding",
+    "conflicts",
+    "contributions",
+    "data release authorization",
+    "venue policy and required declarations"
+  ],
+  "code_url": "https://github.com/TeezyTez/codegen-verify",
+  "raw_logs_publication_claimed": false
+}

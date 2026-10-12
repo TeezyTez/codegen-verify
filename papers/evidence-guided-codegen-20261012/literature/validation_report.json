@@ -1,0 +1,14 @@
+{
+  "validator": "local metadata/BibTeX structural and manifest consistency check",
+  "date": "2026-10-12",
+  "total_entries": 9,
+  "errors": [],
+  "passed": true,
+  "human_verification": "pending for all nine records",
+  "limitations": [
+    "Bundled validate_citations.py could not start: requests module unavailable in both bundled Python and project venv.",
+    "No package installation performed.",
+    "This local check does not independently resolve DOI URLs, certify scientific support, or replace human review."
+  ],
+  "doi_verification": "Values extracted from original arXiv records and author/publisher metadata; no Crossref API resolution succeeded."
+}

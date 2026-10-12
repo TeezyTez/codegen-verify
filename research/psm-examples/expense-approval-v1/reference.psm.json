@@ -1,0 +1,34 @@
+{
+  "modelId": "expense-approval-example-v1",
+  "platform": {"name": "ExpenseFlow", "version": "1.0"},
+  "money": {
+    "currency": "CNY", "unit": "fen", "storage": "int64",
+    "minimum": 1, "maximum": 9223372036854775807,
+    "inputScalePolicy": "rejectMoreThanTwoDecimals"
+  },
+  "bands": [
+    {"id": "standard", "lowerExclusive": 0, "upperInclusive": 10000000, "requiredApprovals": 1},
+    {"id": "high", "lowerExclusive": 10000000, "upperInclusive": null, "requiredApprovals": 2}
+  ],
+  "approval": {
+    "role": "manager", "sameTenant": true, "excludeApplicant": true,
+    "countBy": "distinctSubject", "eligibilityAt": "voteTime",
+    "duplicateDecision": "sameDecisionNoop", "changeDecision": "reject",
+    "insufficientApprovers": "remainPending"
+  },
+  "workflow": {
+    "initialState": "PENDING", "rejectPolicy": "anyAcceptedRejectWhilePending", "closeOnThreshold": true
+  },
+  "revision": {
+    "allowedFrom": ["PENDING", "APPROVED", "REJECTED"], "editableFields": ["amountFen"],
+    "resetVotes": true, "closePrevious": true, "preserveHistory": true
+  },
+  "release": {
+    "role": "finance", "sameTenant": true, "requiredState": "APPROVED",
+    "oncePerVersion": true, "effect": "recordReleaseOnly"
+  },
+  "execution": {
+    "actorSource": "serverAuthenticationContext", "atomicScope": "expenseIdAcrossVersions",
+    "requestReplay": "sameActorAndPayloadOnly", "clientStateWritable": false
+  }
+}

@@ -1,0 +1,299 @@
+P3: Joint Program-and-Proof Planningfor Verified Code Generation (https://arxiv.org/html/2608.09277v1)
+citeturn83view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn79view0","lineno":103}); Total lines: 625
+L79: This coupling between code structure and proof structure is especially visible in Lean 4 benchmarks such as Verina [cite41†7 ] and AlgoVeri [cite50†15 ], where each task provides a function signature together with pre- and postconditions, and leaves both the implementation and proof as open placeholders.
+L80: As a running example, consider the task of computing the maximum element of a non-empty list of integers, together with a theorem stating that the returned value belongs to the list and upper-bounds every element. Two natural implementations are possible (see Appendix cite25†D for the full Lean source of both versions and their proofs):
+L81: 
+L82: ⬇
+L83: 
+L84: def listMax : (xs : List Int) $\rightarrow$ xs $\neq$ [] $\rightarrow$ Int
+L85: 
+L86: | [x], _ => x
+L87: 
+L88: | x::y::t, _ => max x (listMax (y::t) (by simp))
+L89: 
+L90: ⬇
+L91: def listMax (xs : List Int)
+L92: 
+L93: (h : xs $\neq$ []) : Int :=
+L94: 
+L95: xs.foldl max xs.head!
+L96: Both implementations compute the same value, but they induce very different proof obligations. Version (A) admits an induction that mirrors the postcondition: membership and upper-bound facts are proved case by case, with the induction hypothesis applied directly to the tail. Version (B), although shorter and arguably more idiomatic, is in fact substantially harder to verify against the stated specification.
+L97: A proof cannot proceed directly from the original postcondition; it must first generalize to an accumulator invariant such as
+L98: ⬇
+L99: 
+L100: ys.foldl max init $\in$ init :: ys $\wedge$ $\forall$ z $\in$ init :: ys, z $\leq$ ys.foldl max init
+L101: This lemma is then specialized to the non-empty input xs to recover the desired theorem. The universal quantification over arbitrary init has no counterpart in the specification: it is an invariant of the fold, not of the maximum itself. Thus, after committing to Version (B), the LLM agent must either discover this stronger invariant under the fixed implementation or rewrite the program toward Version (A), discarding any proof work already accumulated.
+L102: The failure mode is therefore structural: the sequential schedule commits the implementation before identifying the proof structure most natural for the specification, often leading to wasted certificate search.
+L103: ## 3 Methodology
+L104: Motivation. The central limitation of the program-then-proof paradigm is the potential misalignment between program and proof construction. A program may satisfy the specification extensionally, yet expose a structure that is difficult to verify. Conversely, optimizing only for proof simplicity can produce implementations that are inefficient, unnatural, or fail to capture the intended algorithm. For example, consider searching for a target in a sorted array.
+L105: Binary search has the desired asymptotic behavior, but its proof requires reasoning about intervals, index bounds, and preservation of the search invariant across recursive calls. A linear scan is much easier to verify by induction, but it ignores the sortedness assumption and gives a weaker algorithmic result. This tension motivates planning the program and proof jointly, rather than generating one first and forcing the other to fit afterward.
+L106: Framework. Given a formal specification $\sigma=(P,Q)$, our LLM agent, P^{3}, runs in two stages. (1) Planning: P^{3} proposes candidate plans based on $\sigma$ and selects a plan $\rho$ containing a program sketch aligned with a compatible proof sketch. (2) Elaboration: conditioned on $\rho$, P^{3} synthesizes the program $\pi$ and a proof scaffold that mirrors $\rho$ (e.g., induction principles, case splits, and intermediate lemmas).
+L107: It then fills in the remaining proof details, using Lean feedback for repair. On success, Lean certifies the proof $\kappa$ of correctness for $(\sigma,\pi)$; on failure, P^{3} classifies the error as elaboration-level or plan-level and invokes the corresponding repair procedure.
+L108: Within a single agent harness, planning and elaboration run as two stages with distinct prompts and tool contexts; the main agent (running the named backend) handles planning, and for elaboration may either continue itself or dispatch cheaper subagents. The concrete templates are given in Appendix cite26†E .
+L109: ### 3.1 Joint Program-and-Proof Planning
+L110: A plan $\rho$ records four commitments that the program and proof must later realize: (i) the formal contract and any algorithmic or asymptotic instruction; (ii) the program decomposition, including the recursion variable, branch structure, data representation, auxiliary routines, and termination measure; (iii) the concrete library functions and existing lemmas on which elaboration will rely; and (iv) the proof obligations, including the bridging predicate, induction or case structure, and statements of auxiliary lemmas.
+L111: Together, these choices specify the structural shape that the program and proof must share.
+L112: The planning agent validates the candidate plan at the sketch level. This validation is informal but explicit: the program sketch must meet the task instructions, including any algorithmic constraints; the proof sketch must explain why the chosen decomposition preserves the bridging predicate and why that predicate entails $Q$; and any nontrivial strengthening of $Q$ needed by the proof must be named as an auxiliary lemma rather than left implicit.
+L113: Only after this validation does the agent pass the selected plan to elaboration.
+L114: Compact procedure.
+L115: 
+L116:   1. 1.
+L117: 
+L118: Propose candidate plans from $\sigma$, each containing all four commitments above.
+L119: 
+L120:   2. 2.
+L121: 
+L122: Reject a candidate if its program sketch violates the instruction, its decomposition does not preserve the bridging predicate, or the predicate does not entail $Q$.
+L123: 
+L124:   3. 3.
+L125: 
+L126: Select a surviving candidate whose decomposition exposes the smallest anticipated proof burden, and freeze its structural commitments as $\rho$.
+L127: 
+L128:   4. 4.
+L129: Elaborate $(\pi,\kappa)$ under $\rho$; repair local errors in place, but return to Step 1 if elaboration requires an unplanned algorithm, invariant, or structural lemma.
+L130: In the running listMax example, planning exposes the structural tradeoff between Version (A) and Version (B) before the agent commits to code. Version (A) uses structural recursion on xs (split [x] vs. x :: y :: t) and lets the postcondition itself serve as the bridging predicate. Version (B) takes List.foldl, which forces the bridging predicate to range over a universally quantified accumulator, stated explicitly as the lemma foldl_max_gen.
+L131: This generalized accumulator invariant is not a surface fact about the maximum function; it is a proof obligation introduced by the choice to implement the function with List.foldl.
+--------------------------------------------------------------------------------
+SKILLFORGE: Compositional Skill Synthesis with Verification-in-the-Loop for Generating Formally Verified Dafny Programs (https://arxiv.org/html/2608.29841v1)
+citeturn83view1 [wordlim: 200] Crawled: yesterday; Content type: text/html; Source: open({"ref_id":"turn79view1","lineno":170}); Total lines: 889
+L162: While these methods excel at exploratory tasks with ambiguous goals, formal verification presents a different challenge: the error space is finite, the oracle is perfect, and targeted repair outperforms exploration. We empirically demonstrate this gap in §5.
+L163: #### Tree-Search and Verification-Guided Synthesis.
+L164: CEGIS (cite122†Solar-Lezama et al., 2006 ) uses counterexamples to guide classical synthesis. MCTS-based approaches (cite98†Zhang et al., 2024 ) apply Monte Carlo Tree Search to code generation with execution feedback as reward. Cobblestone (cite123†Kasibatla et al., 2024 ) iteratively combines LLM-generated proof fragments for Coq.
+L165: Proof2Silicon (cite124†Jha et al., 2025 ) uses reinforcement learning to repair verification failures in hardware generation—the closest work in spirit to our approach but targeting hardware rather than software and using RL rather than skill decomposition. Veri-Sure (cite125†Liu et al., 2026 ) proposes a contract-aware multi-agent framework with temporal tracing for RTL code generation, combining formal verification with agent handoffs. Lu et al.
+L166: (cite126†Lu et al., 2025 ) propose adaptive strategy selection for proof refinement via LLM-guided decisions. These methods explore multiple candidates but suffer from combinatorial explosion. SKILLFORGE avoids this by deterministically selecting the single most appropriate repair skill based on structured error categorization.
+L167: #### Skill-Based and Compositional Systems.
+L168: Voyager (cite99†Wang et al., 2024a ) builds growing skill libraries for Minecraft; SkillMix (cite100†Qian et al., 2024 ) evaluates LLMs on compositional skill combinations; Skills-in-Context (cite101†Chen et al., 2024 ) demonstrates that providing foundational skills within the prompt context enables near-perfect compositional generalization.
+L169: Most recently, Memento-Skills (cite102†Zhou et al., 2026 ) introduces a framework where agents autonomously design task-specific skills through reflective learning, growing from 5 to 235 skills and achieving 26.2% improvement on GAIA—demonstrating the power of compositional skill libraries at scale. Planning-based code generation (cite127†Zhang et al., 2023 ) decomposes programming tasks hierarchically.
+L170: Our key adaptation is that formal verification provides decidable success criteria for each skill—unlike open-ended tasks where skill completion is ambiguous. This decidability enables both sound termination and principled routing.
+L171: ## 3 Methodology
+L172: ### 3.1 Problem Formulation
+L173: 
+L174: Given a natural language instruction $x$ describing desired program behavior, our goal is to produce a Dafny program $d^{\ast}$ that (1) compiles, (2) satisfies the Hoare triple $\{\phi_{\mathrm{pre}}\}\,B\,\{\psi_{\mathrm{post}}\}$ as certified by the Dafny verifier, and (3) is semantically equivalent to a reference implementation. We decompose this into a sequence of skill invocations orchestrated by a harness $H$:
+L175:  | $\displaystyle d^{\ast}$  | $\displaystyle=H(x)=sk_{n}\circ\cdots\circ sk_{1}(x),$  |  | (1)
+L176:  | $\displaystyle\mathrm{Verify}(d^{\ast})$  | $\displaystyle=\top$  |
+L177: ### 3.2 Skill Library
+L178: 
+L179: Each skill is a triple $s=(P,T,C)$: prompt template $P$, tool binding $T$, and success criterion $C$. Table cite128†1 summarizes the library.
+L180: Skill  | Function  | Input  | Tool Binding  | Success Criterion
+L181: --- | --- | --- | --- | ---
+L182: INFERSPEC  | Extract types, pre/postconditions from NL  | NL description $x$  | Dafny type checker  | All fields parse as valid Dafny
+L183: SYNTHBODY  | Generate executable function body  | $x$ + spec scaffold  | Dafny compiler  | Program compiles
+L184: GENINVARIANT  | Synthesize loop invariants  | Program + verifier error  | Dafny verifier  | Program verifies with invariants
+L185: DIAGNOSEERROR  | Classify verification failure  | Program + error output  | None (reasoning)  | Valid category + location
+L186: REPAIRCODE  | Targeted body repair  | Program + diagnosis  | Dafny compiler  | Compiles $\wedge$ differs from input
+L187: STRENGTHENSPEC  | Add/strengthen pre/postconditions  | Program + diagnosis + NL  | Dafny verifier  | Program verifies with new spec
+L188: Table 1: The SKILLFORGE skill library. Each skill has a well-defined input/output contract, tool binding, and decidable success criterion.
+L189: #### INFERSPEC: Specification Inference.
+L190: 
+L191: Extracts structured metadata from natural language:
+L192: 
+L193:  | $$\mathrm{INFERSPEC}(x)=(\tau_{\mathrm{in}},\tau_{\mathrm{out}},\phi_{\mathrm{pre}},\psi_{\mathrm{post}},t)$$  |  | (2)
+L194: where $t\in\{\texttt{function},\texttt{method},\texttt{predicate},\texttt{lemma}\}$ is the construct type. The prompt frames this as structured field extraction with explicit markers for each component (see Appendix cite45†A ). The Dafny type checker validates that extracted types and conditions are syntactically well-formed.
+L195: #### SYNTHBODY: Code Body Synthesis.
+L196: 
+L197: Generates an executable body conditioned on the specification scaffold from INFERSPEC:
+L198: 
+L199:  | $$\mathrm{SYNTHBODY}(x,\mathrm{spec})=B$$  |  | (3)
+L200: 
+L201: A critical design choice is specification anchoring: the prompt explicitly forbids modifying the specification, preventing the common failure mode where models weaken postconditions to make verification trivial. Success requires the complete program to compile.
+L202: #### GENINVARIANT: Loop Invariant Generation.
+L203: 
+L204: Triggered when the verifier reports that a loop body cannot establish its postcondition. The skill synthesizes invariants satisfying three properties: (1) holds on entry, (2) preserved by the loop body, (3) with the negated guard, implies the postcondition. Each proposed invariant is validated individually for inductiveness before insertion.
+L205: #### DIAGNOSEERROR: Verification Error Diagnosis.
+L206: 
+L207: The routing mechanism of the repair loop. It classifies failures into four categories using a hybrid strategy: regex pattern matching for common errors (e.g., “postcondition might not hold” $\rightarrow$ spec_gap) with LLM reasoning as fallback for ambiguous cases. Output: (category, line, suggestion).
+L208: #### REPAIRCODE: Targeted Program Repair.
+L209: 
+L210: Operates surgically on the identified failure site based on DIAGNOSEERROR output. Unlike naive repair (which regenerates everything), this skill is constrained to minimal edits that preserve the overall algorithmic approach. This is critical for convergence—unconstrained regeneration often introduces new errors while fixing old ones.
+L211: #### STRENGTHENSPEC: Specification Strengthening.
+L212: 
+L213: Addresses specification gaps by inferring implicit domain constraints from the NL description (e.g., “non-negative integer” $\rightarrow$ requires x >= 0). Operates incrementally: proposes candidate clauses, validates each individually, then composes the validated set.
+L214: 
+L215: ### 3.3 Verification-Driven Harness
+L216: 
+L217: The harness orchestrates skill execution through four mechanisms:
+--------------------------------------------------------------------------------
+AxDafny: Agentic Verified Code Generation in Dafny (https://arxiv.org/html/2606.32007v1)
+citeturn83view2 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn79view2","lineno":109}); Total lines: 263
+L102: Several recent Dafny systems study LLM-assisted generation with verifier feedback. DafnyBench evaluates LLM proof-hint generation with a basic iterative loop: the model proposes annotations, Dafny checks the file, and verifier errors are returned for repair (cite35†Loughridge et al., 2024 ). DafnyPro improves this setting by editing existing files instead of regenerating whole proofs, pruning unused invariants, and retrieving from a manually curated Dafny proof-hint library (cite36†Banerjee et al., 2026 ).
+L103: These systems target proof generation, whereas our work addresses the joint synthesis of programs and proofs. Moreover, our method does not rely on proof-hint retrieval to improve proof-synthesis performance.
+L104: ### 2.2 Dafny Benchmarks
+L105: Most public Dafny benchmarks target proof synthesis rather than program synthesis. DafnyBench removes assert and invariant annotations from existing verified programs and evaluates whether a model can restore sufficient proof hints for verification (cite35†Loughridge et al., 2024 ). DafnyComp evaluates generation of specifications and proof annotations across multiple Dafny programs (cite37†Xu et al., 2025 ).
+L106: VeriEquivBench evaluates two related proof tasks: refining proof annotations for a fixed specification, and generating the strongest specification for a fixed implementation (cite38†Zeng et al., 2026 ).
+L107: Public benchmarks for Dafny program synthesis are less common. Dafny-synthesis evaluates verified Dafny method generation from natural-language prompts (cite39†Misu et al., 2024 ); its 178 tasks are derived from the Mostly Basic Python Problems (MBPP) benchmark (cite40†Austin et al., 2021 ). HumanEval-Dafny translates 129 tasks from the original HumanEval benchmark into Dafny (cite41†Chen et al., 2021 ; cite42†JetBrains Research, 2024 ).
+L108: These benchmarks are limited for comparisons with mainstream programming languages by their scale, simplicity, potential data contamination, and lack of runtime constraints. We therefore introduce LCB-Pro-Dafny, a larger competition-style benchmark for verifier-guided Dafny program synthesis.
+L109: ## 3 Methods
+L110: 
+L111: ### 3.1 Agent Architecture
+L112: 
+L113: For AxDafny, we adapt the agentic architecture proposed in cite32†Requena Pozo et al. (2026) used for Lean proving to Dafny code synthesis and verification. It consists of an iterative refinement loop with a proposer agent, a review system, and a memory module. The proposer writes Dafny code, the review system checks it and returns concrete feedback, and the memory module preserves information across iterations.
+L114: #### Proposer.
+L115: 
+L116: The proposer’s goal is to produce a Dafny file that passes dafny verify, without modifying the code and ensures statements that define the problem. It receives the original file content, the name of the primary target, and any context from previous attempts maintained by the memory module. With this information it returns the complete annotated file.
+L117: #### Reviewer system.
+L118: 
+L119: The reviewer has two stages: deterministic checks and LLM-based review. The deterministic stage consists of two static checks on the proposed file, followed by verifier diagnostics from Dafny.
+L120: 
+L121: First, we extract the requires and ensures clauses from the original and proposed files, and require the original clauses to be a subset of the proposed clauses. This prevents specification weakening while still allowing new specifications for helper methods and lemmas.
+L122: Second, a regex filter rejects proof-bypass constructs: {:axiom} and {:verify false} for specifications, assume for asserting verification facts without proof, and {:extern} for declarations whose implementations are assumed to be verified externally. If either check fails, the offending lines are returned to the proposer.
+L123: We then run dafny verify on the generated file. When verification fails, diagnostics identify the failed proof obligations and their source locations, including unmet preconditions, postconditions, invariants, or termination checks. When enabled, the --counterexamples flag can also provide concrete counterexamples for invalid verification conditions. These verification messages are fed back to the proposer as repair feedback.
+L124: Finally, a reviewer LLM checks the file for cheating patterns which aren’t covered by the deterministic checks, for example rewriting a predicate to be trivially true. A candidate is accepted only if it passes the preservation checks, contains no rejected proof-bypass constructs, verifies with Dafny, and is not rejected by the LLM reviewer.
+L125: #### Context management.
+L126: We use a self-managed, reflection memory variant as in (cite32†Requena Pozo et al., 2026 ), adapted to Dafny verifier output. On every iteration the proposer receives two forms of historical context. First, the immediately previous attempt is included verbatim: the proposer’s prior reasoning, the proposed file, and the feedback returned by either dafny verify or the reviewer agent. Second, a separate scratchpad call maintains a rolling memory that condenses lessons accumulated across all earlier attempts.
+L127: After each iteration, this memory is regenerated by an LLM given the current attempt’s reasoning, code, and feedback together with the previous notebook contents, with explicit instructions to preserve earlier lessons while folding in new ones.
+L128: ### 3.2 Agent Configuration
+L129: 
+L130: Experiments use either Gemini-3.1-Pro or GPT-5.5 as the base language model. GPT-5.5 is evaluated with either the low or medium reasoning setting. In small-scale ablations, Gemini-3.1-Pro and GPT-5.5 provided the best performance-cost tradeoffs among the models tested. For the full evaluation, AxDafny was allowed a budget of 20 iterative attempts per benchmark instance.
+L131: ### 3.3 Benchmarks
+L132: We evaluate AxDafny on two complementary verified-code tasks. DafnyBench measures proof-hint synthesis: the implementation and specification are given, and the agent must restore missing invariants and assertions so that Dafny verifies the file (cite35†Loughridge et al., 2024 ).
+L133: LCB-Pro-Dafny, introduced in this work, measures program synthesis: the agent receives both a natural-language problem description and Dafny specification, and must generate the implementation and proof artifacts needed for verification.
+L134: #### LCB-Pro-Dafny Construction
+L135: 
+L136: LCB-Pro-Dafny contains 250 LiveCodeBench-Pro (cite43†Zheng et al., 2025 ) competition problems translated into Dafny: 100 easy, 100 medium, and 50 hard instances. Each instance contains the original natural-language problem statement, a Dafny method signature, and a formal specification. The benchmark is released with an evaluation harness; acceptance criteria are defined in Section cite20†3.4 .
+--------------------------------------------------------------------------------
+GitHub - sun-wendy/DafnyBench: DafnyBench: A Benchmark for Formal Software Verification · GitHub (https://github.com/sun-wendy/DafnyBench)
+citeturn83view3 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn76view1","lineno":260}); Total lines: 312
+L200: ## Repository files navigation
+L201: 
+L202:   *   * cite92†README L212: ## Overview 📊
+L213: 
+L214: DafnyBench is the largest benchmark of its kind for training and evaluating machine learning systems for formal software verification, with over 750 Dafny programs.
+L215: ## Usage 💻
+L216: 
+L217:   * Dataset: The dataset for DafnyBench (with 782 programs) could be found in the `DafnyBench` directory, which contains the `ground_truth` set & the `hints_removed`set (with compiler hints, i.e. annoataions, removed).
+L218:   * Evaluation: Evaluate LLMs on DafnyBench by asking models to fill in missing hints in a test file from the `hints_removed` set and checking if the reconstructed program could be verified by Dafny. Please refer to the `eval` directory.
+L219: ## Set Up for Evaluation 🔧
+L220: 
+L221:   1. Install Dafny on your machine by following cite95†this tutorial†dafny.org L222:   2. Clone & `cd` into this repository
+L223:   3. Set up environment by running the following lines:
+L224: 
+L225:     `python -m venv stats
+L226:     source stats/bin/activate
+L227:     pip install -r requirements.txt
+L228:     cd eval
+L229:     `
+L230: 
+L231:   4. Set up environment variable for the root directory:
+L232: 
+L233:     `export DAFNYBENCH_ROOT=
+L234:     `
+L235:   5. Set up environment variable for path to Dafny executable on your machine (for example, `/opt/homebrew/bin/Dafny`):
+L236: 
+L237:     `export DAFNY_PATH=
+L238:     `
+L239: 
+L240:   6. If you're evaluating an LLM through API access, set up API key. For example:
+L241: 
+L242:     `export OPENAI_API_KEY=
+L243:     `
+L244: 
+L245:   7. You can choose to evaluate an LLM on a single test program, such as:
+L246: 
+L247:     `python fill_hints.py --model "gpt-4o" --test_file "Clover_abs_no_hints.dfy" --feedback_turn 3 --dafny_path "$DAFNY_PATH"
+L248:     `
+L249: or evaluate on the entire dataset:
+L250: 
+L251:     `export model_to_eval='gpt-4o'
+L252:     ./run_eval.sh
+L253:     `
+L254: ## Contents 📁
+L255:   * `DafnyBench`
+L256:     * A collection of 782 Dafny programs. Each program has a `ground_truth` version that is fully verified with Dafny & a `hints_removed` version that has hints (i.e. annotations) removed
+L257:   * `eval`
+L258:     * Contains scripts to evaluate LLMs on DafnyBench
+L259:   * `results`
+L260:     * `results_summary` - Dataframes that summarize LLMs' success on every test program
+L261:     * `reconstructed_files` - LLM outputs with hints filled back in
+L262:     * `analysis` - Contains a notebook for analyzing the results
+L263: ## Citation 📎
+L264: 
+L265:     @article{loughridge2024dafnybench,
+L266:              title={DafnyBench: A Benchmark for Formal Software Verification},
+L267:              author={Chloe Loughridge and Qinyi Sun and Seth Ahrenbach and Federico Cassano and Chuyue Sun and Ying Sheng and Anish Mudide and Md Rakib Hossain Misu and Nada Amin and Max Tegmark},
+L268:              year={2024},
+L269:              journal={arXiv preprint arXiv:2406.08467}
+L270:     }
+L271: 
+L272: ## About
+L273: 
+L274: DafnyBench: A Benchmark for Formal Software Verification
+L275: ### Topics
+L276: 
+L277: cite71†benchmark cite72†dafny cite73†formal-verification cite74†language-model cite75†program-verification L278: 
+L279: ### Resources
+L280: 
+L281: cite76†Readme L282: 
+L283: cite77†Apache-2.0 license L284: 
+L285: cite78†Activity L286: 
+L287: ### Stars
+L288: 
+L289: 68 stars
+L290: 
+L291: ### Watchers
+L292: 
+L293: 1 watching
+L294: 
+L295: ### Forks
+L296: 
+L297: cite79†14 forks L298: 
+L299: cite80†Report repository L300: 
+L301: ## Releases
+L302: 
+L303: ## Packages
+L304: 
+L305: ## Used by
+L306: 
+L307: ## Contributors
+L308: 
+L309: ## Languages
+L310: 
+L311: You can’t perform that action at this time.
+--------------------------------------------------------------------------------
+GitHub - K-Dense-AI/scientific-agent-skills: Turn any AI agent into an AI Scientist. The #1 Agent Skills library for science, used by 250,000+ scientists worldwide. 177 ready-to-use validated skills plus 100+ scientific databases covering biology, chemistry, medicine, and drug discovery. Compatible with Cursor, Claude Code, Codex, Pi, Antigravity, and the open Agent Skills standard. · GitHub (https://github.com/K-Dense-AI/scientific-agent-skills)
+citeturn83view4 [wordlim: 200] Crawled: today; Content type: text/html; Source: open({"ref_id":"turn76view2","lineno":270}); Total lines: 1143
+L254:   * 🔮 Materials Science & Chemistry - Crystal structure analysis, CALPHAD phase equilibria, metabolic modeling, computational chemistry
+L255:   * 🌌 Physics & Astronomy - Astronomical data analysis, coordinate transformations, cosmological calculations, symbolic mathematics, physics computations
+L256:   * ⚙️ Engineering & Simulation - Battery cycling models, chemical kinetics and ignition delay, fluid dynamics, lab hardware CAD and custom-part fabrication, discrete-event simulation, process optimization
+L257:   * 📊 Data Analysis & Visualization - Statistical analysis, network analysis, time series, publication-quality figures, large-scale data processing, EDA
+L258:   * 🌊 Chemical Oceanography - Seawater carbonate chemistry, ocean acidification, mineral saturation, and measurement uncertainty
+L259:   * 🌍 Geospatial Science & Remote Sensing - Satellite imagery processing, GIS analysis, spatial statistics, terrain analysis, machine learning for Earth observation
+L260:   * 🧪 Laboratory Automation - Liquid handling protocols, lab equipment control, workflow automation, LIMS integration
+L261:   * 📚 Scientific Communication - Evidence-traceable writing, confidential authorized peer review, literature synthesis, document processing, macro-free PPTX posters, slides, schematics, and citation management
+L262:   * 🔬 Multi-omics & Systems Biology - Multi-modal data integration, pathway analysis, carbon-13 metabolic flux inference, biochemical kinetic models
+L263:   * 🧬 Protein Engineering & Design - Protein language models, structure prediction, cryo-EM refinement, sequence design, function annotation
+L264:   * 🧰 Agent Platforms & Infrastructure - Build on Pi with SDK, RPC, extensions, custom providers/models, packages, TUI components, and session tooling
+L265:   * 🎓 Research Methodology - Evidence-bounded candidate hypotheses, scientific brainstorming, critical thinking, grant writing, and qualitative low-stakes evaluation of scholarly works
+L266:   * ⚖️ Regulatory & Standards - Draft evidence-preparation artifacts for ISO management-system and laboratory standards, plus analytical method validation, verification, and transfer under ICH/USP/CLSI frameworks—prepared for qualified review, never a certification, accreditation, or method-release decision
+L267: Transform your AI coding agent into an 'AI Scientist' on your desktop!
+L268: 
+L269: > 🎬 New to Scientific Agent Skills? Watch our cite131†Getting Started with Scientific Agent Skills†youtu.be video for a quick walkthrough.
+L270: ### 🎥 More tutorials
+L271: 
+L272: Recorded walkthroughs of these skills on real research tasks, from the cite123†K-Dense YouTube channel†www.youtube.com :
+L273: Video  | What it covers
+L274: --- | ---
+L275: cite132†Skills 101: Build Your Own Scientific Agent Skill†youtu.be | Writing, testing, and packaging a new skill from scratch
+L276: cite133†Literature Review and Hypothesis Generation†youtu.be | Searching the literature and generating grounded hypotheses
+L277: cite134†Draft and Budget an Experimental Protocol†youtu.be | Turning a planned experiment into a costed, written protocol
+L278: cite135†Draft Responses to Reviewer Comments†youtu.be | Building a point-by-point rebuttal from reviewer feedback
+L279: cite136†Can AI Reproduce a Nature Medicine Paper?†youtu.be | An end-to-end reproduction attempt on a published analysis
+L280: * * *
+L281: ## 📦 What's Included
+L282: 
+L283: This repository provides 177 scientific and research skills organized into the following categories:
+L284:   * 100+ Scientific & Financial Databases - The cite137†Database Lookup skill documents 80 databases with public, registered, or licensed access (PubChem, ChEMBL, UniProt, COSMIC, ClinicalTrials.gov, FRED, USPTO, and more), including endpoint selection, pagination, and provenance. Dedicated skills cover DepMap, Imaging Data Commons, PrimeKG, NCATS ARAX, U.S. Treasury Fiscal Data, Hugging Science, OneKGPd, Genomic Intelligence, and AlphaGenome.
+L285: Multi-database packages such as BioServices, Biopython, and gget add further coverage
+L286:   * 70+ Optimized Python Package Skills - Explicitly defined, version-aware workflows for RDKit, Scanpy, PyTorch Lightning, scikit-learn, PyTDC, PathML, pydicom, NeuroKit2, PufferLib, QuTiP, GeoPandas, pymatgen, BioPython, Qiskit, Molecular Dynamics (OpenMM/MDAnalysis), and others. The agent can still use any Python package; these skills provide stronger, safer guidance for the packages listed
+L287:   * 9 Scientific Integration Skills - Explicitly defined skills for Benchling, DNAnexus, LatchBio, OMERO, Protocols.io, Open Notebook, Ginkgo Cloud Lab, LabArchives, and Opentrons. Again, the agent is not limited to these — any API or platform reachable from Python is fair game; these skills are the optimized, pre-documented paths
+L288:   * 30+ Analysis & Communication Tools - Literature review, evidence-traceable scientific writing, confidential peer review, document processing, Paperclip (full-text papers, FDA/PMDA/EMA filings, and trial registries with line-pinned citations), Paperzilla, Exa Search, macro-free PPTX posters, slides, schematics, infographics, Mermaid diagrams, and more
+L289:   * 10+ Research & Clinical Tools - Evidence-bounded hypothesis generation, grant writing, aggregate clinical decision-support research, clinician-authored treatment-plan formatting, PK/PD modelling and simulation (NCA, population PK, exposure-response, bioequivalence, first-in-human dose), BIDS, ISO standards-readiness evidence preparation (ISO 13485, ISO 14971, ISO/IEC 17025, ISO 15189), analytical method validation and transfer (ICH Q2(R2)/Q14, ICH M10, USP, CLSI EP), scenario analysis, and workflow-derived skill drafting with Autoskill
+L290: Every skill has a `SKILL.md` with its purpose, workflow, and version metadata. Depending on the workflow, it also includes code examples, reference documentation, executable helpers, or templates. Skills with bundled `scripts/` have a corresponding test suite under `tests/<skill-name>/` and a dependency entry in cite138†`tests/skill-requirements.toml` .
+L291: ### What's new in 2.72.0
+L292: 
+L293: The `docx`, `pdf`, `pptx`, and `xlsx` document skills, which were vendored from cite139†anthropics/skills under Anthropic's own license, are no longer bundled. The collection now has 177 skills; install those four from Anthropic's repository if you rely on them. cite140†Scientific Slides now builds PowerPoint decks with PptxGenJS or python-pptx and reviews them through LibreOffice and its own rendering and validation scripts.
+L294: ### What's new in 2.71.0
+L295: 
+L296: This update refreshes all 181 skills, including package and API guidance, dependency requirements, reference documentation, and validation workflows. Highlights include:
+L297:   * Database retrieval: cite137†Database Lookup now catalogs 80 sources, with access requirements, retrieval contracts, and provenance checks.
+L298:   * Package compatibility: Updated documented baselines include cite141†PathML 3.0.8 , cite142†GeoPandas 1.2.0 , and cite143†build123d 0.13.0 for lab hardware CAD . cite144†PufferLib distinguishes native 5.0, PyPI 3.0.0, and historical 4.0 workflows.
+

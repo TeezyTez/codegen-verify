@@ -1,0 +1,28 @@
+{
+  "status": "illustrative_mapping_not_semantic_proof",
+  "pointerFormat": "JSON Pointer into reference.psm.json",
+  "requirements": [
+    {"id": "R01", "ir": ["IR01"], "psm": ["/money"], "decisions": ["A01"], "cases": ["C01"], "derivation": "CNY元按精确100倍映射到int64分；超出平台范围拒绝。"},
+    {"id": "R02", "ir": ["IR02"], "psm": ["/bands/0"], "decisions": ["A01"], "cases": ["C02"], "derivation": "0<金额<=100000.00元映射为(0,10000000]分，一人门槛。"},
+    {"id": "R03", "ir": ["IR03"], "psm": ["/bands/1", "/approval/countBy"], "decisions": ["A01", "A02"], "cases": ["C03", "C04"], "derivation": "严格大于阈值，按稳定主体标识统计两名不同同意者。"},
+    {"id": "R04", "ir": ["IR04"], "psm": ["/approval/role", "/approval/sameTenant", "/approval/excludeApplicant", "/execution/actorSource"], "decisions": ["A02", "A03"], "cases": ["C05", "C06", "C10"], "derivation": "全部投票入口统一执行资格检查；没有管理员绕过路径。"},
+    {"id": "R05", "ir": ["IR05"], "psm": ["/approval/duplicateDecision", "/approval/changeDecision", "/execution/requestReplay", "/execution/atomicScope"], "decisions": ["A04", "A05"], "cases": ["C07", "C11"], "derivation": "平台Vote唯一键保证每版本每主体一票；成功请求键用于历史结果回放。"},
+    {"id": "R06", "ir": ["IR06"], "psm": ["/workflow", "/execution/atomicScope"], "decisions": ["A04"], "cases": ["C08", "C09", "C11"], "derivation": "新决定仅在PENDING接受；门槛完成或有效拒绝原子关闭投票。"},
+    {"id": "R07", "ir": ["IR07"], "psm": ["/approval/insufficientApprovers"], "decisions": ["A03"], "cases": ["C04", "C10"], "derivation": "不足时等待，不下调门槛；已保存的票保持投票时资格。"},
+    {"id": "R08", "ir": ["IR08"], "psm": ["/release", "/execution/atomicScope"], "decisions": ["A02", "A04", "A05", "A06"], "cases": ["C13", "C14", "C15"], "derivation": "仅当前APPROVED版本可放行，财务与申请人可为同主体，放行记录唯一。"},
+    {"id": "R09", "ir": ["IR09"], "psm": ["/revision", "/workflow/initialState", "/execution/atomicScope"], "decisions": ["A04", "A06"], "cases": ["C12", "C14", "C15"], "derivation": "允许的状态创建新版本，清票；放行后不得修订。"},
+    {"id": "R10", "ir": ["IR10"], "psm": ["/revision/editableFields", "/revision/closePrevious", "/revision/preserveHistory"], "decisions": ["A02", "A04", "A05"], "cases": ["C12", "C16"], "derivation": "身份字段为平台不可变字段；历史版本关闭业务操作但保留状态及审计结果。"}
+  ],
+  "architecture": [
+    {"id": "A01", "psm": ["/money", "/bands"]},
+    {"id": "A02", "psm": ["/execution/actorSource", "/execution/clientStateWritable"]},
+    {"id": "A03", "psm": ["/approval/eligibilityAt"]},
+    {"id": "A04", "psm": ["/execution/atomicScope"]},
+    {"id": "A05", "psm": ["/execution/requestReplay"]},
+    {"id": "A06", "psm": ["/revision/editableFields", "/release/effect"]}
+  ],
+  "metadata": [
+    {"psm": "/modelId", "origin": "示例模型名称"},
+    {"psm": "/platform", "origin": "本次任务固定的假设平台与版本"}
+  ]
+}

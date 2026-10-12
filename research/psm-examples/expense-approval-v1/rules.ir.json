@@ -1,0 +1,26 @@
+{
+  "format": "expense-rule-ir-example/1.0",
+  "status": "illustrative_not_a_complete_PIM",
+  "description": "每个节点由 kind 确定 params 的含义；金额使用原文人民币元的十进制字符串，平台映射时才转成分。这里只给出本例的有限表示，未提供通用 IR 校验器或编译器。",
+  "vocabulary": {
+    "expense": "报销申请",
+    "version": "一次提交或修订形成的审批版本",
+    "subject": "服务端认证的稳定主体标识，非姓名或显示名",
+    "qualifiedManager": "同租户、具有经理资格且不是申请人的主体",
+    "release": "内部付款放行记录，不代表银行支付完成"
+  },
+  "rules": [
+    {"id": "IR01", "source": ["R01"], "kind": "inputConstraint", "params": {"currency": "CNY", "amountGreaterThanYuan": "0", "maxDecimalPlaces": 2}},
+    {"id": "IR02", "source": ["R02"], "kind": "approvalBand", "params": {"amountGreaterThanYuan": "0", "amountLessThanOrEqualYuan": "100000.00", "minimumDistinctApprovers": 1}},
+    {"id": "IR03", "source": ["R03"], "kind": "approvalBand", "params": {"amountGreaterThanYuan": "100000.00", "amountLessThanOrEqualYuan": null, "minimumDistinctApprovers": 2}},
+    {"id": "IR04", "source": ["R04"], "kind": "actorConstraint", "params": {"role": "manager", "sameTenant": true, "actorDifferentFromApplicant": true, "adminException": false}},
+    {"id": "IR05", "source": ["R05"], "kind": "voteConstraint", "params": {"scope": ["expense", "version", "subject"], "maximumDecisions": 1, "repeatSameWhilePending": "noChange", "changeDecision": "forbidden"}},
+    {"id": "IR06", "source": ["R06"], "kind": "transitionConstraint", "params": {"acceptNewVotesOnlyWhile": "pending", "acceptedRejection": "rejectAndClose", "enoughDistinctApprovals": "approveAndClose"}},
+    {"id": "IR07", "source": ["R07"], "kind": "availabilityConstraint", "params": {"insufficientQualifiedManagers": "waitWithoutLoweringThreshold"}},
+    {"id": "IR08", "source": ["R08"], "kind": "releaseConstraint", "params": {"currentVersionOnly": true, "approvalRequired": true, "actorRole": "finance", "sameTenant": true, "applicantMayReleaseIfQualified": true, "maximumRecordsPerVersion": 1, "closeAfterRelease": true}},
+    {"id": "IR09", "source": ["R09"], "kind": "revisionConstraint", "params": {"allowedApprovalStates": ["pending", "approved", "rejected"], "editable": ["amount"], "newVersion": true, "carryOverVotes": false, "afterRelease": "forbidden"}},
+    {"id": "IR10", "source": ["R10"], "kind": "historyConstraint", "params": {"immutableFields": ["applicant", "tenant"], "preservePriorResult": true, "priorVersionNewOperations": "forbidden"}}
+  ],
+  "unresolvedForCompletedExample": [],
+  "unresolvedForOriginalTwoSentences": ["U01", "U02", "U03", "U04"]
+}
